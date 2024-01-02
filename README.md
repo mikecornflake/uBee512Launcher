@@ -47,5 +47,8 @@ LCL and FPC are both quickly evolving projects.  I've an ongoing project rationa
 + Prebuilt Lazarus/fpc can be obtained from: https://sourceforge.net/projects/lazarus/files/
 + But really - you know you want to compile Lazarus Trunk: https://github.com/User4martin/lazarus
 
+# License
+This is intended to be free code available to everyone for use everywhere.  Frankly, this is a simple UI wrapping the more complicated emulators and CPMTools developed and released by others.  However, I'm aware there are issues with releasing code under that sort of vagueness, so I've got to have a quick around for an appropriate open source license.  Haven't done that yet...
+
 Mike Thompson
 2 Jan 2024
