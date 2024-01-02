@@ -20,3 +20,12 @@ For now:
 # Long Term TODO (_dreamer! you're nothing but a dreamer_)
 + Investigate automating a running instance of RunCPM (serial? STDIN?)
 + Investigate automating a running instance of UBEE512 (allow dynamic changing of disks)
+
+# Development notes
+Developed using Lazarus 2.2.6 / fpc 3.2.2
+Uses sections directly copied from an OO framework I developed for other projects. This includes the contents of the Support folder. That OO framework adds uncessary complications, so the intention for this project is to keep the design to a simplified application.    
+This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
+LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
+
+Mike Thompson
+2 Jan 2024
