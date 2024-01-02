@@ -27,7 +27,7 @@ Other
 + Add support for Microbee Peripherals (Beetalker etc)
 + Add support for the assorted Harddrive formats recognised by Microbee
 
-## Long Term TODO 
+## Long Term 
 (_dreamer! you're nothing but a dreamer_)
 + Investigate automating a running instance of RunCPM (serial? STDIN?)
 + Investigate automating a running instance of UBEE512 (allow dynamic changing of disks)
