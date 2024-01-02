@@ -29,18 +29,18 @@ For now:
 + I strongly suspect there are issues in CPMTools.  Investigate using this framework, then report to appropriate developers. (Hmm, looks like original CP/M tools are up to 2.23, but the modified CP/M tools are from 2.1 codebase)
 
 # Development Notes
-Developed using Lazarus 2.2.6 / fpc 3.2.2
-Uses sections directly copied from an OO framework I developed for other projects. This includes the contents of the Support folder. That OO framework adds uncessary complications, so the intention for this project is to keep the design to a simplified application.    
-This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
++ Developed using Lazarus 2.2.6 / fpc 3.2.2
++ Uses sections directly copied from an OO framework I developed for other projects. This includes the contents of the Support folder. That OO framework adds uncessary complications, so the intention for this project is to keep the design to a simplified application.    
++ This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
 LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
 
 # Distribution Notes
-Original UBEE512, UBEEDISK & Modified CPMtools (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
-Original CPMTools (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/
-uBee512 has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
-RunCPM can be obtained from: https://github.com/MockbaTheBorg/RunCPM
-Prebuilt Lazarus/fpc can be obtained from: https://sourceforge.net/projects/lazarus/files/
-But really - you know you want to compile Lazarus Trunk: https://github.com/User4martin/lazarus
++ Original UBEE512, UBEEDISK & Modified CPMtools (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
++ Original CPMTools (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/
++ uBee512 has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
++ RunCPM can be obtained from: https://github.com/MockbaTheBorg/RunCPM
++ Prebuilt Lazarus/fpc can be obtained from: https://sourceforge.net/projects/lazarus/files/
++ But really - you know you want to compile Lazarus Trunk: https://github.com/User4martin/lazarus
 
 Mike Thompson
 2 Jan 2024
