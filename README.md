@@ -23,7 +23,8 @@ For now:
 + Add support for Microbee Peripherals (Beetalker etc)
 + Add support for the assorted Harddrive formats recognised by Microbee
 
-# Long Term TODO (_dreamer! you're nothing but a dreamer_)
+# Long Term TODO 
+(_dreamer! you're nothing but a dreamer_)
 + Investigate automating a running instance of RunCPM (serial? STDIN?)
 + Investigate automating a running instance of UBEE512 (allow dynamic changing of disks)
 + I strongly suspect there are issues in CPMTools.  Investigate using this framework, then report to appropriate developers. (Hmm, looks like original CP/M tools are up to 2.23, but the modified CP/M tools are from 2.1 codebase)
