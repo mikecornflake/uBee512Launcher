@@ -1,0 +1,260 @@
+object frmSettings: TfrmSettings
+  Left = 2848
+  Height = 367
+  Top = 212
+  Width = 609
+  BorderIcons = [biSystemMenu]
+  Caption = 'Settings'
+  ClientHeight = 367
+  ClientWidth = 609
+  Constraints.MinHeight = 330
+  Constraints.MinWidth = 310
+  FormStyle = fsStayOnTop
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.6.0'
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 328
+    Top = 0
+    Width = 609
+    ActivePage = tsLocations
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 0
+    object tsLocations: TTabSheet
+      Caption = 'Locations'
+      ClientHeight = 300
+      ClientWidth = 601
+      object edtCPMToolsModified: TFileNameEdit
+        Left = 16
+        Height = 23
+        Top = 214
+        Width = 576
+        FileName = 'B:\Drives\Microbee\cpmtools-2.10\tools'
+        FilterIndex = 0
+        HideDirectories = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 0
+        Text = 'B:\Drives\Microbee\cpmtools-2.10\tools'
+      end
+      object Label4: TLabel
+        Left = 16
+        Height = 15
+        Top = 198
+        Width = 138
+        Caption = 'uBee Modified CPMTools'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object edtCPMTools: TFileNameEdit
+        Left = 15
+        Height = 23
+        Top = 151
+        Width = 576
+        FileName = 'B:\Drives\CPM\cpmtools'
+        FilterIndex = 0
+        HideDirectories = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 1
+        Text = 'B:\Drives\CPM\cpmtools'
+      end
+      object Label3: TLabel
+        Left = 15
+        Height = 15
+        Top = 134
+        Width = 236
+        Caption = 'http://www.moria.de/~michael/cpmtools/'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object edtRunCPM: TFileNameEdit
+        Left = 16
+        Height = 23
+        Top = 91
+        Width = 576
+        FileName = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
+        FilterIndex = 0
+        HideDirectories = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 2
+        Text = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
+      end
+      object Label2: TLabel
+        Left = 16
+        Height = 15
+        Top = 74
+        Width = 114
+        Caption = 'RunCPM Executable:'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object edtuBee512: TFileNameEdit
+        Left = 15
+        Height = 23
+        Top = 32
+        Width = 576
+        FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
+        FilterIndex = 0
+        HideDirectories = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 3
+        Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
+      end
+      object Label1: TLabel
+        Left = 15
+        Height = 15
+        Top = 15
+        Width = 117
+        Caption = 'uBee512 Executable:'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+    object tsRC: TTabSheet
+      Caption = 'uBee512rc'
+      ClientHeight = 300
+      ClientWidth = 601
+      object PageControl2: TPageControl
+        Left = 0
+        Height = 300
+        Top = 0
+        Width = 601
+        ActivePage = tsRC2
+        Align = alClient
+        TabIndex = 0
+        TabOrder = 0
+        object tsRC2: TTabSheet
+          Caption = 'uBee512rc'
+          ClientHeight = 272
+          ClientWidth = 593
+          object memRC: TMemo
+            Left = 0
+            Height = 272
+            Top = 0
+            Width = 593
+            Align = alClient
+            ReadOnly = True
+            ScrollBars = ssAutoBoth
+            TabOrder = 0
+          end
+        end
+        object TabSheet2: TTabSheet
+          Caption = 'System Macros'
+          ClientHeight = 272
+          ClientWidth = 593
+          object ListView1: TListView
+            Left = 0
+            Height = 205
+            Top = 0
+            Width = 593
+            Align = alTop
+            Columns = <            
+              item
+                Caption = 'Macro'
+              end            
+              item
+                Caption = 'Model'
+                Width = 75
+              end            
+              item
+                Caption = 'Title'
+                Width = 75
+              end            
+              item
+                Caption = 'A:'
+                Width = 40
+              end            
+              item
+                Caption = 'Colour?'
+                Width = 75
+              end            
+              item
+                Caption = 'SRAM'
+                Width = 75
+              end            
+              item
+                Caption = 'Status'
+                Width = 75
+              end            
+              item
+                Caption = 'Description'
+                Width = 120
+              end>
+            HideSelection = False
+            ReadOnly = True
+            RowSelect = True
+            SortType = stText
+            TabOrder = 0
+            ViewStyle = vsReport
+          end
+          object Splitter1: TSplitter
+            Cursor = crVSplit
+            Left = 0
+            Height = 5
+            Top = 205
+            Width = 593
+            Align = alTop
+            ResizeAnchor = akTop
+          end
+          object memSystems: TMemo
+            Left = 0
+            Height = 62
+            Top = 210
+            Width = 593
+            Align = alClient
+            ReadOnly = True
+            ScrollBars = ssAutoBoth
+            TabOrder = 2
+          end
+        end
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 39
+    Top = 328
+    Width = 609
+    Align = alBottom
+    ClientHeight = 39
+    ClientWidth = 609
+    TabOrder = 1
+    object btnOK: TButton
+      Left = 442
+      Height = 25
+      Top = 5
+      Width = 75
+      Caption = 'OK'
+      ModalResult = 1
+      OnClick = btnOKClick
+      TabOrder = 0
+    end
+    object btnCancel: TButton
+      Left = 520
+      Height = 25
+      Top = 5
+      Width = 75
+      Caption = 'Cancel'
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
+end
