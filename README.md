@@ -40,7 +40,7 @@ Other
 LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
 
 ## Distribution
-+ UBEE512, UBEEDISK, Modified CPMTools, Original CPMTools & RunCPM are NOT distributed with this application.  You'll have to download these separetely (see Achknowledgements)
++ UBEE512, UBEEDISK, Modified CPMTools, Original CPMTools & RunCPM are NOT distributed with this application.  You'll have to download these separetely (see Acknowledgements)
 + The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
 
 # Acknowledgements
