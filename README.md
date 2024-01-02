@@ -3,7 +3,10 @@
 For now:
 + Allows user to choose Microbee Configuration using System Macros
 + Allows user to select DSK files, and mount these in A: B: or C:
-+ If the DSK is bootable, can be used in A:
++ Launches a new instance of the uBee512 emulator using the chosen configuration
+
+Other
++ Only allows bootable DSKs to be loaded in A:
 + Has a "File Preview": for now, either shows contents of text files, or files inside a DSK
 + Contents of DSK listed using either original CPMtools or modified CPMTools (allows for Microbee specific formats)
 
