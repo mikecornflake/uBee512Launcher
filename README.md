@@ -34,7 +34,8 @@ For now:
 + This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
 LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
 
-# Distribution Notes
+# Acknowledgements
++ UBEE512, UBEEDISK & Modified CPMTools developed by user uBee contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + Original UBEE512, UBEEDISK & Modified CPMtools (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
 + Original CPMTools (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/
 + uBee512 has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
