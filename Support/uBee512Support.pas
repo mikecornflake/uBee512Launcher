@@ -33,7 +33,7 @@ End;
 Procedure SetuBee512Path(AValue: String);
 Begin
   If FileExists(AValue) Then
-    FPath := IncludeSlash(AValue);
+    FPath := AValue;
 End;
 
 Procedure InitializeuBee512;
@@ -63,7 +63,7 @@ Begin
   End;
 
   If FPath <> '' Then
-    FPath := IncludeSlash(FPath);
+    FPath := FPath;
 End;
 
 Initialization

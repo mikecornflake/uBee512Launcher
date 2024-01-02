@@ -20,8 +20,8 @@ Uses {$IFDEF UNIX}
 
 Begin
   RequireDerivedFormResource := True;
-  Application.Title := 'MichaelBee Tools';
-  Application.Scaled := True;
+  Application.Title:='MichaelBee Tools';
+  Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
