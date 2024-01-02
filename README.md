@@ -47,6 +47,7 @@ LCL and FPC are both quickly evolving projects.  I've an ongoing project rationa
 + UBEE512, UBEEDISK & Modified CPMTools developed by user uBee contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + Original UBEE512, UBEEDISK & Modified CPMtools (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
 + Original CPMTools (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/
++ Where the above tools access DSK files, they do so using libdsk: https://www.seasip.info/Unix/LibDsk/  LibDsk doesn't have support for the Microbee Disk Formats, and this is why the modified CPMTools exists.  It's actually libdsk that's been modified and cpmtools rebuilt with the updated library.
 + uBee512 has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
 + RunCPM can be obtained from: https://github.com/MockbaTheBorg/RunCPM
 + Prebuilt Lazarus/fpc can be obtained from: https://sourceforge.net/projects/lazarus/files/
