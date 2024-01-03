@@ -76,6 +76,7 @@
         <Filename Value="Display\FormMacroExplorer.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmMacroExplorer"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
     </Units>

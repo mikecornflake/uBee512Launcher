@@ -5,7 +5,7 @@ Unit OSSupport;
 Interface
 
 Uses
-  Classes, SysUtils, UTF8Process, Controls, Forms, ShellAPI, LCLType;
+  Classes, SysUtils, UTF8Process, Controls, Forms, LCLType {$IFDEF WINDOWS}, ShellAPI{$ENDIF};
 
 Procedure LaunchFile(sFilename: String; sParameters: String = '');
 Procedure LaunchDocument(sFilename: String);
@@ -72,7 +72,11 @@ End;
 
 Procedure LaunchDocument(sFilename: String);
 Begin
+  {$IFDEF WINDOWS}
   ShellExecute(0, 'open', Pansichar(sFilename), nil, nil, SW_SHOWNORMAL);
+  {$ELSE}
+  Run(sFilename);
+  {$ENDIF}
 End;
 
 // run a simple command quietly and return any output to the console
