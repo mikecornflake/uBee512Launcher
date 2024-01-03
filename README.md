@@ -43,8 +43,7 @@ LCL and FPC are both quickly evolving projects.  I've an ongoing project rationa
 + The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
 
 ## Screenshots
-+ App is in early stages of development, so UI is changing as I play.  Currently I have System Macro's in settings, I now realise I need them in a "System macro explorer" that can be launched from the main page.
-+ Instead of a single "System" dropdown on the first page, I need a "Model" dropdown, then a secondary "Title"
++ We have "minimum viable product", just not platform independent yet
 + ![Image: Main UI](Images/Development_Screenshot_2.png)
 + ![Image: System Macros](Images/Development_Screenshot_1.png?raw=true)
 
