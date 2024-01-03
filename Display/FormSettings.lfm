@@ -1,7 +1,7 @@
 object frmSettings: TfrmSettings
-  Left = 2518
+  Left = 506
   Height = 612
-  Top = 195
+  Top = 192
   Width = 1022
   BorderIcons = [biSystemMenu]
   Caption = 'Settings'
@@ -184,20 +184,12 @@ object frmSettings: TfrmSettings
                 Width = 125
               end            
               item
-                Caption = 'Colour?'
-                Width = 75
-              end            
-              item
                 Caption = 'SRAM'
-                Width = 125
-              end            
-              item
-                Caption = 'Status'
-                Width = 125
+                Width = 150
               end            
               item
                 Caption = 'Description'
-                Width = 250
+                Width = 300
               end>
             HideSelection = False
             ReadOnly = True

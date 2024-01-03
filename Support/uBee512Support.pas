@@ -113,7 +113,7 @@ Var
   sProperty, sValue: String;
   c1, c2: Char;
   oSystemMacro: TSystemMacro;
-  bDescUsed: Boolean;
+  iCount: Integer;
 Begin
   If FileExists(uBee512RCPath) Then
   Begin
@@ -125,7 +125,7 @@ Begin
       oSystemMacro := nil;
       sTag := '';
       sDescription := '';
-      bDescUsed := False;
+      iCount := 0;
 
       For s In slTemp Do
       Begin
@@ -137,11 +137,17 @@ Begin
           c2 := sLine[2];
 
           Case c1 Of
-            '#': If c2 <> '=' Then
-                If bDescUsed Then
-                  sDescription := TrimChars(sLine, ['#', ' '])
-                Else
-                  sDescription := Trim(sDescription + ' ' + TrimChars(sLine, ['#', ' ']));
+            '#':
+              If c2 = '=' Then
+              Begin
+                If Assigned(oSystemMacro) And (oSystemMacro.Macro <> '') And (iCount=0) Then
+                Begin
+                  sDescription := '';
+                  iCount := 1;
+                End;
+              End
+              Else
+                sDescription := Trim(sDescription + ' ' + TrimChars(sLine, ['#', ' ']));
             '[':
             Begin
               sNewTag := TextBetween(sLine, '[', ']');
@@ -164,7 +170,7 @@ Begin
                 oSystemMacro := TSystemMacro.Create;
                 oSystemMacro.Macro := sTag;
                 oSystemMacro.Description := sDescription;
-                bDescUsed := True;
+                iCount := 0;
               End;
             End;
             '-': If (sTag <> '') And Assigned(oSystemMacro) Then

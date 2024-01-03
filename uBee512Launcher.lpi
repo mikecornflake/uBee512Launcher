@@ -5,7 +5,7 @@
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="MichaelBee Tools"/>
+      <Title Value="uBee512Launcher"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
@@ -31,7 +31,7 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="MichaelBeeTools.lpr"/>
+        <Filename Value="uBee512Launcher.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -78,12 +78,12 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="MichaelBeeTools"/>
+      <Filename Value="uBee512Launcher"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="Display;Support"/>
-      <UnitOutputDirectory Value="C:\Temp\lib\$(TargetCPU)-$(TargetOS)"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
       <Debugging>

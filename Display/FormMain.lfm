@@ -1,9 +1,9 @@
 object frmMain: TfrmMain
-  Left = 1994
+  Left = 612
   Height = 590
-  Top = 277
+  Top = 203
   Width = 810
-  Caption = 'MichaelBee Tools'
+  Caption = 'uBee512Launcher'
   ClientHeight = 570
   ClientWidth = 810
   Constraints.MinHeight = 590

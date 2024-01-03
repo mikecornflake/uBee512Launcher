@@ -142,9 +142,9 @@ Begin
           oItem.SubItems.Add(oMacro.Model);
           oItem.SubItems.Add(oMacro.Title);
           oItem.SubItems.Add(oMacro.A);
-          oItem.SubItems.Add(oMacro.Col);
+          //oItem.SubItems.Add(oMacro.Col);
           oItem.SubItems.Add(oMacro.SRAM + ' ' + oMacro.SRAM_File);
-          oItem.SubItems.Add(oMacro.Status);
+          //oItem.SubItems.Add(oMacro.Status);
           oItem.SubItems.Add(oMacro.Description);
         End;
       End;
