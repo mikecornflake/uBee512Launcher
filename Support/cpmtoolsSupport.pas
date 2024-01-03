@@ -96,7 +96,7 @@ Begin
   Begin
     sDSK := DSKFormat(AFilename);
 
-    sCommand := Format('"%scpmls%s" -l -f %s "%s"', [FPath, GetExeExt, sDSK, AFilename]);
+    sCommand := Format('"%scpmls%s" -l -f %s "%s"', [IncludeSlash(FPath), GetExeExt, sDSK, AFilename]);
     sTemp := RunEx(sCommand, nil, True);
 
     ARawOutput := '>' + sCommand + sLineBreak + sTemp;
