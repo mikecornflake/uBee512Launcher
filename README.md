@@ -8,11 +8,10 @@ Other
 + Only allows bootable DSKs to be loaded in A:
 + Has a "File Preview": for now, either shows contents of text files, or files inside a DSK
 + Contents of DSK listed using either original **CPMtools** or modified **CPMTools** (allows for Microbee specific formats)
-+ Parses ubee512rc to build up System Macros, but only implemented in Settings, not main UI
++ Parses ubee512rc to build up System Macros, uses these in Main Form
 
 # TODO
 ## Short term
-+ Complete System Macros implementation (use in ComboBox in Main UI)
 + Report which System Macros are usable (ROMs, DSKs, SRAM in correct folders)
 + Add awareness of **RunCPM** folder structure
 + Add support for **UBEEDISK** tools (to be honest, this means learning them first)
