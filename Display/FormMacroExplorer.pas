@@ -27,11 +27,15 @@ Type
     Procedure FormCreate(Sender: TObject);
     Procedure lvSystemMacrosSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   Private
+    Function GetTitle: String;
+    Procedure SetTitle(AValue: String);
+  Private
     FActivated: Boolean;
+    Function GetModel: String;
     Procedure LoadRC;
-
   Public
-
+    Property Title: String read GetTitle write SetTitle;
+    Property Model: String read GetModel;
   End;
 
 Implementation
@@ -44,15 +48,13 @@ Uses
 Procedure TfrmMacroExplorer.FormCreate(Sender: TObject);
 Begin
   FActivated := False;
+  LoadRC;
 End;
 
 Procedure TfrmMacroExplorer.FormActivate(Sender: TObject);
 Begin
   If Not Factivated Then
-  Begin
-    LoadRC;
     FActivated := True;
-  End;
 End;
 
 Procedure TfrmMacroExplorer.lvSystemMacrosSelectItem(Sender: TObject;
@@ -62,6 +64,32 @@ Begin
     memSystems.Lines.Text := uBee512MacroRC(Item.Caption)
   Else
     memSystems.Lines.Clear;
+End;
+
+Function TfrmMacroExplorer.GetTitle: String;
+Begin
+  If Assigned(lvSystemMacros.Selected) Then
+    Result := lvSystemMacros.Selected.SubItems[1];
+End;
+
+Function TfrmMacroExplorer.GetModel: String;
+Begin
+  If Assigned(lvSystemMacros.Selected) Then
+    Result := lvSystemMacros.Selected.SubItems[0];
+End;
+
+Procedure TfrmMacroExplorer.SetTitle(AValue: String);
+Var
+  sTitle: String;
+  oItem: TListItem;
+Begin
+  sTitle := Lowercase(AValue);
+  For oItem In lvSystemMacros.Items Do
+    If Lowercase(oItem.Subitems[1]) = sTitle Then
+    Begin
+      lvSystemMacros.ItemIndex := oItem.Index;
+      Break;
+    End;
 End;
 
 Procedure TfrmMacroExplorer.LoadRC;
@@ -102,6 +130,5 @@ Begin
     End;
   End;
 End;
-
 
 End.

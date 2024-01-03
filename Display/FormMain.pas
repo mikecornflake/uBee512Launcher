@@ -92,6 +92,7 @@ Type
     Procedure SaveSettings;
 
     Function SelectedFile: String;
+    Procedure SetCombo(ACombo: TComboBox; AValue: String);
   Public
 
   End;
@@ -169,24 +170,23 @@ Begin
   End;
 End;
 
+Procedure TfrmMain.SetCombo(ACombo: TComboBox; AValue: String);
+Var
+  iIndex: Integer;
+Begin
+  iIndex := ACombo.Items.IndexOf(AValue);
+  If (iIndex >= 0) Then
+  Begin
+    ACombo.ItemIndex := iIndex;
+    ACombo.OnChange(Self);
+  End;
+End;
+
 Procedure TfrmMain.LoadSettings;
 Var
   iLeft, iWidth, iTop, iHeight: Integer;
   oIniFile: TIniFile;
   sModel, sTitle: String;
-
-  Procedure SetCombo(ACombo: TComboBox; AValue: String);
-  Var
-    iIndex: Integer;
-  Begin
-    iIndex := ACombo.Items.IndexOf(AValue);
-    If (iIndex >= 0) Then
-    Begin
-      ACombo.ItemIndex := iIndex;
-      ACombo.OnChange(Self);
-    End;
-  End;
-
 Begin
 
   oIniFile := TIniFile.Create(ChangeFileExt(Application.Exename, '.ini'));
@@ -431,7 +431,12 @@ Var
 Begin
   oForm := TfrmMacroExplorer.Create(Self);
   Try
-    oForm.ShowModal;
+    oForm.Title := cboTitle.Text;
+    If oForm.ShowModal = mrOk Then
+    Begin
+      SetCombo(cboModel, oForm.Model);
+      SetCombo(cboTitle, oForm.Title);
+    End;
   Finally
     oForm.Free;
   End;
