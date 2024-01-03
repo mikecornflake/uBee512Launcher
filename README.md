@@ -44,6 +44,12 @@ LCL and FPC are both quickly evolving projects.  I've an ongoing project rationa
 + **UBEE512**, **UBEEDISK**, Modified **CPMTools**, original **CPMTools** & **RunCPM** are NOT distributed with this application.  You'll have to download these separetely (see Acknowledgements)
 + The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
 
+## Screenshots
++ App is in early stages of development, so UI is changing as I play.  Currently I have System Macro's in settings, I now realise I need them in a "System macro explorer" that can be launched from the main page.
++ Instead of a single "System" dropdown on the first page, I need a "Model" dropdown, then a secondary "Title"
++ [![Image: Main UI](/Images/Development_Screenshot-2.png?raw=true)]
++ [![Image: System Macros](/Images/Development_Screenshot-1.png?raw=true)]
+
 # Acknowledgements
 + **UBEE512**, **UBEEDISK** & modified **CPMTools** developed by user **@uBee** contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + Original **UBEE512**, **UBEEDISK** & modified **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
