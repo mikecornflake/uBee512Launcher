@@ -1,10 +1,10 @@
 object frmMain: TfrmMain
-  Left = 612
-  Height = 590
-  Top = 203
+  Left = 577
+  Height = 635
+  Top = 168
   Width = 810
   Caption = 'uBee512Launcher'
-  ClientHeight = 570
+  ClientHeight = 615
   ClientWidth = 810
   Constraints.MinHeight = 590
   Constraints.MinWidth = 810
@@ -15,7 +15,7 @@ object frmMain: TfrmMain
   LCLVersion = '2.2.6.0'
   object tvFolders: TShellTreeView
     Left = 0
-    Height = 445
+    Height = 432
     Top = 0
     Width = 213
     Align = alLeft
@@ -28,42 +28,42 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 213
-    Height = 445
+    Height = 432
     Top = 0
     Width = 5
   end
   object pnluBee512: TPanel
     Left = 0
-    Height = 125
-    Top = 445
+    Height = 183
+    Top = 432
     Width = 810
     Align = alBottom
     BevelOuter = bvNone
-    ClientHeight = 125
+    ClientHeight = 183
     ClientWidth = 810
     TabOrder = 2
     object GroupBox1: TGroupBox
       Left = 0
-      Height = 125
+      Height = 183
       Top = 0
       Width = 810
       Align = alClient
       Caption = 'uBee512'
-      ClientHeight = 105
+      ClientHeight = 163
       ClientWidth = 806
       TabOrder = 0
       object Label5: TLabel
         Left = 15
         Height = 15
         Top = 2
-        Width = 79
-        Caption = 'System Macro'
+        Width = 35
+        Caption = 'Model'
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
       end
       object Label6: TLabel
-        Left = 126
+        Left = 387
         Height = 15
         Top = 7
         Width = 35
@@ -73,7 +73,7 @@ object frmMain: TfrmMain
         ParentFont = False
       end
       object edtDiskA: TFileNameEdit
-        Left = 166
+        Left = 427
         Height = 23
         Top = 2
         Width = 348
@@ -81,31 +81,22 @@ object frmMain: TfrmMain
         HideDirectories = False
         ButtonWidth = 23
         NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
         MaxLength = 0
         TabOrder = 0
       end
-      object cboSystem: TComboBox
+      object cboModel: TComboBox
         Left = 15
         Height = 23
         Top = 18
-        Width = 100
+        Width = 75
         ItemHeight = 15
-        ItemIndex = 0
-        Items.Strings = (
-          '128k-col'
-          '256k'
-          '256tc'
-          '64k'
-          'ciab'
-          'ciab-col'
-          'p128k'
-          'p512k'
-        )
+        OnChange = cboModelChange
+        Style = csDropDownList
         TabOrder = 1
-        Text = '128k-col'
       end
       object Label7: TLabel
-        Left = 126
+        Left = 387
         Height = 15
         Top = 37
         Width = 35
@@ -115,19 +106,20 @@ object frmMain: TfrmMain
         ParentFont = False
       end
       object edtDiskB: TFileNameEdit
-        Left = 166
+        Left = 427
         Height = 23
-        Top = 32
+        Top = 33
         Width = 348
         FilterIndex = 0
         HideDirectories = False
         ButtonWidth = 23
         NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
         MaxLength = 0
         TabOrder = 2
       end
       object Label8: TLabel
-        Left = 126
+        Left = 387
         Height = 15
         Top = 69
         Width = 34
@@ -137,7 +129,7 @@ object frmMain: TfrmMain
         ParentFont = False
       end
       object edtDiskC: TFileNameEdit
-        Left = 166
+        Left = 427
         Height = 23
         Top = 64
         Width = 348
@@ -145,14 +137,16 @@ object frmMain: TfrmMain
         HideDirectories = False
         ButtonWidth = 23
         NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
         MaxLength = 0
         TabOrder = 3
       end
       object btnClearA: TSpeedButton
-        Left = 512
+        Left = 773
         Height = 23
         Top = 2
         Width = 23
+        Anchors = [akTop, akRight]
         Glyph.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000000000000000
@@ -192,10 +186,11 @@ object frmMain: TfrmMain
         OnClick = btnClearAClick
       end
       object btnClearB: TSpeedButton
-        Left = 512
+        Left = 773
         Height = 23
-        Top = 32
+        Top = 33
         Width = 23
+        Anchors = [akTop, akRight]
         Glyph.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000000000000000
@@ -235,10 +230,11 @@ object frmMain: TfrmMain
         OnClick = btnClearBClick
       end
       object btnClearC: TSpeedButton
-        Left = 512
+        Left = 773
         Height = 23
         Top = 64
         Width = 23
+        Anchors = [akTop, akRight]
         Glyph.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000000000000000
@@ -278,9 +274,9 @@ object frmMain: TfrmMain
         OnClick = btnClearCClick
       end
       object Label9: TLabel
-        Left = 552
+        Left = 355
         Height = 15
-        Top = 7
+        Top = 99
         Width = 67
         Caption = 'Parallel Port'
         Font.Style = [fsBold]
@@ -288,18 +284,20 @@ object frmMain: TfrmMain
         ParentFont = False
       end
       object cboParallelPort: TComboBox
-        Left = 626
+        Left = 427
         Height = 23
-        Top = 2
-        Width = 173
+        Top = 95
+        Width = 321
+        Anchors = [akTop, akLeft, akRight]
         ItemHeight = 15
         TabOrder = 4
       end
       object btnLaunchuBee512: TBitBtn
-        Left = 707
+        Left = 704
         Height = 30
-        Top = 64
+        Top = 128
         Width = 92
+        Anchors = [akTop, akRight]
         Caption = 'Launch'
         Glyph.Data = {
           36090000424D3609000000000000360000002800000018000000180000000100
@@ -380,16 +378,57 @@ object frmMain: TfrmMain
         OnClick = btnLaunchuBee512Click
         TabOrder = 5
       end
+      object Label10: TLabel
+        Left = 96
+        Height = 15
+        Top = 2
+        Width = 25
+        Caption = 'Title'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object cboTitle: TComboBox
+        Left = 96
+        Height = 23
+        Top = 18
+        Width = 208
+        ItemHeight = 15
+        OnChange = cboTitleChange
+        ParentShowHint = False
+        ShowHint = True
+        Style = csDropDownList
+        TabOrder = 6
+      end
+      object btnExplorer: TBitBtn
+        Left = 310
+        Height = 30
+        Top = 11
+        Width = 35
+        Caption = '...'
+        OnClick = btnExplorerClick
+        TabOrder = 7
+      end
+      object memRC: TMemo
+        Left = 16
+        Height = 99
+        Top = 53
+        Width = 329
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 8
+        WordWrap = False
+      end
     end
   end
   object pnlCPMToolsMain: TPanel
     Left = 218
-    Height = 445
+    Height = 432
     Top = 0
     Width = 592
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 445
+    ClientHeight = 432
     ClientWidth = 592
     TabOrder = 3
     object pnldskFiles: TPanel
@@ -504,7 +543,7 @@ object frmMain: TfrmMain
     end
     object pcPreview: TPageControl
       Left = 0
-      Height = 265
+      Height = 252
       Top = 180
       Width = 592
       ActivePage = tsFiles
@@ -513,11 +552,11 @@ object frmMain: TfrmMain
       TabOrder = 2
       object tsFiles: TTabSheet
         Caption = 'Files in Disk'
-        ClientHeight = 237
+        ClientHeight = 224
         ClientWidth = 584
         object lvcpmtoolsFiles: TListView
           Left = 0
-          Height = 237
+          Height = 224
           Top = 0
           Width = 584
           Align = alClient
@@ -555,11 +594,11 @@ object frmMain: TfrmMain
       end
       object tsText: TTabSheet
         Caption = 'Text / Raw'
-        ClientHeight = 237
+        ClientHeight = 224
         ClientWidth = 584
         object memOutput: TMemo
           Left = 0
-          Height = 237
+          Height = 224
           Top = 0
           Width = 584
           Align = alClient

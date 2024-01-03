@@ -72,6 +72,12 @@
         <Filename Value="Support\uBee512Support.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="Display\FormMacroExplorer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMacroExplorer"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -14,13 +14,16 @@ Type
   { TfrmMain }
 
   TfrmMain = Class(TForm)
+    btnExplorer: TBitBtn;
     btnLaunchuBee512: TBitBtn;
-    cboSystem: TComboBox;
+    cboModel: TComboBox;
     cboParallelPort: TComboBox;
+    cboTitle: TComboBox;
     edtDiskA: TFileNameEdit;
     edtDiskB: TFileNameEdit;
     edtDiskC: TFileNameEdit;
     GroupBox1: TGroupBox;
+    Label10: TLabel;
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
@@ -29,6 +32,7 @@ Type
     lvcpmtoolsFiles: TListView;
     lvcpmtoolsWorkingFolder: TListView;
     MainMenu1: TMainMenu;
+    memRC: TMemo;
     memOutput: TMemo;
     Separator1: TMenuItem;
     mnuSettings: TMenuItem;
@@ -63,7 +67,10 @@ Type
     Procedure btnClearAClick(Sender: TObject);
     Procedure btnClearBClick(Sender: TObject);
     Procedure btnClearCClick(Sender: TObject);
+    Procedure btnExplorerClick(Sender: TObject);
     Procedure btnLaunchuBee512Click(Sender: TObject);
+    Procedure cboModelChange(Sender: TObject);
+    Procedure cboTitleChange(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
@@ -79,6 +86,7 @@ Type
     FLoadingDSK: Boolean;
     FWorkingDir: String;
 
+    Procedure LoadRC;
     Procedure LoadSettings;
     Procedure RefreshUI;
     Procedure SaveSettings;
@@ -95,7 +103,7 @@ Implementation
 
 Uses
   IniFiles, FileSupport, CPMSupport, cpmtoolsSupport, LazFileUtils, StringSupport,
-  StrUtils, OSSupport, uBee512Support;
+  StrUtils, OSSupport, uBee512Support, FormMacroExplorer;
 
 {$R *.lfm}
 
@@ -113,6 +121,7 @@ Begin
   If Not FActivated Then
   Begin
     LoadSettings;
+
     FActivated := True;
   End;
 End;
@@ -148,6 +157,8 @@ Begin
     Begin
       FSettings := oSettings.Settings;
 
+      LoadRC;
+
       FWorkingDir := FSettings.WorkingFolder;
 
       If DirectoryExists(FWorkingDir) Then
@@ -162,6 +173,20 @@ Procedure TfrmMain.LoadSettings;
 Var
   iLeft, iWidth, iTop, iHeight: Integer;
   oIniFile: TIniFile;
+  sModel, sTitle: String;
+
+  Procedure SetCombo(ACombo: TComboBox; AValue: String);
+  Var
+    iIndex: Integer;
+  Begin
+    iIndex := ACombo.Items.IndexOf(AValue);
+    If (iIndex >= 0) Then
+    Begin
+      ACombo.ItemIndex := iIndex;
+      ACombo.OnChange(Self);
+    End;
+  End;
+
 Begin
 
   oIniFile := TIniFile.Create(ChangeFileExt(Application.Exename, '.ini'));
@@ -186,6 +211,18 @@ Begin
 
     If DirectoryExists(FWorkingDir) Then
       tvFolders.Path := FWorkingDir;
+
+    edtDiskA.Text := oIniFile.ReadString('Selected', 'Disk A', '');
+    edtDiskB.Text := oIniFile.ReadString('Selected', 'Disk B', '');
+    edtDiskC.Text := oIniFile.ReadString('Selected', 'Disk C', '');
+
+    LoadRC;
+
+    sModel := oIniFile.ReadString('Selected', 'Model', 'p128k');
+    sTitle := oIniFile.ReadString('Selected', 'Title', 'Premium 128K');
+
+    SetCombo(cboModel, sModel);
+    SetCombo(cboTitle, sTitle);
   Finally
     oInifile.Free;
   End;
@@ -213,6 +250,13 @@ Begin
     FSettings.WorkingFolder := FWorkingDir;
     FSettings.SaveSettings(oInifile);
 
+    oIniFile.WriteString('Selected', 'Disk A', edtDiskA.Text);
+    oIniFile.WriteString('Selected', 'Disk B', edtDiskB.Text);
+    oIniFile.WriteString('Selected', 'Disk C', edtDiskC.Text);
+
+    oIniFile.WriteString('Selected', 'Model', cboModel.Text);
+    oIniFile.WriteString('Selected', 'Title', cboTitle.Text);
+
     // And flush the settings out in one go
     // This works around an AVG issue whereby
     // it locks the ini file during repeated writes
@@ -220,6 +264,19 @@ Begin
     oInifile.UpdateFile;
   Finally
     oInifile.Free;
+  End;
+End;
+
+Procedure TfrmMain.LoadRC;
+Begin
+  uBee512LoadRC;
+
+  cboModel.Items.CommaText := uBee512Models;
+
+  If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
+  Begin
+    cboModel.ItemIndex := 0;
+    cboModelChange(Self);
   End;
 End;
 
@@ -368,6 +425,18 @@ Begin
   RefreshUI;
 End;
 
+Procedure TfrmMain.btnExplorerClick(Sender: TObject);
+Var
+  oForm: TfrmMacroExplorer;
+Begin
+  oForm := TfrmMacroExplorer.Create(Self);
+  Try
+    oForm.ShowModal;
+  Finally
+    oForm.Free;
+  End;
+End;
+
 Procedure TfrmMain.btnAddDSKtoAClick(Sender: TObject);
 Begin
   edtDiskA.Text := SelectedFile;
@@ -384,6 +453,23 @@ Procedure TfrmMain.btnAddDSKtoCClick(Sender: TObject);
 Begin
   edtDiskC.Text := SelectedFile;
   RefreshUI;
+End;
+
+Procedure TfrmMain.cboModelChange(Sender: TObject);
+Begin
+  cboTitle.Items.CommaText := uBee512Titles(cboModel.Text);
+
+  If (cboTitle.ItemIndex <> 0) And (cboTitle.Items.Count > 0) Then
+  Begin
+    cboTitle.ItemIndex := 0;
+    cboTitleChange(Self);
+  End;
+End;
+
+Procedure TfrmMain.cboTitleChange(Sender: TObject);
+Begin
+  memRC.Lines.Text := uBee512MacroRCByTitle(cboTitle.Text);
+  cboTitle.Hint := cboTitle.Text;
 End;
 
 Procedure TfrmMain.btnLaunchuBee512Click(Sender: TObject);
@@ -427,7 +513,7 @@ Var
   End;
 
 Begin
-  sCommand := Format('"%s" %s', [FSettings.UBEE512_exe, cboSystem.Text]);
+  sCommand := Format('"%s" %s', [FSettings.UBEE512_exe, cboModel.Text]);
 
   bHasA := AddDriveToCommand('a', edtDiskA);
 

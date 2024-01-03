@@ -40,16 +40,21 @@ Begin
 End;
 
 Procedure Initializecpmtools;
+Var
+  sCPMToolsPath: String;
 Begin
   If FPath = '' Then
   Begin
+    sCPMToolsPath := 'cpmtools-2.10' + DirectorySeparator + 'tools';
+
     // By default, use the folder distributed with the app
-    FPath := IncludeTrailingBackslash(Application.Location) + 'cpmtools';
+    FPath := IncludeTrailingBackslash(Application.Location) + sCPMToolsPath;
     If DirectoryExists(FPath) Then
       Exit;
 
-    // By default, use the folder distributed with the app
-    FPath := IncludeTrailingBackslash(Application.Location) + 'cpmtools-2.10\tools';
+    // How about up one level?
+    FPath := IncludeTrailingBackslash(Application.Location) + '..' +
+      DirectorySeparator + sCPMToolsPath;
     If DirectoryExists(FPath) Then
       Exit;
 

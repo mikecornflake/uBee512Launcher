@@ -14,7 +14,7 @@ Uses {$IFDEF UNIX}
   FileSupport,
   OSSupport,
   FormSettings,
-  uBee512Support { you can add units after this };
+  uBee512Support, FormMacroExplorer { you can add units after this };
 
 {$R *.res}
 

@@ -39,25 +39,15 @@ Type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    lvSystemMacros: TListView;
-    memRC: TMemo;
-    memSystems: TMemo;
     PageControl1: TPageControl;
-    PageControl2: TPageControl;
     Panel1: TPanel;
-    Splitter1: TSplitter;
-    tsRC2: TTabSheet;
-    TabSheet2: TTabSheet;
-    tsRC: TTabSheet;
     tsLocations: TTabSheet;
     Procedure btnOKClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
-    Procedure lvSystemMacrosSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   Private
     FActivated: Boolean;
     FSettings: TSettings;
-    Procedure LoadRC;
     Procedure SetSettings(AValue: TSettings);
 
   Public
@@ -79,15 +69,6 @@ Begin
   FActivated := False;
 End;
 
-Procedure TfrmSettings.lvSystemMacrosSelectItem(Sender: TObject; Item: TListItem;
-  Selected: Boolean);
-Begin
-  If (Selected) And (Assigned(Item)) Then
-    memSystems.Lines.Text := RC(Item.Caption)
-  Else
-    memSystems.Lines.Clear;
-End;
-
 Procedure TfrmSettings.FormActivate(Sender: TObject);
 Begin
   If Not FActivated Then
@@ -97,7 +78,7 @@ Begin
     edtCPMTools.Text := FSettings.CPMTOOLS_bin;
     edtCPMToolsModified.Text := FSettings.MOD_CPMTOOLS_bin;
 
-    LoadRC;
+    uBee512LoadRC;
 
     FActivated := True;
   End;
@@ -111,49 +92,6 @@ Begin
   FSettings.MOD_CPMTOOLS_bin := edtCPMToolsModified.Text;
 
   ModalResult := mrOk;
-End;
-
-Procedure TfrmSettings.LoadRC;
-Var
-  oMacro: TSystemMacro;
-  oItem: TListItem;
-  i: Integer;
-Begin
-  If uBee512Available And FileExists(uBee512RCPath) Then
-  Begin
-    SetBusy;
-    Try
-      memRC.Lines.LoadFromFile(uBee512RCPath);
-      uBee512Support.LoadRC;
-
-      lvSystemMacros.Items.Clear;
-      memSystems.Lines.Clear;
-      lvSystemMacros.Items.BeginUpdate;
-
-      For i := 0 To SystemMacros.Count - 1 Do
-      Begin
-        oMacro := SystemMacros[i];
-
-        If oMacro.Title <> '' Then
-        Begin
-          oItem := lvSystemMacros.Items.Add;
-
-          oItem.Caption := oMacro.Macro;
-          oItem.SubItems.Add(oMacro.Model);
-          oItem.SubItems.Add(oMacro.Title);
-          oItem.SubItems.Add(oMacro.A);
-          //oItem.SubItems.Add(oMacro.Col);
-          oItem.SubItems.Add(oMacro.SRAM + ' ' + oMacro.SRAM_File);
-          //oItem.SubItems.Add(oMacro.Status);
-          oItem.SubItems.Add(oMacro.Description);
-        End;
-      End;
-    Finally
-      lvSystemMacros.Items.EndUpdate;
-      lvSystemMacros.AutoSize := True;
-      ClearBusy;
-    End;
-  End;
 End;
 
 Procedure TfrmSettings.SetSettings(AValue: TSettings);
@@ -183,14 +121,12 @@ Begin
   Initializecpmtools;
   InitializeuBee512;
 
-  UBEE512_exe := AInifile.ReadString('Locations', 'uBee512',
-    'B:\Drives\Microbee\ubee512\ubee512.exe');
-  RUNCPM_exe := AInifile.ReadString('Locations', 'RunCPM', 'B:\Drives\CPM\RunCPM\RunCPM.exe');
-  CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', 'B:\Drives\CPM\cpmtools');
-  MOD_CPMTOOLS_bin := AInifile.ReadString('Locations', 'Modified cpmtools',
-    'B:\Drives\Microbee\cpmtools-2.10\tools');
+  UBEE512_exe := AInifile.ReadString('Locations', 'uBee512', uBee512Path);
+  RUNCPM_exe := AInifile.ReadString('Locations', 'RunCPM', '');
+  CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', '');
+  MOD_CPMTOOLS_bin := AInifile.ReadString('Locations', 'Modified cpmtools', cpmtoolsPath);
   WorkingFolder := IncludeSlash(AInifile.ReadString('Locations', 'Working',
-    ExtractFileDir(RUNCPM_exe)));
+    ExtractFilePath(Application.ExeName)));
 
   If DirectoryExists(MOD_CPMTOOLS_bin) Then
     SetcpmtoolsPath(MOD_CPMTOOLS_bin)

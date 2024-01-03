@@ -24,15 +24,18 @@ Type
 
   TSystemMacros = Specialize TObjectList<TSystemMacro>;
 
+// You know, this is really beginning to feel like a class...
+Procedure InitializeuBee512;
 Function uBee512Available: Boolean;
 Function uBee512Path: String;
 Function uBee512RCPath: String;
 Procedure SetuBee512Path(AValue: String);
-Procedure InitializeuBee512;
-Function SystemMacros: TSystemMacros;
-Procedure LoadRC;
-Function RC(ASystemMacro: String): String;
-
+Function uBee512SystemMacros: TSystemMacros;
+Procedure uBee512LoadRC;
+Function uBee512MacroRC(ASystemMacro: String): String;
+Function uBee512MacroRCByTitle(ASystemTitle: String): String;
+Function uBee512Models: String;
+Function uBee512Titles(AModel: String): String;
 
 Implementation
 
@@ -42,6 +45,7 @@ Uses
 Var
   FPath: String;
   FSystemMacros: TSystemMacros;
+  FLoadedRC: String;
 
 Function uBee512Available: Boolean;
 Begin
@@ -86,8 +90,8 @@ Begin
     If FileExists(FPath) Then
       Exit;
 
-    // By default, use the folder distributed with the app
-    FPath := IncludeTrailingBackslash(Application.Location) + sExe;
+    // How about the folder above?
+    FPath := IncludeTrailingBackslash(Application.Location) + '..' + DirectorySeparator + sExe;
     If FileExists(FPath) Then
       Exit;
 
@@ -100,12 +104,12 @@ Begin
   End;
 End;
 
-Function SystemMacros: TSystemMacros;
+Function uBee512SystemMacros: TSystemMacros;
 Begin
   Result := FSystemMacros;
 End;
 
-Procedure LoadRC;
+Procedure uBee512LoadRC;
 Var
   slTemp: TStringList;
   s, sLine, sTag, sNewTag: String;
@@ -115,6 +119,11 @@ Var
   oSystemMacro: TSystemMacro;
   iCount: Integer;
 Begin
+  // Only load the file once
+  If (FLoadedRC = uBee512RCPath) Then
+    Exit;
+
+  // And only try to load it if we know where the file is
   If FileExists(uBee512RCPath) Then
   Begin
     SetBusy;
@@ -140,7 +149,7 @@ Begin
             '#':
               If c2 = '=' Then
               Begin
-                If Assigned(oSystemMacro) And (oSystemMacro.Macro <> '') And (iCount=0) Then
+                If Assigned(oSystemMacro) And (oSystemMacro.Macro <> '') And (iCount = 0) Then
                 Begin
                   sDescription := '';
                   iCount := 1;
@@ -210,7 +219,7 @@ Begin
                 Else If sProperty = 'sram' Then oSystemMacro.SRAM := sValue
                 Else If sProperty = 'sram-file' Then oSystemMacro.SRAM_file := sValue
                 Else If sProperty = 'status' Then oSystemMacro.Status := sValue
-                Else If sProperty = 'title' Then oSystemMacro.Title := sValue;
+                Else If sProperty = 'title' Then oSystemMacro.Title := TrimChars(sValue, ['"']);
               End;
           End;
         End;
@@ -218,11 +227,13 @@ Begin
     Finally
       slTemp.Free;
       ClearBusy;
+
+      FLoadedRC := uBee512RCPath;
     End;
   End;
 End;
 
-Function RC(ASystemMacro: String): String;
+Function uBee512MacroRC(ASystemMacro: String): String;
 Var
   oMacro: TSystemMacro;
 Begin
@@ -235,8 +246,71 @@ Begin
     End;
 End;
 
+Function uBee512MacroRCByTitle(ASystemTitle: String): String;
+Var
+  oMacro: TSystemMacro;
+Begin
+  Result := '';
+  For oMacro In FSystemMacros Do
+    If (oMacro.Title = ASystemTitle) Then
+    Begin
+      Result := oMacro.RC;
+      Break;
+    End;
+End;
+
+// Return a comma seperated sorted list of Microbee Models defined in the uBee512RC
+Function uBee512Models: String;
+Var
+  slModels: TStringList;
+  oMacro: TSystemMacro;
+Begin
+  slModels := TStringList.Create;
+  Try
+    // use the TStringlist to build up a sorted, unique list of models
+    slModels.Sorted := True;
+    slModels.Duplicates := dupIgnore;
+
+    For oMacro In FSystemMacros Do
+      If Trim(oMacro.Model) <> '' Then
+        slModels.Add(oMacro.Model);
+
+    Result := slModels.CommaText;
+  Finally
+    slModels.Free;
+  End;
+End;
+
+// Return a comma seperated list of Microbee systems defined in uBee512rc for
+// a particular Microbee Model
+Function uBee512Titles(AModel: String): String;
+Var
+  slTitles: TStringList;
+  oMacro: TSystemMacro;
+  sModel: String;
+Begin
+  sModel := LowerCase(AModel);
+  slTitles := TStringList.Create;
+  Try
+    // use the TStringlist to build up a sorted, unique list of models
+    slTitles.Sorted := True;
+    slTitles.Duplicates := dupIgnore;
+
+    For oMacro In FSystemMacros Do
+      If Lowercase(oMacro.Model) = sModel Then
+        If Trim(oMacro.Title) <> '' Then
+          slTitles.Add(oMacro.Title);
+
+    Result := slTitles.CommaText;
+  Finally
+    slTitles.Free;
+  End;
+End;
+
 Initialization
   FPath := '';
+  FLoadedRC := '';
+
   FSystemMacros := TSystemMacros.Create(True);
   // OwnsObjects => No need for additional code to free contents
 
