@@ -46,8 +46,8 @@ LCL and FPC are both quickly evolving projects.  I've an ongoing project rationa
 ## Screenshots
 + App is in early stages of development, so UI is changing as I play.  Currently I have System Macro's in settings, I now realise I need them in a "System macro explorer" that can be launched from the main page.
 + Instead of a single "System" dropdown on the first page, I need a "Model" dropdown, then a secondary "Title"
-+ [![Image: Main UI](/Images/Development_Screenshot-2.png?raw=true)]
-+ [![Image: System Macros](/Images/Development_Screenshot-1.png?raw=true)]
++ ![Image: Main UI](Images/Development_Screenshot_2.png)
++ ![Image: System Macros](Images/Development_Screenshot_1.png?raw=true)
 
 # Acknowledgements
 + **UBEE512**, **UBEEDISK** & modified **CPMTools** developed by user **@uBee** contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
