@@ -12,8 +12,8 @@ object frmSettings: TfrmSettings
   FormStyle = fsStayOnTop
   OnActivate = FormActivate
   OnCreate = FormCreate
-  Position = poMainFormCenter
-  LCLVersion = '2.2.6.0'
+  Position = poOwnerFormCenter
+  LCLVersion = '3.0.0.3'
   object PageControl1: TPageControl
     Left = 0
     Height = 291
@@ -25,13 +25,13 @@ object frmSettings: TfrmSettings
     TabOrder = 0
     object tsLocations: TTabSheet
       Caption = 'Locations'
-      ClientHeight = 263
-      ClientWidth = 302
+      ClientHeight = 261
+      ClientWidth = 300
       object edtCPMToolsModified: TFileNameEdit
         Left = 12
-        Height = 23
+        Height = 28
         Top = 218
-        Width = 277
+        Width = 275
         FileName = 'B:\Drives\Microbee\cpmtools-2.10\tools'
         FilterIndex = 0
         HideDirectories = False
@@ -44,9 +44,9 @@ object frmSettings: TfrmSettings
       end
       object Label4: TLabel
         Left = 12
-        Height = 15
+        Height = 16
         Top = 202
-        Width = 138
+        Width = 159
         Caption = 'uBee Modified CPMTools'
         Font.Style = [fsBold]
         ParentColor = False
@@ -54,9 +54,9 @@ object frmSettings: TfrmSettings
       end
       object edtCPMTools: TFileNameEdit
         Left = 11
-        Height = 23
+        Height = 28
         Top = 169
-        Width = 277
+        Width = 275
         FileName = 'B:\Drives\CPM\cpmtools'
         FilterIndex = 0
         HideDirectories = False
@@ -69,9 +69,9 @@ object frmSettings: TfrmSettings
       end
       object Label3: TLabel
         Left = 11
-        Height = 15
+        Height = 16
         Top = 152
-        Width = 236
+        Width = 265
         Caption = 'http://www.moria.de/~michael/cpmtools/'
         Font.Style = [fsBold]
         ParentColor = False
@@ -79,9 +79,9 @@ object frmSettings: TfrmSettings
       end
       object edtRunCPM: TFileNameEdit
         Left = 12
-        Height = 23
+        Height = 28
         Top = 119
-        Width = 277
+        Width = 275
         FileName = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
         FilterIndex = 0
         HideDirectories = False
@@ -94,9 +94,9 @@ object frmSettings: TfrmSettings
       end
       object Label2: TLabel
         Left = 12
-        Height = 15
+        Height = 16
         Top = 102
-        Width = 114
+        Width = 132
         Caption = 'RunCPM Executable:'
         Font.Style = [fsBold]
         ParentColor = False
@@ -104,9 +104,9 @@ object frmSettings: TfrmSettings
       end
       object edtuBee512exe: TFileNameEdit
         Left = 13
-        Height = 23
+        Height = 28
         Top = 22
-        Width = 277
+        Width = 275
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         FilterIndex = 0
         HideDirectories = False
@@ -119,9 +119,9 @@ object frmSettings: TfrmSettings
       end
       object Label1: TLabel
         Left = 12
-        Height = 15
+        Height = 16
         Top = 5
-        Width = 117
+        Width = 134
         Caption = 'uBee512 Executable:'
         Font.Style = [fsBold]
         ParentColor = False
@@ -129,9 +129,9 @@ object frmSettings: TfrmSettings
       end
       object Label5: TLabel
         Left = 12
-        Height = 15
+        Height = 16
         Top = 54
-        Width = 137
+        Width = 158
         Caption = 'uBee512rc (settings file)'
         Font.Style = [fsBold]
         ParentColor = False
@@ -139,9 +139,9 @@ object frmSettings: TfrmSettings
       end
       object edtuBee512rc: TFileNameEdit
         Left = 11
-        Height = 23
+        Height = 28
         Top = 71
-        Width = 277
+        Width = 275
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         FilterIndex = 0
         HideDirectories = False
@@ -171,8 +171,8 @@ object frmSettings: TfrmSettings
       Anchors = [akTop, akRight]
       Caption = 'OK'
       ModalResult = 1
-      OnClick = btnOKClick
       TabOrder = 0
+      OnClick = btnOKClick
     end
     object btnCancel: TButton
       Left = 222
@@ -183,6 +183,15 @@ object frmSettings: TfrmSettings
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
+    end
+    object btnRescan: TButton
+      Left = 16
+      Height = 25
+      Top = 5
+      Width = 75
+      Caption = 'Rescan'
+      TabOrder = 2
+      OnClick = btnRescanClick
     end
   end
 end

@@ -155,17 +155,17 @@ Var
   iCount: Integer;
 Begin
   // Only load the file once
-  If (FLoadedRC = uBee512RC) Then
+  If (FLoadedRC = FuBee512RC) Then
     Exit;
 
   // And only try to load it if we know where the file is
-  If FileExists(uBee512RC) Then
+  If FileExists(FuBee512RC) Then
   Begin
     SetBusy;
     slTemp := TStringList.Create;
     FSystemMacros.Clear;
     Try
-      slTemp.LoadFromFile(uBee512RC);
+      slTemp.LoadFromFile(FuBee512RC);
       oSystemMacro := nil;
       sTag := '';
       sDescription := '';
@@ -263,7 +263,7 @@ Begin
       slTemp.Free;
       ClearBusy;
 
-      FLoadedRC := uBee512RC;
+      FLoadedRC := FuBee512RC;
     End;
   End;
 End;

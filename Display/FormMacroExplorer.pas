@@ -25,6 +25,7 @@ Type
     tsRC: TTabSheet;
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
+    procedure lvSystemMacrosDblClick(Sender: TObject);
     Procedure lvSystemMacrosSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   Private
     Function GetTitle: String;
@@ -55,6 +56,12 @@ Procedure TfrmMacroExplorer.FormActivate(Sender: TObject);
 Begin
   If Not Factivated Then
     FActivated := True;
+End;
+
+Procedure TfrmMacroExplorer.lvSystemMacrosDblClick(Sender: TObject);
+Begin
+  If Assigned(lvSystemMacros.Selected) Then
+    ModalResult := mrOK;
 End;
 
 Procedure TfrmMacroExplorer.lvSystemMacrosSelectItem(Sender: TObject;

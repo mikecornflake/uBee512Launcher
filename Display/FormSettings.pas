@@ -33,6 +33,7 @@ Type
   { TfrmSettings }
 
   TfrmSettings = Class(TForm)
+    btnRescan: TButton;
     btnOK: TButton;
     btnCancel: TButton;
     edtCPMTools: TFileNameEdit;
@@ -49,13 +50,15 @@ Type
     Panel1: TPanel;
     tsLocations: TTabSheet;
     Procedure btnOKClick(Sender: TObject);
+    procedure btnRescanClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
   Private
     FActivated: Boolean;
     FSettings: TSettings;
-    Procedure SetSettings(AValue: TSettings);
 
+    Procedure LoadControls;
+    Procedure SetSettings(AValue: TSettings);
   Public
     Property Settings: TSettings read FSettings write SetSettings;
   End;
@@ -79,11 +82,7 @@ Procedure TfrmSettings.FormActivate(Sender: TObject);
 Begin
   If Not FActivated Then
   Begin
-    edtuBee512exe.Text := FSettings.UBEE512_exe;
-    edtuBee512rc.Text := FSettings.UBEE512_rc;
-    edtRunCPM.Text := FSettings.RUNCPM_exe;
-    edtCPMTools.Text := FSettings.CPMTOOLS_bin;
-    edtCPMToolsModified.Text := FSettings.MOD_CPMTOOLS_bin;
+    LoadControls;
 
     FActivated := True;
   End;
@@ -100,6 +99,13 @@ Begin
   ModalResult := mrOk;
 End;
 
+procedure TfrmSettings.btnRescanClick(Sender: TObject);
+begin
+  FSettings.InitialisePaths;
+
+  LoadControls;
+end;
+
 Procedure TfrmSettings.SetSettings(AValue: TSettings);
 Begin
   Assert(Assigned(FSettings), 'TfrmSettings.FSetting not assigned');
@@ -107,6 +113,16 @@ Begin
   If Assigned(AValue) Then
     FSettings.Assign(AValue);
 End;
+
+Procedure TfrmSettings.LoadControls;
+Begin
+  edtuBee512exe.Text := FSettings.UBEE512_exe;
+  edtuBee512rc.Text := FSettings.UBEE512_rc;
+  edtRunCPM.Text := FSettings.RUNCPM_exe;
+  edtCPMTools.Text := FSettings.CPMTOOLS_bin;
+  edtCPMToolsModified.Text := FSettings.MOD_CPMTOOLS_bin;
+End;
+
 
 { TSettings }
 
@@ -131,7 +147,7 @@ Begin
   UBEE512_rc := AInifile.ReadString('Locations', 'uBee512rc', uBee512rc);
   RUNCPM_exe := AInifile.ReadString('Locations', 'RunCPM', '');
   CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', '');
-  MOD_CPMTOOLS_bin := AInifile.ReadString('Locations', 'Modified cpmtools', cpmtoolsPath);
+  MOD_CPMTOOLS_bin := AInifile.ReadString('Locations', 'Modified_cpmtools', cpmtoolsPath);
   WorkingFolder := IncludeSlash(AInifile.ReadString('Locations', 'Working',
     ExtractFilePath(Application.ExeName)));
 
@@ -144,7 +160,7 @@ Begin
   AInifile.WriteString('Locations', 'uBee512rc', UBEE512_rc);
   AInifile.WriteString('Locations', 'RunCPM', RUNCPM_exe);
   AInifile.WriteString('Locations', 'cpmtools', CPMTOOLS_bin);
-  AInifile.WriteString('Locations', 'Modified cpmtools', MOD_CPMTOOLS_bin);
+  AInifile.WriteString('Locations', 'Modified_cpmtools', MOD_CPMTOOLS_bin);
   AInifile.WriteString('Locations', 'Working', WorkingFolder);
 End;
 

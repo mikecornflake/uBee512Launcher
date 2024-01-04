@@ -10,7 +10,7 @@ object frmMacroExplorer: TfrmMacroExplorer
   OnActivate = FormActivate
   OnCreate = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '3.0.0.3'
   object pcRC: TPageControl
     Left = 0
     Height = 536
@@ -22,13 +22,13 @@ object frmMacroExplorer: TfrmMacroExplorer
     TabOrder = 0
     object tsMacros: TTabSheet
       Caption = 'System Macros'
-      ClientHeight = 508
-      ClientWidth = 889
+      ClientHeight = 506
+      ClientWidth = 887
       object lvSystemMacros: TListView
         Left = 0
-        Height = 391
+        Height = 389
         Top = 0
-        Width = 889
+        Width = 887
         Align = alClient
         Columns = <        
           item
@@ -61,22 +61,23 @@ object frmMacroExplorer: TfrmMacroExplorer
         SortType = stText
         TabOrder = 0
         ViewStyle = vsReport
+        OnDblClick = lvSystemMacrosDblClick
         OnSelectItem = lvSystemMacrosSelectItem
       end
       object Splitter1: TSplitter
         Cursor = crVSplit
         Left = 0
         Height = 5
-        Top = 391
-        Width = 889
+        Top = 389
+        Width = 887
         Align = alBottom
         ResizeAnchor = akBottom
       end
       object memSystems: TMemo
         Left = 0
         Height = 112
-        Top = 396
-        Width = 889
+        Top = 394
+        Width = 887
         Align = alBottom
         ReadOnly = True
         ScrollBars = ssAutoBoth
@@ -85,13 +86,13 @@ object frmMacroExplorer: TfrmMacroExplorer
     end
     object tsRC: TTabSheet
       Caption = 'uBee512rc'
-      ClientHeight = 508
-      ClientWidth = 889
+      ClientHeight = 506
+      ClientWidth = 887
       object memRC: TMemo
         Left = 0
-        Height = 508
+        Height = 506
         Top = 0
-        Width = 889
+        Width = 887
         Align = alClient
         ReadOnly = True
         ScrollBars = ssAutoBoth
