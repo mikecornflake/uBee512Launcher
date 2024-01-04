@@ -33,7 +33,8 @@ Other
 + I strongly suspect there are issues in **CPMTools**.  Investigate using this framework, then report to appropriate developers. (Hmm, looks like original CP/M tools are up to 2.23, but the modified CP/M tools are from 2.1 codebase)
 
 # Development Notes
-+ Developed using Lazarus 2.2.6 / fpc 3.2.2
++ Developed under windows using Lazarus 2.2.6 / fpc 3.2.2 / 64bit
++ Testing under Ubuntu using Lazarus 3.0 / fpc 3.2.2 / 64bit (err, UI issues - really shouldn't use Anchor to pin components to the form)
 + Uses sections directly copied from an OO framework I developed for other projects. This includes the contents of the Support folder. That OO framework adds uncessary complications, so the intention for this project is to keep the design to a simplified application.    
 + This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
 LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
