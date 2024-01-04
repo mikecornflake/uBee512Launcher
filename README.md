@@ -10,7 +10,9 @@
 + [Link to precompiled binaries](bin)
 + To use:
   + If ubee512 is on your environment path, simply download relevant binary and run.
-  + if ubee512 isn't on your environment path, either run ubee512Launcher, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
+  + if ubee512 isn't on your environment path, either
+    + run ubee512Launcher, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
+    + or drop the binary in the same folder as the ubee512 binary, and run from there
   + Then:
     + Use the "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
     + Use the Folder tree view to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
