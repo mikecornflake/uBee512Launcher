@@ -106,7 +106,7 @@ Uses
   IniFiles, FileSupport, CPMSupport, cpmtoolsSupport, LazFileUtils, StringSupport,
   StrUtils, OSSupport, uBee512Support, FormMacroExplorer;
 
-{$R *.lfm}
+  {$R *.lfm}
 
 { TfrmMain }
 
@@ -507,6 +507,7 @@ Procedure TfrmMain.btnLaunchuBee512Click(Sender: TObject);
 Var
   sCommand: String;
   bHasA: Boolean;
+  slParams: TStringList;
 
   Function AddDriveToCommand(ADrive: String; AEdit: TFilenameEdit): Boolean;
   Var
@@ -517,24 +518,32 @@ Var
     sFormat := DriveAsParam(AEdit);
     If sFormat <> '' Then
     Begin
-      sCommand := Format('%s %s -%s "%s"', [sCommand, sFormat, ADrive, AEdit.Text]);
+      slParams.Add(sFormat);
+      slParams.Add('-' + ADrive);
+      slParams.Add(Format('"%s"', [AEdit.Text]));
+
       Result := True;
     End;
   End;
 
 Begin
-  sCommand := Format('"%s" %s', [FSettings.UBEE512_exe, cboModel.Text]);
+  slParams := TStringList.Create;
+  Try
+    sCommand := Format('"%s"', [FSettings.UBEE512_exe]);
+    slParams.Add(cboModel.Text);
 
-  bHasA := AddDriveToCommand('a', edtDiskA);
+    bHasA := AddDriveToCommand('a', edtDiskA);
 
-  If bHasA Then
-  Begin
-    AddDriveToCommand('b', edtDiskB);
-    AddDriveToCommand('c', edtDiskC);
+    If bHasA Then
+    Begin
+      AddDriveToCommand('b', edtDiskB);
+      AddDriveToCommand('c', edtDiskC);
 
-    Run(sCommand);
+      RunEx(sCommand, slParams);
+    End;
+  Finally
+    slParams.Free;
   End;
-
 End;
 
 Function TfrmMain.SelectedFile: String;
