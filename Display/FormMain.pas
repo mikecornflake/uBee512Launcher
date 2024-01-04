@@ -25,10 +25,10 @@ Type
     GroupBox1: TGroupBox;
     Label10: TLabel;
     Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
+    lblDiskA: TLabel;
+    lblDiskB: TLabel;
+    lblDiskC: TLabel;
+    lblPP: TLabel;
     lvcpmtoolsFiles: TListView;
     lvcpmtoolsWorkingFolder: TListView;
     MainMenu1: TMainMenu;
@@ -75,11 +75,11 @@ Type
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
     Procedure lvcpmtoolsWorkingFolderSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
+      {%H-}Selected: Boolean);
     Procedure mnuAboutClick(Sender: TObject);
     Procedure mnuExitClick(Sender: TObject);
     Procedure mnuSettingsClick(Sender: TObject);
-    Procedure tvFoldersChange(Sender: TObject; Node: TTreeNode);
+    Procedure tvFoldersChange(Sender: TObject; {%H-}Node: TTreeNode);
   Private
     FSettings: TSettings;
     FActivated: Boolean;
@@ -157,6 +157,7 @@ Begin
     If oSettings.ShowModal = mrOk Then
     Begin
       FSettings := oSettings.Settings;
+      FSettings.ValidatePaths;
 
       LoadRC;
 
@@ -397,6 +398,10 @@ Begin
 
         pcPreview.ActivePage := tsText;
       End;
+
+      // There may be an error message the user needs to see
+      If (lvcpmtoolsFiles.Items.Count = 0) And (pcPreview.ActivePage = tsFiles) Then
+        pcPreview.ActivePage := tsText;
 
       lvcpmtoolsFiles.Items.EndUpdate;
     Finally

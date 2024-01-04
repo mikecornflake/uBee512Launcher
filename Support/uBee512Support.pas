@@ -27,9 +27,10 @@ Type
 // You know, this is really beginning to feel like a class...
 Procedure InitializeuBee512;
 Function uBee512Available: Boolean;
-Function uBee512Path: String;
-Function uBee512RCPath: String;
-Procedure SetuBee512Path(AValue: String);
+Function uBee512Exe: String;
+Function uBee512RC: String;
+Procedure SetuBee512exe(AValue: String);
+Procedure SetuBee512rc(AValue: String);
 Function uBee512SystemMacros: TSystemMacros;
 Procedure uBee512LoadRC;
 Function uBee512MacroRC(ASystemMacro: String): String;
@@ -40,67 +41,101 @@ Function uBee512Titles(AModel: String): String;
 Implementation
 
 Uses
-  Forms, FileUtil, OSSupport, StringSupport, FileSupport;
+  Forms, FileUtil, OSSupport, StringSupport;
 
 Var
-  FPath: String;
+  Fubee512Exe: String;
+  Fubee512rc: String;
   FSystemMacros: TSystemMacros;
   FLoadedRC: String;
 
 Function uBee512Available: Boolean;
 Begin
-  Result := (FPath <> '') And (FileExists(FPath));
+  Result := (Fubee512Exe <> '') And (FileExists(Fubee512Exe));
 End;
 
-Function uBee512Path: String;
+Function uBee512Exe: String;
 Begin
-  Result := FPath;
+  Result := Fubee512Exe;
 End;
 
-Function uBee512RCPath: String;
-Var
-  sFolder: String;
+Function uBee512RC: String;
 Begin
   Result := '';
 
-  If FileExists(FPath) Then
-  Begin
-    sFolder := IncludeSlash(ExtractFileDir(FPath));
-    If FileExists(sFolder + 'ubee512rc') Then
-      Result := sFolder + 'ubee512rc';
-  End;
+  If FileExists(Fubee512rc) Then
+    Result := Fubee512rc;
 End;
 
-Procedure SetuBee512Path(AValue: String);
+Procedure SetuBee512exe(AValue: String);
 Begin
   If FileExists(AValue) Then
-    FPath := AValue;
+    Fubee512Exe := AValue;
+End;
+
+Procedure SetuBee512rc(AValue: String);
+Begin
+  If FileExists(AValue) Then
+    Fubee512rc := AValue;
 End;
 
 Procedure InitializeuBee512;
 Var
-  sExe: String;
-Begin
-  If FPath = '' Then
+  sRC: String;
+
+  Procedure GetExePath;
+  Var
+    sExe: String;
   Begin
     sExe := Format('ubee512%s', [GetExeExt]);
 
     // By default, use the folder distributed with the app
-    FPath := IncludeTrailingBackslash(Application.Location) + sExe;
-    If FileExists(FPath) Then
+    Fubee512Exe := IncludeTrailingBackslash(Application.Location) + sExe;
+    If FileExists(Fubee512Exe) Then
       Exit;
 
     // How about the folder above?
-    FPath := IncludeTrailingBackslash(Application.Location) + '..' + DirectorySeparator + sExe;
-    If FileExists(FPath) Then
+    Fubee512Exe := IncludeTrailingBackslash(Application.Location) + '..' +
+      DirectorySeparator + sExe;
+    If FileExists(Fubee512Exe) Then
       Exit;
 
     // Oh well, search the evironment PATH for the exe...
-    FPath := FindDefaultExecutablePath(sExe);
-    If FileExists(FPath) Then
+    Fubee512Exe := FindDefaultExecutablePath(sExe);
+    If FileExists(Fubee512Exe) Then
       Exit;
 
-    FPath := '';
+    Fubee512Exe := '';
+  End;
+
+Begin
+  If Fubee512Exe = '' Then
+  Begin
+    Fubee512Exe := '';
+
+    GetExePath;
+  End;
+
+  If (Fubee512rc = '') And (Fubee512Exe <> '') Then
+  Begin
+    sRC := 'ubee512rc';
+
+    // Look in the same folder as ubee512
+    Fubee512rc := IncludeTrailingBackslash(ExtractFileDir(Fubee512Exe)) + sRC;
+    If FileExists(Fubee512rc) Then
+      exit;
+
+    // OK, lets find the users home directory
+    Fubee512rc := IncludeTrailingBackslash(GetUserDir) + '.ubee512' + DirectorySeparator + sRC;
+    If FileExists(Fubee512rc) Then
+      exit;
+
+    // Last chance, is it on the PATH?
+    Fubee512rc := FindDefaultExecutablePath(sRC);
+    If FileExists(Fubee512rc) Then
+      Exit;
+
+    Fubee512rc := '';
   End;
 End;
 
@@ -120,17 +155,17 @@ Var
   iCount: Integer;
 Begin
   // Only load the file once
-  If (FLoadedRC = uBee512RCPath) Then
+  If (FLoadedRC = uBee512RC) Then
     Exit;
 
   // And only try to load it if we know where the file is
-  If FileExists(uBee512RCPath) Then
+  If FileExists(uBee512RC) Then
   Begin
     SetBusy;
     slTemp := TStringList.Create;
     FSystemMacros.Clear;
     Try
-      slTemp.LoadFromFile(uBee512RCPath);
+      slTemp.LoadFromFile(uBee512RC);
       oSystemMacro := nil;
       sTag := '';
       sDescription := '';
@@ -228,7 +263,7 @@ Begin
       slTemp.Free;
       ClearBusy;
 
-      FLoadedRC := uBee512RCPath;
+      FLoadedRC := uBee512RC;
     End;
   End;
 End;
@@ -308,7 +343,7 @@ Begin
 End;
 
 Initialization
-  FPath := '';
+  Fubee512Exe := '';
   FLoadedRC := '';
 
   FSystemMacros := TSystemMacros.Create(True);

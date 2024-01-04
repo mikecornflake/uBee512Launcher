@@ -97,11 +97,11 @@ Var
   oMacro: TSystemMacro;
   oItem: TListItem;
 Begin
-  If uBee512Available And FileExists(uBee512RCPath) Then
+  If uBee512Available And FileExists(uBee512RC) Then
   Begin
     SetBusy;
     Try
-      memRC.Lines.LoadFromFile(uBee512RCPath);
+      memRC.Lines.LoadFromFile(uBee512RC);
       uBee512LoadRC;
       pcRC.ActivePage := tsMacros;
 

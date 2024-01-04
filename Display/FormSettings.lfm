@@ -28,9 +28,9 @@ object frmSettings: TfrmSettings
       ClientHeight = 263
       ClientWidth = 302
       object edtCPMToolsModified: TFileNameEdit
-        Left = 16
+        Left = 12
         Height = 23
-        Top = 214
+        Top = 218
         Width = 277
         FileName = 'B:\Drives\Microbee\cpmtools-2.10\tools'
         FilterIndex = 0
@@ -43,9 +43,9 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\Microbee\cpmtools-2.10\tools'
       end
       object Label4: TLabel
-        Left = 16
+        Left = 12
         Height = 15
-        Top = 198
+        Top = 202
         Width = 138
         Caption = 'uBee Modified CPMTools'
         Font.Style = [fsBold]
@@ -53,9 +53,9 @@ object frmSettings: TfrmSettings
         ParentFont = False
       end
       object edtCPMTools: TFileNameEdit
-        Left = 15
+        Left = 11
         Height = 23
-        Top = 151
+        Top = 169
         Width = 277
         FileName = 'B:\Drives\CPM\cpmtools'
         FilterIndex = 0
@@ -68,9 +68,9 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\CPM\cpmtools'
       end
       object Label3: TLabel
-        Left = 15
+        Left = 11
         Height = 15
-        Top = 134
+        Top = 152
         Width = 236
         Caption = 'http://www.moria.de/~michael/cpmtools/'
         Font.Style = [fsBold]
@@ -78,9 +78,9 @@ object frmSettings: TfrmSettings
         ParentFont = False
       end
       object edtRunCPM: TFileNameEdit
-        Left = 16
+        Left = 12
         Height = 23
-        Top = 91
+        Top = 119
         Width = 277
         FileName = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
         FilterIndex = 0
@@ -93,19 +93,19 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
       end
       object Label2: TLabel
-        Left = 16
+        Left = 12
         Height = 15
-        Top = 74
+        Top = 102
         Width = 114
         Caption = 'RunCPM Executable:'
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
       end
-      object edtuBee512: TFileNameEdit
-        Left = 15
+      object edtuBee512exe: TFileNameEdit
+        Left = 13
         Height = 23
-        Top = 32
+        Top = 22
         Width = 277
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         FilterIndex = 0
@@ -118,14 +118,39 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
       end
       object Label1: TLabel
-        Left = 15
+        Left = 12
         Height = 15
-        Top = 15
+        Top = 5
         Width = 117
         Caption = 'uBee512 Executable:'
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 12
+        Height = 15
+        Top = 54
+        Width = 137
+        Caption = 'uBee512rc (settings file)'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object edtuBee512rc: TFileNameEdit
+        Left = 11
+        Height = 23
+        Top = 71
+        Width = 277
+        FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
+        FilterIndex = 0
+        HideDirectories = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 4
+        Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
       end
     end
   end
