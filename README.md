@@ -1,7 +1,7 @@
 # UBEE512 Launcher
 
 ## Why?
-+ ubee512 is an excellent emulator, with a myriad of options available through the setting file (rc) and command line parameters.  But you have to be familiar with these before you can get anywhere.
++ ubee512 is an excellent emulator, with a myriad of options available through the setting file (rc) and command line parameters.  But you have to be familiar with these.
 + ubee512Launcher instead allows inexperienced users (me) to easily view & select the available emulated systems defined in the setting file (and there's a lot of them)
 + Yeah, it's also for users (again, me) who are more comfortable with UI than command line.
 
