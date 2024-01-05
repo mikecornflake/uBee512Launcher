@@ -544,19 +544,19 @@ End;
 
 Procedure TfrmMain.btnAddFolderToAClick(Sender: TObject);
 Begin
-  edtDiskA.Text := tvFolders.Path;
+  edtDiskA.Text := ExcludeSlash(tvFolders.Path);
   RefreshUI;
 End;
 
 Procedure TfrmMain.btnAddFolderToBClick(Sender: TObject);
 Begin
-  edtDiskB.Text := tvFolders.Path;
+  edtDiskB.Text := ExcludeSlash(tvFolders.Path);
   RefreshUI;
 End;
 
 Procedure TfrmMain.btnAddFolderToCClick(Sender: TObject);
 Begin
-  edtDiskC.Text := tvFolders.Path;
+  edtDiskC.Text := ExcludeSlash(tvFolders.Path);
   RefreshUI;
 End;
 
@@ -658,7 +658,7 @@ Var
       Else
         slParams.Add(sFormat);
       slParams.Add('-' + ADrive);
-      slParams.Add(Format('"%s"', [AEdit.Text]));
+      slParams.Add(Format('%s', [AEdit.Text]));
 
       Result := True;
     End;
@@ -667,7 +667,7 @@ Var
 Begin
   slParams := TStringList.Create;
   Try
-    sCommand := Format('"%s"', [FSettings.UBEE512_exe]);
+    sCommand := Format('%s', [FSettings.UBEE512_exe]);
     slParams.Add(cboModel.Text);
 
     bHasA := AddDriveToCommand('a', edtDiskA);

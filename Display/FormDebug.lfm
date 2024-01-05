@@ -1,12 +1,12 @@
 object frmDebug: TfrmDebug
-  Left = 691
+  Left = 460
   Height = 471
   Top = 149
-  Width = 708
+  Width = 939
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'Debug Log'
   ClientHeight = 471
-  ClientWidth = 708
+  ClientWidth = 939
   OnActivate = FormActivate
   OnCreate = FormCreate
   Position = poOwnerFormCenter
@@ -15,7 +15,7 @@ object frmDebug: TfrmDebug
     Left = 0
     Height = 439
     Top = 0
-    Width = 708
+    Width = 939
     Align = alClient
     ReadOnly = True
     ScrollBars = ssAutoBoth
@@ -26,14 +26,14 @@ object frmDebug: TfrmDebug
     Left = 0
     Height = 32
     Top = 439
-    Width = 708
+    Width = 939
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 32
-    ClientWidth = 708
+    ClientWidth = 939
     TabOrder = 1
     object Button1: TButton
-      Left = 646
+      Left = 877
       Height = 25
       Top = 1
       Width = 51
@@ -43,7 +43,7 @@ object frmDebug: TfrmDebug
       TabOrder = 0
     end
     object bntClear: TButton
-      Left = 552
+      Left = 783
       Height = 25
       Top = 1
       Width = 83

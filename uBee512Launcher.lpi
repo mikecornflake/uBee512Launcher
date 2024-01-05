@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="2"/>
-      <BuildNr Value="201"/>
+      <BuildNr Value="204"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
@@ -93,6 +93,7 @@
         <Filename Value="Display\FormDebug.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmDebug"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
     </Units>
