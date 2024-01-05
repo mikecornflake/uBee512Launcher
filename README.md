@@ -5,7 +5,7 @@
 + ubee512Launcher instead allows inexperienced users (me) to easily view & select the available emulated systems defined in the setting file (and there's a lot of them)
 + Yeah, it's also for users (again, me) who are more comfortable with UI than command line.
 
-## Release v0.1 (beta)
+## Release v0.2 (beta)
 + First beta release, lots to do yet
 + [Link to precompiled binaries](bin)
 + To use:
@@ -14,7 +14,7 @@
     + run ubee512Launcher, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
     + or drop the binary in the same folder as the ubee512 binary, and run from there
   + Then:
-    + Use the "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
+    + Use the "Type", "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
     + Use the Folder tree view to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
 
@@ -85,4 +85,5 @@
 This is intended to be free code available to everyone for use everywhere.  Frankly, this is a simple UI wrapping the more complicated emulators and CPMTools developed and released by others.  However, I'm aware there are issues with releasing code under that sort of vagueness, so I've got to have a quick look around for an appropriate open source license.  Haven't done that yet...
 
 Mike Thompson
-2 Jan 2024
+mike.cornflake@gmail.com
+5 Jan 2024
