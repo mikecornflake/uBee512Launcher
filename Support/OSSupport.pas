@@ -112,7 +112,7 @@ Const
 Var
   oStrings: TStringList;
   oStream: TMemoryStream;
-  oProcess: TProcessUTF8;
+  oProcess: TProcess;
   iNumBytes: Longint;
   iBytesRead: Longint;
   i: Integer;
@@ -122,7 +122,7 @@ Begin
   oStream := TMemoryStream.Create;
   iBytesRead := 0;
   Try
-    oProcess := TProcessUTF8.Create(nil);
+    oProcess := TProcess.Create(nil);
     Try
       If Assigned(oParamaters) Then
       Begin

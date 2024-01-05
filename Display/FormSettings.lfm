@@ -1,7 +1,7 @@
 object frmSettings: TfrmSettings
-  Left = 506
+  Left = 196
   Height = 330
-  Top = 192
+  Top = 228
   Width = 310
   BorderIcons = [biSystemMenu]
   Caption = 'Settings'
@@ -13,7 +13,7 @@ object frmSettings: TfrmSettings
   OnActivate = FormActivate
   OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '2.2.6.0'
   object PageControl1: TPageControl
     Left = 0
     Height = 291
@@ -25,53 +25,23 @@ object frmSettings: TfrmSettings
     TabOrder = 0
     object tsLocations: TTabSheet
       Caption = 'Locations'
-      ClientHeight = 261
-      ClientWidth = 300
-      object edtCPMToolsModified: TFileNameEdit
-        Left = 12
-        Height = 28
-        Top = 218
-        Width = 275
-        FileName = 'B:\Drives\Microbee\cpmtools-2.10\tools'
-        FilterIndex = 0
-        HideDirectories = False
-        ButtonWidth = 23
-        NumGlyphs = 1
-        Anchors = [akTop, akLeft, akRight]
-        MaxLength = 0
-        TabOrder = 0
-        Text = 'B:\Drives\Microbee\cpmtools-2.10\tools'
-      end
+      ClientHeight = 263
+      ClientWidth = 302
       object Label4: TLabel
         Left = 12
-        Height = 16
+        Height = 15
         Top = 202
-        Width = 159
-        Caption = 'uBee Modified CPMTools'
+        Width = 133
+        Caption = 'uBee patched CPMTools'
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
       end
-      object edtCPMTools: TFileNameEdit
-        Left = 11
-        Height = 28
-        Top = 169
-        Width = 275
-        FileName = 'B:\Drives\CPM\cpmtools'
-        FilterIndex = 0
-        HideDirectories = False
-        ButtonWidth = 23
-        NumGlyphs = 1
-        Anchors = [akTop, akLeft, akRight]
-        MaxLength = 0
-        TabOrder = 1
-        Text = 'B:\Drives\CPM\cpmtools'
-      end
       object Label3: TLabel
         Left = 11
-        Height = 16
+        Height = 15
         Top = 152
-        Width = 265
+        Width = 236
         Caption = 'http://www.moria.de/~michael/cpmtools/'
         Font.Style = [fsBold]
         ParentColor = False
@@ -79,24 +49,25 @@ object frmSettings: TfrmSettings
       end
       object edtRunCPM: TFileNameEdit
         Left = 12
-        Height = 28
+        Height = 23
         Top = 119
-        Width = 275
+        Width = 277
         FileName = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
+        DialogTitle = 'RunCPM'
         FilterIndex = 0
         HideDirectories = False
         ButtonWidth = 23
         NumGlyphs = 1
         Anchors = [akTop, akLeft, akRight]
         MaxLength = 0
-        TabOrder = 2
+        TabOrder = 0
         Text = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
       end
       object Label2: TLabel
         Left = 12
-        Height = 16
+        Height = 15
         Top = 102
-        Width = 132
+        Width = 114
         Caption = 'RunCPM Executable:'
         Font.Style = [fsBold]
         ParentColor = False
@@ -104,24 +75,25 @@ object frmSettings: TfrmSettings
       end
       object edtuBee512exe: TFileNameEdit
         Left = 13
-        Height = 28
+        Height = 23
         Top = 22
-        Width = 275
+        Width = 277
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
+        DialogTitle = 'ubee512 executable'
         FilterIndex = 0
         HideDirectories = False
         ButtonWidth = 23
         NumGlyphs = 1
         Anchors = [akTop, akLeft, akRight]
         MaxLength = 0
-        TabOrder = 3
+        TabOrder = 1
         Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
       end
       object Label1: TLabel
         Left = 12
-        Height = 16
+        Height = 15
         Top = 5
-        Width = 134
+        Width = 117
         Caption = 'uBee512 Executable:'
         Font.Style = [fsBold]
         ParentColor = False
@@ -129,9 +101,9 @@ object frmSettings: TfrmSettings
       end
       object Label5: TLabel
         Left = 12
-        Height = 16
+        Height = 15
         Top = 54
-        Width = 158
+        Width = 137
         Caption = 'uBee512rc (settings file)'
         Font.Style = [fsBold]
         ParentColor = False
@@ -139,18 +111,50 @@ object frmSettings: TfrmSettings
       end
       object edtuBee512rc: TFileNameEdit
         Left = 11
-        Height = 28
+        Height = 23
         Top = 71
-        Width = 275
+        Width = 277
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
+        DialogTitle = 'ubee512 Setting File'
         FilterIndex = 0
         HideDirectories = False
         ButtonWidth = 23
         NumGlyphs = 1
         Anchors = [akTop, akLeft, akRight]
         MaxLength = 0
-        TabOrder = 4
+        TabOrder = 2
         Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
+      end
+      object edtCPMTools: TDirectoryEdit
+        Left = 11
+        Height = 23
+        Top = 169
+        Width = 279
+        Directory = 'B:\Drives\CPM\cpmtools'
+        DialogTitle = 'cpmtools'
+        DialogOptions = [ofFileMustExist, ofEnableSizing, ofViewDetail]
+        ShowHidden = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 3
+        Text = 'B:\Drives\CPM\cpmtools'
+      end
+      object edtCPMToolsModified: TDirectoryEdit
+        Left = 12
+        Height = 23
+        Top = 218
+        Width = 279
+        Directory = 'B:\Drives\Microbee\cpmtools-2.10\tools'
+        DialogTitle = 'uBee patched CPMTools'
+        ShowHidden = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        Anchors = [akTop, akLeft, akRight]
+        MaxLength = 0
+        TabOrder = 4
+        Text = 'B:\Drives\Microbee\cpmtools-2.10\tools'
       end
     end
   end
@@ -171,8 +175,8 @@ object frmSettings: TfrmSettings
       Anchors = [akTop, akRight]
       Caption = 'OK'
       ModalResult = 1
-      TabOrder = 0
       OnClick = btnOKClick
+      TabOrder = 0
     end
     object btnCancel: TButton
       Left = 222
@@ -190,8 +194,8 @@ object frmSettings: TfrmSettings
       Top = 5
       Width = 75
       Caption = 'Rescan'
-      TabOrder = 2
       OnClick = btnRescanClick
+      TabOrder = 2
     end
   end
 end

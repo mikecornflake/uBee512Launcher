@@ -1,7 +1,7 @@
 object frmMacroExplorer: TfrmMacroExplorer
-  Left = 532
+  Left = 390
   Height = 571
-  Top = 132
+  Top = 255
   Width = 897
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'System Macro Explorer'
@@ -10,7 +10,7 @@ object frmMacroExplorer: TfrmMacroExplorer
   OnActivate = FormActivate
   OnCreate = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '2.2.6.0'
   object pcRC: TPageControl
     Left = 0
     Height = 536
@@ -22,13 +22,13 @@ object frmMacroExplorer: TfrmMacroExplorer
     TabOrder = 0
     object tsMacros: TTabSheet
       Caption = 'System Macros'
-      ClientHeight = 506
-      ClientWidth = 887
+      ClientHeight = 508
+      ClientWidth = 889
       object lvSystemMacros: TListView
         Left = 0
-        Height = 389
+        Height = 391
         Top = 0
-        Width = 887
+        Width = 889
         Align = alClient
         Columns = <        
           item
@@ -42,6 +42,9 @@ object frmMacroExplorer: TfrmMacroExplorer
           item
             Caption = 'Title'
             Width = 150
+          end        
+          item
+            Caption = 'Type'
           end        
           item
             Caption = 'A:'
@@ -68,16 +71,16 @@ object frmMacroExplorer: TfrmMacroExplorer
         Cursor = crVSplit
         Left = 0
         Height = 5
-        Top = 389
-        Width = 887
+        Top = 391
+        Width = 889
         Align = alBottom
         ResizeAnchor = akBottom
       end
       object memSystems: TMemo
         Left = 0
         Height = 112
-        Top = 394
-        Width = 887
+        Top = 396
+        Width = 889
         Align = alBottom
         ReadOnly = True
         ScrollBars = ssAutoBoth
@@ -86,13 +89,13 @@ object frmMacroExplorer: TfrmMacroExplorer
     end
     object tsRC: TTabSheet
       Caption = 'uBee512rc'
-      ClientHeight = 506
-      ClientWidth = 887
+      ClientHeight = 508
+      ClientWidth = 889
       object memRC: TMemo
         Left = 0
-        Height = 506
+        Height = 508
         Top = 0
-        Width = 887
+        Width = 889
         Align = alClient
         ReadOnly = True
         ScrollBars = ssAutoBoth

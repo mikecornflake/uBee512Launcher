@@ -33,25 +33,27 @@ Var
   oFile: File;
   b512: Byte;
 Begin
+  Result := False;
+
   If (FileExists(AFilename)) And (LowerCase(ExtractFileExt(AFilename)) = '.dsk') Then
   Begin
     b512 := 0;
 
     Assign(oFile, AFilename);
     Reset(oFile, 1);
-
     Try
-      Seek(oFile, 512);
-      BlockRead(oFile, b512, 1);
+      If FileSize(oFile) > 512 Then
+      Begin
+        Seek(oFile, 512);
+        BlockRead(oFile, b512, 1);
 
-      // Check if byte_at_512 = E5h
-      Result := (b512 <> $E5);
+        // Check if byte_at_512 = E5h
+        Result := (b512 <> $E5);
+      End
     Finally
       Close(oFile);
     End;
-  End
-  Else
-    Result := False;
+  End;
 End;
 
 Function IsCPMBootableFolder(Const AFolder: String): Boolean;
@@ -79,6 +81,5 @@ Begin
       Result := '';
   End;
 End;
-
 
 End.

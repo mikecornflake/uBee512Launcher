@@ -1,0 +1,56 @@
+object frmDebug: TfrmDebug
+  Left = 691
+  Height = 471
+  Top = 149
+  Width = 708
+  BorderIcons = [biSystemMenu, biMaximize]
+  Caption = 'Debug Log'
+  ClientHeight = 471
+  ClientWidth = 708
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  Position = poOwnerFormCenter
+  LCLVersion = '2.2.6.0'
+  object memDebug: TMemo
+    Left = 0
+    Height = 439
+    Top = 0
+    Width = 708
+    Align = alClient
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 32
+    Top = 439
+    Width = 708
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 32
+    ClientWidth = 708
+    TabOrder = 1
+    object Button1: TButton
+      Left = 646
+      Height = 25
+      Top = 1
+      Width = 51
+      Anchors = [akTop, akRight]
+      Caption = 'OK'
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object bntClear: TButton
+      Left = 552
+      Height = 25
+      Top = 1
+      Width = 83
+      Anchors = [akTop, akRight]
+      Caption = 'Clear Log'
+      OnClick = bntClearClick
+      TabOrder = 1
+    end
+  end
+end

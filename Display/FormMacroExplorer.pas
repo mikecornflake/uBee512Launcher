@@ -25,7 +25,7 @@ Type
     tsRC: TTabSheet;
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
-    procedure lvSystemMacrosDblClick(Sender: TObject);
+    Procedure lvSystemMacrosDblClick(Sender: TObject);
     Procedure lvSystemMacrosSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   Private
     Function GetTitle: String;
@@ -61,14 +61,14 @@ End;
 Procedure TfrmMacroExplorer.lvSystemMacrosDblClick(Sender: TObject);
 Begin
   If Assigned(lvSystemMacros.Selected) Then
-    ModalResult := mrOK;
+    ModalResult := mrOk;
 End;
 
 Procedure TfrmMacroExplorer.lvSystemMacrosSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 Begin
   If (Selected) And (Assigned(Item)) Then
-    memSystems.Lines.Text := uBee512MacroRC(Item.Caption)
+    memSystems.Lines.Text := uBee512.RCbyMacro(Item.Caption)
   Else
     memSystems.Lines.Clear;
 End;
@@ -103,20 +103,21 @@ Procedure TfrmMacroExplorer.LoadRC;
 Var
   oMacro: TSystemMacro;
   oItem: TListItem;
+  sRam: String;
 Begin
-  If uBee512Available And FileExists(uBee512RC) Then
+  If uBee512.Available And FileExists(uBee512.RC) Then
   Begin
     SetBusy;
     Try
-      memRC.Lines.LoadFromFile(uBee512RC);
-      uBee512LoadRC;
+      memRC.Lines.LoadFromFile(uBee512.RC);
+      uBee512.LoadRC;
       pcRC.ActivePage := tsMacros;
 
       lvSystemMacros.Items.Clear;
       memSystems.Lines.Clear;
       lvSystemMacros.Items.BeginUpdate;
 
-      For oMacro In uBee512SystemMacros Do
+      For oMacro In uBee512.SystemMacros Do
         If oMacro.Title <> '' Then
         Begin
           oItem := lvSystemMacros.Items.Add;
@@ -124,10 +125,16 @@ Begin
           oItem.Caption := oMacro.Macro;
           oItem.SubItems.Add(oMacro.Model);
           oItem.SubItems.Add(oMacro.Title);
+          oItem.SubItems.Add(MBTypeStr[oMacro.MbeeType]);
           oItem.SubItems.Add(oMacro.A);
-          //oItem.SubItems.Add(oMacro.Col);
-          oItem.SubItems.Add(oMacro.SRAM + ' ' + oMacro.SRAM_File);
-          //oItem.SubItems.Add(oMacro.Status);
+          sRam := '';
+          If (Trim(oMacro.SRAM) <> '') Then
+            sRam += oMacro.SRAM + 'k';
+          If (Trim(oMacro.SRAM) <> '') And (Trim(oMacro.SRAM_File) <> '') Then
+            sRam += '=';
+          If (Trim(oMacro.SRAM_File) <> '') Then
+            sRam += oMacro.SRAM_File;
+          oItem.SubItems.Add(sRam);
           oItem.SubItems.Add(oMacro.Description);
         End;
     Finally

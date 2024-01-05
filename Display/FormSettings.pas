@@ -36,8 +36,8 @@ Type
     btnRescan: TButton;
     btnOK: TButton;
     btnCancel: TButton;
-    edtCPMTools: TFileNameEdit;
-    edtCPMToolsModified: TFileNameEdit;
+    edtCPMTools: TDirectoryEdit;
+    edtCPMToolsModified: TDirectoryEdit;
     edtRunCPM: TFileNameEdit;
     edtuBee512exe: TFileNameEdit;
     edtuBee512rc: TFileNameEdit;
@@ -50,7 +50,7 @@ Type
     Panel1: TPanel;
     tsLocations: TTabSheet;
     Procedure btnOKClick(Sender: TObject);
-    procedure btnRescanClick(Sender: TObject);
+    Procedure btnRescanClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
   Private
@@ -66,7 +66,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, cpmtoolsSupport, FileSupport, OSSupport;
+  uBee512Support, cpmtoolsSupport, FileSupport, OSSupport, Logging;
 
 {$R *.lfm}
 
@@ -99,12 +99,14 @@ Begin
   ModalResult := mrOk;
 End;
 
-procedure TfrmSettings.btnRescanClick(Sender: TObject);
-begin
+Procedure TfrmSettings.btnRescanClick(Sender: TObject);
+Begin
+  Debug('TfrmSettings.btnRescanClick');
+
   FSettings.InitialisePaths;
 
   LoadControls;
-end;
+End;
 
 Procedure TfrmSettings.SetSettings(AValue: TSettings);
 Begin
@@ -143,8 +145,8 @@ Procedure TSettings.LoadSettings(AInifile: TInifile);
 Begin
   InitialisePaths;
 
-  UBEE512_exe := AInifile.ReadString('Locations', 'uBee512exe', uBee512exe);
-  UBEE512_rc := AInifile.ReadString('Locations', 'uBee512rc', uBee512rc);
+  UBEE512_exe := AInifile.ReadString('Locations', 'uBee512exe', uBee512.exe);
+  UBEE512_rc := AInifile.ReadString('Locations', 'uBee512rc', uBee512.rc);
   RUNCPM_exe := AInifile.ReadString('Locations', 'RunCPM', '');
   CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', '');
   MOD_CPMTOOLS_bin := AInifile.ReadString('Locations', 'Modified_cpmtools', cpmtoolsPath);
@@ -152,6 +154,10 @@ Begin
     ExtractFilePath(Application.ExeName)));
 
   ValidatePaths;
+
+  Debug('TSettings.LoadSettings uBee512exe=' + uBee512.exe);
+  Debug('TSettings.LoadSettings uBee512rc=' + uBee512.rc);
+  Debug('TSettings.LoadSettings cpmtools=' + cpmtoolsPath);
 End;
 
 Procedure TSettings.SaveSettings(AInifile: TInifile);
@@ -169,14 +175,18 @@ Begin
   // Don't call this unnecessarily.  it'll reset any folders the user has set up.
   // Use this only on first run (ie before load ini file)
   Initializecpmtools;
-  InitializeuBee512;
+  uBee512.Initialize;
 
   // One of these will be right
   CPMTOOLS_bin := cpmtoolsPath;
   MOD_CPMTOOLS_bin := cpmtoolsPath;
 
-  UBEE512_exe := uBee512exe;
-  UBEE512_rc := uBee512rc;
+  UBEE512_exe := uBee512.exe;
+  UBEE512_rc := uBee512.rc;
+
+  Debug('TSettings.InitialisePaths uBee512exe=' + uBee512.exe);
+  Debug('TSettings.InitialisePaths uBee512rc=' + uBee512.rc);
+  Debug('TSettings.InitialisePaths cpmtools=' + cpmtoolsPath);
 End;
 
 Procedure TSettings.ValidatePaths;
@@ -194,20 +204,24 @@ Begin
     MOD_CPMTOOLS_bin := '';
 
   If FileExists(UBEE512_exe) Then
-    SetuBee512exe(UBEE512_exe)
+    uBee512.exe := UBEE512_exe
   Else
     UBEE512_exe := '';
 
   If FileExists(UBEE512_rc) Then
-    SetuBee512rc(UBEE512_rc)
+    uBee512.rc := UBEE512_rc
   Else
     UBEE512_rc := '';
 
   If Not DirectoryExists(WorkingFolder) Then
-    WorkingFolder := ExtractFileDir(uBee512rc);
+    WorkingFolder := ExtractFileDir(uBee512.rc);
 
   If Not FileExists(RUNCPM_exe) Then
     RUNCPM_exe := '';
+
+  Debug('TSettings.ValidatePaths uBee512exe=' + uBee512.exe);
+  Debug('TSettings.ValidatePaths uBee512rc=' + uBee512.rc);
+  Debug('TSettings.ValidatePaths cpmtools=' + cpmtoolsPath);
 End;
 
 End.

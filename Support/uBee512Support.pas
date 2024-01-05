@@ -8,10 +8,13 @@ Uses
   Classes, SysUtils, Generics.Collections;
 
 Type
+  TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
+
   TSystemMacro = Class
   Public
     Macro: String;
     Model: String;
+    MbeeType: TMbeeType;
     Title: String;
     A: String;
     Col: String;
@@ -22,64 +25,161 @@ Type
     RC: String;
   End;
 
-  TSystemMacros = Specialize TObjectList<TSystemMacro>;
+  TModel = Class
+  Public
+    Model: String;
+    MbeeType: TMbeeType;
+  End;
 
-// You know, this is really beginning to feel like a class...
-Procedure InitializeuBee512;
-Function uBee512Available: Boolean;
-Function uBee512Exe: String;
-Function uBee512RC: String;
-Procedure SetuBee512exe(AValue: String);
-Procedure SetuBee512rc(AValue: String);
-Function uBee512SystemMacros: TSystemMacros;
-Procedure uBee512LoadRC;
-Function uBee512MacroRC(ASystemMacro: String): String;
-Function uBee512MacroRCByTitle(ASystemTitle: String): String;
-Function uBee512Models: String;
-Function uBee512Titles(AModel: String): String;
+  TSystemMacros = Specialize TObjectList<TSystemMacro>;
+  TModels = Specialize TObjectList<TModel>;
+
+  { TuBee512 }
+
+  TuBee512 = Class
+    FExe: String;
+    FRC: String;
+    FLoadedRC: String;
+    FSystemMacros: TSystemMacros;
+    FModels: TModels;
+
+    Function GetExe: String;
+    Procedure SetExe(AValue: String);
+
+    Procedure LoadRC;
+    Function GetRC: String;
+    Procedure SetRC(AValue: String);
+
+
+  Public
+    Constructor Create;
+    Destructor Destroy; Override;
+
+    Procedure Initialize;
+    Function Available: Boolean;
+
+    Function SystemMacros: TSystemMacros;
+    Function RCbyMacro(ASystemMacro: String): String;
+    Function RCByTitle(ATitle: String): String;
+    Function Models: String; // comma separated
+    Function ModelsByType(AMbeeType: TMbeeType): String;
+    Function Titles(AModel: String): String; // comma separated
+    Function MbeeType(AModel: String): TMbeeType;
+
+    Property Exe: String read GetExe write SetExe;
+    Property RC: String read GetRC write SetRC;
+  End;
+
+Const
+  MBTypeStr: Array[TMbeeType] Of String = ('Disk', 'ROM', 'Custom');
+
+Function uBee512: TuBee512;
 
 Implementation
 
 Uses
-  Forms, FileUtil, OSSupport, StringSupport;
+  Forms, FileUtil, OSSupport, StringSupport, Logging;
 
 Var
-  Fubee512Exe: String;
-  Fubee512rc: String;
-  FSystemMacros: TSystemMacros;
-  FLoadedRC: String;
+  FuBee512: TuBee512;
 
-Function uBee512Available: Boolean;
+Function uBee512: TuBee512;
 Begin
-  Result := (Fubee512Exe <> '') And (FileExists(Fubee512Exe));
+  If Not Assigned(FuBee512) Then
+    FuBee512 := TuBee512.Create;
+
+  Result := FuBee512;
 End;
 
-Function uBee512Exe: String;
+  { TuBee512 }
+
+Constructor TuBee512.Create;
+
+  Procedure AddModel(AModel: String; AMBeeType: TMbeeType);
+  Var
+    oModel: TModel;
+  Begin
+    oModel := TModel.Create;
+    oModel.Model := AModel;
+    oModel.MbeeType := AMBeeType;
+
+    FModels.Add(oModel);
+  End;
+
 Begin
-  Result := Fubee512Exe;
+  FExe := '';
+  FRC := '';
+  FLoadedRC := '';
+
+  // OwnsObjects => No need for additional code to free contents
+  FSystemMacros := TSystemMacros.Create(True);
+  FModels := TModels.Create(True);
+
+  // From ubee512 readme
+  AddModel('1024k', mtFDD);
+  AddModel('128k', mtFDD);
+  AddModel('256k', mtFDD);
+  AddModel('256tc', mtFDD);
+  AddModel('2mhz', mtROM);
+  AddModel('2mhzdd', mtFDD);
+  AddModel('512k', mtFDD);
+  AddModel('56k', mtFDD);
+  AddModel('64k', mtFDD);
+  AddModel('dd', mtFDD);
+  AddModel('ic', mtROM);
+  AddModel('p1024k', mtFDD);
+  AddModel('p128k', mtFDD);
+  AddModel('p256k', mtFDD);
+  AddModel('p512k', mtFDD);
+  AddModel('p64k', mtFDD);
+  AddModel('pc', mtROM);
+  AddModel('pc85', mtROM);
+  AddModel('pc85b', mtROM);
+  AddModel('pcf', mtCustom);
+  AddModel('ppc85', mtROM);
+  AddModel('scf', mtCustom);
+  AddModel('tterm', mtROM);
 End;
 
-Function uBee512RC: String;
+Destructor TuBee512.Destroy;
+Begin
+  Inherited Destroy;
+
+  FreeAndNil(FModels);
+  FreeAndNil(FSystemMacros);
+End;
+
+Function TuBee512.Available: Boolean;
+Begin
+  Result := (FExe <> '') And (FileExists(FExe));
+End;
+
+Function TuBee512.GetExe: String;
+Begin
+  Result := FExe;
+End;
+
+Function TuBee512.GetRC: String;
 Begin
   Result := '';
 
-  If FileExists(Fubee512rc) Then
-    Result := Fubee512rc;
+  If FileExists(FRC) Then
+    Result := FRC;
 End;
 
-Procedure SetuBee512exe(AValue: String);
+Procedure TuBee512.SetExe(AValue: String);
 Begin
   If FileExists(AValue) Then
-    Fubee512Exe := AValue;
+    FExe := AValue;
 End;
 
-Procedure SetuBee512rc(AValue: String);
+Procedure TuBee512.SetRC(AValue: String);
 Begin
   If FileExists(AValue) Then
-    Fubee512rc := AValue;
+    FRC := AValue;
 End;
 
-Procedure InitializeuBee512;
+Procedure TuBee512.Initialize;
 Var
   sRC: String;
 
@@ -90,61 +190,63 @@ Var
     sExe := Format('ubee512%s', [GetExeExt]);
 
     // By default, use the folder distributed with the app
-    Fubee512Exe := IncludeTrailingBackslash(Application.Location) + sExe;
-    If FileExists(Fubee512Exe) Then
+    FExe := IncludeTrailingBackslash(Application.Location) + sExe;
+    If FileExists(FExe) Then
       Exit;
 
     // How about the folder above?
-    Fubee512Exe := IncludeTrailingBackslash(Application.Location) + '..' +
-      DirectorySeparator + sExe;
-    If FileExists(Fubee512Exe) Then
+    FExe := IncludeTrailingBackslash(Application.Location) + '..' + DirectorySeparator + sExe;
+    If FileExists(FExe) Then
       Exit;
 
     // Oh well, search the evironment PATH for the exe...
-    Fubee512Exe := FindDefaultExecutablePath(sExe);
-    If FileExists(Fubee512Exe) Then
+    FExe := FindDefaultExecutablePath(sExe);
+    If FileExists(FExe) Then
       Exit;
 
-    Fubee512Exe := '';
+    FExe := '';
   End;
 
 Begin
-  If Fubee512Exe = '' Then
+  Debug('TuBee512.Initialize');
+
+  If FExe = '' Then
   Begin
-    Fubee512Exe := '';
+    FExe := '';
 
     GetExePath;
   End;
 
-  If (Fubee512rc = '') And (Fubee512Exe <> '') Then
+  If (FRC = '') And (FExe <> '') Then
   Begin
     sRC := 'ubee512rc';
 
     // Look in the same folder as ubee512
-    Fubee512rc := IncludeTrailingBackslash(ExtractFileDir(Fubee512Exe)) + sRC;
-    If FileExists(Fubee512rc) Then
-      exit;
-
-    // OK, lets find the users home directory
-    Fubee512rc := IncludeTrailingBackslash(GetUserDir) + '.ubee512' + DirectorySeparator + sRC;
-    If FileExists(Fubee512rc) Then
-      exit;
-
-    // Last chance, is it on the PATH?
-    Fubee512rc := FindDefaultExecutablePath(sRC);
-    If FileExists(Fubee512rc) Then
-      Exit;
-
-    Fubee512rc := '';
+    FRC := IncludeTrailingBackslash(ExtractFileDir(FExe)) + sRC;
+    If Not FileExists(FRC) Then
+    Begin
+      // OK, lets find the users home directory
+      FRC := IncludeTrailingBackslash(GetUserDir) + '.ubee512' + DirectorySeparator + sRC;
+      If Not FileExists(FRC) Then
+      Begin
+        // Last chance, is it on the PATH?
+        FRC := FindDefaultExecutablePath(sRC);
+        If Not FileExists(FRC) Then
+          FRC := '';
+      End;
+    End;
   End;
+
+  Debug('detected ubee512=' + FExe);
+  Debug('detected ubee512rc=' + FRC);
 End;
 
-Function uBee512SystemMacros: TSystemMacros;
+Function TuBee512.SystemMacros: TSystemMacros;
 Begin
   Result := FSystemMacros;
 End;
 
-Procedure uBee512LoadRC;
+Procedure TuBee512.LoadRC;
 Var
   slTemp: TStringList;
   s, sLine, sTag, sNewTag: String;
@@ -155,17 +257,23 @@ Var
   iCount: Integer;
 Begin
   // Only load the file once
-  If (FLoadedRC = FuBee512RC) Then
+  If (FLoadedRC = FRC) Then
+  Begin
+    Debug('Cancel loading ubee512rc.  Already loaded.');
     Exit;
+  End;
 
   // And only try to load it if we know where the file is
-  If FileExists(FuBee512RC) Then
+  If FileExists(FRC) Then
   Begin
     SetBusy;
+    Debug('Start loading ' + FRC);
     slTemp := TStringList.Create;
     FSystemMacros.Clear;
+
+    //FSystemMacros.Clear;
     Try
-      slTemp.LoadFromFile(FuBee512RC);
+      slTemp.LoadFromFile(FRC);
       oSystemMacro := nil;
       sTag := '';
       sDescription := '';
@@ -205,15 +313,12 @@ Begin
               End
               Else If (sTag <> sNewTag) Then
               Begin
-                // Save the previous system macro, we're starting a new one
-                If Assigned(oSystemMacro) Then
-                  FSystemMacros.Add(oSystemMacro);
-
-                // And now we're starting a new System Macro
+                // Start a new System Macro
                 sTag := sNewTag;
                 oSystemMacro := TSystemMacro.Create;
                 oSystemMacro.Macro := sTag;
                 oSystemMacro.Description := sDescription;
+                FSystemMacros.Add(oSystemMacro);
                 iCount := 0;
               End;
             End;
@@ -250,7 +355,11 @@ Begin
                     oSystemMacro.Col := 'Amber'
                   Else
                     oSystemMacro.Col := sValue
-                Else If sProperty = 'model' Then oSystemMacro.Model := sValue
+                Else If sProperty = 'model' Then
+                Begin
+                  oSystemMacro.Model := sValue;
+                  oSystemMacro.MbeeType := MbeeType(sValue);
+                End
                 Else If sProperty = 'sram' Then oSystemMacro.SRAM := sValue
                 Else If sProperty = 'sram-file' Then oSystemMacro.SRAM_file := sValue
                 Else If sProperty = 'status' Then oSystemMacro.Status := sValue
@@ -261,14 +370,15 @@ Begin
       End;
     Finally
       slTemp.Free;
+      Debug(Format('End loading %s.  %d Macros loaded', [FRC, FSystemMacros.Count]));
       ClearBusy;
 
-      FLoadedRC := FuBee512RC;
+      FLoadedRC := FRC;
     End;
   End;
 End;
 
-Function uBee512MacroRC(ASystemMacro: String): String;
+Function TuBee512.RCbyMacro(ASystemMacro: String): String;
 Var
   oMacro: TSystemMacro;
 Begin
@@ -281,13 +391,13 @@ Begin
     End;
 End;
 
-Function uBee512MacroRCByTitle(ASystemTitle: String): String;
+Function TuBee512.RCByTitle(ATitle: String): String;
 Var
   oMacro: TSystemMacro;
 Begin
   Result := '';
   For oMacro In FSystemMacros Do
-    If (oMacro.Title = ASystemTitle) Then
+    If (oMacro.Title = ATitle) Then
     Begin
       Result := oMacro.RC;
       Break;
@@ -295,7 +405,7 @@ Begin
 End;
 
 // Return a comma seperated sorted list of Microbee Models defined in the uBee512RC
-Function uBee512Models: String;
+Function TuBee512.Models: String;
 Var
   slModels: TStringList;
   oMacro: TSystemMacro;
@@ -316,9 +426,31 @@ Begin
   End;
 End;
 
+// Return a comma seperated list of Microbee Models by Type
+Function TuBee512.ModelsByType(AMbeeType: TMbeeType): String;
+Var
+  slModels: TStringList;
+  oMacro: TSystemMacro;
+Begin
+  slModels := TStringList.Create;
+  Try
+    // use the TStringlist to build up a sorted, unique list of models
+    slModels.Sorted := True;
+    slModels.Duplicates := dupIgnore;
+
+    For oMacro In FSystemMacros Do
+      If (Trim(oMacro.Model) <> '') And (oMacro.MbeeType = AMbeeType) Then
+        slModels.Add(oMacro.Model);
+
+    Result := slModels.CommaText;
+  Finally
+    slModels.Free;
+  End;
+End;
+
 // Return a comma seperated list of Microbee systems defined in uBee512rc for
 // a particular Microbee Model
-Function uBee512Titles(AModel: String): String;
+Function TuBee512.Titles(AModel: String): String;
 Var
   slTitles: TStringList;
   oMacro: TSystemMacro;
@@ -342,14 +474,25 @@ Begin
   End;
 End;
 
-Initialization
-  Fubee512Exe := '';
-  FLoadedRC := '';
+Function TuBee512.MbeeType(AModel: String): TMbeeType;
+Var
+  oModel: TModel;
+  sModel: String;
+Begin
+  Result := mtCustom;
+  sModel := Lowercase(AModel);
+  For oModel In FModels Do
+    If Lowercase(oModel.Model) = sModel Then
+    Begin
+      Result := oModel.MbeeType;
+      Break;
+    End;
+End;
 
-  FSystemMacros := TSystemMacros.Create(True);
-  // OwnsObjects => No need for additional code to free contents
+Initialization
+  FuBee512 := nil;
 
 Finalization
-  FreeAndNil(FSystemMacros);
+  FreeAndNil(FuBee512);
 
 End.

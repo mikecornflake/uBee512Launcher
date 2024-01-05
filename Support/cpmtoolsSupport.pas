@@ -18,7 +18,7 @@ Function cpmtoolsLS(AFilename: String): String;
 Implementation
 
 Uses
-  Forms, FileUtil, OSSupport, FileSupport, CPMSupport, StrUtils;
+  Forms, FileUtil, OSSupport, FileSupport, CPMSupport, StrUtils, Logging;
 
 Var
   FPath: String;
@@ -43,6 +43,7 @@ Procedure Initializecpmtools;
 Var
   sCPMToolsPath: String;
 Begin
+  Debug('Initializecpmtools');
   If FPath = '' Then
   Begin
     sCPMToolsPath := 'cpmtools-2.10' + DirectorySeparator + 'tools';
@@ -68,6 +69,8 @@ Begin
 
   If FPath <> '' Then
     FPath := IncludeSlash(FPath);
+
+  Debug('detected cpmtools=' + FPath);
 End;
 
 Function cpmtoolsLS(AFilename: String; Var ARawOutput: String): String;
@@ -94,10 +97,14 @@ Begin
   Result := '';
   If FPath <> '' Then
   Begin
+    Debug('cpmtoolsLS');
     sDSK := DSKFormat(AFilename);
 
-    sCommand := Format('"%scpmls%s" -l -f %s "%s"', [IncludeSlash(FPath), GetExeExt, sDSK, AFilename]);
+    sCommand := Format('"%scpmls%s" -l -f %s "%s"', [IncludeSlash(FPath),
+      GetExeExt, sDSK, AFilename]);
+    Debug(sCommand);
     sTemp := RunEx(sCommand, nil, True);
+    Debug(LineEnding + sTemp);
 
     ARawOutput := '>' + sCommand + sLineBreak + sTemp;
 
@@ -149,8 +156,6 @@ Begin
 
   Result := cpmtoolsLS(AFilename, sTemp);
 End;
-
-
 
 Initialization
   FPath := '';
