@@ -53,7 +53,6 @@
 ## Long Term 
 (_dreamer! you're nothing but a dreamer_)
 + Investigate automating a running instance of **UBEE512** (allow dynamic changing of disks)
-+ I strongly suspect there are issues in **CPMTools**.  Investigate using this framework, then report to appropriate developers. (Hmm, looks like original CP/M tools are up to 2.23, but the patched CP/M tools are from 2.1 codebase)
 
 # Development Notes
 + Developed under windows using Lazarus 2.2.6 / fpc 3.2.2 / 64bit
