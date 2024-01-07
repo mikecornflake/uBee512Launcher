@@ -5,8 +5,8 @@
 + ubee512Launcher instead allows inexperienced users (me) to easily view & select the available emulated systems defined in the setting file (and there's a lot of them)
 + Yeah, it's also for users (again, me) who are more comfortable with UI than command line.
 
-## Release v0.2 (beta)
-+ First beta release, lots to do yet
+## Release v0.3 (beta)
++ third beta release, lots to do yet
 + [Link to precompiled binaries](bin)
 + To use:
   + If ubee512 is on your environment path, simply download relevant binary and run.
@@ -16,6 +16,7 @@
   + Then:
     + Use the "Type", "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
     + Use the Folder tree view to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
+      + Disk format is auto-detected (looks for suffix of _format.dsk in the filename).  If it gets this wrong, you will need to select the correct disk format
     + Click "Launch"
 
 ## Implemented functionality:
@@ -36,6 +37,7 @@
 # TODO
 ## Short term
 + Report which System Macros are usable (ROMs, DSKs, SRAM in correct folders)
++ Report correct available disk formats by parsing cpmtools "diskdefs" and ubee512s "libdskrc"
 + Add awareness of **RunCPM** folder structure
 
 ## Medium term
@@ -70,10 +72,10 @@
 + ![Image: System Macros](Images/Development_Screenshot_1.png)
 
 # Acknowledgements
-+ **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee** contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
-+ Original **UBEE512**, **UBEEDISK** & patch for **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
-+ Original **CPMTools** (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/
-+ Where the above tools access DSK files, they do so using **libdsk**: https://www.seasip.info/Unix/LibDsk/.  **LibDsk** doesn't have support for the Microbee Disk Formats, and this is why the patch for **CPMTools** exists.  It's actually **libdsk** that's been patched and **CPMtools** rebuilt with the updated library.
++ **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee** contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee has developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
++ Original **UBEE512**, **UBEEDISK** & patched **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
++ Original **CPMTools** (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/, but won't work with Microbee formats.
++ Where the above tools access DSK files, they do so using **libdsk**: https://www.seasip.info/Unix/LibDsk/.  **LibDsk** doesn't have support for the Microbee Disk Formats, and this is why the patched **CPMTools** exists.  I suspect its actually **libdsk** that's been patched and **CPMtools** rebuilt with the updated library.
 + **UBEE512** has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
 + **RunCPM** can be obtained from: https://github.com/MockbaTheBorg/RunCPM
 + Prebuilt **Lazarus/fpc** can be obtained from: https://sourceforge.net/projects/lazarus/files/
