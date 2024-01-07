@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
-  Left = 545
+  Left = 2318
   Height = 817
-  Top = 193
-  Width = 771
+  Top = 154
+  Width = 797
   Caption = 'uBee512Launcher'
   ClientHeight = 797
-  ClientWidth = 771
+  ClientWidth = 797
   Constraints.MinHeight = 590
   Constraints.MinWidth = 700
   Menu = MainMenu1
@@ -37,24 +37,24 @@ object frmMain: TfrmMain
     Left = 0
     Height = 192
     Top = 24
-    Width = 771
+    Width = 797
     Align = alTop
     BevelOuter = bvNone
     ClientHeight = 192
-    ClientWidth = 771
+    ClientWidth = 797
     TabOrder = 2
     object GroupBox1: TGroupBox
       Left = 2
       Height = 190
       Top = 0
-      Width = 765
+      Width = 791
       Align = alClient
       BorderSpacing.Left = 2
       BorderSpacing.Right = 4
       BorderSpacing.Bottom = 2
       Caption = 'uBee512'
       ClientHeight = 170
-      ClientWidth = 761
+      ClientWidth = 787
       TabOrder = 0
       object Label5: TLabel
         Left = 90
@@ -131,7 +131,7 @@ object frmMain: TfrmMain
         Left = 383
         Height = 160
         Top = 2
-        Width = 377
+        Width = 403
         ActivePage = tsDrive
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 6
@@ -141,7 +141,7 @@ object frmMain: TfrmMain
         object tsDrive: TTabSheet
           Caption = 'Drives'
           ClientHeight = 132
-          ClientWidth = 369
+          ClientWidth = 395
           object lblDiskA: TLabel
             Left = 8
             Height = 15
@@ -155,22 +155,23 @@ object frmMain: TfrmMain
           object edtDiskA: TFileNameEdit
             AnchorSideLeft.Control = lblDiskA
             AnchorSideLeft.Side = asrBottom
-            AnchorSideRight.Control = btnClearA
+            AnchorSideRight.Control = cboFormatA
             Left = 48
             Height = 23
             Top = 8
-            Width = 289
+            Width = 220
             FilterIndex = 0
             HideDirectories = False
             ButtonWidth = 23
             NumGlyphs = 1
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Left = 5
+            BorderSpacing.Right = 2
             MaxLength = 0
             TabOrder = 0
           end
           object btnClearA: TSpeedButton
-            Left = 337
+            Left = 363
             Height = 23
             Top = 8
             Width = 23
@@ -214,7 +215,7 @@ object frmMain: TfrmMain
             OnClick = btnClearAClick
           end
           object btnClearB: TSpeedButton
-            Left = 337
+            Left = 363
             Height = 23
             Top = 43
             Width = 23
@@ -258,7 +259,7 @@ object frmMain: TfrmMain
             OnClick = btnClearBClick
           end
           object btnClearC: TSpeedButton
-            Left = 337
+            Left = 363
             Height = 23
             Top = 78
             Width = 23
@@ -304,34 +305,36 @@ object frmMain: TfrmMain
           object edtDiskB: TFileNameEdit
             AnchorSideLeft.Control = lblDiskB
             AnchorSideLeft.Side = asrBottom
-            AnchorSideRight.Control = btnClearB
+            AnchorSideRight.Control = cboFormatB
             Left = 48
             Height = 23
             Top = 43
-            Width = 289
+            Width = 220
             FilterIndex = 0
             HideDirectories = False
             ButtonWidth = 23
             NumGlyphs = 1
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Left = 5
+            BorderSpacing.Right = 2
             MaxLength = 0
             TabOrder = 1
           end
           object edtDiskC: TFileNameEdit
             AnchorSideLeft.Control = lblDiskC
             AnchorSideLeft.Side = asrBottom
-            AnchorSideRight.Control = btnClearC
+            AnchorSideRight.Control = cboFormatC
             Left = 47
             Height = 23
             Top = 78
-            Width = 290
+            Width = 221
             FilterIndex = 0
             HideDirectories = False
             ButtonWidth = 23
             NumGlyphs = 1
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Left = 5
+            BorderSpacing.Right = 2
             MaxLength = 0
             TabOrder = 2
           end
@@ -355,6 +358,87 @@ object frmMain: TfrmMain
             ParentColor = False
             ParentFont = False
           end
+          object cboFormatA: TComboBox
+            AnchorSideRight.Control = btnClearA
+            Left = 270
+            Height = 23
+            Top = 8
+            Width = 91
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 2
+            ItemHeight = 15
+            Items.Strings = (
+              'rcpmfs/ds80'
+              'ds40'
+              'ds401'
+              'ds40s'
+              'ds80'
+              'ds801'
+              'ds82'
+              'ds84'
+              'ds8b'
+              'hs350'
+              'hs525'
+              'ss40s'
+              'ss80'
+            )
+            TabOrder = 3
+            Text = 'Format?'
+          end
+          object cboFormatB: TComboBox
+            AnchorSideRight.Control = btnClearB
+            Left = 270
+            Height = 23
+            Top = 43
+            Width = 91
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 2
+            ItemHeight = 15
+            Items.Strings = (
+              'rcpmfs/ds80'
+              'ds40'
+              'ds401'
+              'ds40s'
+              'ds80'
+              'ds801'
+              'ds82'
+              'ds84'
+              'ds8b'
+              'hs350'
+              'hs525'
+              'ss40s'
+              'ss80'
+            )
+            TabOrder = 4
+            Text = 'Format?'
+          end
+          object cboFormatC: TComboBox
+            AnchorSideRight.Control = btnClearC
+            Left = 270
+            Height = 23
+            Top = 78
+            Width = 91
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 2
+            ItemHeight = 15
+            Items.Strings = (
+              'rcpmfs/ds80'
+              'ds40'
+              'ds401'
+              'ds40s'
+              'ds80'
+              'ds801'
+              'ds82'
+              'ds84'
+              'ds8b'
+              'hs350'
+              'hs525'
+              'ss40s'
+              'ss80'
+            )
+            TabOrder = 5
+            Text = 'Format?'
+          end
         end
         object tsROMs: TTabSheet
           Caption = 'ROMs'
@@ -362,7 +446,7 @@ object frmMain: TfrmMain
         object TabSheet3: TTabSheet
           Caption = 'Peripherals'
           ClientHeight = 132
-          ClientWidth = 369
+          ClientWidth = 395
           object lblPP: TLabel
             Left = 8
             Height = 37
@@ -382,7 +466,7 @@ object frmMain: TfrmMain
             Left = 62
             Height = 23
             Top = 8
-            Width = 291
+            Width = 317
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Left = 5
             ItemHeight = 15
@@ -423,27 +507,27 @@ object frmMain: TfrmMain
     Left = 218
     Height = 581
     Top = 216
-    Width = 553
+    Width = 579
     Align = alClient
     BevelOuter = bvNone
     ClientHeight = 581
-    ClientWidth = 553
+    ClientWidth = 579
     TabOrder = 3
     object pnldskFiles: TPanel
       Left = 0
       Height = 175
       Top = 0
-      Width = 553
+      Width = 579
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 175
-      ClientWidth = 553
+      ClientWidth = 579
       TabOrder = 0
       object ToolBar1: TToolBar
         Left = 0
         Height = 26
         Top = 0
-        Width = 553
+        Width = 579
         Caption = 'ToolBar1'
         Images = ilMain
         List = True
@@ -516,7 +600,7 @@ object frmMain: TfrmMain
         Left = 0
         Height = 149
         Top = 26
-        Width = 553
+        Width = 579
         Align = alClient
         Columns = <        
           item
@@ -552,7 +636,7 @@ object frmMain: TfrmMain
       Left = 0
       Height = 5
       Top = 175
-      Width = 553
+      Width = 579
       Align = alTop
       ResizeAnchor = akTop
     end
@@ -560,7 +644,7 @@ object frmMain: TfrmMain
       Left = 0
       Height = 401
       Top = 180
-      Width = 553
+      Width = 579
       ActivePage = tsFiles
       Align = alClient
       TabIndex = 0
@@ -568,12 +652,12 @@ object frmMain: TfrmMain
       object tsFiles: TTabSheet
         Caption = 'Files in Disk'
         ClientHeight = 373
-        ClientWidth = 545
+        ClientWidth = 571
         object lvcpmtoolsFiles: TListView
           Left = 0
           Height = 373
           Top = 0
-          Width = 545
+          Width = 571
           Align = alClient
           Columns = <          
             item
@@ -610,12 +694,12 @@ object frmMain: TfrmMain
       object tsText: TTabSheet
         Caption = 'Text / Raw'
         ClientHeight = 373
-        ClientWidth = 545
+        ClientWidth = 571
         object memOutput: TMemo
           Left = 0
           Height = 373
           Top = 0
-          Width = 545
+          Width = 571
           Align = alClient
           Lines.Strings = (
             'memOutput'
@@ -631,7 +715,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 24
     Top = 0
-    Width = 771
+    Width = 797
     AutoSize = True
     Caption = 'ToolBar2'
     Images = ilMain

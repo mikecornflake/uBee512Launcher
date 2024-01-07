@@ -16,8 +16,9 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MinorVersionNr Value="2"/>
-      <BuildNr Value="204"/>
+      <MinorVersionNr Value="3"/>
+      <BuildNr Value="206"/>
+      <Attributes pvaPreRelease="True"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
