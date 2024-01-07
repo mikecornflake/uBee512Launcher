@@ -18,7 +18,6 @@ Type
     UBEE512_rc: String;
     RUNCPM_exe: String;
     CPMTOOLS_bin: String;
-    MOD_CPMTOOLS_bin: String;
     WorkingFolder: String;
 
     Procedure ValidatePaths;
@@ -37,14 +36,12 @@ Type
     btnOK: TButton;
     btnCancel: TButton;
     edtCPMTools: TDirectoryEdit;
-    edtCPMToolsModified: TDirectoryEdit;
     edtRunCPM: TFileNameEdit;
     edtuBee512exe: TFileNameEdit;
     edtuBee512rc: TFileNameEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
-    Label4: TLabel;
     Label5: TLabel;
     PageControl1: TPageControl;
     Panel1: TPanel;
@@ -94,7 +91,6 @@ Begin
   FSettings.UBEE512_rc := edtuBee512rc.Text;
   FSettings.RUNCPM_exe := edtRunCPM.Text;
   FSettings.CPMTOOLS_bin := edtCPMTools.Text;
-  FSettings.MOD_CPMTOOLS_bin := edtCPMToolsModified.Text;
 
   ModalResult := mrOk;
 End;
@@ -122,7 +118,6 @@ Begin
   edtuBee512rc.Text := FSettings.UBEE512_rc;
   edtRunCPM.Text := FSettings.RUNCPM_exe;
   edtCPMTools.Text := FSettings.CPMTOOLS_bin;
-  edtCPMToolsModified.Text := FSettings.MOD_CPMTOOLS_bin;
 End;
 
 
@@ -136,7 +131,6 @@ Begin
     UBEE512_rc := TSettings(Source).UBEE512_rc;
     RUNCPM_exe := TSettings(Source).RUNCPM_exe;
     CPMTOOLS_bin := TSettings(Source).CPMTOOLS_bin;
-    MOD_CPMTOOLS_bin := TSettings(Source).MOD_CPMTOOLS_bin;
     WorkingFolder := TSettings(Source).WorkingFolder;
   End;
 End;
@@ -149,7 +143,6 @@ Begin
   UBEE512_rc := AInifile.ReadString('Locations', 'uBee512rc', uBee512.rc);
   RUNCPM_exe := AInifile.ReadString('Locations', 'RunCPM', '');
   CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', '');
-  MOD_CPMTOOLS_bin := AInifile.ReadString('Locations', 'Modified_cpmtools', cpmtoolsPath);
   WorkingFolder := IncludeSlash(AInifile.ReadString('Locations', 'Working',
     ExtractFilePath(Application.ExeName)));
 
@@ -166,7 +159,6 @@ Begin
   AInifile.WriteString('Locations', 'uBee512rc', UBEE512_rc);
   AInifile.WriteString('Locations', 'RunCPM', RUNCPM_exe);
   AInifile.WriteString('Locations', 'cpmtools', CPMTOOLS_bin);
-  AInifile.WriteString('Locations', 'Modified_cpmtools', MOD_CPMTOOLS_bin);
   AInifile.WriteString('Locations', 'Working', WorkingFolder);
 End;
 
@@ -179,7 +171,6 @@ Begin
 
   // One of these will be right
   CPMTOOLS_bin := cpmtoolsPath;
-  MOD_CPMTOOLS_bin := cpmtoolsPath;
 
   UBEE512_exe := uBee512.exe;
   UBEE512_rc := uBee512.rc;
@@ -195,13 +186,6 @@ Begin
     SetcpmtoolsPath(CPMTOOLS_bin)
   Else
     CPMTOOLS_bin := '';
-
-  // Looks like duplication of code above, but is ensuring cpmtools is using the
-  // modified where available
-  If DirectoryExists(MOD_CPMTOOLS_bin) Then
-    SetcpmtoolsPath(MOD_CPMTOOLS_bin)
-  Else
-    MOD_CPMTOOLS_bin := '';
 
   If FileExists(UBEE512_exe) Then
     uBee512.exe := UBEE512_exe

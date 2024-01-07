@@ -27,30 +27,20 @@ object frmSettings: TfrmSettings
       Caption = 'Locations'
       ClientHeight = 263
       ClientWidth = 302
-      object Label4: TLabel
-        Left = 12
-        Height = 15
-        Top = 202
-        Width = 133
-        Caption = 'uBee patched CPMTools'
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
-      end
       object Label3: TLabel
-        Left = 11
+        Left = 10
         Height = 15
-        Top = 152
-        Width = 236
-        Caption = 'http://www.moria.de/~michael/cpmtools/'
+        Top = 193
+        Width = 88
+        Caption = 'cpmtools folder'
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
       end
       object edtRunCPM: TFileNameEdit
-        Left = 12
+        Left = 10
         Height = 23
-        Top = 119
+        Top = 148
         Width = 277
         FileName = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
         DialogTitle = 'RunCPM'
@@ -64,9 +54,9 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
       end
       object Label2: TLabel
-        Left = 12
+        Left = 10
         Height = 15
-        Top = 102
+        Top = 131
         Width = 114
         Caption = 'RunCPM Executable:'
         Font.Style = [fsBold]
@@ -74,10 +64,10 @@ object frmSettings: TfrmSettings
         ParentFont = False
       end
       object edtuBee512exe: TFileNameEdit
-        Left = 13
+        Left = 10
         Height = 23
-        Top = 22
-        Width = 277
+        Top = 24
+        Width = 279
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         DialogTitle = 'ubee512 executable'
         FilterIndex = 0
@@ -90,9 +80,9 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
       end
       object Label1: TLabel
-        Left = 12
+        Left = 10
         Height = 15
-        Top = 5
+        Top = 7
         Width = 117
         Caption = 'uBee512 Executable:'
         Font.Style = [fsBold]
@@ -100,9 +90,9 @@ object frmSettings: TfrmSettings
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 12
+        Left = 10
         Height = 15
-        Top = 54
+        Top = 69
         Width = 137
         Caption = 'uBee512rc (settings file)'
         Font.Style = [fsBold]
@@ -110,9 +100,9 @@ object frmSettings: TfrmSettings
         ParentFont = False
       end
       object edtuBee512rc: TFileNameEdit
-        Left = 11
+        Left = 10
         Height = 23
-        Top = 71
+        Top = 86
         Width = 277
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         DialogTitle = 'ubee512 Setting File'
@@ -126,10 +116,10 @@ object frmSettings: TfrmSettings
         Text = 'B:\Drives\Microbee\ubee512\ubee512.exe'
       end
       object edtCPMTools: TDirectoryEdit
-        Left = 11
+        Left = 10
         Height = 23
-        Top = 169
-        Width = 279
+        Top = 210
+        Width = 277
         Directory = 'B:\Drives\CPM\cpmtools'
         DialogTitle = 'cpmtools'
         DialogOptions = [ofFileMustExist, ofEnableSizing, ofViewDetail]
@@ -140,21 +130,6 @@ object frmSettings: TfrmSettings
         MaxLength = 0
         TabOrder = 3
         Text = 'B:\Drives\CPM\cpmtools'
-      end
-      object edtCPMToolsModified: TDirectoryEdit
-        Left = 12
-        Height = 23
-        Top = 218
-        Width = 279
-        Directory = 'B:\Drives\Microbee\cpmtools-2.10\tools'
-        DialogTitle = 'uBee patched CPMTools'
-        ShowHidden = False
-        ButtonWidth = 23
-        NumGlyphs = 1
-        Anchors = [akTop, akLeft, akRight]
-        MaxLength = 0
-        TabOrder = 4
-        Text = 'B:\Drives\Microbee\cpmtools-2.10\tools'
       end
     end
   end
