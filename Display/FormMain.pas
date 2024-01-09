@@ -131,6 +131,10 @@ Uses
 
   {$R *.lfm}
 
+Const
+  DSK_ICO = 9;
+  TXT_ICO = 10;
+
 { TfrmMain }
 
 Procedure TfrmMain.FormCreate(Sender: TObject);
@@ -369,7 +373,7 @@ Procedure TfrmMain.tvFoldersChange(Sender: TObject; Node: TTreeNode);
 Var
   oSearchRec: TSearchRec;
   oListItem: TListItem;
-  bBoot: Boolean;
+  bBoot, bIsDisk, bIsText: Boolean;
   sExt: Rawbytestring;
 Begin
   If Not FLoadingDSK Then
@@ -395,7 +399,9 @@ Begin
               (oSearchRec.Name <> '') Then
             Begin
               sExt := Lowercase(ExtractFileExt(oSearchRec.Name));
-              bBoot := (sExt = '.dsk') And (IsCPMBootableFile(FWorkingDir + oSearchRec.Name));
+              bIsDisk := ubee512.IsDisk(sExt) Or cpmtoolsIsDisk(sExt);
+              bIsText := IsTextfile(sExt);
+              bBoot := bIsDisk And (IsCPMBootableFile(FWorkingDir + oSearchRec.Name));
 
               oListItem := lvcpmtoolsWorkingFolder.Items.Add;
               oListItem.Caption := ExtractFileNameWithoutExt(oSearchRec.Name);
@@ -403,6 +409,11 @@ Begin
               oListItem.SubItems.Add(BOOLEAN_YES_NO[bBoot]);
               oListItem.SubItems.Add(Format('%.1f', [oSearchRec.Size / 1024]));
               oListItem.SubItems.Add(DateTimeToStr(oSearchRec.TimeStamp));
+
+              If bIsDisk Then
+                oListItem.ImageIndex := DSK_ICO
+              Else If bIsText Then
+                oListItem.ImageIndex := TXT_ICO;
             End;
           Until FindNext(oSearchRec) <> 0;
 
@@ -543,7 +554,7 @@ Begin
 End;
 
 Procedure TfrmMain.SetSelectedDisk(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
-var
+Var
   sFormat: String;
   iFormat: Integer;
 Begin
@@ -552,16 +563,16 @@ Begin
   sFormat := 'rcpmfs/ds80';
   iFormat := AFormatCombo.Items.IndexOf(sFormat);
 
-  if iFormat>=0 Then
+  If iFormat >= 0 Then
     AFormatCombo.ItemIndex := iFormat
   Else
     AFormatCombo.Text := sFormat;
 
   RefreshUI;
-end;
+End;
 
 Procedure TfrmMain.SetSelectedFolder(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
-var
+Var
   sFormat: String;
   iFormat: Integer;
 Begin
@@ -571,13 +582,13 @@ Begin
   sFormat := DSKFormat(AFilenameEdit.Text);
   iFormat := AFormatCombo.Items.IndexOf(sFormat);
 
-  if iFormat>=0 Then
+  If iFormat >= 0 Then
     AFormatCombo.ItemIndex := iFormat
   Else
     AFormatCombo.Text := sFormat;
 
   RefreshUI;
-end;
+End;
 
 Procedure TfrmMain.btnAddDSKtoAClick(Sender: TObject);
 Begin
