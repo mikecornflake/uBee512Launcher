@@ -71,10 +71,11 @@
 + ![Image: System Macros](Images/Development_Screenshot_1.png)
 
 # Acknowledgements
-+ **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee** contactable on the MSPP forum (https://www.microbee-mspp.org.au/forum/).  Kudo's, uBee developed a very flexible emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
-+ Original **UBEE512**, **UBEEDISK** & patch for **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
-+ Original **CPMTools** (now up to 2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/
-+ Where the above tools access DSK files, they do so using **libdsk**: https://www.seasip.info/Unix/LibDsk/.  **LibDsk** doesn't have support for the Microbee Disk Formats, and this is why the patch for **CPMTools** exists.  It's actually **libdsk** that's been patched and **CPMtools** rebuilt with the updated library.
++ User **uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
++ **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.
++ **UBEE512**, **UBEEDISK** & patch for **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
++ Original **CPMTools** (2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/.  This doesn't support most Microbee disk formats.
++ Where the above tools access DSK files, they do so using **libdsk** either directly (**CPMTools**) or optionally (**UBEE512**) : https://www.seasip.info/Unix/LibDsk/.  
 + **UBEE512** has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
 + **RunCPM** can be obtained from: https://github.com/MockbaTheBorg/RunCPM
 + Prebuilt **Lazarus/fpc** can be obtained from: https://sourceforge.net/projects/lazarus/files/

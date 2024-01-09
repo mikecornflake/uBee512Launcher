@@ -14,6 +14,8 @@ Procedure LaunchDocument(sFilename: String);
 Function Run(sCommandLine: String): String;
 Function RunEx(sCommandLine: String; oParamaters: TStrings = nil;
   bRedirectErr: Boolean = False; ARunExCallback: TNotifyEvent = nil): String;
+Function RunEx(sCommandLine: String; arrParameters: Array Of String;
+  bRedirectErr: Boolean = False; ARunExCallback: TNotifyEvent = nil): String;
 
 Procedure SetBusy;
 Procedure ClearBusy;
@@ -190,6 +192,23 @@ Begin
     End;
   Finally
     oStream.Free;
+  End;
+End;
+
+Function RunEx(sCommandLine: String; arrParameters: Array Of String;
+  bRedirectErr: Boolean; ARunExCallback: TNotifyEvent): String;
+Var
+  slParameters: TStringList;
+  s: String;
+Begin
+  slParameters := TStringList.Create;
+  Try
+    For s In arrParameters Do
+      slParameters.Add(s);
+
+    Result := RunEx(sCommandLine, slParameters, bRedirectErr, ARunExCallback);
+  Finally
+    slParameters.Free;
   End;
 End;
 

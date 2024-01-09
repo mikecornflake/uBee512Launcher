@@ -51,6 +51,7 @@ Type
     Procedure SetRC(AValue: String);
 
 
+
   Public
     Constructor Create;
     Destructor Destroy; Override;
@@ -65,6 +66,7 @@ Type
     Function ModelsByType(AMbeeType: TMbeeType): String;
     Function Titles(AModel: String): String; // comma separated
     Function MbeeType(AModel: String): TMbeeType;
+    Function IsDisk(AExt: String): Boolean;
 
     Property Exe: String read GetExe write SetExe;
     Property RC: String read GetRC write SetRC;
@@ -487,6 +489,16 @@ Begin
       Result := oModel.MbeeType;
       Break;
     End;
+End;
+
+Function TuBee512.IsDisk(AExt: String): Boolean;
+Var
+  sExt: String;
+Begin
+  // TODO Implement uBee512 supported formats
+  sExt := Lowercase(Trim(AExt));
+
+  Result := (sExt = '.dsk');
 End;
 
 Initialization

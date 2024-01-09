@@ -11,6 +11,7 @@ Function cpmtoolsAvailable: Boolean;
 Function cpmtoolsPath: String;
 Procedure SetcpmtoolsPath(AValue: String);
 Procedure Initializecpmtools;
+Function cpmtoolsIsDisk(AExt: String): Boolean;
 
 Function cpmtoolsLS(AFilename: String; Var ARawOutput: String): String;
 Function cpmtoolsLS(AFilename: String): String;
@@ -73,9 +74,19 @@ Begin
   Debug('detected cpmtools=' + FPath);
 End;
 
+Function cpmtoolsIsDisk(AExt: String): Boolean;
+Var
+  sExt: String;
+Begin
+  // TODO Find out how to determine which file extensions cpmtools supports
+  sExt := Lowercase(Trim(AExt));
+
+  Result := (sExt = '.dsk');
+End;
+
 Function cpmtoolsLS(AFilename: String; Var ARawOutput: String): String;
 Var
-  sCommand, sDSK, sTemp, sUser: String;
+  sCommand, sDSK, sTemp, sUser, sDebug: String;
   slTemp: TStringList;
   i: Integer;
 
@@ -100,13 +111,14 @@ Begin
     Debug('cpmtoolsLS');
     sDSK := DSKFormat(AFilename);
 
-    sCommand := Format('"%scpmls%s" -l -f %s "%s"', [IncludeSlash(FPath),
+    sCommand := Format('%scpmls%s', [IncludeSlash(FPath), GetExeExt]);
+    sDebug := Format('"%scpmls%s" -l -f %s -T dsk "%s"', [IncludeSlash(FPath),
       GetExeExt, sDSK, AFilename]);
-    Debug(sCommand);
-    sTemp := RunEx(sCommand, nil, True);
+    Debug(sDebug);
+    sTemp := RunEx(sCommand, ['-l', '-f', sDSK, '-T', 'dsk', AFilename], True, nil);
     Debug(LineEnding + sTemp);
 
-    ARawOutput := '>' + sCommand + sLineBreak + sTemp;
+    ARawOutput := '>' + sDebug + sLineBreak + sTemp;
 
     slTemp := TStringList.Create;
     Try
@@ -134,12 +146,12 @@ Begin
       End;
 
       // Remove junk files
-      For i := slTemp.Count - 1 Downto 0 Do
-      Begin
-        sTemp := Trim(slTemp[i]);
-        If (sTemp = '') Or (Not HasFile(sTemp)) Then
-          slTemp.Delete(i);
-      End;
+      //For i := slTemp.Count - 1 Downto 0 Do
+      //Begin
+      //  sTemp := Trim(slTemp[i]);
+      //  If (sTemp = '') Or (Not HasFile(sTemp)) Then
+      //    slTemp.Delete(i);
+      //End;
 
       Result := slTemp.Text;
     Finally
