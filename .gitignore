@@ -1,0 +1,9 @@
+lib/x86_64-darwin/*.*
+uBee512Launcher.app/*.*
+uBee512Launcher.app/Contents/*.*
+uBee512Launcher.app/Contents/MacOS/*.*
+uBee512Launcher.app/Contents/MacOS/uBee512Launcher
+uBee512Launcher.app/Contents/PkgInfo
+uBee512Launcher
+uBee512Launcher.lps
+.DS_Store
