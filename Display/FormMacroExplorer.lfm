@@ -133,5 +133,14 @@ object frmMacroExplorer: TfrmMacroExplorer
       ModalResult = 2
       TabOrder = 1
     end
+    object btnValidate: TButton
+      Left = 4
+      Height = 25
+      Top = 5
+      Width = 75
+      Caption = 'Validate'
+      OnClick = btnValidateClick
+      TabOrder = 2
+    end
   end
 end

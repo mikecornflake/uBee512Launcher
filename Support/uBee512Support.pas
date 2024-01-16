@@ -49,9 +49,6 @@ Type
     Procedure LoadRC;
     Function GetRC: String;
     Procedure SetRC(AValue: String);
-
-
-
   Public
     Constructor Create;
     Destructor Destroy; Override;

@@ -15,6 +15,7 @@ Type
   TfrmMacroExplorer = Class(TForm)
     btnCancel: TButton;
     btnOK: TButton;
+    btnValidate: TButton;
     lvSystemMacros: TListView;
     memRC: TMemo;
     memSystems: TMemo;
@@ -23,6 +24,7 @@ Type
     Splitter1: TSplitter;
     tsMacros: TTabSheet;
     tsRC: TTabSheet;
+    procedure btnValidateClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure lvSystemMacrosDblClick(Sender: TObject);
@@ -42,7 +44,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, OSSupport;
+  FormMain, uBee512Support, OSSupport, Logging;
 
 {$R *.lfm}
 
@@ -57,6 +59,14 @@ Begin
   If Not Factivated Then
     FActivated := True;
 End;
+
+procedure TfrmMacroExplorer.btnValidateClick(Sender: TObject);
+begin
+  frmMain.Validators.Process;
+
+  // TODO - This deserves it's own UI
+  Debug(frmMain.Validators.Outcome);
+end;
 
 Procedure TfrmMacroExplorer.lvSystemMacrosDblClick(Sender: TObject);
 Begin

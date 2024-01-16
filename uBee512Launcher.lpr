@@ -8,7 +8,7 @@ Uses {$IFDEF UNIX}
   Interfaces, // this includes the LCL widgetset
   Forms, FormMain, CPMSupport, cpmtoolsSupport, StringSupport, FileSupport,
   OSSupport, FormSettings, uBee512Support, FormMacroExplorer, Logging, 
-FormDebug { you can add units after this };
+FormDebug, Validators { you can add units after this };
 
 {$R *.res}
 

@@ -7,7 +7,7 @@ Interface
 Uses
   Classes, SysUtils, Types, Forms, Controls, Graphics, Dialogs, ComCtrls,
   EditBtn, StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
-  FormSettings, Logging;
+  FormSettings, Logging, Validators;
 
 Type
 
@@ -108,6 +108,7 @@ Type
     FWorkingDir: String;
 
     FLog: TLog;
+    FValidators: TValidators;
 
     Procedure LoadRC;
     Procedure LoadSettings;
@@ -118,6 +119,8 @@ Type
     Procedure SetMacroCombo(ACombo: TComboBox; AValue: String);
     Procedure SetSelectedDisk(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
     Procedure SetSelectedFolder(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
+  Public
+    Property Validators: TValidators read FValidators;
   End;
 
 Var
@@ -146,6 +149,10 @@ Begin
   FLog := TLog.Create(ChangeFileExt(Application.Exename, '.log'));
   Debug(LineEnding + '-----------------------');
 
+  FValidators := TValidators.Create(True);
+  // TODO - DO this properly, handle the registration inside Validators.pas
+  FValidators.Add(TSystemMacroValidator.Create);
+
   Debug(Application.ExeName);
 End;
 
@@ -164,6 +171,8 @@ Begin
   SaveSettings;
 
   FreeAndNil(FSettings);
+  FreeAndNil(FValidators);
+  FreeAndNil(FLog);
 End;
 
 Procedure TfrmMain.mnuAboutClick(Sender: TObject);
@@ -362,7 +371,7 @@ Begin
         cboModel.ItemIndex := iPrev
       Else
         cboModel.ItemIndex := 0;
-      cboModelChange(Self);
+      cboModel.OnChange(Self);
     End;
   Finally
     FLog.DecIndent;
