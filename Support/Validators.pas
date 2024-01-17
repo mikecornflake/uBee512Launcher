@@ -20,7 +20,7 @@ Type
   Public
     Constructor Create; Virtual;
 
-    Procedure Process; Virtual;
+    Procedure Process(ATarget: TObject); Virtual;
 
     Property DisplayName: String read FDisplayname;
     Property Description: String read FDescription;
@@ -32,10 +32,13 @@ Type
   { TValidators }
 
   TValidators = Class(Specialize TObjectList<TValidator>)
+  Private
+    FValid: Boolean;
   Public
-    Procedure Process;
+    Procedure Process(ATarget: TObject);
 
     Function Outcome: String;
+    Property Valid: Boolean read FValid;
   End;
 
   { TSystemMacroValidator }
@@ -43,13 +46,13 @@ Type
   TSystemMacroValidator = Class(TValidator)
   Public
     Constructor Create; Override;
-    Procedure Process; Override;
+    Procedure Process(ATarget: TObject); Override;
   End;
 
 Implementation
 
 Uses
-  uBee512Support;
+  uBee512Support, Logging;
 
 { TSystemMacroValidator }
 
@@ -62,40 +65,46 @@ Begin
     'This performs simple checks that the required files are present';
 End;
 
-Procedure TSystemMacroValidator.Process;
+Procedure TSystemMacroValidator.Process(ATarget: TObject);
 Var
   oMacro: TSystemMacro;
   sDiskFolder: Rawbytestring;
   sDisk: String;
 Begin
-  Inherited Process;
+  Inherited Process(ATarget);
 
-  // This has moved away from the planned design.
-  // One Validator per SystemMacro please
-  FOutcome := '';
-  sDiskFolder := IncludeTrailingBackslash(ExtractFileDir(ubee512.RC)) + 'disks';
-
-  For oMacro In ubee512.SystemMacros Do
+  If Assigned(ATarget) And (ATarget Is TSystemMacro) Then
   Begin
+    // TODO: This folder works on Windows only.
+    // Need to find the folder for Linux & macOS
+    sDiskFolder := IncludeTrailingBackslash(ExtractFileDir(ubee512.RC)) + 'disks';
+    oMacro := TSystemMacro(ATarget);
+
     sDisk := oMacro.A;
     If (sDisk <> '') And DirectoryExists(sDiskFolder) And Not
       FileExists(IncludeTrailingBackslash(sDiskFolder) + sDisk) Then
     Begin
       FValid := False;
-      FOutcome := FOutcome + Format('Macro [%s]: Disk "%s" not found in "%s"',
-        [oMacro.Macro, sDisk, sDiskFolder]) + LineEnding;
+      FOutcome := Format('Disk "%s" not found in "%s"', [sDisk, sDiskFolder]);
     End;
   End;
 End;
 
 { TValidators }
 
-Procedure TValidators.Process;
+Procedure TValidators.Process(ATarget: TObject);
 Var
   oValidator: TValidator;
 Begin
+  FValid := True;
   For oValidator In Self Do
-    oValidator.Process;
+  Begin
+    oValidator.Process(ATarget);
+    FValid := FValid And oValidator.Valid;
+
+    If Not oValidator.Valid Then
+      Debug(oValidator.Outcome);
+  End;
 End;
 
 Function TValidators.Outcome: String;
@@ -123,14 +132,14 @@ Begin
 
   FDescription := '';
   FDisplayname := '';
+  FValid := True;
   FOutcome := '';
-  FValid := False;
 End;
 
-Procedure TValidator.Process;
+Procedure TValidator.Process(ATarget: TObject);
 Begin
+  FValid := True;
   FOutcome := '';
-  FValid := False;
 End;
 
 End.

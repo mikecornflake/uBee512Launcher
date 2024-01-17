@@ -15,18 +15,21 @@ Type
   TfrmMacroExplorer = Class(TForm)
     btnCancel: TButton;
     btnOK: TButton;
-    btnValidate: TButton;
     lvSystemMacros: TListView;
     memRC: TMemo;
     memSystems: TMemo;
+    memIssues: TMemo;
     Panel1: TPanel;
+    pnlBottom: TPanel;
     pcRC: TPageControl;
     Splitter1: TSplitter;
+    Splitter2: TSplitter;
     tsMacros: TTabSheet;
     tsRC: TTabSheet;
-    procedure btnValidateClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
+    Procedure lvSystemMacrosCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+      State: TCustomDrawState; Var DefaultDraw: Boolean);
     Procedure lvSystemMacrosDblClick(Sender: TObject);
     Procedure lvSystemMacrosSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   Private
@@ -44,7 +47,7 @@ Type
 Implementation
 
 Uses
-  FormMain, uBee512Support, OSSupport, Logging;
+  uBee512Support, OSSupport, Logging;
 
 {$R *.lfm}
 
@@ -52,6 +55,8 @@ Procedure TfrmMacroExplorer.FormCreate(Sender: TObject);
 Begin
   FActivated := False;
   LoadRC;
+
+  Caption := 'System Macro Explorer: '+ubee512.RC;
 End;
 
 Procedure TfrmMacroExplorer.FormActivate(Sender: TObject);
@@ -60,27 +65,42 @@ Begin
     FActivated := True;
 End;
 
-procedure TfrmMacroExplorer.btnValidateClick(Sender: TObject);
-begin
-  frmMain.Validators.Process;
-
-  // TODO - This deserves it's own UI
-  Debug(frmMain.Validators.Outcome);
-end;
-
 Procedure TfrmMacroExplorer.lvSystemMacrosDblClick(Sender: TObject);
 Begin
-  If Assigned(lvSystemMacros.Selected) Then
+  If (Assigned(lvSystemMacros.Selected)) And (btnOK.Enabled) Then
     ModalResult := mrOk;
 End;
 
 Procedure TfrmMacroExplorer.lvSystemMacrosSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
+Var
+  oMacro: TSystemMacro;
 Begin
+  btnOK.Enabled := True;
+
   If (Selected) And (Assigned(Item)) Then
-    memSystems.Lines.Text := uBee512.RCbyMacro(Item.Caption)
+  Begin
+    oMacro := uBee512.Macro(Item.Caption);
+    memSystems.Lines.Text := oMacro.RC;
+    memIssues.Lines.Text := oMacro.Validators.Outcome;
+
+    btnOK.Enabled := TSystemMacro(Item.Data).Validators.Valid;
+  End
   Else
     memSystems.Lines.Clear;
+End;
+
+Procedure TfrmMacroExplorer.lvSystemMacrosCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; Var DefaultDraw: Boolean);
+Var
+  oMacro: TSystemMacro;
+Begin
+  oMacro := TSystemMAcro(Item.Data);
+
+  If oMacro.Validators.Valid Then
+    lvSystemMacros.Canvas.Font.Color := clBlack
+  Else
+    lvSystemMacros.Canvas.Font.Color := clRed;
 End;
 
 Function TfrmMacroExplorer.GetTitle: String;
@@ -146,10 +166,14 @@ Begin
             sRam += oMacro.SRAM_File;
           oItem.SubItems.Add(sRam);
           oItem.SubItems.Add(oMacro.Description);
+
+          oMacro.Validators.Process(oMacro);
+          oItem.Data := oMacro;
         End;
     Finally
       lvSystemMacros.Items.EndUpdate;
       lvSystemMacros.AutoSize := True;
+
       ClearBusy;
     End;
   End;

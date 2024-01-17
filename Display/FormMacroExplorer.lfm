@@ -1,11 +1,11 @@
 object frmMacroExplorer: TfrmMacroExplorer
-  Left = 390
-  Height = 571
-  Top = 255
+  Left = 2414
+  Height = 605
+  Top = 239
   Width = 897
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'System Macro Explorer'
-  ClientHeight = 571
+  ClientHeight = 605
   ClientWidth = 897
   OnActivate = FormActivate
   OnCreate = FormCreate
@@ -13,7 +13,7 @@ object frmMacroExplorer: TfrmMacroExplorer
   LCLVersion = '2.2.6.0'
   object pcRC: TPageControl
     Left = 0
-    Height = 536
+    Height = 570
     Top = 0
     Width = 897
     ActivePage = tsMacros
@@ -22,11 +22,11 @@ object frmMacroExplorer: TfrmMacroExplorer
     TabOrder = 0
     object tsMacros: TTabSheet
       Caption = 'System Macros'
-      ClientHeight = 508
+      ClientHeight = 542
       ClientWidth = 889
       object lvSystemMacros: TListView
         Left = 0
-        Height = 391
+        Height = 423
         Top = 0
         Width = 889
         Align = alClient
@@ -64,6 +64,7 @@ object frmMacroExplorer: TfrmMacroExplorer
         SortType = stText
         TabOrder = 0
         ViewStyle = vsReport
+        OnCustomDrawItem = lvSystemMacrosCustomDrawItem
         OnDblClick = lvSystemMacrosDblClick
         OnSelectItem = lvSystemMacrosSelectItem
       end
@@ -71,29 +72,58 @@ object frmMacroExplorer: TfrmMacroExplorer
         Cursor = crVSplit
         Left = 0
         Height = 5
-        Top = 391
+        Top = 537
         Width = 889
         Align = alBottom
         ResizeAnchor = akBottom
       end
-      object memSystems: TMemo
+      object pnlBottom: TPanel
         Left = 0
-        Height = 112
-        Top = 396
+        Height = 114
+        Top = 423
         Width = 889
         Align = alBottom
-        ReadOnly = True
-        ScrollBars = ssAutoBoth
+        BevelOuter = bvNone
+        ClientHeight = 114
+        ClientWidth = 889
         TabOrder = 2
+        object memSystems: TMemo
+          Left = 0
+          Height = 114
+          Top = 0
+          Width = 283
+          Align = alLeft
+          ReadOnly = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 0
+        end
+        object Splitter2: TSplitter
+          Left = 283
+          Height = 114
+          Top = 0
+          Width = 5
+        end
+        object memIssues: TMemo
+          Left = 288
+          Height = 114
+          Top = 0
+          Width = 601
+          Align = alClient
+          Font.Color = clRed
+          ParentFont = False
+          ReadOnly = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 2
+        end
       end
     end
     object tsRC: TTabSheet
       Caption = 'uBee512rc'
-      ClientHeight = 508
+      ClientHeight = 542
       ClientWidth = 889
       object memRC: TMemo
         Left = 0
-        Height = 508
+        Height = 542
         Top = 0
         Width = 889
         Align = alClient
@@ -106,7 +136,7 @@ object frmMacroExplorer: TfrmMacroExplorer
   object Panel1: TPanel
     Left = 0
     Height = 35
-    Top = 536
+    Top = 570
     Width = 897
     Align = alBottom
     BevelOuter = bvNone
@@ -132,15 +162,6 @@ object frmMacroExplorer: TfrmMacroExplorer
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-    end
-    object btnValidate: TButton
-      Left = 4
-      Height = 25
-      Top = 5
-      Width = 75
-      Caption = 'Validate'
-      OnClick = btnValidateClick
-      TabOrder = 2
     end
   end
 end

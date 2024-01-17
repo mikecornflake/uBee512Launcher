@@ -5,12 +5,16 @@ Unit uBee512Support;
 Interface
 
 Uses
-  Classes, SysUtils, Generics.Collections;
+  Classes, SysUtils, Generics.Collections, Validators;
 
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
 
+  { TSystemMacro }
+
   TSystemMacro = Class
+  Private
+    FValidators: TValidators;
   Public
     Macro: String;
     Model: String;
@@ -23,6 +27,11 @@ Type
     Status: String;
     Description: String;
     RC: String;
+
+    Constructor Create;
+    Destructor Destroy; Override;
+
+    Property Validators: TValidators read FValidators;
   End;
 
   TModel = Class
@@ -49,6 +58,7 @@ Type
     Procedure LoadRC;
     Function GetRC: String;
     Procedure SetRC(AValue: String);
+  Private
   Public
     Constructor Create;
     Destructor Destroy; Override;
@@ -57,6 +67,8 @@ Type
     Function Available: Boolean;
 
     Function SystemMacros: TSystemMacros;
+    Function Macro(ASystemMacro: String): TSystemMacro;
+    Function MacroByTitle(ATitle: String): TSystemMacro;
     Function RCbyMacro(ASystemMacro: String): String;
     Function RCByTitle(ATitle: String): String;
     Function Models: String; // comma separated
@@ -88,6 +100,20 @@ Begin
     FuBee512 := TuBee512.Create;
 
   Result := FuBee512;
+End;
+
+{ TSystemMacro }
+
+Constructor TSystemMacro.Create;
+Begin
+  FValidators := TValidators.Create(True);
+  FValidators.Add(TSystemMacroValidator.Create);
+End;
+
+Destructor TSystemMacro.Destroy;
+Begin
+  FreeAndNil(FValidators);
+  Inherited Destroy;
 End;
 
   { TuBee512 }
@@ -377,15 +403,40 @@ Begin
   End;
 End;
 
+Function TuBee512.Macro(ASystemMacro: String): TSystemMacro;
+Var
+  oMacro: TSystemMacro;
+Begin
+  Result := nil;
+
+  For oMacro In FSystemMacros Do
+    If (oMacro.Macro = ASystemMacro) Then
+    Begin
+      Result := oMacro;
+      Break;
+    End;
+End;
+
 Function TuBee512.RCbyMacro(ASystemMacro: String): String;
 Var
   oMacro: TSystemMacro;
 Begin
   Result := '';
+  oMacro := Macro(ASystemMacro);
+  If Assigned(oMacro) Then
+    Result := oMacro.RC;
+End;
+
+Function TuBee512.MacroByTitle(ATitle: String): TSystemMacro;
+Var
+  oMacro: TSystemMacro;
+Begin
+  Result := nil;
+
   For oMacro In FSystemMacros Do
-    If (oMacro.Macro = ASystemMacro) Then
+    If (oMacro.Title = ATitle) Then
     Begin
-      Result := oMacro.RC;
+      Result := oMacro;
       Break;
     End;
 End;
@@ -395,12 +446,10 @@ Var
   oMacro: TSystemMacro;
 Begin
   Result := '';
-  For oMacro In FSystemMacros Do
-    If (oMacro.Title = ATitle) Then
-    Begin
-      Result := oMacro.RC;
-      Break;
-    End;
+
+  oMacro := MacroByTitle(ATitle);
+  If Assigned(oMacro) Then
+    Result := oMacro.RC;
 End;
 
 // Return a comma seperated sorted list of Microbee Models defined in the uBee512RC
