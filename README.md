@@ -5,7 +5,7 @@
 + ubee512Launcher instead allows inexperienced users (me) to easily view & select the available emulated systems defined in the setting file (and there's a lot of them)
 + Yeah, it's also for users (again, me) who are more comfortable with UI than command line.
 
-## Release v0.2 (beta)
+## Release v0.3 (beta)
 + First beta release, lots to do yet
 + [Link to precompiled binaries](bin)
 + To use:
@@ -32,9 +32,13 @@
 + Contents of DSK listed using either original **CPMtools** or patched **CPMTools** (allows for Microbee specific formats)
 + Parses ubee512rc to build up System Macros, uses these in Main Form & Macro Explorer
 + I know there looks like a lot of macros defined in ubee512.  Err, I'm currently filtering out about half - the ones I haven't researched
++ Framework for Validators added.  Currently only implemented SystemMacroValidator, and only checking Disks using the folder location on Windows (ie won't work on Linux or macOS), but what's added was about proviing the validator design
 
 # TODO
 ## Short term
++ Expand Validator to RAM/ROM/SRAM (does the file using the appropriate flag exist)
++ Expand Validator to MODELS (does the minimum appropriate ROM for this model exist)
++ Fix Validator search path on Linux/macOS
 + Report which System Macros are usable (ROMs, DSKs, SRAM in correct folders)
 + Add awareness of **RunCPM** folder structure
 
