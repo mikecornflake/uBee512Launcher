@@ -32,17 +32,16 @@
 + Contents of DSK listed using either original **CPMtools** or patched **CPMTools** (allows for Microbee specific formats)
 + Parses ubee512rc to build up System Macros, uses these in Main Form & Macro Explorer
 + I know there looks like a lot of macros defined in ubee512.  Err, I'm currently filtering out about half - the ones I haven't researched
-+ Framework for Validators added.  Currently only implemented SystemMacroValidator, and only checking Disks using the folder location on Windows (ie won't work on Linux or macOS), but what's added was about proviing the validator design
++ Framework for Validators added.  Decent checks on SRAM, Disks, Tapes.
 
 # TODO
 ## Short term
-+ Expand Validator to RAM/ROM/SRAM (does the file using the appropriate flag exist)
-+ Expand Validator to MODELS (does the minimum appropriate ROM for this model exist)
-+ Fix Validator search path on Linux/macOS
-+ Report which System Macros are usable (ROMs, DSKs, SRAM in correct folders)
++ Expand Validator to PAK/ROM
++ Prevent selection of invalid macros in main form (hide entirely?)
 + Add awareness of **RunCPM** folder structure
 
 ## Medium term
++ Add support for non libdsk file formats
 + Continue to add support for working with DSK files prior to running in a CP/M system
   + Create blank DSK
   + DSK To/From folder (inc To/From **RunCPM** folder)
