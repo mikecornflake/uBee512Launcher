@@ -16,8 +16,8 @@ object frmMain: TfrmMain
   LCLVersion = '2.2.6.0'
   object tvFolders: TShellTreeView
     Left = 0
-    Height = 581
-    Top = 216
+    Height = 557
+    Top = 240
     Width = 213
     Align = alLeft
     FileSortType = fstAlphabet
@@ -29,23 +29,23 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 213
-    Height = 581
-    Top = 216
+    Height = 557
+    Top = 240
     Width = 5
   end
   object pnluBee512: TPanel
     Left = 0
-    Height = 192
+    Height = 216
     Top = 24
     Width = 797
     Align = alTop
     BevelOuter = bvNone
-    ClientHeight = 192
+    ClientHeight = 216
     ClientWidth = 797
     TabOrder = 2
     object GroupBox1: TGroupBox
       Left = 2
-      Height = 190
+      Height = 214
       Top = 0
       Width = 791
       Align = alClient
@@ -53,7 +53,7 @@ object frmMain: TfrmMain
       BorderSpacing.Right = 4
       BorderSpacing.Bottom = 2
       Caption = 'uBee512'
-      ClientHeight = 170
+      ClientHeight = 194
       ClientWidth = 787
       TabOrder = 0
       object Label5: TLabel
@@ -108,16 +108,18 @@ object frmMain: TfrmMain
         AnchorSideBottom.Side = asrBottom
         Left = 344
         Height = 23
+        Hint = 'Launch System Macro Explorer'
         Top = 21
         Width = 33
         Anchors = [akTop, akLeft, akRight, akBottom]
-        Caption = '...'
+        Images = ilMain
+        ImageIndex = 11
         OnClick = btnExplorerClick
         TabOrder = 2
       end
       object memRC: TMemo
         Left = 8
-        Height = 109
+        Height = 131
         Top = 53
         Width = 369
         ReadOnly = True
@@ -129,7 +131,7 @@ object frmMain: TfrmMain
         AnchorSideLeft.Control = memRC
         AnchorSideLeft.Side = asrBottom
         Left = 383
-        Height = 160
+        Height = 184
         Top = 2
         Width = 403
         ActivePage = tsDrive
@@ -140,7 +142,7 @@ object frmMain: TfrmMain
         TabOrder = 4
         object tsDrive: TTabSheet
           Caption = 'Drives'
-          ClientHeight = 132
+          ClientHeight = 156
           ClientWidth = 395
           object lblDiskA: TLabel
             Left = 8
@@ -445,7 +447,7 @@ object frmMain: TfrmMain
         end
         object TabSheet3: TTabSheet
           Caption = 'Peripherals'
-          ClientHeight = 132
+          ClientHeight = 156
           ClientWidth = 395
           object lblPP: TLabel
             Left = 8
@@ -505,12 +507,12 @@ object frmMain: TfrmMain
   end
   object pnlCPMToolsMain: TPanel
     Left = 218
-    Height = 581
-    Top = 216
+    Height = 557
+    Top = 240
     Width = 579
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 581
+    ClientHeight = 557
     ClientWidth = 579
     TabOrder = 3
     object pnldskFiles: TPanel
@@ -643,7 +645,7 @@ object frmMain: TfrmMain
     end
     object pcPreview: TPageControl
       Left = 0
-      Height = 401
+      Height = 377
       Top = 180
       Width = 579
       ActivePage = tsFiles
@@ -652,11 +654,11 @@ object frmMain: TfrmMain
       TabOrder = 2
       object tsFiles: TTabSheet
         Caption = 'Files in Disk'
-        ClientHeight = 373
+        ClientHeight = 349
         ClientWidth = 571
         object lvcpmtoolsFiles: TListView
           Left = 0
-          Height = 373
+          Height = 349
           Top = 0
           Width = 571
           Align = alClient
@@ -694,11 +696,11 @@ object frmMain: TfrmMain
       end
       object tsText: TTabSheet
         Caption = 'Text / Raw'
-        ClientHeight = 373
+        ClientHeight = 349
         ClientWidth = 571
         object memOutput: TMemo
           Left = 0
-          Height = 373
+          Height = 349
           Top = 0
           Width = 571
           Align = alClient
@@ -771,8 +773,24 @@ object frmMain: TfrmMain
       Left = 284
       Height = 22
       Top = 2
+      AutoSize = True
       Caption = 'ToolButton6'
       Style = tbsSeparator
+    end
+    object btnTest: TToolButton
+      Left = 368
+      Top = 2
+      Caption = 'Test'
+      OnClick = btnTestClick
+      Visible = False
+    end
+    object ToolButton7: TToolButton
+      Left = 360
+      Height = 22
+      Top = 2
+      Caption = 'ToolButton7'
+      Style = tbsSeparator
+      Visible = False
     end
   end
   object MainMenu1: TMainMenu

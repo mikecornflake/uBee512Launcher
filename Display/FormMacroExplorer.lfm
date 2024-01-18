@@ -72,7 +72,7 @@ object frmMacroExplorer: TfrmMacroExplorer
         Cursor = crVSplit
         Left = 0
         Height = 5
-        Top = 537
+        Top = 423
         Width = 889
         Align = alBottom
         ResizeAnchor = akBottom
@@ -80,7 +80,7 @@ object frmMacroExplorer: TfrmMacroExplorer
       object pnlBottom: TPanel
         Left = 0
         Height = 114
-        Top = 423
+        Top = 428
         Width = 889
         Align = alBottom
         BevelOuter = bvNone
@@ -91,23 +91,24 @@ object frmMacroExplorer: TfrmMacroExplorer
           Left = 0
           Height = 114
           Top = 0
-          Width = 283
+          Width = 323
           Align = alLeft
           ReadOnly = True
           ScrollBars = ssAutoBoth
           TabOrder = 0
+          WordWrap = False
         end
         object Splitter2: TSplitter
-          Left = 283
+          Left = 323
           Height = 114
           Top = 0
           Width = 5
         end
         object memIssues: TMemo
-          Left = 288
+          Left = 328
           Height = 114
           Top = 0
-          Width = 601
+          Width = 561
           Align = alClient
           Font.Color = clRed
           ParentFont = False

@@ -65,6 +65,8 @@ Type
     btnDebug: TToolButton;
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
+    btnTest: TToolButton;
+    ToolButton7: TToolButton;
     tsDrive: TTabSheet;
     tsROMs: TTabSheet;
     TabSheet3: TTabSheet;
@@ -90,6 +92,7 @@ Type
     Procedure btnClearCClick(Sender: TObject);
     Procedure btnExplorerClick(Sender: TObject);
     Procedure btnLaunchuBee512Click(Sender: TObject);
+    Procedure btnTestClick(Sender: TObject);
     Procedure cboModelChange(Sender: TObject);
     Procedure cboTitleChange(Sender: TObject);
     Procedure cboTypeChange(Sender: TObject);
@@ -672,9 +675,28 @@ Begin
 End;
 
 Procedure TfrmMain.cboTitleChange(Sender: TObject);
+Var
+  oMacro: TSystemMacro;
+  sRC: String;
 Begin
-  memRC.Lines.Text := uBee512.RCByTitle(cboTitle.Text);
-  cboTitle.Hint := cboTitle.Text;
+  oMacro := ubee512.MacroByTitle(cboTitle.Text);
+  sRC := '# ' + oMacro.Description + LineEnding;
+  sRC += '[' + oMacro.Macro + ']' + LineEnding;
+  sRC += oMacro.RC;
+
+  memRC.Lines.Text := sRC;
+
+  edtDiskA.Enabled := (Trim(oMacro.A) = '');
+  edtDiskB.Enabled := (Trim(oMacro.B) = '');
+  edtDiskC.Enabled := (Trim(oMacro.C) = '');
+
+  cboFormatA.Enabled := edtDiskA.Enabled;
+  cboFormatB.Enabled := edtDiskB.Enabled;
+  cboFormatC.Enabled := edtDiskC.Enabled;
+
+  btnClearA.Enabled := edtDiskA.Enabled;
+  btnClearB.Enabled := edtDiskB.Enabled;
+  btnClearC.Enabled := edtDiskC.Enabled;
 End;
 
 Procedure TfrmMain.btnLaunchuBee512Click(Sender: TObject);
@@ -703,6 +725,7 @@ Var
   sCommand, sResult, sDebug, s: String;
   bHasA: Boolean;
   slParams: TStringList;
+  oMacro: TSystemMacro;
 
   Function AddDriveToCommand(ADrive: String; AEdit: TFilenameEdit; ACombo: TComboBox): Boolean;
   Var
@@ -710,28 +733,34 @@ Var
   Begin
     Result := False;
 
-    sFormat := DriveAsParam(AEdit, ACombo);
-    If sFormat <> '' Then
+    If AEdit.Enabled Then
     Begin
-      If Pos('--type=rcpmfs', sFormat) > 0 Then
+      sFormat := DriveAsParam(AEdit, ACombo);
+      If sFormat <> '' Then
       Begin
-        slParams.Add(TextBetween(sFormat, '', ' '));
-        slParams.Add(TextBetween(sFormat, ' ', ''));
-      End
-      Else
-        slParams.Add(sFormat);
-      slParams.Add('-' + ADrive);
-      slParams.Add(Format('%s', [AEdit.Text]));
+        If Pos('--type=rcpmfs', sFormat) > 0 Then
+        Begin
+          slParams.Add(TextBetween(sFormat, '', ' '));
+          slParams.Add(TextBetween(sFormat, ' ', ''));
+        End
+        Else
+          slParams.Add(sFormat);
+        slParams.Add('-' + ADrive);
+        slParams.Add(Format('%s', [AEdit.Text]));
 
-      Result := True;
+        Result := True;
+      End;
     End;
   End;
 
 Begin
   slParams := TStringList.Create;
   Try
+    oMacro := ubee512.MacroByTitle(cboModel.Text);
+
+    // ubee512launcher will only work with
     sCommand := Format('%s', [FSettings.UBEE512_exe]);
-    slParams.Add(cboModel.Text);
+    slParams.Add(oMacro.Macro);
 
     bHasA := AddDriveToCommand('a', edtDiskA, cboFormatA);
     If bHasA Then
@@ -754,6 +783,15 @@ Begin
   Finally
     slParams.Free;
   End;
+End;
+
+Procedure TfrmMain.btnTestClick(Sender: TObject);
+Var
+  sResult, sCommand: String;
+Begin
+  sCommand := Format('%s', [FSettings.UBEE512_exe]);
+  sResult := Trim(RunEx(sCommand, ['--conio', '--echo', '@UBEE_USERHOME@', '--exit=-1']));
+  Debug('Test ' + sResult);
 End;
 
 Function TfrmMain.SelectedFile: String;

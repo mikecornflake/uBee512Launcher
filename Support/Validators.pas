@@ -68,25 +68,45 @@ End;
 Procedure TSystemMacroValidator.Process(ATarget: TObject);
 Var
   oMacro: TSystemMacro;
-  sDiskFolder: Rawbytestring;
-  sDisk: String;
+  sBaseFolder: String;
+
+  Procedure Check(ASubfolder: String; AFilename: String; AObject: String);
+  Var
+    sFolder, sFile: String;
+  Begin
+    If AFilename <> '' Then
+    Begin
+      sFolder := sBaseFolder + ASubfolder;
+      sFile := IncludeTrailingBackslash(sFolder) + AFilename;
+
+      If DirectoryExists(sFolder) And Not FileExists(sFile) Then
+      Begin
+        FValid := False;
+        FOutcome += Format('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]) +
+          LineEnding;
+      End;
+    End;
+  End;
+
 Begin
   Inherited Process(ATarget);
 
+  FValid := True;
+  FOutcome := '';
+
+  sBaseFolder := IncludeTrailingBackslash(ubee512.WorkingDir);
+
   If Assigned(ATarget) And (ATarget Is TSystemMacro) Then
   Begin
-    // TODO: This folder works on Windows only.
-    // Need to find the folder for Linux & macOS
-    sDiskFolder := IncludeTrailingBackslash(ExtractFileDir(ubee512.RC)) + 'disks';
     oMacro := TSystemMacro(ATarget);
 
-    sDisk := oMacro.A;
-    If (sDisk <> '') And DirectoryExists(sDiskFolder) And Not
-      FileExists(IncludeTrailingBackslash(sDiskFolder) + sDisk) Then
-    Begin
-      FValid := False;
-      FOutcome := Format('Disk "%s" not found in "%s"', [sDisk, sDiskFolder]);
-    End;
+    Check('disks', oMacro.A, 'Disk');
+    Check('disks', oMacro.B, 'Disk');
+    Check('disks', oMacro.C, 'Disk');
+    Check('sram', oMacro.SRAM_file, 'SRAM');
+    Check('disks', oMacro.IDE, 'IDE image');
+    Check('tapes', oMacro.TapeI, 'Input Tape');
+    Check('tapes', oMacro.TapeO, 'Output Tape');
   End;
 End;
 

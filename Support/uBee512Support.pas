@@ -20,11 +20,12 @@ Type
     Model: String;
     MbeeType: TMbeeType;
     Title: String;
-    A: String;
+    A, B, C: String;
     Col: String;
     SRAM: String;
     SRAM_file: String;
-    Status: String;
+    IDE: String;
+    TapeI, TapeO: String;
     Description: String;
     RC: String;
 
@@ -76,6 +77,7 @@ Type
     Function Titles(AModel: String): String; // comma separated
     Function MbeeType(AModel: String): TMbeeType;
     Function IsDisk(AExt: String): Boolean;
+    Function WorkingDir: String;
 
     Property Exe: String read GetExe write SetExe;
     Property RC: String read GetRC write SetRC;
@@ -373,22 +375,28 @@ Begin
                   sValue := Trim(TextBetween(sLine, ' ', ''));
                 End;
 
-                If sProperty = 'a' Then oSystemMacro.A := sValue
-                Else If sProperty = 'col' Then oSystemMacro.Col := 'Colour'
-                Else If sProperty = 'monitor' Then
-                  If sValue = 'a' Then
-                    oSystemMacro.Col := 'Amber'
-                  Else
-                    oSystemMacro.Col := sValue
-                Else If sProperty = 'model' Then
-                Begin
-                  oSystemMacro.Model := sValue;
-                  oSystemMacro.MbeeType := MbeeType(sValue);
-                End
-                Else If sProperty = 'sram' Then oSystemMacro.SRAM := sValue
-                Else If sProperty = 'sram-file' Then oSystemMacro.SRAM_file := sValue
-                Else If sProperty = 'status' Then oSystemMacro.Status := sValue
-                Else If sProperty = 'title' Then oSystemMacro.Title := TrimChars(sValue, ['"']);
+                Case sProperty Of
+                  'a': oSystemMacro.A := sValue;
+                  'b': oSystemMacro.B := sValue;
+                  'c': oSystemMacro.C := sValue;
+                  'col': oSystemMacro.Col := 'Colour';
+                  'monitor':
+                    If sValue = 'a' Then
+                      oSystemMacro.Col := 'Amber'
+                    Else
+                      oSystemMacro.Col := sValue;
+                  'model':
+                  Begin
+                    oSystemMacro.Model := sValue;
+                    oSystemMacro.MbeeType := MbeeType(sValue);
+                  End;
+                  'ide-a0': oSystemMacro.IDE := sValue;
+                  'tapei': oSystemMacro.TapeI := sValue;
+                  'tapeo': oSystemMacro.TapeO := sValue;
+                  'sram': oSystemMacro.SRAM := sValue;
+                  'sram-file': oSystemMacro.SRAM_file := sValue;
+                  'title': oSystemMacro.Title := TrimChars(sValue, ['"']);
+                End;
               End;
           End;
         End;
@@ -545,6 +553,15 @@ Begin
   sExt := Lowercase(Trim(AExt));
 
   Result := (sExt = '.dsk');
+End;
+
+Function TuBee512.WorkingDir: String;
+Begin
+{$IFDEF WINDOWS}
+  Result := ExtractFileDir(FExe);
+{$ELSE}
+  Result := IncludeTrailingBackslash(getuserdir) + '.ubee512';
+{$ENDIF}
 End;
 
 Initialization

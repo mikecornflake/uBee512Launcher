@@ -56,7 +56,7 @@ Begin
   FActivated := False;
   LoadRC;
 
-  Caption := 'System Macro Explorer: '+ubee512.RC;
+  Caption := 'System Macro Explorer: ' + ubee512.RC;
 End;
 
 Procedure TfrmMacroExplorer.FormActivate(Sender: TObject);
@@ -75,13 +75,18 @@ Procedure TfrmMacroExplorer.lvSystemMacrosSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 Var
   oMacro: TSystemMacro;
+  sRC: String;
 Begin
   btnOK.Enabled := True;
 
   If (Selected) And (Assigned(Item)) Then
   Begin
     oMacro := uBee512.Macro(Item.Caption);
-    memSystems.Lines.Text := oMacro.RC;
+    sRC := '# ' + oMacro.Description + LineEnding;
+    sRC += '[' + oMacro.Macro + ']' + LineEnding;
+    sRC += oMacro.RC;
+
+    memSystems.Lines.Text := sRC;
     memIssues.Lines.Text := oMacro.Validators.Outcome;
 
     btnOK.Enabled := TSystemMacro(Item.Data).Validators.Valid;
