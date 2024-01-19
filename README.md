@@ -58,11 +58,10 @@
 ## Long Term 
 (_dreamer! you're nothing but a dreamer_)
 + Investigate automating a running instance of **UBEE512** (allow dynamic changing of disks)
-+ I strongly suspect there are issues in **CPMTools**.  Investigate using this framework, then report to appropriate developers. (Hmm, looks like original CP/M tools are up to 2.23, but the patched CP/M tools are from 2.1 codebase)
 
 # Development Notes
 + Developed under windows using Lazarus 2.2.6 / fpc 3.2.2 / 64bit
-+ Tested under Ubuntu using Lazarus 3.0 / fpc 3.2.2 / 64bit
++ Tested under Ubuntu & macOS using Lazarus 3.0 / fpc 3.2.2 / 64bit
 + Uses sections directly copied from an OO framework I developed for other projects. That OO framework adds uncessary complications, as the intention for this project is to keep the design to a simplified application, only the support units were added.   + This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
 + LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
 
