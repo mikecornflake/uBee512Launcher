@@ -38,6 +38,7 @@ Type
   TModel = Class
   Public
     Model: String;
+    Description: String;
     MbeeType: TMbeeType;
   End;
 
@@ -74,6 +75,7 @@ Type
     Function RCByTitle(ATitle: String): String;
     Function Models: String; // comma separated
     Function ModelsByType(AMbeeType: TMbeeType): String;
+    Function Model(AModel: String): TModel;
     Function Titles(AModel: String): String; // comma separated
     Function MbeeType(AModel: String): TMbeeType;
     Function IsDisk(AExt: String): Boolean;
@@ -122,12 +124,13 @@ End;
 
 Constructor TuBee512.Create;
 
-  Procedure AddModel(AModel: String; AMBeeType: TMbeeType);
+  Procedure AddModel(AModel: String; ADescription: String; AMBeeType: TMbeeType);
   Var
     oModel: TModel;
   Begin
     oModel := TModel.Create;
     oModel.Model := AModel;
+    oModel.Description := ADescription;
     oModel.MbeeType := AMBeeType;
 
     FModels.Add(oModel);
@@ -143,29 +146,29 @@ Begin
   FModels := TModels.Create(True);
 
   // From ubee512 readme
-  AddModel('1024k', mtFDD);
-  AddModel('128k', mtFDD);
-  AddModel('256k', mtFDD);
-  AddModel('256tc', mtFDD);
-  AddModel('2mhz', mtROM);
-  AddModel('2mhzdd', mtFDD);
-  AddModel('512k', mtFDD);
-  AddModel('56k', mtFDD);
-  AddModel('64k', mtFDD);
-  AddModel('dd', mtFDD);
-  AddModel('ic', mtROM);
-  AddModel('p1024k', mtFDD);
-  AddModel('p128k', mtFDD);
-  AddModel('p256k', mtFDD);
-  AddModel('p512k', mtFDD);
-  AddModel('p64k', mtFDD);
-  AddModel('pc', mtROM);
-  AddModel('pc85', mtROM);
-  AddModel('pc85b', mtROM);
-  AddModel('pcf', mtCustom);
-  AddModel('ppc85', mtROM);
-  AddModel('scf', mtCustom);
-  AddModel('tterm', mtROM);
+  AddModel('1024k', 'Standard Premium Plus, 1024K DRAM FDD', mtFDD);
+  AddModel('128k', 'Standard, 128K DRAM FDD (SBC)', mtFDD);
+  AddModel('256k', 'Standard, 256K DRAM FDD (64K CIAB to 256K upgrade)', mtFDD);
+  AddModel('256tc', '256TC Telecomputer, 256K DRAM FDD', mtFDD);
+  AddModel('2mhz', 'First model and kits, 32K ROM', mtROM);
+  AddModel('2mhzdd', '56K FDD', mtFDD);
+  AddModel('512k', 'Standard, 512K DRAM FDD', mtFDD);
+  AddModel('56k', 'APC 56K RAM, ROM/FDD (Advanced Personal Computer)', mtFDD);
+  AddModel('64k', 'Standard, 64K DRAM FDD (CIAB)', mtFDD);
+  AddModel('dd', '56K FDD', mtFDD);
+  AddModel('ic', 'IC 32K ROM', mtROM);
+  AddModel('p1024k', 'Premium Plus, 1024K DRAM FDD', mtFDD);
+  AddModel('p128k', 'Premium, 128K DRAM FDD', mtFDD);
+  AddModel('p256k', 'Premium, 256K DRAM FDD (64K Premium to 256K upgrade)', mtFDD);
+  AddModel('p512k', 'Premium, 512K DRAM FDD', mtFDD);
+  AddModel('p64k', 'Premium, 64K DRAM FDD', mtFDD);
+  AddModel('pc', 'PC 32K ROM (Personal Communicator)', mtROM);
+  AddModel('pc85', 'Standard, PC85 32K ROM using 8K Pak ROMs', mtROM);
+  AddModel('pc85b', 'Standard, PC85 32K ROM using 8/16K Pak ROMs', mtROM);
+  AddModel('pcf', 'Premium Compact Flash Core board.', mtCustom);
+  AddModel('ppc85', 'Premium, PC85 32K ROM', mtROM);
+  AddModel('scf', 'Standard Compact Flash Core board.', mtCustom);
+  AddModel('tterm', 'Teleterm, ROM', mtROM);
 End;
 
 Destructor TuBee512.Destroy;
@@ -503,6 +506,19 @@ Begin
   Finally
     slModels.Free;
   End;
+End;
+
+Function TuBee512.Model(AModel: String): TModel;
+Var
+  oModel: TModel;
+Begin
+  Result := nil;
+  For oModel In FModels Do
+    If oModel.Model = AModel Then
+    Begin
+      Result := oModel;
+      Break;
+    End;
 End;
 
 // Return a comma seperated list of Microbee systems defined in uBee512rc for

@@ -87,11 +87,14 @@ Type
     FActivated: Boolean;
     FLoadingDSK: Boolean;
     FWorkingDir: String;
+    FUpdatingCombos: Boolean;
 
     FLog: TLog;
 
+    Function DriveFormatAsParam(AEdit: TFilenameEdit; AFormat: TCombobox): String;
     Procedure LoadRC;
     Procedure LoadSettings;
+    Procedure RefreshRC;
     Procedure RefreshUI;
     Procedure SaveSettings;
 
@@ -105,6 +108,9 @@ Type
 Const
   DSK_ICO = 9;
   TXT_ICO = 10;
+
+  DEFAULT_MODEL = 'p128k';
+  DEFAULT_TITLE = 'Premium 128K';
 
 Var
   frmMain: TfrmMain;
@@ -121,21 +127,23 @@ Uses
 
 Procedure TfrmMain.FormCreate(Sender: TObject);
 Begin
-{$IFDEF DARWIN}
-  cboType.Style := csDropDown;
-  cboModel.Style := csDropDown;
-  cboTitle.Style := csDropDown;
-  cboFormatA.Style := csDropDown;
-  cboFormatB.Style := csDropDown;
-  cboFormatC.Style := csDropDown;
-{$ELSE}
-  cboType.Style := csDropDownList;
-  cboModel.Style := csDropDownList;
-  cboTitle.Style := csDropDownList;
-  cboFormatA.Style := csDropDownList;
-  cboFormatB.Style := csDropDownList;
-  cboFormatC.Style := csDropDownList;
-{$ENDIF}
+//{$IFDEF DARWIN}
+//  cboType.Style := csDropDown;
+//  cboModel.Style := csDropDown;
+//  cboTitle.Style := csDropDown;
+//  cboFormatA.Style := csDropDown;
+//  cboFormatB.Style := csDropDown;
+//  cboFormatC.Style := csDropDown;
+//{$ELSE}
+//  cboType.Style := csDropDownList;
+//  cboModel.Style := csDropDownList;
+//  cboTitle.Style := csDropDownList;
+//  cboFormatA.Style := csDropDownList;
+//  cboFormatB.Style := csDropDownList;
+//  cboFormatC.Style := csDropDownList;
+//{$ENDIF}
+
+  FUpdatingCombos := False;
 
   FActivated := False;
   FLoadingDSK := False;
@@ -268,7 +276,22 @@ Begin
   If (iIndex >= 0) Then
   Begin
     ACombo.ItemIndex := iIndex;
-    ACombo.OnChange(Self);
+
+    FUpdatingCombos := True;
+    Try
+      // Working around a Cocoa issue (.OnChange not firing when csDropdownlist
+      If ACombo = cboType Then
+        cboTypeChange(Self)
+      Else If ACombo = cboModel Then
+        cboModelChange(Self)
+      Else If ACombo = cboTitle Then
+        cboTitleChange(Self)
+      Else
+        ACombo.OnChange(Self);
+    Finally
+      FUpdatingCombos := False;
+      RefreshRC;
+    End;
   End;
 End;
 
@@ -311,8 +334,8 @@ Begin
     SetSelectedDisk(FSettings.B, edtDiskB, cboFormatB);
     SetSelectedDisk(FSettings.C, edtDiskC, cboFormatC);
 
-    sModel := oIniFile.ReadString('Selected', 'Model', 'p128k');
-    sTitle := oIniFile.ReadString('Selected', 'Title', 'Premium 128K');
+    sModel := oIniFile.ReadString('Selected', 'Model', DEFAULT_MODEL);
+    sTitle := oIniFile.ReadString('Selected', 'Title', DEFAULT_TITLE);
 
     mtType := uBee512.MbeeType(sModel);
     sType := MBTypeStr[mtType];
@@ -369,7 +392,6 @@ End;
 
 Procedure TfrmMain.LoadRC;
 Var
-  sPrev: TCaption;
   iPrev: Integer;
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
@@ -377,14 +399,12 @@ Begin
   Try
     uBee512.LoadRC;
 
-    sPrev := cboModel.Text;
-
-    cboModel.Items.CommaText := uBee512.Models;
+    cboModel.Items.CommaText := ',' + uBee512.Models;
 
     If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
     Begin
       // Try and load the previous value instead of resetting
-      iPrev := cboModel.Items.IndexOf(sPrev);
+      iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
       If iPrev >= 0 Then
         cboModel.ItemIndex := iPrev
       Else
@@ -462,19 +482,20 @@ End;
 Procedure TfrmMain.cboTypeChange(Sender: TObject);
 Var
   mtType: TMbeeType;
-  sPrev: TCaption;
   iPrev: Integer;
 Begin
+  tsDrive.TabVisible := cboType.Text <> 'ROM';
+  If tsDrive.TabVisible Then
+    pcOptions.ActivePage := tsDrive;
+
   If cboType.ItemIndex >= 0 Then
   Begin
     mtType := TMbeeType(cboType.ItemIndex);
 
-    sPrev := cboModel.Text;
-
-    cboModel.Items.CommaText := uBee512.ModelsByType(mtType);
+    cboModel.Items.CommaText := ',' + uBee512.ModelsByType(mtType);
     If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
     Begin
-      iPrev := cboModel.Items.IndexOf(sPrev);
+      iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
       If iPrev >= 0 Then
         cboModel.ItemIndex := iPrev
       Else
@@ -484,22 +505,79 @@ Begin
     End;
   End;
 
-  RefreshUI;
+  RefreshRC;
+End;
+
+Procedure TfrmMain.RefreshRC;
+Var
+  sRC: String;
+  oModel: TModel;
+  oMacro: TSystemMacro;
+  sParam: String;
+
+  Procedure AddDisk(ADrive: String; AEdit: TFileNameEdit; ACombo: TComboBox);
+  Var
+    sFormat: String;
+  Begin
+    sFormat := DriveFormatAsParam(AEdit, ACombo);
+    If sFormat <> '' Then
+      sParam += Format(' %s -%s "%s"', [sFormat, ADrive, AEdit.Text]);
+  End;
+
+Begin
+  If Not FUpdatingCombos Then
+  Begin
+    Debug('RefreshRC');
+
+    sRC := 'Using defaults from ubee512rc.[global-start]';
+    sParam := '';
+
+    If (cboTitle.Text <> '') Then
+    Begin
+      oMacro := ubee512.MacroByTitle(cboTitle.Text);
+      If assigned(oMacro) Then
+      Begin
+        sRC := '# ' + oMacro.Description + LineEnding;
+        sRC += '[' + oMacro.Macro + ']' + LineEnding;
+        sRC += oMacro.RC;
+
+        sParam += ' ' + oMacro.Macro;
+      End;
+    End
+    Else If (cboModel.Text <> '') Then
+    Begin
+      oModel := ubee512.Model(cboModel.Text);
+      If Assigned(oModel) Then
+      Begin
+        sRC := '# ' + oModel.Description + LineEnding;
+        sRC += '--model=' + oModel.Model;
+
+        sParam += ' --model=' + oModel.Model;
+      End;
+    End;
+
+    If tsDrive.TabVisible Then
+    Begin
+      AddDisk('a', edtDiskA, cboFormatA);
+      AddDisk('b', edtDiskB, cboFormatB);
+      AddDisk('c', edtDiskC, cboFormatC);
+    End;
+
+    edtCommandLine.Text := Trim(Format('"%s" %s', [uBee512.Exe, Trim(sParam)]));
+    memRC.Lines.Text := sRC;
+  End;
 End;
 
 Procedure TfrmMain.cboModelChange(Sender: TObject);
 Var
-  sPrev: TCaption;
   iPrev: Integer;
 Begin
-  sPrev := cboTitle.Text;
-
   cboTitle.Items.CommaText := ',' + uBee512.Titles(cboModel.Text);
 
   If (cboTitle.ItemIndex <> 0) And (cboTitle.Items.Count > 0) Then
   Begin
-    iPrev := cboTitle.Items.IndexOf(sPrev);
-    If iPrev >= 1 Then
+    iPrev := cboTitle.Items.IndexOf(DEFAULT_TITLE);
+    If iPrev >= 0 Then
       cboTitle.ItemIndex := iPrev
     Else
       cboTitle.ItemIndex := 1;
@@ -513,17 +591,10 @@ End;
 Procedure TfrmMain.cboTitleChange(Sender: TObject);
 Var
   oMacro: TSystemMacro;
-  sRC: String;
 Begin
   oMacro := ubee512.MacroByTitle(cboTitle.Text);
   If Assigned(oMacro) Then
   Begin
-    sRC := '# ' + oMacro.Description + LineEnding;
-    sRC += '[' + oMacro.Macro + ']' + LineEnding;
-    sRC += oMacro.RC;
-
-    memRC.Lines.Text := sRC;
-
     edtDiskA.Enabled := (Trim(oMacro.A) = '');
     edtDiskB.Enabled := (Trim(oMacro.B) = '');
     edtDiskC.Enabled := (Trim(oMacro.C) = '');
@@ -535,35 +606,32 @@ Begin
     btnClearA.Enabled := edtDiskA.Enabled;
     btnClearB.Enabled := edtDiskB.Enabled;
     btnClearC.Enabled := edtDiskC.Enabled;
-  End
-  Else
-    memRC.Lines.Text := 'TODO DISPLAY MODEL SUMMARY';
+  End;
 
-  RefreshUI;
+  RefreshRC;
+End;
+
+Function TfrmMain.DriveFormatAsParam(AEdit: TFilenameEdit; AFormat: TCombobox): String;
+Var
+  sFormat: TCaption;
+Begin
+  Result := '';
+
+  If Trim(AEdit.Text) = '' Then
+    Exit;
+
+  If FileExists(AEdit.Text) Then
+  Begin
+    sFormat := AFormat.Text;
+
+    If (sFormat <> '') Then
+      Result := '--format=' + sFormat;
+  End
+  Else If DirectoryExists(AEdit.Text) Then
+    Result := '--type=rcpmfs --format=ds80';
 End;
 
 Procedure TfrmMain.btnLaunchuBee512Click(Sender: TObject);
-
-  Function DriveAsParam(AEdit: TFilenameEdit; AFormat: TCombobox): String;
-  Var
-    sFormat: TCaption;
-  Begin
-    Result := '';
-
-    If Trim(AEdit.Text) = '' Then
-      Exit;
-
-    If FileExists(AEdit.Text) Then
-    Begin
-      sFormat := AFormat.Text;
-
-      If (sFormat <> '') Then
-        Result := '--format=' + sFormat;
-    End
-    Else If DirectoryExists(AEdit.Text) Then
-      Result := '--type=rcpmfs --format=ds80';
-  End;
-
 Var
   sCommand, sResult, sDebug, s: String;
   bHasA: Boolean;
@@ -574,11 +642,14 @@ Var
   Var
     sFormat: String;
   Begin
-    Result := False;
+    Result := Not AEdit.Enabled;
+
+    If (Trim(AEdit.Text) = '') Then
+      Exit;
 
     If AEdit.Enabled Then
     Begin
-      sFormat := DriveAsParam(AEdit, ACombo);
+      sFormat := DriveFormatAsParam(AEdit, ACombo);
       If sFormat <> '' Then
       Begin
         If Pos('--type=rcpmfs', sFormat) > 0 Then
@@ -597,21 +668,25 @@ Var
   End;
 
 Begin
-  oMacro := ubee512.MacroByTitle(cboTitle.Text);
-
-  If Not Assigned(oMacro) Then
-    Exit;
-
   slParams := TStringList.Create;
   Try
     sCommand := Format('%s', [FSettings.UBEE512_exe]);
-    slParams.Add(oMacro.Macro);
-
-    bHasA := AddDriveToCommand('a', edtDiskA, cboFormatA);
-    If bHasA Then
+    If cboTitle.Text <> '' Then
     Begin
-      AddDriveToCommand('b', edtDiskB, cboFormatB);
-      AddDriveToCommand('c', edtDiskC, cboFormatC);
+      oMacro := ubee512.MacroByTitle(cboTitle.Text);
+      slParams.Add(oMacro.Macro);
+    End
+    Else If cboModel.Text <> '' Then
+      slParams.Add(Format('--model=%s', [cboModel.Text]));
+
+    If tsDrive.TabVisible Then
+    Begin
+      bHasA := AddDriveToCommand('a', edtDiskA, cboFormatA);
+      If bHasA Then
+      Begin
+        AddDriveToCommand('b', edtDiskB, cboFormatB);
+        AddDriveToCommand('c', edtDiskC, cboFormatC);
+      End;
     End;
 
     sDebug := '  ' + sCommand;
@@ -645,8 +720,10 @@ End;
 
 Procedure TfrmMain.RefreshUI;
 Begin
+  Debug('RefreshUI');
   btnLaunchuBee512.Enabled := (uBee512.Available) And (cboModel.Text <> '');
-  edtCommandLine.Text := Format('"%s"', [uBee512.Exe]);
+
+  RefreshRC;
 End;
 
 End.

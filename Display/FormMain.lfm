@@ -4,28 +4,29 @@ object frmMain: TfrmMain
   Top = 191
   Width = 876
   Caption = 'uBee512Launcher'
-  ClientHeight = 482
+  ClientHeight = 462
   ClientWidth = 876
   Constraints.MinHeight = 255
   Constraints.MinWidth = 700
   Menu = MainMenu1
-  ShowHint = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  ShowHint = True
+  LCLVersion = '2.2.6.0'
   object pnluBee512: TPanel
     Left = 0
-    Height = 436
+    Height = 415
     Top = 24
     Width = 876
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 436
+    ClientHeight = 415
     ClientWidth = 876
     TabOrder = 0
     object pcOptions: TPageControl
       Left = 381
-      Height = 436
+      Height = 415
       Top = 0
       Width = 495
       ActivePage = tsDrive
@@ -34,13 +35,13 @@ object frmMain: TfrmMain
       TabOrder = 0
       object tsDrive: TTabSheet
         Caption = 'Drives'
-        ClientHeight = 400
-        ClientWidth = 489
+        ClientHeight = 387
+        ClientWidth = 487
         object lblDiskA: TLabel
           Left = 8
-          Height = 16
+          Height = 15
           Top = 13
-          Width = 41
+          Width = 35
           Caption = 'Disk A'
           Font.Style = [fsBold]
           ParentColor = False
@@ -50,10 +51,10 @@ object frmMain: TfrmMain
           AnchorSideLeft.Control = lblDiskA
           AnchorSideLeft.Side = asrBottom
           AnchorSideRight.Control = cboFormatA
-          Left = 54
-          Height = 22
+          Left = 48
+          Height = 23
           Top = 8
-          Width = 308
+          Width = 312
           FilterIndex = 0
           HideDirectories = False
           ButtonWidth = 23
@@ -65,7 +66,7 @@ object frmMain: TfrmMain
           TabOrder = 0
         end
         object btnClearA: TSpeedButton
-          Left = 457
+          Left = 455
           Height = 23
           Top = 8
           Width = 23
@@ -109,7 +110,7 @@ object frmMain: TfrmMain
           OnClick = btnClearAClick
         end
         object btnClearB: TSpeedButton
-          Left = 457
+          Left = 455
           Height = 23
           Top = 43
           Width = 23
@@ -153,7 +154,7 @@ object frmMain: TfrmMain
           OnClick = btnClearBClick
         end
         object btnClearC: TSpeedButton
-          Left = 457
+          Left = 455
           Height = 23
           Top = 78
           Width = 23
@@ -200,10 +201,10 @@ object frmMain: TfrmMain
           AnchorSideLeft.Control = lblDiskB
           AnchorSideLeft.Side = asrBottom
           AnchorSideRight.Control = cboFormatB
-          Left = 54
-          Height = 22
+          Left = 48
+          Height = 23
           Top = 43
-          Width = 308
+          Width = 312
           FilterIndex = 0
           HideDirectories = False
           ButtonWidth = 23
@@ -218,10 +219,10 @@ object frmMain: TfrmMain
           AnchorSideLeft.Control = lblDiskC
           AnchorSideLeft.Side = asrBottom
           AnchorSideRight.Control = cboFormatC
-          Left = 54
-          Height = 22
+          Left = 47
+          Height = 23
           Top = 78
-          Width = 308
+          Width = 313
           FilterIndex = 0
           HideDirectories = False
           ButtonWidth = 23
@@ -234,9 +235,9 @@ object frmMain: TfrmMain
         end
         object lblDiskC: TLabel
           Left = 8
-          Height = 16
+          Height = 15
           Top = 83
-          Width = 41
+          Width = 34
           Caption = 'Disk C'
           Font.Style = [fsBold]
           ParentColor = False
@@ -244,9 +245,9 @@ object frmMain: TfrmMain
         end
         object lblDiskB: TLabel
           Left = 8
-          Height = 16
+          Height = 15
           Top = 47
-          Width = 41
+          Width = 35
           Caption = 'Disk B'
           Font.Style = [fsBold]
           ParentColor = False
@@ -254,13 +255,13 @@ object frmMain: TfrmMain
         end
         object cboFormatA: TComboBox
           AnchorSideRight.Control = btnClearA
-          Left = 364
-          Height = 20
+          Left = 362
+          Height = 23
           Top = 8
           Width = 91
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          ItemHeight = 19
+          ItemHeight = 15
           Items.Strings = (
             'rcpmfs/ds80'
             'ds40'
@@ -281,13 +282,13 @@ object frmMain: TfrmMain
         end
         object cboFormatB: TComboBox
           AnchorSideRight.Control = btnClearB
-          Left = 364
-          Height = 20
+          Left = 362
+          Height = 23
           Top = 43
           Width = 91
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          ItemHeight = 19
+          ItemHeight = 15
           Items.Strings = (
             'rcpmfs/ds80'
             'ds40'
@@ -308,13 +309,13 @@ object frmMain: TfrmMain
         end
         object cboFormatC: TComboBox
           AnchorSideRight.Control = btnClearC
-          Left = 364
-          Height = 20
+          Left = 362
+          Height = 23
           Top = 78
           Width = 91
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          ItemHeight = 19
+          ItemHeight = 15
           Items.Strings = (
             'rcpmfs/ds80'
             'ds40'
@@ -339,8 +340,8 @@ object frmMain: TfrmMain
       end
       object TabSheet3: TTabSheet
         Caption = 'Peripherals'
-        ClientHeight = 400
-        ClientWidth = 489
+        ClientHeight = 387
+        ClientWidth = 487
         object lblPP: TLabel
           Left = 8
           Height = 37
@@ -358,31 +359,31 @@ object frmMain: TfrmMain
           AnchorSideLeft.Control = lblPP
           AnchorSideLeft.Side = asrBottom
           Left = 62
-          Height = 20
+          Height = 23
           Top = 8
-          Width = 411
+          Width = 409
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 5
-          ItemHeight = 19
+          ItemHeight = 15
           TabOrder = 0
         end
       end
     end
     object pnlLeft: TPanel
       Left = 0
-      Height = 436
+      Height = 415
       Top = 0
       Width = 376
       Align = alLeft
       BevelOuter = bvNone
-      ClientHeight = 436
+      ClientHeight = 415
       ClientWidth = 376
       TabOrder = 1
       object Label6: TLabel
         Left = 8
-        Height = 16
+        Height = 15
         Top = 5
-        Width = 32
+        Width = 26
         Caption = 'Type'
         Font.Style = [fsBold]
         ParentColor = False
@@ -390,25 +391,25 @@ object frmMain: TfrmMain
       end
       object cboType: TComboBox
         Left = 8
-        Height = 20
+        Height = 23
         Top = 21
         Width = 75
-        ItemHeight = 19
+        ItemHeight = 15
         ItemIndex = 0
         Items.Strings = (
           'Disk'
           'ROM'
           'Custom'
         )
+        OnChange = cboTypeChange
         TabOrder = 0
         Text = 'Disk'
-        OnChange = cboTypeChange
       end
       object Label5: TLabel
         Left = 90
-        Height = 16
+        Height = 15
         Top = 5
-        Width = 40
+        Width = 35
         Caption = 'Model'
         Font.Style = [fsBold]
         ParentColor = False
@@ -416,19 +417,19 @@ object frmMain: TfrmMain
       end
       object cboModel: TComboBox
         Left = 90
-        Height = 20
+        Height = 23
         Top = 21
         Width = 75
-        ItemHeight = 19
+        ItemHeight = 15
+        OnChange = cboModelChange
         TabOrder = 1
         Text = '0'
-        OnChange = cboModelChange
       end
       object Label10: TLabel
         Left = 170
-        Height = 16
+        Height = 15
         Top = 5
-        Width = 29
+        Width = 25
         Caption = 'Title'
         Font.Style = [fsBold]
         ParentColor = False
@@ -439,17 +440,17 @@ object frmMain: TfrmMain
         AnchorSideBottom.Control = cboModel
         AnchorSideBottom.Side = asrBottom
         Left = 170
-        Height = 20
+        Height = 23
         Top = 21
         Width = 168
         Anchors = [akLeft, akRight, akBottom]
         BorderSpacing.Right = 6
-        ItemHeight = 19
+        ItemHeight = 15
+        OnChange = cboTitleChange
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
         Text = '0'
-        OnChange = cboTitleChange
       end
       object btnMacroExplorer: TBitBtn
         AnchorSideRight.Control = memRC
@@ -457,19 +458,19 @@ object frmMain: TfrmMain
         AnchorSideBottom.Control = cboTitle
         AnchorSideBottom.Side = asrBottom
         Left = 344
-        Height = 20
+        Height = 23
         Hint = 'Launch Definition Explorer'
         Top = 21
         Width = 33
         Anchors = [akTop, akRight, akBottom]
         Images = ilMain
         ImageIndex = 12
-        TabOrder = 3
         OnClick = btnMacroExplorerClick
+        TabOrder = 3
       end
       object memRC: TMemo
         Left = 8
-        Height = 378
+        Height = 357
         Top = 53
         Width = 369
         Anchors = [akTop, akLeft, akRight, akBottom]
@@ -481,7 +482,7 @@ object frmMain: TfrmMain
     end
     object Splitter1: TSplitter
       Left = 376
-      Height = 436
+      Height = 415
       Top = 0
       Width = 5
     end
@@ -497,14 +498,14 @@ object frmMain: TfrmMain
     ShowCaptions = True
     TabOrder = 1
     object btnSettings: TToolButton
-      Left = 104
+      Left = 96
       Top = 2
       Caption = 'Settings'
       ImageIndex = 7
       OnClick = mnuSettingsClick
     end
     object btnLaunchuBee512: TToolButton
-      Left = 410
+      Left = 374
       Top = 2
       AutoSize = True
       Caption = 'Launch'
@@ -512,7 +513,7 @@ object frmMain: TfrmMain
       OnClick = btnLaunchuBee512Click
     end
     object ToolButton3: TToolButton
-      Left = 183
+      Left = 167
       Height = 22
       Top = 2
       AutoSize = True
@@ -520,7 +521,7 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object ToolButton4: TToolButton
-      Left = 96
+      Left = 88
       Height = 22
       Top = 2
       AutoSize = True
@@ -535,14 +536,14 @@ object frmMain: TfrmMain
       OnClick = mnuDebugClick
     end
     object ToolButton5: TToolButton
-      Left = 191
+      Left = 175
       Top = 2
       Caption = 'Definitions'
       ImageIndex = 12
       OnClick = btnMacroExplorerClick
     end
     object ToolButton6: TToolButton
-      Left = 285
+      Left = 261
       Height = 22
       Top = 2
       AutoSize = True
@@ -550,14 +551,14 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object btnTest: TToolButton
-      Left = 491
+      Left = 450
       Top = 2
       Caption = 'Test'
-      Visible = False
       OnClick = btnTestClick
+      Visible = False
     end
     object ToolButton7: TToolButton
-      Left = 483
+      Left = 442
       Height = 22
       Top = 2
       Caption = 'ToolButton7'
@@ -565,14 +566,14 @@ object frmMain: TfrmMain
       Visible = False
     end
     object btnDiskExplorer: TToolButton
-      Left = 293
+      Left = 269
       Top = 2
       Caption = 'Disk Explorer'
       ImageIndex = 9
       OnClick = btnDiskExplorerClick
     end
     object ToolButton2: TToolButton
-      Left = 402
+      Left = 366
       Height = 22
       Top = 2
       Caption = 'ToolButton2'
@@ -581,8 +582,8 @@ object frmMain: TfrmMain
   end
   object edtCommandLine: TEdit
     Left = 0
-    Height = 22
-    Top = 460
+    Height = 23
+    Top = 439
     Width = 876
     Align = alBottom
     ReadOnly = True
