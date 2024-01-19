@@ -1,480 +1,383 @@
 object frmMain: TfrmMain
-  Left = 2318
-  Height = 817
-  Top = 154
-  Width = 797
+  Left = 2468
+  Height = 482
+  Top = 191
+  Width = 876
   Caption = 'uBee512Launcher'
-  ClientHeight = 817
-  ClientWidth = 797
-  Constraints.MinHeight = 590
+  ClientHeight = 482
+  ClientWidth = 876
+  Constraints.MinHeight = 255
   Constraints.MinWidth = 700
   Menu = MainMenu1
   ShowHint = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  object tvFolders: TShellTreeView
-    Left = 0
-    Height = 601
-    Top = 216
-    Width = 213
-    Align = alLeft
-    FileSortType = fstAlphabet
-    ReadOnly = True
-    TabOrder = 0
-    Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
-    ObjectTypes = [otFolders, otHidden]
-    OnChange = tvFoldersChange
-  end
-  object Splitter1: TSplitter
-    Left = 213
-    Height = 601
-    Top = 216
-    Width = 5
-  end
   object pnluBee512: TPanel
     Left = 0
-    Height = 192
+    Height = 436
     Top = 24
-    Width = 797
-    Align = alTop
+    Width = 876
+    Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 192
-    ClientWidth = 797
-    TabOrder = 2
-    object GroupBox1: TGroupBox
-      Left = 2
-      Height = 190
+    ClientHeight = 436
+    ClientWidth = 876
+    TabOrder = 0
+    object pcOptions: TPageControl
+      Left = 381
+      Height = 436
       Top = 0
-      Width = 791
+      Width = 495
+      ActivePage = tsDrive
       Align = alClient
-      BorderSpacing.Left = 2
-      BorderSpacing.Right = 4
-      BorderSpacing.Bottom = 2
-      Caption = 'uBee512'
-      ClientHeight = 163
-      ClientWidth = 781
+      TabIndex = 0
       TabOrder = 0
-      object Label5: TLabel
-        Left = 90
-        Height = 16
-        Top = 5
-        Width = 40
-        Caption = 'Model'
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
-      end
-      object cboModel: TComboBox
-        Left = 90
-        Height = 20
-        Top = 21
-        Width = 75
-        ItemHeight = 26
-        Style = csDropDownList
-        TabOrder = 0
-        Text = '0'
-        OnChange = cboModelChange
-      end
-      object Label10: TLabel
-        Left = 170
-        Height = 16
-        Top = 5
-        Width = 29
-        Caption = 'Title'
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
-      end
-      object cboTitle: TComboBox
-        AnchorSideBottom.Control = cboModel
-        AnchorSideBottom.Side = asrBottom
-        Left = 170
-        Height = 20
-        Top = 21
-        Width = 168
-        Anchors = [akLeft, akBottom]
-        ItemHeight = 26
-        ParentShowHint = False
-        ShowHint = True
-        Style = csDropDownList
-        TabOrder = 1
-        Text = '0'
-        OnChange = cboTitleChange
-      end
-      object btnExplorer: TBitBtn
-        AnchorSideRight.Control = memRC
-        AnchorSideRight.Side = asrBottom
-        AnchorSideBottom.Control = cboTitle
-        AnchorSideBottom.Side = asrBottom
-        Left = 344
-        Height = 20
-        Top = 21
-        Width = 33
-        Anchors = [akTop, akLeft, akRight, akBottom]
-        Caption = '...'
-        TabOrder = 2
-        OnClick = btnExplorerClick
-      end
-      object memRC: TMemo
-        Left = 8
-        Height = 109
-        Top = 53
-        Width = 369
-        ReadOnly = True
-        ScrollBars = ssAutoBoth
-        TabOrder = 3
-        WordWrap = False
-      end
-      object pcOptions: TPageControl
-        AnchorSideLeft.Control = memRC
-        AnchorSideLeft.Side = asrBottom
-        Left = 383
-        Height = 160
-        Top = 2
-        Width = 397
-        ActivePage = tsDrive
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Left = 6
-        BorderSpacing.Right = 1
-        TabIndex = 0
-        TabOrder = 4
-        object tsDrive: TTabSheet
-          Caption = 'Drives'
-          ClientHeight = 124
-          ClientWidth = 391
-          object lblDiskA: TLabel
-            Left = 8
-            Height = 16
-            Top = 13
-            Width = 41
-            Caption = 'Disk A'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-          end
-          object edtDiskA: TFileNameEdit
-            AnchorSideLeft.Control = lblDiskA
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideRight.Control = cboFormatA
-            Left = 54
-            Height = 22
-            Top = 8
-            Width = 210
-            FilterIndex = 0
-            HideDirectories = False
-            ButtonWidth = 23
-            NumGlyphs = 1
-            Anchors = [akTop, akLeft, akRight]
-            BorderSpacing.Left = 5
-            BorderSpacing.Right = 2
-            MaxLength = 0
-            TabOrder = 0
-          end
-          object btnClearA: TSpeedButton
-            Left = 359
-            Height = 23
-            Top = 8
-            Width = 23
-            Anchors = [akTop, akRight]
-            Glyph.Data = {
-              36040000424D3604000000000000360000002800000010000000100000000100
-              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              00000000001E0000003300000033000000330000001E000000008A8785008986
-              8400898684008986840089868400898684008A878300918B7C002F49D7000000
-              001E3145B4AC384DCCFF384DCBFF384DCCFF3145B4AC0000001E8A8785008986
-              8400898684008986840089868400898684008A8683008F8A7E002B47DA002E43
-              B7AB3751D7FF385DF9FF375DFAFF385DF9FF3852D7FF3044B4AC000000230000
-              0033000000330000003300000033000000330000003300000033000000332D46
-              D1FF4065FCFF3C60FAFF3A5DF8FF3C60FAFF4165FBFF344BCCFF7D7A78C08481
-              7FFF83807EFF83807EFF83807EFF83807EFF83807EFF84817CFF8C8776FF2741
-              D1FFA7B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFA9BAFFFF3148CBFF888583FFD6D4
-              D2FFCECCCAFFCECCCAFFCECCCAFFCECCCAFFCECCCAFFD0CDCAFFD9D4C7FF233D
-              D0FF5976FFFF5775FEFF5473FDFF5775FEFF5B78FFFF2F47CEFF8A8785FFD2D0
-              CFFFC1BFBDFFAEACAAFFAFADABFFAFADABFFAFADABFFB0AEABFFB7B3A9FF626F
-              BBFF3B55E0FF6C86FFFF7189FFFF6C86FFFF3E58E1FF5D68ACFF8D8A88FFD4D2
-              D1FFB7B4B2FFD2D2D0FFC3C1BFFFC4C2C0FFC4C2C0FFC4C2C0FFC7C5C0FFCFCB
-              BDFF6D79C4FF223CCDFF233DCCFF223CCDFF7784CFFF999383FF908E8CFFD7D5
-              D4FFAEACAAFFE1DFE0FFB0ADABFFB1AEACFFB2AEACFFB2AEACFFB2AFACFFB5B1
-              ACFFB9B5ABFFBCB7A9FFEFEADEFFBAB6A7FFDFDCD3FF94918CFF93918FFFDCDB
-              D9FFA6A3A0FFE6E4E4FFE5E3E4FFE5E4E4FFE6E4E4FFE6E4E4FFE6E4E4FFE6E4
-              E4FFE6E4E4FFE7E5E3FFE8E6E4FFA8A4A0FFDEDDD9FF94928FFF969492FFE3E1
-              E0FF9D9997FF9D9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C99
-              97FF9C9997FF9C9997FF9D9997FF9D9997FFE3E1E0FF969492FF9A9896AAEFEE
-              EFFFEBEAEAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9
-              EAFFEAE9EAFFEAE9EAFFEAE9EAFFEBEAEAFFEFEEEFFF9A9896AA9D9B99009693
-              90FFE5E4E3FFC7C4C2FFC7C4C2FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5
-              C3FFC7C5C3FFC7C4C2FFC7C4C2FFE5E4E3FF969390FF9D9B99009F9D9B009B98
-              9600999795FFE4E3E2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4
-              C2FFC6C4C2FFC6C4C2FFE4E3E2FF999795FF9B9896009F9D9B009F9D9B009D9A
-              98009E9C9A009E9C9AFFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3
-              A1FFA5A3A1FFA5A3A1FF9E9C9AFF9E9C9A009D9A98009F9D9B00
-            }
-            OnClick = btnClearAClick
-          end
-          object btnClearB: TSpeedButton
-            Left = 359
-            Height = 23
-            Top = 43
-            Width = 23
-            Anchors = [akTop, akRight]
-            Glyph.Data = {
-              36040000424D3604000000000000360000002800000010000000100000000100
-              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              00000000001E0000003300000033000000330000001E000000008A8785008986
-              8400898684008986840089868400898684008A878300918B7C002F49D7000000
-              001E3145B4AC384DCCFF384DCBFF384DCCFF3145B4AC0000001E8A8785008986
-              8400898684008986840089868400898684008A8683008F8A7E002B47DA002E43
-              B7AB3751D7FF385DF9FF375DFAFF385DF9FF3852D7FF3044B4AC000000230000
-              0033000000330000003300000033000000330000003300000033000000332D46
-              D1FF4065FCFF3C60FAFF3A5DF8FF3C60FAFF4165FBFF344BCCFF7D7A78C08481
-              7FFF83807EFF83807EFF83807EFF83807EFF83807EFF84817CFF8C8776FF2741
-              D1FFA7B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFA9BAFFFF3148CBFF888583FFD6D4
-              D2FFCECCCAFFCECCCAFFCECCCAFFCECCCAFFCECCCAFFD0CDCAFFD9D4C7FF233D
-              D0FF5976FFFF5775FEFF5473FDFF5775FEFF5B78FFFF2F47CEFF8A8785FFD2D0
-              CFFFC1BFBDFFAEACAAFFAFADABFFAFADABFFAFADABFFB0AEABFFB7B3A9FF626F
-              BBFF3B55E0FF6C86FFFF7189FFFF6C86FFFF3E58E1FF5D68ACFF8D8A88FFD4D2
-              D1FFB7B4B2FFD2D2D0FFC3C1BFFFC4C2C0FFC4C2C0FFC4C2C0FFC7C5C0FFCFCB
-              BDFF6D79C4FF223CCDFF233DCCFF223CCDFF7784CFFF999383FF908E8CFFD7D5
-              D4FFAEACAAFFE1DFE0FFB0ADABFFB1AEACFFB2AEACFFB2AEACFFB2AFACFFB5B1
-              ACFFB9B5ABFFBCB7A9FFEFEADEFFBAB6A7FFDFDCD3FF94918CFF93918FFFDCDB
-              D9FFA6A3A0FFE6E4E4FFE5E3E4FFE5E4E4FFE6E4E4FFE6E4E4FFE6E4E4FFE6E4
-              E4FFE6E4E4FFE7E5E3FFE8E6E4FFA8A4A0FFDEDDD9FF94928FFF969492FFE3E1
-              E0FF9D9997FF9D9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C99
-              97FF9C9997FF9C9997FF9D9997FF9D9997FFE3E1E0FF969492FF9A9896AAEFEE
-              EFFFEBEAEAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9
-              EAFFEAE9EAFFEAE9EAFFEAE9EAFFEBEAEAFFEFEEEFFF9A9896AA9D9B99009693
-              90FFE5E4E3FFC7C4C2FFC7C4C2FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5
-              C3FFC7C5C3FFC7C4C2FFC7C4C2FFE5E4E3FF969390FF9D9B99009F9D9B009B98
-              9600999795FFE4E3E2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4
-              C2FFC6C4C2FFC6C4C2FFE4E3E2FF999795FF9B9896009F9D9B009F9D9B009D9A
-              98009E9C9A009E9C9AFFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3
-              A1FFA5A3A1FFA5A3A1FF9E9C9AFF9E9C9A009D9A98009F9D9B00
-            }
-            OnClick = btnClearBClick
-          end
-          object btnClearC: TSpeedButton
-            Left = 359
-            Height = 23
-            Top = 78
-            Width = 23
-            Anchors = [akTop, akRight]
-            Glyph.Data = {
-              36040000424D3604000000000000360000002800000010000000100000000100
-              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              00000000001E0000003300000033000000330000001E000000008A8785008986
-              8400898684008986840089868400898684008A878300918B7C002F49D7000000
-              001E3145B4AC384DCCFF384DCBFF384DCCFF3145B4AC0000001E8A8785008986
-              8400898684008986840089868400898684008A8683008F8A7E002B47DA002E43
-              B7AB3751D7FF385DF9FF375DFAFF385DF9FF3852D7FF3044B4AC000000230000
-              0033000000330000003300000033000000330000003300000033000000332D46
-              D1FF4065FCFF3C60FAFF3A5DF8FF3C60FAFF4165FBFF344BCCFF7D7A78C08481
-              7FFF83807EFF83807EFF83807EFF83807EFF83807EFF84817CFF8C8776FF2741
-              D1FFA7B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFA9BAFFFF3148CBFF888583FFD6D4
-              D2FFCECCCAFFCECCCAFFCECCCAFFCECCCAFFCECCCAFFD0CDCAFFD9D4C7FF233D
-              D0FF5976FFFF5775FEFF5473FDFF5775FEFF5B78FFFF2F47CEFF8A8785FFD2D0
-              CFFFC1BFBDFFAEACAAFFAFADABFFAFADABFFAFADABFFB0AEABFFB7B3A9FF626F
-              BBFF3B55E0FF6C86FFFF7189FFFF6C86FFFF3E58E1FF5D68ACFF8D8A88FFD4D2
-              D1FFB7B4B2FFD2D2D0FFC3C1BFFFC4C2C0FFC4C2C0FFC4C2C0FFC7C5C0FFCFCB
-              BDFF6D79C4FF223CCDFF233DCCFF223CCDFF7784CFFF999383FF908E8CFFD7D5
-              D4FFAEACAAFFE1DFE0FFB0ADABFFB1AEACFFB2AEACFFB2AEACFFB2AFACFFB5B1
-              ACFFB9B5ABFFBCB7A9FFEFEADEFFBAB6A7FFDFDCD3FF94918CFF93918FFFDCDB
-              D9FFA6A3A0FFE6E4E4FFE5E3E4FFE5E4E4FFE6E4E4FFE6E4E4FFE6E4E4FFE6E4
-              E4FFE6E4E4FFE7E5E3FFE8E6E4FFA8A4A0FFDEDDD9FF94928FFF969492FFE3E1
-              E0FF9D9997FF9D9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C99
-              97FF9C9997FF9C9997FF9D9997FF9D9997FFE3E1E0FF969492FF9A9896AAEFEE
-              EFFFEBEAEAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9
-              EAFFEAE9EAFFEAE9EAFFEAE9EAFFEBEAEAFFEFEEEFFF9A9896AA9D9B99009693
-              90FFE5E4E3FFC7C4C2FFC7C4C2FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5
-              C3FFC7C5C3FFC7C4C2FFC7C4C2FFE5E4E3FF969390FF9D9B99009F9D9B009B98
-              9600999795FFE4E3E2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4
-              C2FFC6C4C2FFC6C4C2FFE4E3E2FF999795FF9B9896009F9D9B009F9D9B009D9A
-              98009E9C9A009E9C9AFFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3
-              A1FFA5A3A1FFA5A3A1FF9E9C9AFF9E9C9A009D9A98009F9D9B00
-            }
-            OnClick = btnClearCClick
-          end
-          object edtDiskB: TFileNameEdit
-            AnchorSideLeft.Control = lblDiskB
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideRight.Control = cboFormatB
-            Left = 54
-            Height = 22
-            Top = 43
-            Width = 210
-            FilterIndex = 0
-            HideDirectories = False
-            ButtonWidth = 23
-            NumGlyphs = 1
-            Anchors = [akTop, akLeft, akRight]
-            BorderSpacing.Left = 5
-            BorderSpacing.Right = 2
-            MaxLength = 0
-            TabOrder = 1
-          end
-          object edtDiskC: TFileNameEdit
-            AnchorSideLeft.Control = lblDiskC
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideRight.Control = cboFormatC
-            Left = 54
-            Height = 22
-            Top = 78
-            Width = 210
-            FilterIndex = 0
-            HideDirectories = False
-            ButtonWidth = 23
-            NumGlyphs = 1
-            Anchors = [akTop, akLeft, akRight]
-            BorderSpacing.Left = 5
-            BorderSpacing.Right = 2
-            MaxLength = 0
-            TabOrder = 2
-          end
-          object lblDiskC: TLabel
-            Left = 8
-            Height = 16
-            Top = 83
-            Width = 41
-            Caption = 'Disk C'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-          end
-          object lblDiskB: TLabel
-            Left = 8
-            Height = 16
-            Top = 47
-            Width = 41
-            Caption = 'Disk B'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-          end
-          object cboFormatA: TComboBox
-            AnchorSideRight.Control = btnClearA
-            Left = 266
-            Height = 20
-            Top = 8
-            Width = 91
-            Anchors = [akTop, akRight]
-            BorderSpacing.Right = 2
-            ItemHeight = 19
-            Items.Strings = (
-              'rcpmfs/ds80'
-              'ds40'
-              'ds401'
-              'ds40s'
-              'ds80'
-              'ds801'
-              'ds82'
-              'ds84'
-              'ds8b'
-              'hs350'
-              'hs525'
-              'ss40s'
-              'ss80'
-            )
-            TabOrder = 3
-            Text = 'Format?'
-          end
-          object cboFormatB: TComboBox
-            AnchorSideRight.Control = btnClearB
-            Left = 266
-            Height = 20
-            Top = 43
-            Width = 91
-            Anchors = [akTop, akRight]
-            BorderSpacing.Right = 2
-            ItemHeight = 19
-            Items.Strings = (
-              'rcpmfs/ds80'
-              'ds40'
-              'ds401'
-              'ds40s'
-              'ds80'
-              'ds801'
-              'ds82'
-              'ds84'
-              'ds8b'
-              'hs350'
-              'hs525'
-              'ss40s'
-              'ss80'
-            )
-            TabOrder = 4
-            Text = 'Format?'
-          end
-          object cboFormatC: TComboBox
-            AnchorSideRight.Control = btnClearC
-            Left = 266
-            Height = 20
-            Top = 78
-            Width = 91
-            Anchors = [akTop, akRight]
-            BorderSpacing.Right = 2
-            ItemHeight = 19
-            Items.Strings = (
-              'rcpmfs/ds80'
-              'ds40'
-              'ds401'
-              'ds40s'
-              'ds80'
-              'ds801'
-              'ds82'
-              'ds84'
-              'ds8b'
-              'hs350'
-              'hs525'
-              'ss40s'
-              'ss80'
-            )
-            TabOrder = 5
-            Text = 'Format?'
-          end
+      object tsDrive: TTabSheet
+        Caption = 'Drives'
+        ClientHeight = 400
+        ClientWidth = 489
+        object lblDiskA: TLabel
+          Left = 8
+          Height = 16
+          Top = 13
+          Width = 41
+          Caption = 'Disk A'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
         end
-        object tsROMs: TTabSheet
-          Caption = 'ROMs'
+        object edtDiskA: TFileNameEdit
+          AnchorSideLeft.Control = lblDiskA
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideRight.Control = cboFormatA
+          Left = 54
+          Height = 22
+          Top = 8
+          Width = 308
+          FilterIndex = 0
+          HideDirectories = False
+          ButtonWidth = 23
+          NumGlyphs = 1
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          BorderSpacing.Right = 2
+          MaxLength = 0
+          TabOrder = 0
         end
-        object TabSheet3: TTabSheet
-          Caption = 'Peripherals'
-          ClientHeight = 124
-          ClientWidth = 391
-          object lblPP: TLabel
-            Left = 8
-            Height = 37
-            Top = 8
-            Width = 49
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = 'Parallel Port'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-            WordWrap = True
-          end
-          object cboParallelPort: TComboBox
-            AnchorSideLeft.Control = lblPP
-            AnchorSideLeft.Side = asrBottom
-            Left = 62
-            Height = 20
-            Top = 8
-            Width = 313
-            Anchors = [akTop, akLeft, akRight]
-            BorderSpacing.Left = 5
-            ItemHeight = 19
-            TabOrder = 0
-          end
+        object btnClearA: TSpeedButton
+          Left = 457
+          Height = 23
+          Top = 8
+          Width = 23
+          Anchors = [akTop, akRight]
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            00000000001E0000003300000033000000330000001E000000008A8785008986
+            8400898684008986840089868400898684008A878300918B7C002F49D7000000
+            001E3145B4AC384DCCFF384DCBFF384DCCFF3145B4AC0000001E8A8785008986
+            8400898684008986840089868400898684008A8683008F8A7E002B47DA002E43
+            B7AB3751D7FF385DF9FF375DFAFF385DF9FF3852D7FF3044B4AC000000230000
+            0033000000330000003300000033000000330000003300000033000000332D46
+            D1FF4065FCFF3C60FAFF3A5DF8FF3C60FAFF4165FBFF344BCCFF7D7A78C08481
+            7FFF83807EFF83807EFF83807EFF83807EFF83807EFF84817CFF8C8776FF2741
+            D1FFA7B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFA9BAFFFF3148CBFF888583FFD6D4
+            D2FFCECCCAFFCECCCAFFCECCCAFFCECCCAFFCECCCAFFD0CDCAFFD9D4C7FF233D
+            D0FF5976FFFF5775FEFF5473FDFF5775FEFF5B78FFFF2F47CEFF8A8785FFD2D0
+            CFFFC1BFBDFFAEACAAFFAFADABFFAFADABFFAFADABFFB0AEABFFB7B3A9FF626F
+            BBFF3B55E0FF6C86FFFF7189FFFF6C86FFFF3E58E1FF5D68ACFF8D8A88FFD4D2
+            D1FFB7B4B2FFD2D2D0FFC3C1BFFFC4C2C0FFC4C2C0FFC4C2C0FFC7C5C0FFCFCB
+            BDFF6D79C4FF223CCDFF233DCCFF223CCDFF7784CFFF999383FF908E8CFFD7D5
+            D4FFAEACAAFFE1DFE0FFB0ADABFFB1AEACFFB2AEACFFB2AEACFFB2AFACFFB5B1
+            ACFFB9B5ABFFBCB7A9FFEFEADEFFBAB6A7FFDFDCD3FF94918CFF93918FFFDCDB
+            D9FFA6A3A0FFE6E4E4FFE5E3E4FFE5E4E4FFE6E4E4FFE6E4E4FFE6E4E4FFE6E4
+            E4FFE6E4E4FFE7E5E3FFE8E6E4FFA8A4A0FFDEDDD9FF94928FFF969492FFE3E1
+            E0FF9D9997FF9D9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C99
+            97FF9C9997FF9C9997FF9D9997FF9D9997FFE3E1E0FF969492FF9A9896AAEFEE
+            EFFFEBEAEAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9
+            EAFFEAE9EAFFEAE9EAFFEAE9EAFFEBEAEAFFEFEEEFFF9A9896AA9D9B99009693
+            90FFE5E4E3FFC7C4C2FFC7C4C2FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5
+            C3FFC7C5C3FFC7C4C2FFC7C4C2FFE5E4E3FF969390FF9D9B99009F9D9B009B98
+            9600999795FFE4E3E2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4
+            C2FFC6C4C2FFC6C4C2FFE4E3E2FF999795FF9B9896009F9D9B009F9D9B009D9A
+            98009E9C9A009E9C9AFFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3
+            A1FFA5A3A1FFA5A3A1FF9E9C9AFF9E9C9A009D9A98009F9D9B00
+          }
+          OnClick = btnClearAClick
+        end
+        object btnClearB: TSpeedButton
+          Left = 457
+          Height = 23
+          Top = 43
+          Width = 23
+          Anchors = [akTop, akRight]
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            00000000001E0000003300000033000000330000001E000000008A8785008986
+            8400898684008986840089868400898684008A878300918B7C002F49D7000000
+            001E3145B4AC384DCCFF384DCBFF384DCCFF3145B4AC0000001E8A8785008986
+            8400898684008986840089868400898684008A8683008F8A7E002B47DA002E43
+            B7AB3751D7FF385DF9FF375DFAFF385DF9FF3852D7FF3044B4AC000000230000
+            0033000000330000003300000033000000330000003300000033000000332D46
+            D1FF4065FCFF3C60FAFF3A5DF8FF3C60FAFF4165FBFF344BCCFF7D7A78C08481
+            7FFF83807EFF83807EFF83807EFF83807EFF83807EFF84817CFF8C8776FF2741
+            D1FFA7B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFA9BAFFFF3148CBFF888583FFD6D4
+            D2FFCECCCAFFCECCCAFFCECCCAFFCECCCAFFCECCCAFFD0CDCAFFD9D4C7FF233D
+            D0FF5976FFFF5775FEFF5473FDFF5775FEFF5B78FFFF2F47CEFF8A8785FFD2D0
+            CFFFC1BFBDFFAEACAAFFAFADABFFAFADABFFAFADABFFB0AEABFFB7B3A9FF626F
+            BBFF3B55E0FF6C86FFFF7189FFFF6C86FFFF3E58E1FF5D68ACFF8D8A88FFD4D2
+            D1FFB7B4B2FFD2D2D0FFC3C1BFFFC4C2C0FFC4C2C0FFC4C2C0FFC7C5C0FFCFCB
+            BDFF6D79C4FF223CCDFF233DCCFF223CCDFF7784CFFF999383FF908E8CFFD7D5
+            D4FFAEACAAFFE1DFE0FFB0ADABFFB1AEACFFB2AEACFFB2AEACFFB2AFACFFB5B1
+            ACFFB9B5ABFFBCB7A9FFEFEADEFFBAB6A7FFDFDCD3FF94918CFF93918FFFDCDB
+            D9FFA6A3A0FFE6E4E4FFE5E3E4FFE5E4E4FFE6E4E4FFE6E4E4FFE6E4E4FFE6E4
+            E4FFE6E4E4FFE7E5E3FFE8E6E4FFA8A4A0FFDEDDD9FF94928FFF969492FFE3E1
+            E0FF9D9997FF9D9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C99
+            97FF9C9997FF9C9997FF9D9997FF9D9997FFE3E1E0FF969492FF9A9896AAEFEE
+            EFFFEBEAEAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9
+            EAFFEAE9EAFFEAE9EAFFEAE9EAFFEBEAEAFFEFEEEFFF9A9896AA9D9B99009693
+            90FFE5E4E3FFC7C4C2FFC7C4C2FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5
+            C3FFC7C5C3FFC7C4C2FFC7C4C2FFE5E4E3FF969390FF9D9B99009F9D9B009B98
+            9600999795FFE4E3E2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4
+            C2FFC6C4C2FFC6C4C2FFE4E3E2FF999795FF9B9896009F9D9B009F9D9B009D9A
+            98009E9C9A009E9C9AFFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3
+            A1FFA5A3A1FFA5A3A1FF9E9C9AFF9E9C9A009D9A98009F9D9B00
+          }
+          OnClick = btnClearBClick
+        end
+        object btnClearC: TSpeedButton
+          Left = 457
+          Height = 23
+          Top = 78
+          Width = 23
+          Anchors = [akTop, akRight]
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            00000000001E0000003300000033000000330000001E000000008A8785008986
+            8400898684008986840089868400898684008A878300918B7C002F49D7000000
+            001E3145B4AC384DCCFF384DCBFF384DCCFF3145B4AC0000001E8A8785008986
+            8400898684008986840089868400898684008A8683008F8A7E002B47DA002E43
+            B7AB3751D7FF385DF9FF375DFAFF385DF9FF3852D7FF3044B4AC000000230000
+            0033000000330000003300000033000000330000003300000033000000332D46
+            D1FF4065FCFF3C60FAFF3A5DF8FF3C60FAFF4165FBFF344BCCFF7D7A78C08481
+            7FFF83807EFF83807EFF83807EFF83807EFF83807EFF84817CFF8C8776FF2741
+            D1FFA7B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFA9BAFFFF3148CBFF888583FFD6D4
+            D2FFCECCCAFFCECCCAFFCECCCAFFCECCCAFFCECCCAFFD0CDCAFFD9D4C7FF233D
+            D0FF5976FFFF5775FEFF5473FDFF5775FEFF5B78FFFF2F47CEFF8A8785FFD2D0
+            CFFFC1BFBDFFAEACAAFFAFADABFFAFADABFFAFADABFFB0AEABFFB7B3A9FF626F
+            BBFF3B55E0FF6C86FFFF7189FFFF6C86FFFF3E58E1FF5D68ACFF8D8A88FFD4D2
+            D1FFB7B4B2FFD2D2D0FFC3C1BFFFC4C2C0FFC4C2C0FFC4C2C0FFC7C5C0FFCFCB
+            BDFF6D79C4FF223CCDFF233DCCFF223CCDFF7784CFFF999383FF908E8CFFD7D5
+            D4FFAEACAAFFE1DFE0FFB0ADABFFB1AEACFFB2AEACFFB2AEACFFB2AFACFFB5B1
+            ACFFB9B5ABFFBCB7A9FFEFEADEFFBAB6A7FFDFDCD3FF94918CFF93918FFFDCDB
+            D9FFA6A3A0FFE6E4E4FFE5E3E4FFE5E4E4FFE6E4E4FFE6E4E4FFE6E4E4FFE6E4
+            E4FFE6E4E4FFE7E5E3FFE8E6E4FFA8A4A0FFDEDDD9FF94928FFF969492FFE3E1
+            E0FF9D9997FF9D9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C9997FF9C99
+            97FF9C9997FF9C9997FF9D9997FF9D9997FFE3E1E0FF969492FF9A9896AAEFEE
+            EFFFEBEAEAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9EAFFEAE9
+            EAFFEAE9EAFFEAE9EAFFEAE9EAFFEBEAEAFFEFEEEFFF9A9896AA9D9B99009693
+            90FFE5E4E3FFC7C4C2FFC7C4C2FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5C3FFC7C5
+            C3FFC7C5C3FFC7C4C2FFC7C4C2FFE5E4E3FF969390FF9D9B99009F9D9B009B98
+            9600999795FFE4E3E2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4C2FFC6C4
+            C2FFC6C4C2FFC6C4C2FFE4E3E2FF999795FF9B9896009F9D9B009F9D9B009D9A
+            98009E9C9A009E9C9AFFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3A1FFA5A3
+            A1FFA5A3A1FFA5A3A1FF9E9C9AFF9E9C9A009D9A98009F9D9B00
+          }
+          OnClick = btnClearCClick
+        end
+        object edtDiskB: TFileNameEdit
+          AnchorSideLeft.Control = lblDiskB
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideRight.Control = cboFormatB
+          Left = 54
+          Height = 22
+          Top = 43
+          Width = 308
+          FilterIndex = 0
+          HideDirectories = False
+          ButtonWidth = 23
+          NumGlyphs = 1
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          BorderSpacing.Right = 2
+          MaxLength = 0
+          TabOrder = 1
+        end
+        object edtDiskC: TFileNameEdit
+          AnchorSideLeft.Control = lblDiskC
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideRight.Control = cboFormatC
+          Left = 54
+          Height = 22
+          Top = 78
+          Width = 308
+          FilterIndex = 0
+          HideDirectories = False
+          ButtonWidth = 23
+          NumGlyphs = 1
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          BorderSpacing.Right = 2
+          MaxLength = 0
+          TabOrder = 2
+        end
+        object lblDiskC: TLabel
+          Left = 8
+          Height = 16
+          Top = 83
+          Width = 41
+          Caption = 'Disk C'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblDiskB: TLabel
+          Left = 8
+          Height = 16
+          Top = 47
+          Width = 41
+          Caption = 'Disk B'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object cboFormatA: TComboBox
+          AnchorSideRight.Control = btnClearA
+          Left = 364
+          Height = 20
+          Top = 8
+          Width = 91
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 2
+          ItemHeight = 19
+          Items.Strings = (
+            'rcpmfs/ds80'
+            'ds40'
+            'ds401'
+            'ds40s'
+            'ds80'
+            'ds801'
+            'ds82'
+            'ds84'
+            'ds8b'
+            'hs350'
+            'hs525'
+            'ss40s'
+            'ss80'
+          )
+          TabOrder = 3
+          Text = 'Format?'
+        end
+        object cboFormatB: TComboBox
+          AnchorSideRight.Control = btnClearB
+          Left = 364
+          Height = 20
+          Top = 43
+          Width = 91
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 2
+          ItemHeight = 19
+          Items.Strings = (
+            'rcpmfs/ds80'
+            'ds40'
+            'ds401'
+            'ds40s'
+            'ds80'
+            'ds801'
+            'ds82'
+            'ds84'
+            'ds8b'
+            'hs350'
+            'hs525'
+            'ss40s'
+            'ss80'
+          )
+          TabOrder = 4
+          Text = 'Format?'
+        end
+        object cboFormatC: TComboBox
+          AnchorSideRight.Control = btnClearC
+          Left = 364
+          Height = 20
+          Top = 78
+          Width = 91
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 2
+          ItemHeight = 19
+          Items.Strings = (
+            'rcpmfs/ds80'
+            'ds40'
+            'ds401'
+            'ds40s'
+            'ds80'
+            'ds801'
+            'ds82'
+            'ds84'
+            'ds8b'
+            'hs350'
+            'hs525'
+            'ss40s'
+            'ss80'
+          )
+          TabOrder = 5
+          Text = 'Format?'
         end
       end
+      object tsROMs: TTabSheet
+        Caption = 'ROMs'
+      end
+      object TabSheet3: TTabSheet
+        Caption = 'Peripherals'
+        ClientHeight = 400
+        ClientWidth = 489
+        object lblPP: TLabel
+          Left = 8
+          Height = 37
+          Top = 8
+          Width = 49
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = 'Parallel Port'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+          WordWrap = True
+        end
+        object cboParallelPort: TComboBox
+          AnchorSideLeft.Control = lblPP
+          AnchorSideLeft.Side = asrBottom
+          Left = 62
+          Height = 20
+          Top = 8
+          Width = 411
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          ItemHeight = 19
+          TabOrder = 0
+        end
+      end
+    end
+    object pnlLeft: TPanel
+      Left = 0
+      Height = 436
+      Top = 0
+      Width = 376
+      Align = alLeft
+      BevelOuter = bvNone
+      ClientHeight = 436
+      ClientWidth = 376
+      TabOrder = 1
       object Label6: TLabel
         Left = 8
         Height = 16
@@ -490,240 +393,109 @@ object frmMain: TfrmMain
         Height = 20
         Top = 21
         Width = 75
-        ItemHeight = 26
+        ItemHeight = 19
         ItemIndex = 0
         Items.Strings = (
           'Disk'
           'ROM'
           'Custom'
         )
-        Style = csDropDownList
-        TabOrder = 5
+        TabOrder = 0
         Text = 'Disk'
         OnChange = cboTypeChange
       end
-    end
-  end
-  object pnlCPMToolsMain: TPanel
-    Left = 218
-    Height = 601
-    Top = 216
-    Width = 579
-    Align = alClient
-    BevelOuter = bvNone
-    ClientHeight = 601
-    ClientWidth = 579
-    TabOrder = 3
-    object pnldskFiles: TPanel
-      Left = 0
-      Height = 175
-      Top = 0
-      Width = 579
-      Align = alTop
-      BevelOuter = bvNone
-      ClientHeight = 175
-      ClientWidth = 579
-      TabOrder = 0
-      object ToolBar1: TToolBar
-        Left = 0
-        Height = 26
-        Top = 0
-        Width = 579
-        Caption = 'ToolBar1'
-        Images = ilMain
-        List = True
-        ShowCaptions = True
-        TabOrder = 0
-        object btnAddDSKtoA: TToolButton
-          Left = 1
-          Hint = 'Mount selected file into A:'
-          Top = 2
-          Caption = 'A:'
-          ImageIndex = 1
-          OnClick = btnAddDSKtoAClick
-        end
-        object btnAddFolderToA: TToolButton
-          Left = 42
-          Hint = 'Mount selected folder into A:'
-          Top = 2
-          Caption = 'A:'
-          ImageIndex = 4
-          OnClick = btnAddFolderToAClick
-        end
-        object btnAddDSKtoB: TToolButton
-          Left = 91
-          Hint = 'Mount selected file into B:'
-          Top = 2
-          Caption = 'B:'
-          ImageIndex = 1
-          OnClick = btnAddDSKtoBClick
-        end
-        object btnAddFolderToB: TToolButton
-          Left = 132
-          Hint = 'Mount selected folder into B:'
-          Top = 2
-          Caption = 'B:'
-          ImageIndex = 4
-          OnClick = btnAddFolderToBClick
-        end
-        object ToolButton1: TToolButton
-          Left = 83
-          Height = 22
-          Top = 2
-          Caption = 'ToolButton1'
-          Style = tbsSeparator
-        end
-        object ToolButton2: TToolButton
-          Left = 173
-          Height = 22
-          Top = 2
-          Caption = 'ToolButton2'
-          Style = tbsSeparator
-        end
-        object btnAddDSKtoC: TToolButton
-          Left = 181
-          Hint = 'Mount selected file into B:'
-          Top = 2
-          Caption = 'C:'
-          ImageIndex = 1
-          OnClick = btnAddDSKtoCClick
-        end
-        object btnAddFolderToC: TToolButton
-          Left = 223
-          Hint = 'Mount selected folder into C:'
-          Top = 2
-          Caption = 'C:'
-          ImageIndex = 4
-          OnClick = btnAddFolderToCClick
-        end
+      object Label5: TLabel
+        Left = 90
+        Height = 16
+        Top = 5
+        Width = 40
+        Caption = 'Model'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
       end
-      object lvcpmtoolsWorkingFolder: TListView
-        Left = 0
-        Height = 149
-        Top = 26
-        Width = 579
-        Align = alClient
-        Columns = <        
-          item
-            Caption = 'Filename'
-            Width = 150
-          end        
-          item
-            Caption = 'Ext'
-          end        
-          item
-            Caption = 'Boot?'
-            Width = 60
-          end        
-          item
-            Caption = 'Size (kb)'
-            Width = 75
-          end        
-          item
-            Caption = 'Modified'
-            Width = 125
-          end>
-        HideSelection = False
-        ReadOnly = True
-        RowSelect = True
-        SmallImages = ilMain
-        SortType = stText
+      object cboModel: TComboBox
+        Left = 90
+        Height = 20
+        Top = 21
+        Width = 75
+        ItemHeight = 19
         TabOrder = 1
-        ViewStyle = vsReport
-        OnSelectItem = lvcpmtoolsWorkingFolderSelectItem
+        Text = '0'
+        OnChange = cboModelChange
+      end
+      object Label10: TLabel
+        Left = 170
+        Height = 16
+        Top = 5
+        Width = 29
+        Caption = 'Title'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object cboTitle: TComboBox
+        AnchorSideRight.Control = btnMacroExplorer
+        AnchorSideBottom.Control = cboModel
+        AnchorSideBottom.Side = asrBottom
+        Left = 170
+        Height = 20
+        Top = 21
+        Width = 168
+        Anchors = [akLeft, akRight, akBottom]
+        BorderSpacing.Right = 6
+        ItemHeight = 19
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+        Text = '0'
+        OnChange = cboTitleChange
+      end
+      object btnMacroExplorer: TBitBtn
+        AnchorSideRight.Control = memRC
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = cboTitle
+        AnchorSideBottom.Side = asrBottom
+        Left = 344
+        Height = 20
+        Hint = 'Launch Definition Explorer'
+        Top = 21
+        Width = 33
+        Anchors = [akTop, akRight, akBottom]
+        Images = ilMain
+        ImageIndex = 12
+        TabOrder = 3
+        OnClick = btnMacroExplorerClick
+      end
+      object memRC: TMemo
+        Left = 8
+        Height = 378
+        Top = 53
+        Width = 369
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 4
+        WordWrap = False
       end
     end
-    object Splitter2: TSplitter
-      Cursor = crVSplit
-      Left = 0
-      Height = 5
-      Top = 175
-      Width = 579
-      Align = alTop
-      ResizeAnchor = akTop
-    end
-    object pcPreview: TPageControl
-      Left = 0
-      Height = 421
-      Top = 180
-      Width = 579
-      ActivePage = tsFiles
-      Align = alClient
-      TabIndex = 0
-      TabOrder = 2
-      object tsFiles: TTabSheet
-        Caption = 'Files in Disk'
-        ClientHeight = 385
-        ClientWidth = 573
-        object lvcpmtoolsFiles: TListView
-          Left = 0
-          Height = 385
-          Top = 0
-          Width = 573
-          Align = alClient
-          Columns = <          
-            item
-              Caption = 'User'
-            end          
-            item
-              Caption = 'Filename'
-              Width = 75
-            end          
-            item
-              Caption = 'Ext'
-              Width = 40
-            end          
-            item
-              Caption = 'Attr'
-              Width = 95
-            end          
-            item
-              Caption = 'Size'
-              Width = 75
-            end          
-            item
-              Caption = 'Date'
-              Width = 125
-            end>
-          HideSelection = False
-          ReadOnly = True
-          RowSelect = True
-          SortType = stText
-          TabOrder = 0
-          ViewStyle = vsReport
-        end
-      end
-      object tsText: TTabSheet
-        Caption = 'Text / Raw'
-        ClientHeight = 385
-        ClientWidth = 573
-        object memOutput: TMemo
-          Left = 0
-          Height = 385
-          Top = 0
-          Width = 573
-          Align = alClient
-          Lines.Strings = (
-            'memOutput'
-          )
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
-          TabOrder = 0
-        end
-      end
+    object Splitter1: TSplitter
+      Left = 376
+      Height = 436
+      Top = 0
+      Width = 5
     end
   end
   object ToolBar2: TToolBar
     Left = 0
     Height = 24
     Top = 0
-    Width = 797
+    Width = 876
     AutoSize = True
-    Caption = 'ToolBar2'
     Images = ilMain
     List = True
     ShowCaptions = True
-    TabOrder = 4
+    TabOrder = 1
     object btnSettings: TToolButton
       Left = 104
       Top = 2
@@ -732,7 +504,7 @@ object frmMain: TfrmMain
       OnClick = mnuSettingsClick
     end
     object btnLaunchuBee512: TToolButton
-      Left = 191
+      Left = 410
       Top = 2
       AutoSize = True
       Caption = 'Launch'
@@ -743,6 +515,7 @@ object frmMain: TfrmMain
       Left = 183
       Height = 22
       Top = 2
+      AutoSize = True
       Caption = 'ToolButton3'
       Style = tbsSeparator
     end
@@ -750,6 +523,7 @@ object frmMain: TfrmMain
       Left = 96
       Height = 22
       Top = 2
+      AutoSize = True
       Caption = 'ToolButton4'
       Style = tbsSeparator
     end
@@ -760,6 +534,59 @@ object frmMain: TfrmMain
       ImageIndex = 8
       OnClick = mnuDebugClick
     end
+    object ToolButton5: TToolButton
+      Left = 191
+      Top = 2
+      Caption = 'Definitions'
+      ImageIndex = 12
+      OnClick = btnMacroExplorerClick
+    end
+    object ToolButton6: TToolButton
+      Left = 285
+      Height = 22
+      Top = 2
+      AutoSize = True
+      Caption = 'ToolButton6'
+      Style = tbsSeparator
+    end
+    object btnTest: TToolButton
+      Left = 491
+      Top = 2
+      Caption = 'Test'
+      Visible = False
+      OnClick = btnTestClick
+    end
+    object ToolButton7: TToolButton
+      Left = 483
+      Height = 22
+      Top = 2
+      Caption = 'ToolButton7'
+      Style = tbsSeparator
+      Visible = False
+    end
+    object btnDiskExplorer: TToolButton
+      Left = 293
+      Top = 2
+      Caption = 'Disk Explorer'
+      ImageIndex = 9
+      OnClick = btnDiskExplorerClick
+    end
+    object ToolButton2: TToolButton
+      Left = 402
+      Height = 22
+      Top = 2
+      Caption = 'ToolButton2'
+      Style = tbsSeparator
+    end
+  end
+  object edtCommandLine: TEdit
+    Left = 0
+    Height = 22
+    Top = 460
+    Width = 876
+    Align = alBottom
+    ReadOnly = True
+    TabOrder = 2
   end
   object MainMenu1: TMainMenu
     Left = 88
@@ -794,165 +621,192 @@ object frmMain: TfrmMain
     Left = 152
     Top = 120
     Bitmap = {
-      4C7A0B0000001000000010000000AB1300000000000078DAED5A095495D7B93D
-      EBADB62F495793BCD4A4495F9236DAA649D4188B534C342A3844AA11451367A3
-      C1382B2A224298EF052EA3A00232C8A020F3208820080E51992EF33CCFF3AC0C
-      F702FB7DE7E75E0B0489C97A5D7D5DAF67B9D7F9CF397B9F799FFF3F170130FC
-      1371C9C38D795C74619EEE173970C5D77B52700EE7720DD772B8B95C60AECEE7
-      515B538DFBF7EE4C0ACEE15CAE11DA767365179C1C50575B8307542EE0FBBB13
-      4351CEB95CC3B5175D2E0476B477A0A5B919CD4DCF06CEE51AAEBD70CE113555
-      95F0707516E0FE2350F2B8866B9DCEDAA3B4A4087EBE5EA8AFAD455D0D81E2FA
-      71A85394F167CEE51AAE75B0B341415E2E42830351555189F090204484062372
-      1C781E2FE31CCEE51AAEB5955822373B0B315191C8CECCC4DDDB89B877276942
-      F032CEE15CAEE15A898588F232703B3141A8378CDA980C9CC3B95CC3B5962233
-      E4E766439A96F293C0355CFBDD99D349E62646303336FC49E01AAE658C4D23A8
-      FC4C4CC3BFFDF7FFC27F0DB575682434D5D623C0D707E5A5C53877D6E147FD77
-      2D2C04D7C34291101E813B6191785CDD88C4D008D41414E3BCBDFD58FF658FF5
-      DFF7848777EF20EFDE03AC0D340373D100735E07E6AA812FA31DE0656D3FA9FF
-      783F6E868643CD4B1F2CE42058B61B4EB46583E5B881851EC6D273C727F55F56
-      7A2ACAD333C1DC3680A55E007B680F1E78CCD29CC13CB74EEA3FB1B1119C0C4D
-      C13C36E1645D2A4607DDBA3430F76D7826FF5DDA0A96640376D374A47D8A85B4
-      E70E3E7E662536FF01AC09E7CC2D18BBB283315BCD20E6B71F2C4E0CDD8A7B42
-      CCFC0E80D96C0C9E4CEF6C46FACB3BA90BEC6DCEE5ED318FED42BB429AE73F7B
-      787BDCB804EDBFFDFFAFE17FE10CA8AB41637D2DAE5EF642795911CE393EC3FB
-      372C18D111C1888D0E427C4C003A9ACB1177DD1F15A539747ED84CEA7F8E07DF
-      272123350187F5EE61EAA7E998B6284D8875CD33E0EA6436A9FFC3438310732D
-      00BB8FDEC4271B2B71480C685B4188177F5585EDFB8227F57F667A0A8A721F50
-      9B99D87C0AF85267189A27868478EB6960D64AE9A4FE373731808DC529FC6569
-      16FC63C7D81F0171C0EC55A9CFE4FF992BB2B0446B109FEE9261E1F67E215EAA
-      25C71CF5B4A7FA5F223663F61243367D6531FB50352668BE4601166C1FC0FCED
-      32215EB0BE001FA9453DD5FF120B3376D6DA80CDFABC40F0EEECE551C10BD6A4
-      61C19A54F098A7FF2FF8FF9F0D5597ECF045E732B1D03143007F5EEA9C954DF9
-      4C6D3C5C3972D8F28B396C85029C5F3A0814F68DA04406CCB54BC7C767A54FEA
-      54E21345FD54778152CFF3F248B72B6B005F67F623AA650845BD4071FF084A06
-      8052990272A0923ABDF87C2696BBE6A828F529C4DF9F378043848384FD026438
-      5020C7BE5C19763CE8227463FBC36E44D5F40B7DF8CCFEFE7EAEFF94F4493DE4
-      AB62394E96C8A1533228E0140DEA44B10C6AEEB9986F938A7984B9366998634B
-      7BC841AA1C47CB22D2C73E024E90F6605A370EA5F7E090B40787092B49BB29AE
-      49184701F5319F90C7C1E789E66C31D5C111D409A879E40B6D2831DF3A15DB6E
-      35E368911C07F265D84763FA3677007B09A6E58308ACECC502517CEC129A0B49
-      C163A87917A26C88E64C36B206E5849334865394D0A1CC930A1C2F92C1BB1130
-      48ACC74747DD772CBB908583B71A7138A11E37BB019DF221E852FDA709FA1583
-      F86E140C08C6954308A1FEAEF1C8E1DE7F91E6005FF815C1AEF8317CDA01D3BA
-      61982B20AA1F0B73C28516C0A6F0313E16C5DF18D94FD9F88CCF01ADAD1BAD83
-      6317E03409FC682EB56ED460F6318F9D7CFD96BB6475F33E2CE173496BB1D851
-      8ACF268353067D37493B79DFB99EC2473FE3DE304B7928FC2FF8AF6302FFD552
-      FE74F2DC5F092A4FE0CA9133FFE7FA4F59FF3297ECE667F55FF1C0880779CCF7
-      56C530843AC87F7327F2DF01DA9FFB73473CC8F7EDC142F245D1200E160F613F
-      81FEE153A74CCCD30F9C35DA7FC7689F9FE01E5482FC748AF6E21701A598679D
-      82B9E407150EF2E0FCBFFB2F94FBEF06E975A963FA95C330A8E200BEAB06D607
-      9561536CA3308EFCA7F98FF64324E569049763AE24E509E611B62634E188C27F
-      FBF3E402F6E50DC2BC7C184155FD5828B9FD90FBCFA1AC9FBED1C97F830AFF0D
-      8CF69F1CA74BA84F658051C508425AC927B7DB3157C7FF18F79FF6BD661C8AFF
-      A1FF0C2A86604C63B1AA05FE7AC313ECFCE784D5748750C71F3CCF72FFBDA2EA
-      9C854DC16523FE6B1BEB3F713D60DB44FB218EB4015A747F70C5C9D62C8A2FD2
-      FDE1107D7C6E729CCC7FE7099E74B6B10BD4668A13D803BBB1F7078F6D58EE92
-      D9F534FF2D71CCC24AC762BA7FAC854E5DCAD3EE0FB3DEDF7C66E7BB1B75B6BD
-      BBF1E4586C38B9E54FABF66930CFF5745F904C787F5078F8D784179E82E798AD
-      7A20F3DB37E1FD61C5282F8DC7CA8B796C8D6B85E2FEB0E11F727FF8B7FFFF45
-      FCCFDFC1846F0966F41E0CACEA7D36FFD3478B6E991C7AD58338533F04BD8661
-      F893A78CEE374045F7F2A4FEE7EF5FA39A2198D179A1212EC7F405F7317D21C7
-      032C3E9AF1E3FEA7B6ACE89DBCD1AA124BD617E18808384EF78723747F58BEB9
-      147356A44DEAFF739476A1317D40ED6ED5191A737FD8AE07A87C9E3AB9FFCFD1
-      BBD62D031F2E4E46C08D89EE0F2993FB5FF3F89677D4F768A82C4BC5D26FE413
-      DE1F9EC5FFB31645052E78CAFD6132FFAF70CB61AB7C84FADFE6DC7FC4FDA19F
-      BE8946A3AF6E680CC6978F878B773AF688D21178F5010C1CEE43DF22027BC452
-      E848921014510A571F29B42CA4D0B54E84A5AB1427AC927098F6B6B6D55D0487
-      172322BE1DB30EA60B7519DA2522E96E1BFEF88D1466EEA5987F240591543E63
-      7F3ABCAFA440723E09466EE5D864560863874444456422E266DB0FF55A59F846
-      F410F3F7DD44586C0BFEA4950A2D935B903E6C14F48B8EA76197C91DB4967423
-      3EB159A8FFFEDD061C378F42745C23DEDC9305CFA072FC797F1E1C2EE5E0BDFD
-      99080CC9C286630138EA50084DB362D8B8DC839E240ECD25BDF022EF7AFB67E3
-      664C2192E2CB6046FBD1DB2F1DC191A5B876AD1022D72CF8FAA5C2D95B0A67AF
-      34D87B66C2C3371D11D78A7E30DFE3D1532D1BB30E8F6BE4E82CEF1DB35E57C3
-      4AF1B5759900EDB385C893B6A3BDFC3142238BA1EF5282FAC21E815B9DDB062D
-      EB026888AAE119508CCE8A5EB4943CC257E60598ADD72660ABA41AB9C935D865
-      780BBF3FD48CCF4CDA5191D3819AFC2E6C357E0835E306FCFE703B5E3BD08C08
-      3ADBA4C9AD58AE938C035669B81C988B92EC2EEAF300B21FD6629151EB137D7E
-      7A3342C2F2519BDF81934E8578616F07BCC21B101C5D8FDFEDADC4F3FB7AF1BC
-      561B9C7C0BF188C65C91D38ECF8CDB9EE895E3EDADA533E962293E3C5189D407
-      2D28CF7B84F0B836185E2CC1D4C3D55864508FD2EC8EA7EA33539AB1E0583AAE
-      8496A2A74A86AABC6E9464B50B6531D17407D26F46BEB46D427D435137D61CBF
-      016B9787C8A0BDE4EA9381037685F844BF0E7E41B9B0734BC65E49363A2AFA50
-      9AD5268C7F91511B3DB7A3B9B807DA0E7978756F0D3ED66FC49C332D38649B83
-      C0087A4758546283B81AA6AE79E8A6EFBAE6A24EE8D8A743C3BC82508E53F6A9
-      088BA075332BC55A71E308CC6B1076BD5658FF2E5A47BE2794FB84CF515B69CF
-      18F450BDE3F3F83CDBDB4898B5A55880D8CC841919E899478687E17AD435482C
-      2DA0AB732222C0FFF2F42BBE5EB5A1C10188BD1E8DA0802BF0BFE2937DD5CF77
-      1AD72B7F03313534B81A7D2D1218A6B35F6456FFC9C28F371C3D72703DFF2DA9
-      A4B8089DED1D686D694675652512E3E3E1EBED29B46F2932632253E3405E7F77
-      571742894F47D34C7E76BA5F747E94979B83B29212F27B1802FC2EC3C3CD059E
-      EE2E707773E6BF7F313F5F6FE6606B2DFCB697294D476E7636F4F5742FF1F138
-      9DB5434D75156EC6DE407C5C9CF09BDBE873D0C6CA22DCE7923B6A6AAA71EF4E
-      A2F05B1AE7EAE9EAF0DFA0CE5A5B59A0AAAA12290F1F202D2519763656429B96
-      621193D09C49A8BCB2BC1CB131D1C26F6F97DCDD70F284361A1A1A1012781566
-      264628292A84342D0DE9A9C9484D4E01CD152C44A634BF62187DA79F70C5FB12
-      1213E8AC0A0DC1DC3973FFB679CBCE70DF2B81A8AC6E80A9B131B2323391FCE0
-      3E72B2B2D0D2D28A8EF64E949696C2D8D080DF23A71AEA9F49109B9B43F7B47E
-      02A57F45F883BBCEB456EF33B3505DDF86E4E4545AAFCB38AE7D0C126B7BE81B
-      98E0D8B1E3A9FCDD676763C35F035315F3313549F422BB61F2A24F59B026D0F9
-      00150966B8161D0F434323681F3FE53F6AEEDEFDCED892496C2F30B1C485DD11
-      BFC46E897ECB628C5FF6AB8CDE0FB4A7A2396A1B5A42D4E0AEF711CAAA9AE017
-      10292F0ED5748B357E29E896680A4BB278952589A7B05BE2D758BCE8751663F2
-      5BFF92E04D82B6316A3B1A42D491EF3213EEBAD3DBBCAFDE682A8A31021EA5A2
-      347823AE9B4CB97A53F4DFECA6F84D1647718CE9EF82333C97011D6968BFA78B
-      FA6075E4B9CC82BFEE6BD1D4D70FFD755E0A690A544553E497408F14797E9AE0
-      9AEFCFFD95DD739ACD6EDB7D007467A3297A071A8279BB1F2250F79558D2BE93
-      60F17B1666F8C68D1CEA4B7DC00A345EDB0CF4E6806BBE77FC88DD3B3B8BDDA1
-      E7F69BFBD018F605B29C6722F0F48856FBB4842559BECEE7789ADFE9376233CF
-      4F4743D0E768BBB11B77ECDE479CF82DC611A0F746D26DEB7791289986AB7AAF
-      F3757C47474FC4386E5BD2FC58BC25AC93FFE9371292ACA7E2B6CD9FC135A3DE
-      EFA37F079D3AC977C0D4D17F7F9C88A0F9C5EAF015AACBB0F89385983F770E54
-      3E9CE136118F5F857838A97D18A3F3B7AE598A601F17385A1AE1DBED1B31EF83
-      77C6942BF94AFDDEDDBBFE5EAE6AA3CF965834B1C556608BCCC0161B81A95A37
-      B1E5B6FA4A8A92AFD47FA9B90E9BD7AF055B2229609A1EF8E5B1DBF8859E5481
-      0CFC52FB0E783E2FE73CCE1FAD5FA032EBF4F34BF4F0BADE7DBC77AE1AEF9D2D
-      C77B0E6584D29198A7CF57E37754FE1CF1387FB49EC27FB1C5126C8BE8C7E184
-      5E684674637570D713F0F4B771BDD84D3153B583C057E8B576EFD87368F75734
-      564B4A94E2E563B9587FB11A47C25B7024AA0347223BA0E15A85D7B5E97B7B23
-      DD1D695E0EEDDE0CAEE37AED230770E0EBCD91EC530B1C0D6A86573130E38C14
-      6F1DA36F5BCDDB784B279BD2E9B84AF79123DE25609F5A117F4B24D729FACFF7
-      C11FD9220BA8D3386DA472A889A4B84C7CB6F68610AB99A5429231047531D5B9
-      D812029F74A3C6CFD8122BBC773A0B3BA2DAF1CE81449CFC7E006C759810BFB3
-      370EDBAE75E0BD03B1604B2518BF7F84B0CCB6FBE55DB198E3568D17375FC3DF
-      825BC1565EA5B80D2F6E0AA1FC1ABCAC7985CF5FF778BDFAF2A55B662EFBAA8B
-      EAC04B66F978413304F3680ED9725FCC23DD0B5FF8E137469960CBAC3153F5AB
-      2ECE1FADD75CB716DBD6AD02FBCD9B8BD80A9B3EDA83F84F0329D80A2F8A33F8
-      FE23AD451F2FE73CCE1FADFF7AC736CC9B3D63333DFE07613653F9469F2D352D
-      626A34573C56D1D217F2A99CF3387FB4FEF8918350DC1594E115C2FB8AB5795F
-      9156861714FCD1F3A7C27E5A5051EA634C5F378831998268C397106DF06BC2F3
-      3F825F0B5CAE19D1BE0AB4A663B0E12E9E35085CD270ED75E35730D49A856231
-      13CABAEA0AD12DA0009D35F9E8A8CE43576D01819E29CD03E7720DD7720C37DD
-      87F6D211BD9EDE199C3973063EDEDEB874E9127A5BCBA1ABAB0B6F4A7B5EF212
-      38C788CB3582DEE4B718AC8987DBD7BFC0D0E000861E3762F85103E4DD751824
-      C8159075D560A08BF2647DB8485CAEE1DAEBC653D05F1A8E4A97372197F743EF
-      B43E7CBC7C30D8DB4CCF7AF48DE30BAF4BDE903D6A8287871706067A052ED770
-      2D476FA13F2ADDFF02399F1B790F06073A20EF6FA7B63A05C807DA31D0DF06D9
-      401764F46D55E9F6174123E8691D1EE57AA1CA7B1EBACB6340D765AA678830A8
-      884703028773B9866BAFD31AF4645E44DDD5E5A8F15B826A2AABF69C852A8F99
-      84190ACC14F27819E7702ED770ADA0979E437DA806EA82D4519F7C79CC5A0F13
-      8614312FABA3772BE772CD88FE35F4A4D9A131720B1A289FF7BFB592AF7731ED
-      8562B455E6A1B92C074DE57942FF398773B9866B39BA52ADD014B31B0DF46E1F
-      E8A791F675C3C2480FABD59662989EDB6B0AD1565D84FE3E3969BF14B85CA3D4
-      F7A458A02DFE305A62BE46FFE33EA1DFAB972FC5391BCB913DD95889CE864AF4
-      3DEA13389CCB355C4B1E406FBA35BAEF7F87CEDBDA90F5C905CDDF56AD828B93
-      A3F0DCD7D18CDE8E160CF4CA040EE7720DD73A1F9A7281C77C2DAF9DF9150A32
-      B251284DC6A16FF76ED8BC906D28CAA06F9594BBC84DB9877C2AE31CCE556AC9
-      C66F3CE56F04CF2930D9DF11DE707474ECB0E7FF8FC4D616767676B0E5503C8F
-      4EDB2AD21C9CCF75FCFCB0B31FF93F1DF2FE7E0CC9E5B4570720533C0F0F0ED2
-      5EA6745F9F903F4C79833299C0B71FD1315E370FA6A62658457366666E86D6A6
-      46A8ABAB63CD9A35108B4568696C8048644EE59F4355554DE02B744FF462B118
-      8F7BBA61696585475D9D58B76E1DB527C3DAB56BF1B89BDEC3545F577B1B9AEA
-      EB84DD6863633346CFDBE37DE66DF2FEAF5FBF1E9A9A9AD8BBF75BA1FF23FA0E
-      34D6D7D33931F844CFE78307DE8E868606BEE0ED52396F9F075E1F1FFBEAD5AB
-      D1DF4BF7B4F676E17E34BEFD952B570AFD5A497330342813F8BC4FD6D6D6B4A7
-      FBE8BBDD5A285BA6AA3A66FC360ABD5C364067874C88399F3F0FCAE9B9AF97F6
-      7DAF90DFD9D1416748BFC057B6AF88B167CF1E7CF38D167C7DE9BCA2B3D2CBCB
-      4B383F65037DD8B56B177C7C7C843394E74DA47FE2771ADB208D5FCED79AAFBF
-      8021211E52944DA4E76D28EB77777717F276EEDC29F4C3C3C3E349DAD3D373D2
-      F69F35F0791DADE7758F6E7BC78E1D4FE680B7A984B27CFCFAFFD4A05C3FDAB7
-      49BC0E5E1F07EF1787323D11043FDADA5629DEFF3FF7FF1FCEE0FAFF017CF28A
-      16
+      4C7A0D0000001000000010000000281700000000000078DAED5A07549557BAFD
+      D7AC997993CC9A242FC924312FC94CCC4CCA18631263895162D7C8585034B11B
+      8DC68A1511413A17B814119022458AA254A509882876A55C7ABFF4DE9BD22EB0
+      DFF7FDDC6BC02031596FD6CCAC3767B1D7697B9FFE9DF25F0008F827E2B4A7BB
+      E079CA55F0F238C5C0593F9F51C11CE6B286B50C775767C1CDE5242A2BCA71E7
+      D68D51C11CE6B246ACDBDD4D7076B447556505EE52BE88DB374786329FB9AC61
+      ED2957E7C096E61634D4D7A3BEEEE9C05CD6B0D6D9C9011565A5F0747311E1F1
+      1350F158C35AC713C7212FCC87BF9F37AA2B2B51554120BFFA315429F338CC5C
+      D6B0D6DECE06B9D959080D0E445949292E8604212C3418E18F81D3388F39CC65
+      0D6B6DA596C8CA484774643832D2D270F3FA35DCBA913022388F39CC650D6BA5
+      16E694968AEBD7E2C5722F501DA38139CC650D6B2DCD4D919395015972E2CF02
+      6B587BECE89104336343981A19FC2CB086B58220BC4398F80BF10EFE637FFF2F
+      ECAFA6B20AB584BACA6A04F8F9A2585E00A713F63F697F11174270E94228E22F
+      86E1C685703C2CAFC5B5D03054E416E0E4F1E3C3ED2F63B8FDDD26DCBB7903D9
+      B7EE6249A02904570D082ECB20B869E0EB287B785B1F1FD5FEB81D71A11731D7
+      5B0F42C82E0819EE38D8940121D31D42E81ECC723A30AAFDA5A724A138250D82
+      FB0A0849CE10EE1D073BF6856417085E6B47B53F8991211C0D4C2078AEC2A1AA
+      240C753A55C9103CD6E1A9ECEFF45A08093610E24C06EB275F8C7B6DE0FE0B56
+      12B31FC19AE06466210867370882AD6690E0BF03C26509744A6E89BEE0BF1382
+      CDCAE0D1F42EA6A43FB3919A20BCC55CAE4FF05C2FD62BC639FDE9DD5B8FF54B
+      D4FEC7FEFF3DEC5FDC03AA2A505B5D89F367BC515C940F2787A7387F2F04232A
+      2C18B15141B8121D8096FA625CBE740E25F24CDA3F6C46B57FC6DDDB09484D8A
+      C71EDD5B183B3D05EFCC48167D1DB354B8399A8E6AFF174383101D1180CD7BE3
+      F0C5CA52EC9600FBAD20FA6ADF9461FDF6E051ED3F2D2511F95977A9CE34AC3E
+      0C7CAD3D00CD83FDA2BFF6083061816C54FB3733D6878DC561BC372B1DE76287
+      993F022E039F2C4C7A2AFB1F3F3F1D33B7F661FAA65E4C5BDF2DFAB3B62AF099
+      7AF213ED5F2A31158E4B0D84710B0A848FE644074DD1C8C5D4F53D98B2BE57F4
+      A72ECFC5C773239F68FF520B53E184B5BE30E1AB5CD1763F9917193C757132A6
+      2E4E02FB1CFF57B0FF7F36E6B8665C9CE19486690EA922383CCB253D83D285B9
+      8FC38D9129CC3B9529CC5782F9F23E20AF6B1085BDC024BB147C7E42F6A84C15
+      BE50964F65E7AAF49C964DBA4DE93DF836AD1B910DFDC8EF040ABA0751D803C8
+      7B955000A5D468B5936998E7963951A54F24FE8EEC1EEC26EC22EC10D18B9DB9
+      0A6CCFEAC586BB6D8476ACBFD78EC88A6EB10D5F1EBFB383F5D3499FD0417655
+      A0C0A14205B40BFB441CA64E1D2CE8C55C8F2C4CB149C264C2249B647C664B6B
+      C85EA6EA47C30CD2C73E000E927657723B76A77460B7AC037B080B48BBEA729D
+      D88F5C6A630E219BC1E34463A6466530825A81B99E39621D2A4CB14EC2BAABF5
+      D89BAFC0CE9C5E6CA73E7D9FD5836D0493E23E04967662AAF995D8993416D2DC
+      8798EB9387A27E1AB3DEC13928261CA23E1CA68836251E52E2407E2F7C6A01FD
+      6BD5F878AFC786D9CEE9D875B5167BE2AB11D70E6817F74387CA3F42D02BE9C3
+      B121D0271895F62384DABBD833936DFF391A032CF5CF875DC143F83603265503
+      3053C2BC7A38CC08CE0D804DDE437C6E7E2566703D65E04B1E039A5B779A0787
+      36C07114F8D3586E8DA9C027FB3C37F2FCCD734D6FE736CCE4B1A4B9507390E1
+      CBD1E0984AF726592BB79DF5E43EFE05EF8609AA4DE1FFC0FE5A46B0BF4A4A1F
+      4736F72961E223B83132A7FC52FB53953FDB35A3FE69EDAFA067D006D9E7B555
+      3200B10CB2BF4923D9DF4E5A9F3BB2066D90D7EDAE3CB28BFC3EEC2AE8C70E02
+      FD61BA631A26EB054E186A7FFB689D1F641B5481ECE930ADC5A501724CB64EC4
+      24B287890CB2C1293FD85F28DB5F0CE975A8617AA503D02F6300C7CA81E54145
+      58155B2BF623E749F647EB219CD234828B31499AF80893096BE3EBA0A5B4BF1D
+      D90A11DBB3FB60563C80A0B26E4C935EBFC7F6675FD44D7774B2BF3EA5FDF50C
+      B53F058E14529B8A00C392418434929D5C6FC624ED73FBD8FEF6DFAAC7EE2B3F
+      B63FFD927E18515FAC2A814F63BC209CFC8AB088DE10EAF893D709B6BF17E7B8
+      A4635570D1A0FD350DB73F4935605B47EBE1326903B6D2FBC10D871AD3C93F45
+      EF87DD74F95CE5309AFD9D2478D1DE2638539D898E10EEDA0D7F3F78AEC33CD7
+      B4B627D9DF4C87742C7028A0F7C7126857253EE9FD30E183D54737BEBB527BDD
+      BB2B0F0DC78A436BFEB270BB86E0B59CDE0BD211DF0F4A1BFE3DE1D927E07782
+      AD7AA0E0BF7DC4F7C3FC21B6F438169CCA1616BB9528DF0F2BFE21EF87FFD8FF
+      BF89FDF3194CF89E604AE7606059E7D3D93F5D5A748A14D02DEFC3D1EA7EE8D6
+      0CE01CD994E19D1A4CD43933AAFDF3F96B58D10F53DA2F3424C51837F50EC64D
+      63DC85DADED49FB67FAACB8ACEE49556A598B93C1F5AE6C0017A3F68D1FB61DE
+      6A393E9B9F3CAAFD3B51DC95FAF437AA77AD76FFB0F7C37A5D60E25749A3DBBF
+      139DB5EEA9F848ED3E0262467A3F248E6EFF9A07D6BCADBE4563E2EC24CCFA4E
+      31E2FBE169EC7FC28CC8C0A94F783F8C66FFF3DD338585BE62F96F31F71FF17E
+      E8A63BD1507455F50FC3E3F98FC3D527055BCC531078FE2EF4EDEF40CF220C5B
+      2432684B13101426879BAF0C5B2D64D0B1BE064B37190E5A25600FADEDFD5637
+      117CB10061579A3161578A589681DD3524DC6CC29FBF93C1D4438E295A8908A7
+      FC0F77A4C0E76C22A4271360E85E8C55A67930B2BF86C8B03484C535FD58BF35
+      1DDF99DFC394ED71B810DB80BF6C4DC256E3AB90DDAB15F5330E246393F10D34
+      16B6E3CAB57AB1FC3B376B70C02C1251976BF1C69674780515E3AF3BB2617F3A
+      13EFEF484360483A56EC0BC05EFB3C689A16C0C6F51674A597515FD8096FB25D
+      9F7319888BCE43C2952298D27AF4F14F4170B81C11117930774B879F7F125C7C
+      6470F14EC671AF3478FAA5202C22FF47E3FD383ACA7B87CDC3C30A055A8B3B87
+      CDD7F90B727C6B5D2462FF893C64CB9AD15CFC10A1E105D0732D44755E87C82D
+      CF6AC256EB5C689897C32BA000AD259D68287C806FCC72F1896E9388B5D27264
+      DDAFC02683AB787D773DBE346E4649660B2A72DAB0D6E81EE61AD5E0F53DCD78
+      65673DC2686F93DD6FC43CEDFBD869958C33815928CC68A336F720E35E256618
+      363ED2E7A4D423E4420E2A735A70C8310FCF6E6B81F7C51A044755E3D56DA578
+      667B279ED9DA0447BF3C3CA03E976436E34BA3A6477A557F3B2B694F3A25C747
+      074B9174B701C5D90F70F172130C4E1562EC9E72CCD0AF863CA3E589FAB4C47A
+      4CDD9782B3A1727494F5A22CBB1D85E9CD625E7414BD81F4EA91236B1A515F93
+      DF8EC5076260ED7A0FA9B496DC7C53B1D32E0F5FE855C13F280B76EEF7B14D9A
+      8196922EC8D39BC4FECF306CA27033EA0B3AB0DF3E1B7FDC5681CFF56AF1D9D1
+      06ECB6CD4460189D1116A558212987895B36DAE95E579FDF0AEDE329D0302B21
+      14E3F0F1245C08A37933956389A476106615B870A9529CFF369A475E13AA75C2
+      63D424EF18860E2AF7F1341EE7E33652C1DA522242626A2C18EAEB9A855FBC80
+      4B9111905A5A4047FB6058C0B933E3CEFA795786060720F652148202CEE2DC59
+      DF8CF3FE7EEFB05EF50DC4C440FF7C54443830407BBFB969F517D33E5FB1576B
+      D772FE965458908FD6E6163436D4A3BCB414D7AE5C819F8F9758BFA5B9A9606E
+      6214C8E5B7B7B52194F8B4358DE7BDD3E394CB83ECAC4C14151692BD5F4080FF
+      1978BABBC2CBC3151EEE2EFCFD4BF0F7F311EC6DADC56F7B69B214646564404F
+      57E734F7C7F1841D2ACACB10171B832B972F8BDFDC86EE83365616177D4F7BA0
+      A2A21CB76E5C13BFA5315757479BBF419DB0B6B24059592912EFDD4572E27DD8
+      D95889755A4ACC05298D9994F24B8B8B111B1D257E7B3BEDE18E4307F7A3A6A6
+      062181E7616A6C88C2FC3CC892939192741F49F7134163050B73131A5F090C8F
+      E9C59FF5398D6BF1B457858660D26793FEBE7ACDC68B7E6703515A5E03132323
+      A4A7A5E1FEDD3BC84C4F474343235A9A5B2197CB6164A0CFEFC8B1067A47E325
+      6666D039A2174FF1DF12FEE4A1FD4EA3CFD10928AF6EC2FDFB49345F677060FF
+      3E48AD8F434FDF18FBF61D48E2B3CFCEC6868F81B1CAF1189B60FE9C1063FC9C
+      6F51B026D07A1725F1A68888BA02030343EC3F70F8DC90B17BF79891A520B575
+      16245257E186E479E1AAF94B42B4D10BFEA5513B80E624D447AE4343C85C78E8
+      7E8CA2B23AF807842B0A4235DD638D9E0FBA6AFEB29060F1472141F2B27055F2
+      8A70C5FC3521DAF8A57385C1AB446D6DE47AD484A823C7753C3C74C635F99C8F
+      A9CB8F36041E24411EBC12978C5F3E1F67FE3F429CE40DE132F9D126AF06A77A
+      CD065A92D17C4B07D5C1EAC8769D80733AAF44515B3F3AA7FD7C485DE01CD485
+      7F0D74C890EDAF09D6DC76FA54B8E5F88970DDEE6F407B06EAA236A02698EBFD
+      08813A2FC692F6ED788BD7850B06636232A92DD501F3511BB11AE8CC046B6E3B
+      7C2CDC3A3141B841E1E6B8EDA8BDB014E92EE311786450BBFF885448B07C8DC7
+      F81DFF236362D34E8E434DD057688AD98C1B761FE0B2E44D8111A03B26E1BAF5
+      BBB8267D07E7755FE3797C5B5BD75C605CB7A4F1B178539CA77347C6C427588F
+      C5759BBF823543CEF7A1DF41C78E720F183BF4F7C791089A4B175D9C3F6736D4
+      BE988629933EC3C48F3E741F89C74F217687F6EFC1D0F4B58B6721D8D7150E96
+      86F87EFD4A4CFEDBDBC3F2557C957EDBE64D3FE4CFB1D113665AD4096A561066
+      984250338430C7BA4E9867ABA7A2A8F82AFDD79ACBB07AF9120833A5B982A627
+      7EB3EF3A7EAD2B532215BFD97F039CCEF9CC63FE50FDD489138E3C335317AFE9
+      DEC1FB4EE578FF4431DEB72F22C8077D8E9F2CC7AB94FF3BE2317FA89EDC7F0B
+      6A52AC0BEBC69EF84E6886B5635170DB2370FCFBCB9DD84CBE30C70E225FA9DF
+      BA79C396DD9BBFA1BE5A52448E17F66561F9A972685D6C8056640BB4C25BA0E1
+      5686D7F6D37D7B25BD1D695C766F5E0DD6B17EBFD64EECFC7675B830DD027B83
+      EAE15D007C78548637F7D1DD56F33ADED4CEA0780ACED37B44CBA710C2742BE2
+      AF09679DB2FDBC0EFE2CCCB0803AF5D346A6C05C7319CE105F581223FA734D93
+      204DED87BA84CA54B384C827DD90FE0BC24C2BBC7F241D1B229BF1F6CE6B3874
+      BB07C2A20BA2FFF6B6CB5817D182F777C6429825C5E3EB4774B36DDB5FD8148B
+      CFDCCBF1DCEA08FC3DB811C282F3E437E1B95521945E811734CFF2F8B53FAE57
+      9F376BCDF8D9DFB4511978DE3407CF6A8660328DA130CF0F9349F7EC527FFCC1
+      300DC26C6B8C9FF34D1BF387EA35972DC1BA650B21FCE18D19C27C9B2E5A83F8
+      2F7D1984F9DEE4A7F2FA23AD4517E7338FF943F5DF6E5887C99F7CB89A82BF22
+      7C224CFC4E4F9865922FCCA5B1627FE2563D319DF299C7FCA1FA035ABBA07C2B
+      A8DC8B840F9473F38132AE72CF2AF943C76FA2F0F3DC44953EDAE435FD68E397
+      1165F03CA2F47F4F78E627F07B91CB9A41ED1F81C614F4D5DCC4D33A914B1AD6
+      5E327A11FD8DE9289008625E5B551EDA45E4A2B522072DE5D968ABCC255098E2
+      EC98CB1AD63206EAEE60FFAC41BDAEEE511C3D7A14BE3E3E387DFA343A1B8BA1
+      A3A3031F8A7B9DF61639FB88CB1A516FFC12FA2AAEC0FDDB5FA3BFAF07FD0F6B
+      31F0A0068AF62AF411144AF4B655A0A78DD27ABB708AB8AC61ED25A397D12DBF
+      8852D737A0507443F7881E7CBD7DD1D7594F615DBAE3F8C1FBB40F7A1FD4C1D3
+      D31B3D3D9D229735AC6574E69D43A9C77B50F0D8283AD0D7D302457733D5D52A
+      42D1D38C9EEE26F4F6B4A197EE56A5EEEF891A514FF3F020CB1B653E93D15E1C
+      0D7A2E5339FD843EA53F141039CC650D6B2FD11C74A49D42D5F979A8F09F8972
+      CA2BF79A8032CFF1840F95182FA6711E7398CB1AD68A7A9913AA43355015A48E
+      EAFB6786CDF500A15FE9735E159DADCC65CDA0FE157424DBA1367C0D6A289DDB
+      DF58CAF35D406BA1004DA5D9A82FCA445D71B6D87EE6309735AC65B42559A12E
+      7A336AE86CEFE9A69E76B5C3C250178BE6CEC200859B2BF2D0549E8FEE2E0569
+      BF16B9AC51E93B122DD074650F1AA2BF45F7C32EB1DD8BE6CD82938DE5E09AAC
+      2D456B4D29BA1E74891CE6B286B56403E84CB146FB9D6368BDBE1FBD5D0A51F3
+      F7850BE1EAE82086BB5AEAD1D9D2809ECE5E91C35CD6B0D665F7CBCEECF35C46
+      1CFD2D7253339027BB8FDDDF6F5BB17A9AB0223F95EE2A89379195780B3994C7
+      1CE6AAB464C6639EF01BC1EF9418ED7784310E0E0E2DC7F9FF486C6D61676707
+      5B86323C346EAB8C3398CF3ADE3FEC8E0FFE4F87A2BB1BFD0A05ADD51EF42AC3
+      037D7DB49629DED525A60F505A5F6FAFC83F3EA813B86C762626C6584863666A
+      668AC6BA5AA8ABAB63F1E2C59048CCD1505B03737333CAFF0A73E6CC15F94ADD
+      23BD4422C1C38E76585A59E1415B2B962D5B46F5F562C9922578D84EE73095D7
+      D6DC84BAEA2A7135DAD8D80CD3737DDC66AE93DBBF7CF972686A6A62DBB6EFC5
+      F60FEA5B505B5D4DFB44DF233D8F073BAE474343034BB95ECAE7FAD97179DCF7
+      458B16A1BB93DE69CDCDE2FBE8F1FA172C5820B66B018D417F5FAFC8E736595B
+      5BD39AEEA27BBBB598377BCE9C61FDB751EA15BD3DB477F48A3EF339DCA7A070
+      5727ADFB4E31BDB5A585F6906E91AFAA5FE963CB962DF8EEBBADF0F3A3FD8AF6
+      4A6F6F6F71FFECEDE9C2A64D9BE0EBEB2BEEA19C3692FE91BD53DFFAA8FF0A9E
+      6B9E7F11FDA2DFAFCC1B49CF75A8CAF7F0F010D3366EDC28B6C3D3D3F351DCCB
+      CB6BD4FA9FD6F1B80ED573D943EBDEB061C3A331E03A5550E53F3EFF3FD7A9E6
+      8FD66D0297C1E531B85D0C557C2488F6686B5BA63CFF7FE9FF1F7EF8AFF0FB7F
+      9CC59F94784B88357B5D883179058C587EDB29F338FC289D38CCFD41F78396CF
+      F3AEAA2474D7A420C6F455C4498847E030A7711E738697F19658FE25A397D096
+      1786DCD3B350E0BB0031666330C8213D85398DF398C3DCC1F6B1F68D897C8E35
+      269F4281DF57909F5B8A68D331E2370655FB38CC699CC71CE6B286B462D9B537
+      CC51787E19E4812B70C9E4D561DAA165701E7398CB1AD6C698BD8ECA182D1485
+      7C83E2D035E299C4E50E1F23B19D02E73187B9AC61ADD8362AB72C620B4AC236
+      A1947C8E5F367FF3919EC39C56AAE4942939AA76AADA5611B3036597B6A13276
+      9758F60FE3F7BA98C679CC19A98F6219C6AFA22AFE20AAAF1EFA919ED3388F39
+      238D8FAA0CE632B6ABBFB07EA4F411EA1DE96E3CF1B1FBF8D0F41FBD81FF9DF1
+      24A7B57307460AFF1CC7BA9FD21ED63EF48281BE9EAEA989C911A985E43D55BA
+      AB937D3A6BE7CD9E053B2BAB7455BA9DB5F43D6BA9D51189C44CD7C8E0D80B6E
+      0E7625B539B2B09AFCF4F0ECE47BA9677C7DEA6CA516531D684FB5A4BBC4223A
+      33D7AF59CDFFA736D5F7B4675D41665A6A5D715E787D7E7A988FDBC9123F5727
+      F940739543777D95CB40D703671A13A7C48438D9012D2DAC58A6812FA64DC386
+      356B702F2E52C67974A171EE6EAA711968AE7608F271971FDCB7D7BA26471681
+      8EA69374BF71EDEF7EE8AA682CB393C586C058E700D6682C4198B314FD0D2576
+      BDED2DAE7442BAA2B3FD646D61568499B18135F7C940EFE899C8D0A0DC00F793
+      3873C20AE71CAD71FBEE1D48AEA5E240680202824371DEC946CC8B0D0D42DCA5
+      C85CC713F6671E7D4F397468E66917C7C68CFB37E97E9FE19C9D9D191F9B5F8C
+      79374AF0795401026405484B4B8B6F2FC9743EEF7A02A1FE7E8D6EAEAE33557A
+      677BBB52281E9EE86BAD3B89D65AFBA2DBF16527F575B0457D1E167D3C0E5BBE
+      9A8DECF888327434DA2BDA1A4EA2AFEB446C6478A94A6F656EDA58535E129F91
+      78EF8E8D8961CE328F40ECE23B0DE1AFADC07369C054B333F0F73C9523CFC9BE
+      D3545B1D7F3124A451A5DFB36BF7AFB4B4B4D4B67EB7594DFCBE43F3EE6F6705
+      A9D6767C3B7706667D30160BD507DFDC86C7F4D5E8CC54B3B692FEEA496B4A7D
+      F376F9DA8266CC2FEAC247896D78D35D86192B37CA9F76DDAAA92F3BFB78FD33
+      16699C7D5AFDF42993D74F5FB8E451DD9F7E39176A9F4F59FFB31EE8F39756F1
+      D8FDE18A021FCF595AF54BEC6FCAB8F72CA77CF89EE5689CFF057DAA4A5F
     }
   end
 end

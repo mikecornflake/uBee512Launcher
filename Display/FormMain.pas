@@ -121,6 +121,22 @@ Uses
 
 Procedure TfrmMain.FormCreate(Sender: TObject);
 Begin
+{$IFDEF DARWIN}
+  cboType.Style := csDropDown;
+  cboModel.Style := csDropDown;
+  cboTitle.Style := csDropDown;
+  cboFormatA.Style := csDropDown;
+  cboFormatB.Style := csDropDown;
+  cboFormatC.Style := csDropDown;
+{$ELSE}
+  cboType.Style := csDropDownList;
+  cboModel.Style := csDropDownList;
+  cboTitle.Style := csDropDownList;
+  cboFormatA.Style := csDropDownList;
+  cboFormatB.Style := csDropDownList;
+  cboFormatC.Style := csDropDownList;
+{$ENDIF}
+
   FActivated := False;
   FLoadingDSK := False;
   FSettings := TSettings.Create;
@@ -483,10 +499,10 @@ Begin
   If (cboTitle.ItemIndex <> 0) And (cboTitle.Items.Count > 0) Then
   Begin
     iPrev := cboTitle.Items.IndexOf(sPrev);
-    If iPrev >= 0 Then
+    If iPrev >= 1 Then
       cboTitle.ItemIndex := iPrev
     Else
-      cboTitle.ItemIndex := 0;
+      cboTitle.ItemIndex := 1;
 
     cboTitleChange(Self);
   End;
