@@ -15,6 +15,7 @@ Type
   TfrmDefinitionExplorer = Class(TForm)
     btnCancel: TButton;
     btnOK: TButton;
+    ilFlags: TImageList;
     lvSystemMacros: TListView;
     memRC: TMemo;
     memSystems: TMemo;
@@ -178,6 +179,11 @@ Begin
 
           oMacro.Validators.Process(oMacro);
           oItem.Data := oMacro;
+
+          If oMacro.Validators.Valid Then
+            oItem.ImageIndex := 0
+          Else
+            oItem.ImageIndex := 1;
         End;
     Finally
       lvSystemMacros.Items.EndUpdate;
