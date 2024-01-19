@@ -15,7 +15,8 @@
     + or drop the binary in the same folder as the ubee512 binary, and run from there
   + Then:
     + Use the "Type", "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
-    + Use the Folder tree view to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
+	  + Alternatively, use the Definition Explorer (Bee icon) to select preferred model 
+    + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
 
 ## Implemented functionality:
@@ -25,9 +26,6 @@
 
 ## Notes on implementation
 + Only allows bootable DSKs to be loaded in A:
-+ There's no other validation happening right now:
-  + You can select a System macro that defines a disk for A:, and then define your own disk for A:.  I have no idea what the result will be.
-  + You can select System Macros that won't run because you don't have ROMs, SRAMs, PAKs or DSKs loaded into the correct ubee512 subfolder
 + Has a "File Preview": for now, either shows contents of text files, or files inside a DSK (you need to load the patched **CPMTools** using "File" - "Settings" for the DSK listing to work)
 + Contents of DSK listed using either original **CPMtools** or patched **CPMTools** (allows for Microbee specific formats)
 + Parses ubee512rc to build up System Macros, uses these in Main Form & Macro Explorer
@@ -36,8 +34,12 @@
 
 # TODO
 ## Short term
-+ Expand Validator to PAK/ROM
-+ Prevent selection of invalid macros in main form (hide entirely?)
++ Add Help - About and full acknowledgements
++ Expand Validator to PAK<x>/ROM<x>
++ Add support and validators for HDD<x>
++ Add support and validators for IDE<x>
++ Store ini file + log in appropriate location on Linux + macOS (GetSettingsDir?)
++ Prevent selection of invalid macros in main form (hide entirely?), or at least raise awareness
 + Add awareness of **RunCPM** folder structure
 
 ## Medium term
@@ -49,9 +51,9 @@
   + Display embedded ReadMe in the Preview Pane
   + Implement a "Mount ZIP" that extracts the DSK, then actually mounts that DSK in the CP/M system
 + Add support for Microbee Peripherals (Beetalker etc)
-+ Add support for the assorted Harddrive formats recognised by uBee512
 + Add support for **UBEEDISK** tools (to be honest, this means learning them first)
 + I keep thinking about adding ability for users to define their own system macros (by first copying an existing).
++ (Library): Write a CommandLine+Params_As_String to CommandLine+Array_of_Param
 
 ## Long Term 
 (_dreamer! you're nothing but a dreamer_)
