@@ -5,7 +5,7 @@ Unit FormMain;
 Interface
 
 Uses
-  Classes, SysUtils, Types, Forms, Controls, Graphics, Dialogs, ComCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   EditBtn, StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
   FormSettings, Logging;
 
@@ -17,18 +17,18 @@ Type
     btnClearA: TSpeedButton;
     btnClearB: TSpeedButton;
     btnClearC: TSpeedButton;
-    btnExplorer: TBitBtn;
+    btnMacroExplorer: TBitBtn;
     cboFormatB: TComboBox;
     cboFormatC: TComboBox;
     cboModel: TComboBox;
-    cboType: TComboBox;
     cboParallelPort: TComboBox;
-    cboTitle: TComboBox;
     cboFormatA: TComboBox;
+    cboTitle: TComboBox;
+    cboType: TComboBox;
+    edtCommandLine: TEdit;
     edtDiskA: TFileNameEdit;
     edtDiskB: TFileNameEdit;
     edtDiskC: TFileNameEdit;
-    GroupBox1: TGroupBox;
     ilMain: TImageList;
     Label10: TLabel;
     Label5: TLabel;
@@ -37,12 +37,10 @@ Type
     lblDiskB: TLabel;
     lblDiskC: TLabel;
     lblPP: TLabel;
-    lvcpmtoolsFiles: TListView;
-    lvcpmtoolsWorkingFolder: TListView;
     MainMenu1: TMainMenu;
     memRC: TMemo;
-    memOutput: TMemo;
     mnuDebug: TMenuItem;
+    pnlLeft: TPanel;
     pcOptions: TPageControl;
     Separator1: TMenuItem;
     mnuSettings: TMenuItem;
@@ -50,15 +48,12 @@ Type
     mnuHelp: TMenuItem;
     mnuAbout: TMenuItem;
     mnuFile: TMenuItem;
-    pcPreview: TPageControl;
     pnluBee512: TPanel;
-    pnldskFiles: Tpanel;
-    pnlCPMToolsMain: Tpanel;
     Splitter1: TSplitter;
-    Splitter2: TSplitter;
-    btnAddDSKtoA: TToolButton;
     ToolBar2: TToolBar;
     btnSettings: TToolButton;
+    btnDiskExplorer: TToolButton;
+    ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     btnLaunchuBee512: TToolButton;
     ToolButton4: TToolButton;
@@ -70,27 +65,11 @@ Type
     tsDrive: TTabSheet;
     tsROMs: TTabSheet;
     TabSheet3: TTabSheet;
-    ToolButton1: TToolButton;
-    btnAddFolderToA: TToolButton;
-    ToolButton2: TToolButton;
-    btnAddDSKtoC: TToolButton;
-    btnAddDSKtoB: TToolButton;
-    btnAddFolderToB: TToolButton;
-    btnAddFolderToC: TToolButton;
-    tsFiles: TTabSheet;
-    tsText: TTabSheet;
-    Toolbar1: Ttoolbar;
-    tvFolders: TShellTreeView;
-    Procedure btnAddDSKtoAClick(Sender: TObject);
-    Procedure btnAddDSKtoBClick(Sender: TObject);
-    Procedure btnAddDSKtoCClick(Sender: TObject);
-    Procedure btnAddFolderToAClick(Sender: TObject);
-    Procedure btnAddFolderToBClick(Sender: TObject);
-    Procedure btnAddFolderToCClick(Sender: TObject);
     Procedure btnClearAClick(Sender: TObject);
     Procedure btnClearBClick(Sender: TObject);
     Procedure btnClearCClick(Sender: TObject);
-    Procedure btnExplorerClick(Sender: TObject);
+    Procedure btnDiskExplorerClick(Sender: TObject);
+    Procedure btnMacroExplorerClick(Sender: TObject);
     Procedure btnLaunchuBee512Click(Sender: TObject);
     Procedure btnTestClick(Sender: TObject);
     Procedure cboModelChange(Sender: TObject);
@@ -99,13 +78,10 @@ Type
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
-    Procedure lvcpmtoolsWorkingFolderSelectItem(Sender: TObject; Item: TListItem;
-      {%H-}Selected: Boolean);
     Procedure mnuAboutClick(Sender: TObject);
     Procedure mnuExitClick(Sender: TObject);
     Procedure mnuDebugClick(Sender: TObject);
     Procedure mnuSettingsClick(Sender: TObject);
-    Procedure tvFoldersChange(Sender: TObject; {%H-}Node: TTreeNode);
   Private
     FSettings: TSettings;
     FActivated: Boolean;
@@ -119,11 +95,16 @@ Type
     Procedure RefreshUI;
     Procedure SaveSettings;
 
-    Function SelectedFile: String;
     Procedure SetMacroCombo(ACombo: TComboBox; AValue: String);
-    Procedure SetSelectedDisk(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
-    Procedure SetSelectedFolder(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
+    Procedure SetSelectedDisk(AFilename: String; AFilenameEdit: TFileNameEdit;
+      AFormatCombo: TComboBox);
+    Procedure SetSelectedFolder(AFolder: String; AFilenameEdit: TFileNameEdit;
+      AFormatCombo: TComboBox);
   End;
+
+Const
+  DSK_ICO = 9;
+  TXT_ICO = 10;
 
 Var
   frmMain: TfrmMain;
@@ -131,14 +112,10 @@ Var
 Implementation
 
 Uses
-  IniFiles, FileSupport, CPMSupport, cpmtoolsSupport, LazFileUtils, StringSupport,
-  StrUtils, OSSupport, uBee512Support, FormMacroExplorer, FormDebug;
+  IniFiles, cpmtoolsSupport, CPMSupport, LazFileUtils, StringSupport,
+  OSSupport, uBee512Support, FormMacroExplorer, FormDiskExplorer, FormDebug;
 
   {$R *.lfm}
-
-Const
-  DSK_ICO = 9;
-  TXT_ICO = 10;
 
 { TfrmMain }
 
@@ -215,13 +192,56 @@ Begin
       LoadRC;
 
       FWorkingDir := FSettings.WorkingFolder;
-
-      If DirectoryExists(FWorkingDir) Then
-        tvFolders.Path := FWorkingDir;
     End;
   Finally
     oSettings.Free;
   End;
+End;
+
+Procedure TfrmMain.SetSelectedDisk(AFilename: String; AFilenameEdit: TFileNameEdit;
+  AFormatCombo: TComboBox);
+Var
+  sFormat: String;
+  iFormat: Integer;
+Begin
+  AFilename := Trim(AFilename);
+  AFilenameEdit.Text := AFilename;
+
+  If AFilename <> '' Then
+  Begin
+    // Make an educated guess as to Disk Format
+    sFormat := DSKFormat(AFilename);
+    iFormat := AFormatCombo.Items.IndexOf(sFormat);
+
+    If iFormat >= 0 Then
+      AFormatCombo.ItemIndex := iFormat
+    Else
+      AFormatCombo.Text := sFormat;
+  End
+  Else
+    AFormatCombo.Text := 'Format?';
+
+  RefreshUI;
+End;
+
+Procedure TfrmMain.SetSelectedFolder(AFolder: String; AFilenameEdit: TFileNameEdit;
+  AFormatCombo: TComboBox);
+Var
+  sFormat: String;
+  iFormat: Integer;
+Begin
+  AFolder := Trim(AFolder);
+  AFilenameEdit.Text := AFolder;
+
+  sFormat := 'rcpmfs/ds80';
+  iFormat := AFormatCombo.Items.IndexOf(sFormat);
+
+  If iFormat >= 0 Then
+    AFormatCombo.ItemIndex := iFormat
+  Else
+    AFormatCombo.Text := sFormat;
+
+  RefreshUI;
 End;
 
 Procedure TfrmMain.SetMacroCombo(ACombo: TComboBox; AValue: String);
@@ -269,18 +289,11 @@ Begin
 
     FWorkingDir := FSettings.WorkingFolder;
 
-    If DirectoryExists(FWorkingDir) Then
-      tvFolders.Path := FWorkingDir;
-
-    edtDiskA.Text := oIniFile.ReadString('Selected', 'Disk A', '');
-    edtDiskB.Text := oIniFile.ReadString('Selected', 'Disk B', '');
-    edtDiskC.Text := oIniFile.ReadString('Selected', 'Disk C', '');
-
-    cboFormatA.Text := oIniFile.ReadString('Selected', 'Disk A Format', 'Format?');
-    cboFormatB.Text := oIniFile.ReadString('Selected', 'Disk B Format', 'Format?');
-    cboFormatC.Text := oIniFile.ReadString('Selected', 'Disk C Format', 'Format?');
-
     LoadRC;
+
+    SetSelectedDisk(FSettings.A, edtDiskA, cboFormatA);
+    SetSelectedDisk(FSettings.B, edtDiskB, cboFormatB);
+    SetSelectedDisk(FSettings.C, edtDiskC, cboFormatC);
 
     sModel := oIniFile.ReadString('Selected', 'Model', 'p128k');
     sTitle := oIniFile.ReadString('Selected', 'Title', 'Premium 128K');
@@ -323,14 +336,6 @@ Begin
 
     FSettings.WorkingFolder := FWorkingDir;
     FSettings.SaveSettings(oInifile);
-
-    oIniFile.WriteString('Selected', 'Disk A', edtDiskA.Text);
-    oIniFile.WriteString('Selected', 'Disk B', edtDiskB.Text);
-    oIniFile.WriteString('Selected', 'Disk C', edtDiskC.Text);
-
-    oIniFile.WriteString('Selected', 'Disk A Format', cboFormatA.Text);
-    oIniFile.WriteString('Selected', 'Disk B Format', cboFormatB.Text);
-    oIniFile.WriteString('Selected', 'Disk C Format', cboFormatC.Text);
 
     // No need to save Type, it's inferred from Model
     oIniFile.WriteString('Selected', 'Model', cboModel.Text);
@@ -375,152 +380,6 @@ Begin
   End;
 End;
 
-Procedure TfrmMain.tvFoldersChange(Sender: TObject; Node: TTreeNode);
-Var
-  oSearchRec: TSearchRec;
-  oListItem: TListItem;
-  bBoot, bIsDisk, bIsText: Boolean;
-  sExt: Rawbytestring;
-Begin
-  If Not FLoadingDSK Then
-  Begin
-    SetBusy;
-    Try
-      FLoadingDSK := True;
-      FWorkingDir := IncludeSlash(tvFolders.Path);
-      Debug('Start scanning folder: ' + FWorkingDir);
-
-      lvcpmtoolsWorkingFolder.Items.BeginUpdate;
-      Try
-        // Clear current folder file list
-        lvcpmtoolsWorkingFolder.Clear;
-
-        // Clear Preview
-        memOutput.Lines.Clear;
-        lvcpmtoolsFiles.Clear;
-
-        If FindFirst(FWorkingDir + '*.*', faAnyFile, oSearchRec) = 0 Then
-          Repeat
-            If (oSearchRec.Name <> '.') And (oSearchRec.Name <> '..') And
-              (oSearchRec.Name <> '') Then
-            Begin
-              sExt := Lowercase(ExtractFileExt(oSearchRec.Name));
-              bIsDisk := ubee512.IsDisk(sExt) Or cpmtoolsIsDisk(sExt);
-              bIsText := IsTextfile(sExt);
-              bBoot := bIsDisk And (IsCPMBootableFile(FWorkingDir + oSearchRec.Name));
-
-              oListItem := lvcpmtoolsWorkingFolder.Items.Add;
-              oListItem.Caption := ExtractFileNameWithoutExt(oSearchRec.Name);
-              oListItem.SubItems.Add(sExt);
-              oListItem.SubItems.Add(BOOLEAN_YES_NO[bBoot]);
-              oListItem.SubItems.Add(Format('%.1f', [oSearchRec.Size / 1024]));
-              oListItem.SubItems.Add(DateTimeToStr(oSearchRec.TimeStamp));
-
-              If bIsDisk Then
-                oListItem.ImageIndex := DSK_ICO
-              Else If bIsText Then
-                oListItem.ImageIndex := TXT_ICO;
-            End;
-          Until FindNext(oSearchRec) <> 0;
-
-        FindClose(oSearchRec);
-      Finally
-        lvcpmtoolsWorkingFolder.Items.EndUpdate;
-        FLoadingDSK := False;
-        Debug('End scanning folder: ' + FWorkingDir);
-      End;
-    Finally
-      ClearBusy;
-    End;
-  End;
-End;
-
-Procedure TfrmMain.lvcpmtoolsWorkingFolderSelectItem(Sender: TObject;
-  Item: TListItem; Selected: Boolean);
-Var
-  slTemp: TStringList;
-  sSelectedFile, sDSKFile: String;
-  arrStrings, arrFile: TStringDynArray;
-  oListItem: TListItem;
-  sRawOutput: String;
-Begin
-  If Assigned(Item) And (Item.SubItems.Count > 1) And
-    (FileExists(FWorkingDir + Item.Caption + Item.SubItems[0])) And (Item.Selected) Then
-  Begin
-    SetBusy;
-    sSelectedFile := FWorkingDir + Item.Caption + Item.SubItems[0];
-    Debug('Start Preview: ' + sSelectedFile);
-    FLog.IncIndent;
-
-    Try
-      lvcpmtoolsFiles.Items.BeginUpdate;
-      lvcpmtoolsFiles.Items.Clear;
-      memOutput.Lines.Text := '';
-
-      If Item.SubItems[0] = '.dsk' Then
-      Begin
-        slTemp := TStringList.Create;
-        Try
-          sRawOutput := '';
-
-          slTemp.Text := cpmtoolsLS(sSelectedFile, sRawOutput);
-          memOutput.Lines.Text := sRawOutput;
-
-          For sDSKFile In slTemp Do
-          Begin
-            // 0: -rw-rw-rw- 10496 Jan 01 1970  access.box
-            arrStrings := SplitString(sDSKFile, ' ');
-
-            If Length(arrStrings) = 7 Then
-            Begin
-              arrFile := SplitString(arrStrings[6], '.');
-
-              oListItem := lvcpmtoolsFiles.Items.Add;
-              oListItem.Caption := arrStrings[0];
-              oListItem.SubItems.Add(arrFile[0]); // Filename
-              oListItem.SubItems.Add(arrFile[1]); // Ext
-              oListItem.SubItems.Add(arrStrings[1]); // Attr
-              oListItem.SubItems.Add(arrStrings[2]); // Size
-              oListItem.SubItems.Add(Format('%s %s %s',
-                [arrStrings[3], arrStrings[4], arrStrings[5]]));  // Date
-            End;
-          End;
-        Finally
-          slTemp.Free;
-        End;
-
-        pcPreview.ActivePage := tsFiles;
-      End
-      Else If IsTextFile(Item.SubItems[0]) Then
-      Begin
-        slTemp := TStringList.Create;
-        Try
-          slTemp.LoadFromFile(sSelectedFile);
-
-          memOutput.Lines.Text := slTemp.Text;
-        Finally
-          slTemp.Free;
-        End;
-
-        pcPreview.ActivePage := tsText;
-      End;
-
-      // There may be an error message the user needs to see
-      If (lvcpmtoolsFiles.Items.Count = 0) And (pcPreview.ActivePage = tsFiles) Then
-        pcPreview.ActivePage := tsText;
-
-      lvcpmtoolsFiles.Items.EndUpdate;
-    Finally
-      FLog.DecIndent;
-      Debug('End Preview: ' + sSelectedFile);
-
-      ClearBusy;
-    End;
-  End;
-
-  RefreshUI;
-End;
-
 Procedure TfrmMain.btnClearAClick(Sender: TObject);
 Begin
   edtDiskA.Text := '';
@@ -542,11 +401,36 @@ Begin
   RefreshUI;
 End;
 
-Procedure TfrmMain.btnExplorerClick(Sender: TObject);
+Procedure TfrmMain.btnDiskExplorerClick(Sender: TObject);
 Var
-  oForm: TfrmMacroExplorer;
+  oForm: TfrmDiskExplorer;
 Begin
-  oForm := TfrmMacroExplorer.Create(Self);
+  oForm := TfrmDiskExplorer.Create(Self);
+
+  FSettings.A := edtDiskA.Text;
+  FSettings.B := edtDiskB.Text;
+  FSettings.C := edtDiskC.Text;
+
+  oForm.Settings := FSettings;
+  Try
+    If oForm.ShowModal = mrOk Then
+    Begin
+      FSettings.Assign(oForm.Settings);
+
+      SetSelectedDisk(FSettings.A, edtDiskA, cboFormatA);
+      SetSelectedDisk(FSettings.B, edtDiskB, cboFormatB);
+      SetSelectedDisk(FSettings.C, edtDiskC, cboFormatC);
+    End;
+  Finally
+    oForm.Free;
+  End;
+End;
+
+Procedure TfrmMain.btnMacroExplorerClick(Sender: TObject);
+Var
+  oForm: TfrmDefinitionExplorer;
+Begin
+  oForm := TfrmDefinitionExplorer.Create(Self);
   Try
     oForm.Title := cboTitle.Text;
     If oForm.ShowModal = mrOk Then
@@ -557,73 +441,6 @@ Begin
   Finally
     oForm.Free;
   End;
-End;
-
-Procedure TfrmMain.SetSelectedDisk(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
-Var
-  sFormat: String;
-  iFormat: Integer;
-Begin
-  AFilenameEdit.Text := ExcludeSlash(tvFolders.Path);
-
-  sFormat := 'rcpmfs/ds80';
-  iFormat := AFormatCombo.Items.IndexOf(sFormat);
-
-  If iFormat >= 0 Then
-    AFormatCombo.ItemIndex := iFormat
-  Else
-    AFormatCombo.Text := sFormat;
-
-  RefreshUI;
-End;
-
-Procedure TfrmMain.SetSelectedFolder(AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
-Var
-  sFormat: String;
-  iFormat: Integer;
-Begin
-  AFilenameEdit.Text := SelectedFile;
-
-  // Make an educated guess as to Disk Format
-  sFormat := DSKFormat(AFilenameEdit.Text);
-  iFormat := AFormatCombo.Items.IndexOf(sFormat);
-
-  If iFormat >= 0 Then
-    AFormatCombo.ItemIndex := iFormat
-  Else
-    AFormatCombo.Text := sFormat;
-
-  RefreshUI;
-End;
-
-Procedure TfrmMain.btnAddDSKtoAClick(Sender: TObject);
-Begin
-  SetSelectedDisk(edtDiskA, cboFormatA);
-End;
-
-Procedure TfrmMain.btnAddDSKtoBClick(Sender: TObject);
-Begin
-  SetSelectedDisk(edtDiskB, cboFormatB);
-End;
-
-Procedure TfrmMain.btnAddDSKtoCClick(Sender: TObject);
-Begin
-  SetSelectedDisk(edtDiskC, cboFormatC);
-End;
-
-Procedure TfrmMain.btnAddFolderToAClick(Sender: TObject);
-Begin
-  SetSelectedFolder(edtDiskA, cboFormatA);
-End;
-
-Procedure TfrmMain.btnAddFolderToBClick(Sender: TObject);
-Begin
-  SetSelectedFolder(edtDiskB, cboFormatB);
-End;
-
-Procedure TfrmMain.btnAddFolderToCClick(Sender: TObject);
-Begin
-  SetSelectedFolder(edtDiskC, cboFormatC);
 End;
 
 Procedure TfrmMain.cboTypeChange(Sender: TObject);
@@ -651,6 +468,7 @@ Begin
     End;
   End;
 
+  RefreshUI;
 End;
 
 Procedure TfrmMain.cboModelChange(Sender: TObject);
@@ -660,7 +478,7 @@ Var
 Begin
   sPrev := cboTitle.Text;
 
-  cboTitle.Items.CommaText := uBee512.Titles(cboModel.Text);
+  cboTitle.Items.CommaText := ',' + uBee512.Titles(cboModel.Text);
 
   If (cboTitle.ItemIndex <> 0) And (cboTitle.Items.Count > 0) Then
   Begin
@@ -672,6 +490,8 @@ Begin
 
     cboTitleChange(Self);
   End;
+
+  RefreshUI;
 End;
 
 Procedure TfrmMain.cboTitleChange(Sender: TObject);
@@ -680,23 +500,30 @@ Var
   sRC: String;
 Begin
   oMacro := ubee512.MacroByTitle(cboTitle.Text);
-  sRC := '# ' + oMacro.Description + LineEnding;
-  sRC += '[' + oMacro.Macro + ']' + LineEnding;
-  sRC += oMacro.RC;
+  If Assigned(oMacro) Then
+  Begin
+    sRC := '# ' + oMacro.Description + LineEnding;
+    sRC += '[' + oMacro.Macro + ']' + LineEnding;
+    sRC += oMacro.RC;
 
-  memRC.Lines.Text := sRC;
+    memRC.Lines.Text := sRC;
 
-  edtDiskA.Enabled := (Trim(oMacro.A) = '');
-  edtDiskB.Enabled := (Trim(oMacro.B) = '');
-  edtDiskC.Enabled := (Trim(oMacro.C) = '');
+    edtDiskA.Enabled := (Trim(oMacro.A) = '');
+    edtDiskB.Enabled := (Trim(oMacro.B) = '');
+    edtDiskC.Enabled := (Trim(oMacro.C) = '');
 
-  cboFormatA.Enabled := edtDiskA.Enabled;
-  cboFormatB.Enabled := edtDiskB.Enabled;
-  cboFormatC.Enabled := edtDiskC.Enabled;
+    cboFormatA.Enabled := edtDiskA.Enabled;
+    cboFormatB.Enabled := edtDiskB.Enabled;
+    cboFormatC.Enabled := edtDiskC.Enabled;
 
-  btnClearA.Enabled := edtDiskA.Enabled;
-  btnClearB.Enabled := edtDiskB.Enabled;
-  btnClearC.Enabled := edtDiskC.Enabled;
+    btnClearA.Enabled := edtDiskA.Enabled;
+    btnClearB.Enabled := edtDiskB.Enabled;
+    btnClearC.Enabled := edtDiskC.Enabled;
+  End
+  Else
+    memRC.Lines.Text := 'TODO DISPLAY MODEL SUMMARY';
+
+  RefreshUI;
 End;
 
 Procedure TfrmMain.btnLaunchuBee512Click(Sender: TObject);
@@ -754,11 +581,13 @@ Var
   End;
 
 Begin
+  oMacro := ubee512.MacroByTitle(cboTitle.Text);
+
+  If Not Assigned(oMacro) Then
+    Exit;
+
   slParams := TStringList.Create;
   Try
-    oMacro := ubee512.MacroByTitle(cboModel.Text);
-
-    // ubee512launcher will only work with
     sCommand := Format('%s', [FSettings.UBEE512_exe]);
     slParams.Add(oMacro.Macro);
 
@@ -769,12 +598,16 @@ Begin
       AddDriveToCommand('c', edtDiskC, cboFormatC);
     End;
 
-    sDebug := 'Launching ubee512 with:' + LineEnding;
-    sDebug += '  ' + sCommand;
+    sDebug := '  ' + sCommand;
     For s In slParams Do
-      sDebug += '  ' + s;
+      If Pos(' ', s) > 0 Then
+        sDebug += '  "' + s + '"'
+      Else
+        sDebug += '  ' + s;
 
-    Debug(sDebug);
+    Debug('Launching ubee512 with:' + LineEnding + sDebug);
+    edtCommandLine.Text := Trim(sDebug);
+    edtCommandLine.Refresh;
 
     sResult := Trim(RunEx(sCommand, slParams));
 
@@ -794,48 +627,10 @@ Begin
   Debug('Test ' + sResult);
 End;
 
-Function TfrmMain.SelectedFile: String;
-Var
-  oItem: TListItem;
-Begin
-  Result := '';
-  If Assigned(lvcpmtoolsWorkingFolder.Selected) Then
-    oItem := lvcpmtoolsWorkingFolder.Selected;
-
-  If oItem.SubItems.Count > 2 Then
-    Result := FWorkingDir + oItem.Caption + oItem.SubItems[0];
-End;
-
 Procedure TfrmMain.RefreshUI;
-Var
-  bFileSelected, bDSKBootable, bDSK: Boolean;
-  oItem: TListItem;
 Begin
-  bDSKBootable := False;
-  bDSK := False;
-
-  bFileSelected := Assigned(lvcpmtoolsWorkingFolder.Selected);
-
-  If bFileSelected Then
-  Begin
-    oItem := lvcpmtoolsWorkingFolder.Selected;
-
-    If oItem.SubItems.Count > 2 Then
-    Begin
-      bDSKBootable := oItem.SubItems[1] = 'Yes';
-      bDSK := (oItem.SubItems[0] = '.dsk');
-    End;
-  End;
-
-  btnAddDSKToA.Enabled := bDSK And bDSKBootable;
-  btnAddDSKToB.Enabled := bDSK;
-  btnAddDSKToC.Enabled := bDSK;
-
-  btnAddFolderToA.Enabled := True;
-  btnAddFolderToB.Enabled := True;
-  btnAddFolderToC.Enabled := True;
-
-  btnLaunchuBee512.Enabled := (uBee512.Available) And (cboTitle.Text <> '');
+  btnLaunchuBee512.Enabled := (uBee512.Available) And (cboModel.Text <> '');
+  edtCommandLine.Text := Format('"%s"', [uBee512.Exe]);
 End;
 
 End.

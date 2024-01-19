@@ -20,6 +20,9 @@ Type
     CPMTOOLS_bin: String;
     WorkingFolder: String;
 
+    A, B, C: String;
+    A_Format, B_Format, C_Format: String;
+
     Procedure ValidatePaths;
     Procedure InitialisePaths;
 
@@ -79,6 +82,8 @@ Procedure TfrmSettings.FormActivate(Sender: TObject);
 Begin
   If Not FActivated Then
   Begin
+    MakeFullyVisible;
+
     LoadControls;
 
     FActivated := True;
@@ -132,6 +137,14 @@ Begin
     RUNCPM_exe := TSettings(Source).RUNCPM_exe;
     CPMTOOLS_bin := TSettings(Source).CPMTOOLS_bin;
     WorkingFolder := TSettings(Source).WorkingFolder;
+
+    A := TSettings(Source).A;
+    B := TSettings(Source).B;
+    C := TSettings(Source).C;
+
+    A_Format := TSettings(Source).A_Format;
+    B_Format := TSettings(Source).B_Format;
+    C_Format := TSettings(Source).C_Format;
   End;
 End;
 
@@ -145,6 +158,14 @@ Begin
   CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', '');
   WorkingFolder := IncludeSlash(AInifile.ReadString('Locations', 'Working',
     ExtractFilePath(Application.ExeName)));
+
+  A := AInifile.ReadString('Selected', 'Disk A', '');
+  B := AInifile.ReadString('Selected', 'Disk B', '');
+  C := AInifile.ReadString('Selected', 'Disk C', '');
+
+  A_Format := AInifile.ReadString('Selected', 'Disk A Format', 'Format?');
+  B_Format := AInifile.ReadString('Selected', 'Disk B Format', 'Format?');
+  C_Format := AInifile.ReadString('Selected', 'Disk C Format', 'Format?');
 
   ValidatePaths;
 
@@ -160,6 +181,14 @@ Begin
   AInifile.WriteString('Locations', 'RunCPM', RUNCPM_exe);
   AInifile.WriteString('Locations', 'cpmtools', CPMTOOLS_bin);
   AInifile.WriteString('Locations', 'Working', WorkingFolder);
+
+  AInifile.WriteString('Selected', 'Disk A', A);
+  AInifile.WriteString('Selected', 'Disk B', B);
+  AInifile.WriteString('Selected', 'Disk C', C);
+
+  AInifile.WriteString('Selected', 'Disk A Format', A_Format);
+  AInifile.WriteString('Selected', 'Disk B Format', B_Format);
+  AInifile.WriteString('Selected', 'Disk C Format', C_Format);
 End;
 
 Procedure TSettings.InitialisePaths;

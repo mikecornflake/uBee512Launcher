@@ -35,6 +35,8 @@ Type
 
 Procedure Debug(AMessage: String);
 Procedure Debug(AMessage: TStringList);
+Procedure Log_IncIndent;
+Procedure Log_DecIndent;
 
 Implementation
 
@@ -55,6 +57,18 @@ Begin
   If Assigned(FLog) Then
     For s In AMessage Do
       Debug(s);
+End;
+
+Procedure Log_IncIndent;
+Begin
+  If Assigned(FLog) Then
+    FLog.IncIndent;
+End;
+
+Procedure Log_DecIndent;
+Begin
+  If Assigned(FLog) Then
+    FLog.DecIndent;
 End;
 
 { TLog }

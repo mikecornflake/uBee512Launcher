@@ -441,12 +441,13 @@ Var
 Begin
   Result := nil;
 
-  For oMacro In FSystemMacros Do
-    If (oMacro.Title = ATitle) Then
-    Begin
-      Result := oMacro;
-      Break;
-    End;
+  If (Trim(ATitle) <> '') Then
+    For oMacro In FSystemMacros Do
+      If (oMacro.Title = ATitle) Then
+      Begin
+        Result := oMacro;
+        Break;
+      End;
 End;
 
 Function TuBee512.RCByTitle(ATitle: String): String;

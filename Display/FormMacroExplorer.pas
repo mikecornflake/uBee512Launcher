@@ -10,9 +10,9 @@ Uses
 
 Type
 
-  { TfrmMacroExplorer }
+  { TfrmDefinitionExplorer }
 
-  TfrmMacroExplorer = Class(TForm)
+  TfrmDefinitionExplorer = Class(TForm)
     btnCancel: TButton;
     btnOK: TButton;
     lvSystemMacros: TListView;
@@ -51,7 +51,7 @@ Uses
 
 {$R *.lfm}
 
-Procedure TfrmMacroExplorer.FormCreate(Sender: TObject);
+Procedure TfrmDefinitionExplorer.FormCreate(Sender: TObject);
 Begin
   FActivated := False;
   LoadRC;
@@ -59,19 +59,23 @@ Begin
   Caption := 'System Macro Explorer: ' + ubee512.RC;
 End;
 
-Procedure TfrmMacroExplorer.FormActivate(Sender: TObject);
+Procedure TfrmDefinitionExplorer.FormActivate(Sender: TObject);
 Begin
   If Not Factivated Then
+  Begin
+    MakeFullyVisible;
+
     FActivated := True;
+  End;
 End;
 
-Procedure TfrmMacroExplorer.lvSystemMacrosDblClick(Sender: TObject);
+Procedure TfrmDefinitionExplorer.lvSystemMacrosDblClick(Sender: TObject);
 Begin
   If (Assigned(lvSystemMacros.Selected)) And (btnOK.Enabled) Then
     ModalResult := mrOk;
 End;
 
-Procedure TfrmMacroExplorer.lvSystemMacrosSelectItem(Sender: TObject;
+Procedure TfrmDefinitionExplorer.lvSystemMacrosSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 Var
   oMacro: TSystemMacro;
@@ -95,7 +99,7 @@ Begin
     memSystems.Lines.Clear;
 End;
 
-Procedure TfrmMacroExplorer.lvSystemMacrosCustomDrawItem(Sender: TCustomListView;
+Procedure TfrmDefinitionExplorer.lvSystemMacrosCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; Var DefaultDraw: Boolean);
 Var
   oMacro: TSystemMacro;
@@ -108,19 +112,19 @@ Begin
     lvSystemMacros.Canvas.Font.Color := clRed;
 End;
 
-Function TfrmMacroExplorer.GetTitle: String;
+Function TfrmDefinitionExplorer.GetTitle: String;
 Begin
   If Assigned(lvSystemMacros.Selected) Then
     Result := lvSystemMacros.Selected.SubItems[1];
 End;
 
-Function TfrmMacroExplorer.GetModel: String;
+Function TfrmDefinitionExplorer.GetModel: String;
 Begin
   If Assigned(lvSystemMacros.Selected) Then
     Result := lvSystemMacros.Selected.SubItems[0];
 End;
 
-Procedure TfrmMacroExplorer.SetTitle(AValue: String);
+Procedure TfrmDefinitionExplorer.SetTitle(AValue: String);
 Var
   sTitle: String;
   oItem: TListItem;
@@ -134,7 +138,7 @@ Begin
     End;
 End;
 
-Procedure TfrmMacroExplorer.LoadRC;
+Procedure TfrmDefinitionExplorer.LoadRC;
 Var
   oMacro: TSystemMacro;
   oItem: TListItem;
