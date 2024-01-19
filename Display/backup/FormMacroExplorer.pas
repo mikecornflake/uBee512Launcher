@@ -100,7 +100,7 @@ Procedure TfrmMacroExplorer.lvSystemMacrosCustomDrawItem(Sender: TCustomListView
 Var
   oMacro: TSystemMacro;
 Begin
-  oMacro := TSystemMacro(Item.Data);
+  oMacro := TSystemMAcro(Item.Data);
 
   If oMacro.Validators.Valid Then
     lvSystemMacros.Canvas.Font.Color := clBlack

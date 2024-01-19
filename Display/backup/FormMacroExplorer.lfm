@@ -7,10 +7,10 @@ object frmMacroExplorer: TfrmMacroExplorer
   Caption = 'System Macro Explorer'
   ClientHeight = 605
   ClientWidth = 897
-  Position = poMainFormCenter
-  LCLVersion = '3.99.0.0'
   OnActivate = FormActivate
   OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.6.0'
   object pcRC: TPageControl
     Left = 0
     Height = 570
