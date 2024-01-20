@@ -167,16 +167,16 @@ object frmSettings: TfrmSettings
       Left = 13
       Height = 25
       Top = 5
-      Width = 75
+      Width = 64
       Caption = 'Rescan'
       OnClick = btnRescanClick
       TabOrder = 2
     end
     object btnSettingsFolder: TButton
-      Left = 87
+      Left = 78
       Height = 25
       Top = 5
-      Width = 90
+      Width = 97
       Caption = 'Settings Folder'
       OnClick = btnSettingsFolderClick
       TabOrder = 3
