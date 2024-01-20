@@ -171,9 +171,9 @@ Begin
   B := AInifile.ReadString('Selected', 'Disk B', '');
   C := AInifile.ReadString('Selected', 'Disk C', '');
 
-  A_Format := AInifile.ReadString('Selected', 'Disk A Format', 'Format?');
-  B_Format := AInifile.ReadString('Selected', 'Disk B Format', 'Format?');
-  C_Format := AInifile.ReadString('Selected', 'Disk C Format', 'Format?');
+  A_Format := AInifile.ReadString('Selected', 'Disk A Format', '');
+  B_Format := AInifile.ReadString('Selected', 'Disk B Format', '');
+  C_Format := AInifile.ReadString('Selected', 'Disk C Format', '');
 
   ValidatePaths;
 
