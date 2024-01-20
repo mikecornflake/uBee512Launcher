@@ -1,14 +1,14 @@
 object frmSettings: TfrmSettings
-  Left = 196
+  Left = 2643
   Height = 330
-  Top = 228
-  Width = 310
+  Top = 154
+  Width = 360
   BorderIcons = [biSystemMenu]
   Caption = 'Settings'
   ClientHeight = 330
-  ClientWidth = 310
+  ClientWidth = 360
   Constraints.MinHeight = 330
-  Constraints.MinWidth = 310
+  Constraints.MinWidth = 360
   FormStyle = fsStayOnTop
   OnActivate = FormActivate
   OnCreate = FormCreate
@@ -18,7 +18,7 @@ object frmSettings: TfrmSettings
     Left = 0
     Height = 291
     Top = 0
-    Width = 310
+    Width = 360
     ActivePage = tsLocations
     Align = alClient
     TabIndex = 0
@@ -26,7 +26,7 @@ object frmSettings: TfrmSettings
     object tsLocations: TTabSheet
       Caption = 'Locations'
       ClientHeight = 263
-      ClientWidth = 302
+      ClientWidth = 352
       object Label3: TLabel
         Left = 10
         Height = 15
@@ -41,7 +41,7 @@ object frmSettings: TfrmSettings
         Left = 10
         Height = 23
         Top = 148
-        Width = 277
+        Width = 327
         FileName = 'B:\Drives\CPM\RunCPM\RunCPM.exe'
         DialogTitle = 'RunCPM'
         FilterIndex = 0
@@ -67,7 +67,7 @@ object frmSettings: TfrmSettings
         Left = 10
         Height = 23
         Top = 24
-        Width = 279
+        Width = 329
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         DialogTitle = 'ubee512 executable'
         FilterIndex = 0
@@ -103,7 +103,7 @@ object frmSettings: TfrmSettings
         Left = 10
         Height = 23
         Top = 86
-        Width = 277
+        Width = 327
         FileName = 'B:\Drives\Microbee\ubee512\ubee512.exe'
         DialogTitle = 'ubee512 Setting File'
         FilterIndex = 0
@@ -119,7 +119,7 @@ object frmSettings: TfrmSettings
         Left = 10
         Height = 23
         Top = 210
-        Width = 277
+        Width = 327
         Directory = 'B:\Drives\CPM\cpmtools'
         DialogTitle = 'cpmtools'
         DialogOptions = [ofFileMustExist, ofEnableSizing, ofViewDetail]
@@ -137,16 +137,16 @@ object frmSettings: TfrmSettings
     Left = 0
     Height = 39
     Top = 291
-    Width = 310
+    Width = 360
     Align = alBottom
     ClientHeight = 39
-    ClientWidth = 310
+    ClientWidth = 360
     TabOrder = 1
     object btnOK: TButton
-      Left = 144
+      Left = 218
       Height = 25
       Top = 5
-      Width = 75
+      Width = 63
       Anchors = [akTop, akRight]
       Caption = 'OK'
       ModalResult = 1
@@ -154,23 +154,32 @@ object frmSettings: TfrmSettings
       TabOrder = 0
     end
     object btnCancel: TButton
-      Left = 222
+      Left = 282
       Height = 25
       Top = 5
-      Width = 75
+      Width = 66
       Anchors = [akTop, akRight]
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
     end
     object btnRescan: TButton
-      Left = 16
+      Left = 13
       Height = 25
       Top = 5
       Width = 75
       Caption = 'Rescan'
       OnClick = btnRescanClick
       TabOrder = 2
+    end
+    object btnSettingsFolder: TButton
+      Left = 87
+      Height = 25
+      Top = 5
+      Width = 90
+      Caption = 'Settings Folder'
+      OnClick = btnSettingsFolderClick
+      TabOrder = 3
     end
   end
 end

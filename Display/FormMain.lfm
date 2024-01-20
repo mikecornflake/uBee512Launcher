@@ -16,17 +16,17 @@ object frmMain: TfrmMain
   LCLVersion = '2.2.6.0'
   object pnluBee512: TPanel
     Left = 0
-    Height = 415
+    Height = 399
     Top = 24
     Width = 876
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 415
+    ClientHeight = 399
     ClientWidth = 876
     TabOrder = 0
     object pcOptions: TPageControl
       Left = 381
-      Height = 415
+      Height = 399
       Top = 0
       Width = 495
       ActivePage = tsDrive
@@ -35,7 +35,7 @@ object frmMain: TfrmMain
       TabOrder = 0
       object tsDrive: TTabSheet
         Caption = 'Drives'
-        ClientHeight = 387
+        ClientHeight = 371
         ClientWidth = 487
         object lblDiskA: TLabel
           Left = 8
@@ -64,6 +64,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           MaxLength = 0
           TabOrder = 0
+          OnChange = DiskorFormatChange
         end
         object btnClearA: TSpeedButton
           Left = 455
@@ -214,6 +215,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           MaxLength = 0
           TabOrder = 1
+          OnChange = DiskorFormatChange
         end
         object edtDiskC: TFileNameEdit
           AnchorSideLeft.Control = lblDiskC
@@ -232,6 +234,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           MaxLength = 0
           TabOrder = 2
+          OnChange = DiskorFormatChange
         end
         object lblDiskC: TLabel
           Left = 8
@@ -263,7 +266,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           ItemHeight = 15
           Items.Strings = (
-            'rcpmfs/ds80'
+            ''
             'ds40'
             'ds401'
             'ds40s'
@@ -277,8 +280,8 @@ object frmMain: TfrmMain
             'ss40s'
             'ss80'
           )
+          OnChange = DiskorFormatChange
           TabOrder = 3
-          Text = 'Format?'
         end
         object cboFormatB: TComboBox
           AnchorSideRight.Control = btnClearB
@@ -290,7 +293,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           ItemHeight = 15
           Items.Strings = (
-            'rcpmfs/ds80'
+            ''
             'ds40'
             'ds401'
             'ds40s'
@@ -304,8 +307,8 @@ object frmMain: TfrmMain
             'ss40s'
             'ss80'
           )
+          OnChange = DiskorFormatChange
           TabOrder = 4
-          Text = 'Format?'
         end
         object cboFormatC: TComboBox
           AnchorSideRight.Control = btnClearC
@@ -317,7 +320,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           ItemHeight = 15
           Items.Strings = (
-            'rcpmfs/ds80'
+            ''
             'ds40'
             'ds401'
             'ds40s'
@@ -331,8 +334,8 @@ object frmMain: TfrmMain
             'ss40s'
             'ss80'
           )
+          OnChange = DiskorFormatChange
           TabOrder = 5
-          Text = 'Format?'
         end
       end
       object tsROMs: TTabSheet
@@ -340,7 +343,7 @@ object frmMain: TfrmMain
       end
       object TabSheet3: TTabSheet
         Caption = 'Peripherals'
-        ClientHeight = 387
+        ClientHeight = 371
         ClientWidth = 487
         object lblPP: TLabel
           Left = 8
@@ -371,12 +374,12 @@ object frmMain: TfrmMain
     end
     object pnlLeft: TPanel
       Left = 0
-      Height = 415
+      Height = 399
       Top = 0
       Width = 376
       Align = alLeft
       BevelOuter = bvNone
-      ClientHeight = 415
+      ClientHeight = 399
       ClientWidth = 376
       TabOrder = 1
       object Label6: TLabel
@@ -470,7 +473,7 @@ object frmMain: TfrmMain
       end
       object memRC: TMemo
         Left = 8
-        Height = 357
+        Height = 341
         Top = 53
         Width = 369
         Anchors = [akTop, akLeft, akRight, akBottom]
@@ -482,7 +485,7 @@ object frmMain: TfrmMain
     end
     object Splitter1: TSplitter
       Left = 376
-      Height = 415
+      Height = 399
       Top = 0
       Width = 5
     end
@@ -580,13 +583,18 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
   end
-  object edtCommandLine: TEdit
+  object memCommandLine: TMemo
     Left = 0
-    Height = 23
-    Top = 439
+    Height = 39
+    Top = 423
     Width = 876
     Align = alBottom
+    Lines.Strings = (
+      '1'
+      '2'
+    )
     ReadOnly = True
+    ScrollBars = ssVertical
     TabOrder = 2
   end
   object MainMenu1: TMainMenu
@@ -598,10 +606,6 @@ object frmMain: TfrmMain
         Caption = 'Settings'
         OnClick = mnuSettingsClick
       end
-      object mnuDebug: TMenuItem
-        Caption = 'Debug Log'
-        OnClick = mnuDebugClick
-      end
       object Separator1: TMenuItem
         Caption = '-'
       end
@@ -612,6 +616,13 @@ object frmMain: TfrmMain
     end
     object mnuHelp: TMenuItem
       Caption = '&Help'
+      object mnuDebug: TMenuItem
+        Caption = '&Debug Log'
+        OnClick = mnuDebugClick
+      end
+      object Separator2: TMenuItem
+        Caption = '-'
+      end
       object mnuAbout: TMenuItem
         Caption = '&About'
         OnClick = mnuAboutClick

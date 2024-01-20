@@ -30,6 +30,8 @@ Type
 
     Procedure LoadSettings(AInifile: TInifile);
     Procedure SaveSettings(AInifile: TInifile);
+
+    Function Folder: String;
   End;
 
   { TfrmSettings }
@@ -38,6 +40,7 @@ Type
     btnRescan: TButton;
     btnOK: TButton;
     btnCancel: TButton;
+    btnSettingsFolder: TButton;
     edtCPMTools: TDirectoryEdit;
     edtRunCPM: TFileNameEdit;
     edtuBee512exe: TFileNameEdit;
@@ -50,6 +53,7 @@ Type
     Panel1: TPanel;
     tsLocations: TTabSheet;
     Procedure btnOKClick(Sender: TObject);
+    Procedure btnSettingsFolderClick(Sender: TObject);
     Procedure btnRescanClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
@@ -66,7 +70,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, cpmtoolsSupport, FileSupport, OSSupport, Logging;
+  uBee512Support, cpmtoolsSupport, FileSupport, Logging, LCLIntf;
 
 {$R *.lfm}
 
@@ -100,6 +104,11 @@ Begin
   ModalResult := mrOk;
 End;
 
+Procedure TfrmSettings.btnSettingsFolderClick(Sender: TObject);
+Begin
+  OpenDocument(FSettings.Folder);
+End;
+
 Procedure TfrmSettings.btnRescanClick(Sender: TObject);
 Begin
   Debug('TfrmSettings.btnRescanClick');
@@ -124,7 +133,6 @@ Begin
   edtRunCPM.Text := FSettings.RUNCPM_exe;
   edtCPMTools.Text := FSettings.CPMTOOLS_bin;
 End;
-
 
 { TSettings }
 
@@ -156,7 +164,7 @@ Begin
   UBEE512_rc := AInifile.ReadString('Locations', 'uBee512rc', uBee512.rc);
   RUNCPM_exe := AInifile.ReadString('Locations', 'RunCPM', '');
   CPMTOOLS_bin := AInifile.ReadString('Locations', 'cpmtools', '');
-  WorkingFolder := IncludeSlash(AInifile.ReadString('Locations', 'Working',
+  WorkingFolder := ExcludeSlash(AInifile.ReadString('Locations', 'Working',
     ExtractFilePath(Application.ExeName)));
 
   A := AInifile.ReadString('Selected', 'Disk A', '');
@@ -189,6 +197,17 @@ Begin
   AInifile.WriteString('Selected', 'Disk A Format', A_Format);
   AInifile.WriteString('Selected', 'Disk B Format', B_Format);
   AInifile.WriteString('Selected', 'Disk C Format', C_Format);
+End;
+
+Function TSettings.Folder: String;
+Begin
+  {$IFDEF WINDOWS}
+  Result := IncludeSlash(GetAppConfigDir(False)) + Application.Name;
+  {$ELSE}
+  Result := IncludeSlash(GetAppConfigDir(False)) + '.' + Application.Name;
+  {$ENDIF}
+  If Not DirectoryExists(Result) Then
+    ForceDirectories(Result);
 End;
 
 Procedure TSettings.InitialisePaths;

@@ -133,17 +133,17 @@ End;
 
 Procedure TfrmDiskExplorer.btnAddFolderToAClick(Sender: TObject);
 Begin
-  FSettings.A := tvFolders.Path;
+  FSettings.A := ExcludeSlash(tvFolders.Path);
 End;
 
 Procedure TfrmDiskExplorer.btnAddFolderToBClick(Sender: TObject);
 Begin
-  FSettings.B := tvFolders.Path;
+  FSettings.B := ExcludeSlash(tvFolders.Path);
 End;
 
 Procedure TfrmDiskExplorer.btnAddFolderToCClick(Sender: TObject);
 Begin
-  FSettings.C := tvFolders.Path;
+  FSettings.C := ExcludeSlash(tvFolders.Path);
 End;
 
 Procedure TfrmDiskExplorer.tvFoldersChange(Sender: TObject; Node: TTreeNode);
@@ -158,7 +158,7 @@ Begin
     SetBusy;
     Try
       FLoadingDSK := True;
-      FSettings.WorkingFolder := IncludeSlash(tvFolders.Path);
+      FSettings.WorkingFolder := ExcludeSlash(tvFolders.Path);
       Debug('Start scanning folder: ' + FSettings.WorkingFolder);
 
       lvcpmtoolsWorkingFolder.Items.BeginUpdate;
@@ -170,7 +170,7 @@ Begin
         memOutput.Lines.Clear;
         lvcpmtoolsFiles.Clear;
 
-        If FindFirst(FSettings.WorkingFolder + '*.*', faAnyFile, oSearchRec) = 0 Then
+        If FindFirst(IncludeSlash(FSettings.WorkingFolder) + '*.*', faAnyFile, oSearchRec) = 0 Then
           Repeat
             If (oSearchRec.Name <> '.') And (oSearchRec.Name <> '..') And
               (oSearchRec.Name <> '') Then
@@ -178,7 +178,8 @@ Begin
               sExt := Lowercase(ExtractFileExt(oSearchRec.Name));
               bIsDisk := ubee512.IsDisk(sExt) Or cpmtoolsIsDisk(sExt);
               bIsText := IsTextfile(sExt);
-              bBoot := bIsDisk And (IsCPMBootableFile(FSettings.WorkingFolder + oSearchRec.Name));
+              bBoot := bIsDisk And
+                (IsCPMBootableFile(IncludeSlash(FSettings.WorkingFolder) + oSearchRec.Name));
 
               oListItem := lvcpmtoolsWorkingFolder.Items.Add;
               oListItem.Caption := ExtractFileNameWithoutExt(oSearchRec.Name);
@@ -246,11 +247,11 @@ Var
   sRawOutput: String;
 Begin
   If Assigned(Item) And (Item.SubItems.Count > 1) And
-    (FileExists(FSettings.WorkingFolder + Item.Caption + Item.SubItems[0])) And
+    (FileExists(IncludeSlash(FSettings.WorkingFolder) + Item.Caption + Item.SubItems[0])) And
     (Item.Selected) Then
   Begin
     SetBusy;
-    sSelectedFile := FSettings.WorkingFolder + Item.Caption + Item.SubItems[0];
+    sSelectedFile := IncludeSlash(FSettings.WorkingFolder) + Item.Caption + Item.SubItems[0];
     Debug('Start Preview: ' + sSelectedFile);
     Log_IncIndent;
 

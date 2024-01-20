@@ -25,7 +25,7 @@ Type
     cboFormatA: TComboBox;
     cboTitle: TComboBox;
     cboType: TComboBox;
-    edtCommandLine: TEdit;
+    memCommandLine: TMemo;
     edtDiskA: TFileNameEdit;
     edtDiskB: TFileNameEdit;
     edtDiskC: TFileNameEdit;
@@ -39,6 +39,7 @@ Type
     lblPP: TLabel;
     MainMenu1: TMainMenu;
     memRC: TMemo;
+    Separator2: TMenuItem;
     mnuDebug: TMenuItem;
     pnlLeft: TPanel;
     pcOptions: TPageControl;
@@ -72,6 +73,7 @@ Type
     Procedure btnMacroExplorerClick(Sender: TObject);
     Procedure btnLaunchuBee512Click(Sender: TObject);
     Procedure btnTestClick(Sender: TObject);
+    Procedure DiskorFormatChange(Sender: TObject);
     Procedure cboModelChange(Sender: TObject);
     Procedure cboTitleChange(Sender: TObject);
     Procedure cboTypeChange(Sender: TObject);
@@ -86,7 +88,6 @@ Type
     FSettings: TSettings;
     FActivated: Boolean;
     FLoadingDSK: Boolean;
-    FWorkingDir: String;
     FUpdatingCombos: Boolean;
 
     FLog: TLog;
@@ -99,10 +100,8 @@ Type
     Procedure SaveSettings;
 
     Procedure SetMacroCombo(ACombo: TComboBox; AValue: String);
-    Procedure SetSelectedDisk(AFilename: String; AFilenameEdit: TFileNameEdit;
-      AFormatCombo: TComboBox);
-    Procedure SetSelectedFolder(AFolder: String; AFilenameEdit: TFileNameEdit;
-      AFormatCombo: TComboBox);
+    Procedure SetSelectedDisk(AFilename: String; AFormat: String;
+      AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
   End;
 
 Const
@@ -118,7 +117,7 @@ Var
 Implementation
 
 Uses
-  IniFiles, cpmtoolsSupport, CPMSupport, LazFileUtils, StringSupport,
+  IniFiles, cpmtoolsSupport, LazFileUtils, StringSupport, FileSupport,
   OSSupport, uBee512Support, FormMacroExplorer, FormDiskExplorer, FormDebug,
   FormAbout;
 
@@ -134,10 +133,10 @@ Begin
   FLoadingDSK := False;
   FSettings := TSettings.Create;
 
-  FLog := TLog.Create(ChangeFileExt(Application.Exename, '.log'));
+  FLog := TLog.Create(IncludeSlash(FSettings.Folder) + 'debug.log');
   Debug(LineEnding + '-----------------------');
-
   Debug(Application.ExeName);
+  Debug(FLog.Filename);
 End;
 
 Procedure TfrmMain.FormActivate(Sender: TObject);
@@ -184,71 +183,31 @@ End;
 
 Procedure TfrmMain.mnuSettingsClick(Sender: TObject);
 Var
-  oSettings: TfrmSettings;
+  oForm: TfrmSettings;
 Begin
-  FSettings.WorkingFolder := FWorkingDir;
-
-  oSettings := TfrmSettings.Create(Self);
+  oForm := TfrmSettings.Create(Self);
   Try
-    oSettings.Settings := FSettings;
+    oForm.Settings := FSettings;
 
-    If oSettings.ShowModal = mrOk Then
+    If oForm.ShowModal = mrOk Then
     Begin
       Debug('Validating new settings');
-      FSettings := oSettings.Settings;
+      FSettings.Assign(oForm.Settings);
       FSettings.ValidatePaths;
 
       LoadRC;
-
-      FWorkingDir := FSettings.WorkingFolder;
     End;
   Finally
-    oSettings.Free;
+    oForm.Free;
   End;
 End;
 
-Procedure TfrmMain.SetSelectedDisk(AFilename: String; AFilenameEdit: TFileNameEdit;
-  AFormatCombo: TComboBox);
-Var
-  sFormat: String;
-  iFormat: Integer;
+Procedure TfrmMain.SetSelectedDisk(AFilename: String; AFormat: String;
+  AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
 Begin
   AFilename := Trim(AFilename);
   AFilenameEdit.Text := AFilename;
-
-  If AFilename <> '' Then
-  Begin
-    // Make an educated guess as to Disk Format
-    sFormat := DSKFormat(AFilename);
-    iFormat := AFormatCombo.Items.IndexOf(sFormat);
-
-    If iFormat >= 0 Then
-      AFormatCombo.ItemIndex := iFormat
-    Else
-      AFormatCombo.Text := sFormat;
-  End
-  Else
-    AFormatCombo.Text := 'Format?';
-
-  RefreshUI;
-End;
-
-Procedure TfrmMain.SetSelectedFolder(AFolder: String; AFilenameEdit: TFileNameEdit;
-  AFormatCombo: TComboBox);
-Var
-  sFormat: String;
-  iFormat: Integer;
-Begin
-  AFolder := Trim(AFolder);
-  AFilenameEdit.Text := AFolder;
-
-  sFormat := 'rcpmfs/ds80';
-  iFormat := AFormatCombo.Items.IndexOf(sFormat);
-
-  If iFormat >= 0 Then
-    AFormatCombo.ItemIndex := iFormat
-  Else
-    AFormatCombo.Text := sFormat;
+  AFormatCombo.Text := AFormat;
 
   RefreshUI;
 End;
@@ -289,7 +248,7 @@ Var
   mtType: TMbeeType;
 
 Begin
-  sIniFile := ChangeFileExt(Application.Exename, '.ini');
+  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
   Debug('Loading ' + sInifile);
   FLog.IncIndent;
 
@@ -311,13 +270,11 @@ Begin
 
     FSettings.LoadSettings(oIniFile);
 
-    FWorkingDir := FSettings.WorkingFolder;
-
     LoadRC;
 
-    SetSelectedDisk(FSettings.A, edtDiskA, cboFormatA);
-    SetSelectedDisk(FSettings.B, edtDiskB, cboFormatB);
-    SetSelectedDisk(FSettings.C, edtDiskC, cboFormatC);
+    SetSelectedDisk(FSettings.A, FSettings.A_Format, edtDiskA, cboFormatA);
+    SetSelectedDisk(FSettings.B, FSettings.B_Format, edtDiskB, cboFormatB);
+    SetSelectedDisk(FSettings.C, FSettings.C_Format, edtDiskC, cboFormatC);
 
     sModel := oIniFile.ReadString('Selected', 'Model', DEFAULT_MODEL);
     sTitle := oIniFile.ReadString('Selected', 'Title', DEFAULT_TITLE);
@@ -339,9 +296,8 @@ Var
   oInifile: TIniFile;
   sInifile: String;
 Begin
-  sInifile := ChangeFileExt(Application.Exename, '.ini');
+  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
   Debug('Saving ' + sInifile);
-
 
   oInifile := TIniFile.Create(sInifile);
 
@@ -358,7 +314,14 @@ Begin
       oInifile.WriteInteger(Name, 'Height', Application.MainForm.Height);
     End;
 
-    FSettings.WorkingFolder := FWorkingDir;
+    FSettings.A := edtDiskA.Text;
+    FSettings.B := edtDiskB.Text;
+    FSettings.C := edtDiskC.Text;
+
+    FSettings.A_Format := cboFormatA.Text;
+    FSettings.B_Format := cboFormatB.Text;
+    FSettings.C_Format := cboFormatC.Text;
+
     FSettings.SaveSettings(oInifile);
 
     // No need to save Type, it's inferred from Model
@@ -404,21 +367,21 @@ End;
 Procedure TfrmMain.btnClearAClick(Sender: TObject);
 Begin
   edtDiskA.Text := '';
-  cboFormatA.Text := 'Format?';
+  cboFormatA.Text := '';
   RefreshUI;
 End;
 
 Procedure TfrmMain.btnClearBClick(Sender: TObject);
 Begin
   edtDiskB.Text := '';
-  cboFormatB.Text := 'Format?';
+  cboFormatB.Text := '';
   RefreshUI;
 End;
 
 Procedure TfrmMain.btnClearCClick(Sender: TObject);
 Begin
   edtDiskC.Text := '';
-  cboFormatC.Text := 'Format?';
+  cboFormatC.Text := '';
   RefreshUI;
 End;
 
@@ -438,9 +401,9 @@ Begin
     Begin
       FSettings.Assign(oForm.Settings);
 
-      SetSelectedDisk(FSettings.A, edtDiskA, cboFormatA);
-      SetSelectedDisk(FSettings.B, edtDiskB, cboFormatB);
-      SetSelectedDisk(FSettings.C, edtDiskC, cboFormatC);
+      SetSelectedDisk(FSettings.A, FSettings.A_Format, edtDiskA, cboFormatA);
+      SetSelectedDisk(FSettings.B, FSettings.B_Format, edtDiskB, cboFormatB);
+      SetSelectedDisk(FSettings.C, FSettings.C_Format, edtDiskC, cboFormatC);
     End;
   Finally
     oForm.Free;
@@ -505,8 +468,9 @@ Var
     sFormat: String;
   Begin
     sFormat := DriveFormatAsParam(AEdit, ACombo);
-    If sFormat <> '' Then
-      sParam += Format(' %s -%s "%s"', [sFormat, ADrive, AEdit.Text]);
+
+    If (AEdit.Enabled) And (Trim(AEdit.Text) <> '') Then
+      sParam += ' ' + Trim(Format('%s -%s "%s"', [sFormat, ADrive, AEdit.Text]));
   End;
 
 Begin
@@ -548,7 +512,7 @@ Begin
       AddDisk('c', edtDiskC, cboFormatC);
     End;
 
-    edtCommandLine.Text := Trim(Format('"%s" %s', [uBee512.Exe, Trim(sParam)]));
+    memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
     memRC.Lines.Text := sRC;
   End;
 End;
@@ -613,7 +577,10 @@ Begin
       Result := '--format=' + sFormat;
   End
   Else If DirectoryExists(AEdit.Text) Then
-    Result := '--type=rcpmfs --format=ds80';
+    If AFormat.Text = '' Then
+      Result := '--type=rcpmfs --format=ds80'
+    Else
+      Result := '--type=rcpmfs --format=' + Trim(AFormat.Text);
 End;
 
 Procedure TfrmMain.btnLaunchuBee512Click(Sender: TObject);
@@ -632,11 +599,10 @@ Var
     If (Trim(AEdit.Text) = '') Then
       Exit;
 
-    If AEdit.Enabled Then
+    If (AEdit.Enabled) Then
     Begin
       sFormat := DriveFormatAsParam(AEdit, ACombo);
       If sFormat <> '' Then
-      Begin
         If Pos('--type=rcpmfs', sFormat) > 0 Then
         Begin
           slParams.Add(TextBetween(sFormat, '', ' '));
@@ -644,11 +610,11 @@ Var
         End
         Else
           slParams.Add(sFormat);
-        slParams.Add('-' + ADrive);
-        slParams.Add(Format('%s', [AEdit.Text]));
 
-        Result := True;
-      End;
+      slParams.Add('-' + ADrive);
+      slParams.Add(Format('%s', [AEdit.Text]));
+
+      Result := True;
     End;
   End;
 
@@ -682,8 +648,8 @@ Begin
         sDebug += '  ' + s;
 
     Debug('Launching ubee512 with:' + LineEnding + sDebug);
-    edtCommandLine.Text := Trim(sDebug);
-    edtCommandLine.Refresh;
+    memCommandLine.Lines.Text := '>'+Trim(sDebug);
+    memCommandLine.Refresh;
 
     sResult := Trim(RunEx(sCommand, slParams));
 
@@ -701,6 +667,11 @@ Begin
   sCommand := Format('%s', [FSettings.UBEE512_exe]);
   sResult := Trim(RunEx(sCommand, ['--conio', '--echo', '@UBEE_USERHOME@', '--exit=-1']));
   Debug('Test ' + sResult);
+End;
+
+Procedure TfrmMain.DiskorFormatChange(Sender: TObject);
+Begin
+  RefreshRC;
 End;
 
 Procedure TfrmMain.RefreshUI;
