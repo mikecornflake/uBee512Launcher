@@ -1,12 +1,12 @@
 object frmAbout: TfrmAbout
   Left = 576
-  Height = 486
+  Height = 479
   Top = 140
   Width = 773
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeToolWin
   Caption = 'About'
-  ClientHeight = 486
+  ClientHeight = 479
   ClientWidth = 773
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -14,7 +14,7 @@ object frmAbout: TfrmAbout
   LCLVersion = '2.2.6.0'
   object imgAbout: TImage
     Left = 8
-    Height = 470
+    Height = 463
     Top = 8
     Width = 168
     Anchors = [akTop, akLeft, akBottom]
@@ -4856,7 +4856,7 @@ object frmAbout: TfrmAbout
   end
   object Bevel1: TBevel
     Left = 184
-    Height = 470
+    Height = 463
     Top = 8
     Width = 3
     Anchors = [akTop, akLeft, akBottom]
@@ -4875,7 +4875,7 @@ object frmAbout: TfrmAbout
   object btnOK: TButton
     Left = 688
     Height = 24
-    Top = 452
+    Top = 445
     Width = 71
     Anchors = [akRight, akBottom]
     Caption = 'OK'
@@ -4885,7 +4885,7 @@ object frmAbout: TfrmAbout
   end
   object pcAbout: TPageControl
     Left = 195
-    Height = 408
+    Height = 401
     Top = 40
     Width = 569
     ActivePage = tsuBee512
@@ -4898,11 +4898,11 @@ object frmAbout: TfrmAbout
     TabOrder = 1
     object tsAbout: TTabSheet
       Caption = 'About'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       object memAbout: TMemo
         Left = 10
-        Height = 285
+        Height = 278
         Top = 23
         Width = 543
         Anchors = [akTop, akLeft, akRight, akBottom]
@@ -4924,7 +4924,7 @@ object frmAbout: TfrmAbout
       object lblHTMLLabel: TLabel
         Left = 18
         Height = 15
-        Top = 353
+        Top = 346
         Width = 208
         Anchors = [akLeft, akBottom]
         Caption = 'http://mikecornflake.blogspot.com.au/'
@@ -4938,7 +4938,7 @@ object frmAbout: TfrmAbout
       object lblHTMLLabel1: TLabel
         Left = 18
         Height = 15
-        Top = 337
+        Top = 330
         Width = 183
         Anchors = [akLeft, akBottom]
         Caption = 'mailto:mike.cornflake@gmail.com'
@@ -4952,7 +4952,7 @@ object frmAbout: TfrmAbout
       object Label2: TLabel
         Left = 10
         Height = 15
-        Top = 322
+        Top = 315
         Width = 113
         Anchors = [akLeft, akBottom]
         Caption = 'Contact Information'
@@ -4963,12 +4963,12 @@ object frmAbout: TfrmAbout
     end
     object tsCredits: TTabSheet
       Caption = 'Credits'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       object lblImageMagick: TLabel
         Left = 52
         Height = 15
-        Top = 306
+        Top = 299
         Width = 158
         Anchors = [akLeft, akBottom]
         Caption = 'http://www.imagemagick.org'
@@ -4983,7 +4983,7 @@ object frmAbout: TfrmAbout
       object lblXPDF2: TLabel
         Left = 52
         Height = 15
-        Top = 350
+        Top = 343
         Width = 220
         Anchors = [akLeft, akBottom]
         Caption = 'http://www.glyphandcog.com/Xpdf.html'
@@ -4998,7 +4998,7 @@ object frmAbout: TfrmAbout
       object lblXPDF1: TLabel
         Left = 52
         Height = 15
-        Top = 328
+        Top = 321
         Width = 224
         Anchors = [akLeft, akBottom]
         Caption = 'http://www.foolabs.com/xpdf/home.html'
@@ -5013,7 +5013,7 @@ object frmAbout: TfrmAbout
       object lblHTMLLabel6: TLabel
         Left = 51
         Height = 15
-        Top = 212
+        Top = 205
         Width = 183
         Anchors = [akLeft, akBottom]
         Caption = 'http://www.lazarus.freepascal.org/'
@@ -5027,7 +5027,7 @@ object frmAbout: TfrmAbout
       object lblHTMLLabel7: TLabel
         Left = 51
         Height = 15
-        Top = 236
+        Top = 229
         Width = 144
         Anchors = [akLeft, akBottom]
         Caption = 'http://www.freepascal.org/'
@@ -5041,7 +5041,7 @@ object frmAbout: TfrmAbout
       object Label3: TLabel
         Left = 25
         Height = 15
-        Top = 191
+        Top = 184
         Width = 181
         Anchors = [akLeft, akBottom]
         Caption = 'Core Development Environment'
@@ -5052,7 +5052,7 @@ object frmAbout: TfrmAbout
       object lblSDKs: TLabel
         Left = 25
         Height = 15
-        Top = 263
+        Top = 256
         Width = 122
         Anchors = [akLeft, akBottom]
         Caption = 'Other SDKs and Tools:'
@@ -5063,7 +5063,7 @@ object frmAbout: TfrmAbout
       end
       object Label4: TLabel
         Left = 9
-        Height = 170
+        Height = 163
         Top = 8
         Width = 539
         Anchors = [akTop, akLeft, akRight, akBottom]
@@ -5076,7 +5076,7 @@ object frmAbout: TfrmAbout
       object lblXPDF3: TLabel
         Left = 52
         Height = 15
-        Top = 284
+        Top = 277
         Width = 394
         Anchors = [akLeft, akBottom]
         Caption = 'http://www.softicons.com/toolbar-icons/fatcow-hosting-icons-by-fatcow'
@@ -5090,12 +5090,12 @@ object frmAbout: TfrmAbout
     end
     object tsReadme: TTabSheet
       Caption = 'Readme'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       TabVisible = False
       object memReadme: TMemo
         Left = 0
-        Height = 378
+        Height = 371
         Top = 0
         Width = 561
         Align = alClient
@@ -5120,12 +5120,12 @@ object frmAbout: TfrmAbout
     end
     object tsLicence: TTabSheet
       Caption = 'Licence'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       TabVisible = False
       object memLicence: TMemo
         Left = 0
-        Height = 378
+        Height = 371
         Top = 0
         Width = 561
         Align = alClient
@@ -5143,11 +5143,11 @@ object frmAbout: TfrmAbout
     end
     object tsImageMagick: TTabSheet
       Caption = 'ImageMagick'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       object memImageMagick: TMemo
         Left = 0
-        Height = 378
+        Height = 371
         Top = 0
         Width = 561
         Align = alClient
@@ -5165,11 +5165,11 @@ object frmAbout: TfrmAbout
     end
     object tsXPDF: TTabSheet
       Caption = 'XPDF'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       object memXPDF: TMemo
         Left = 0
-        Height = 378
+        Height = 371
         Top = 0
         Width = 561
         Align = alClient
@@ -5191,10 +5191,10 @@ object frmAbout: TfrmAbout
     end
     object tsuBee512: TTabSheet
       Caption = 'uBee512'
-      ClientHeight = 378
+      ClientHeight = 371
       ClientWidth = 561
       object lblImageMagick1: TLabel
-        Left = 24
+        Left = 0
         Height = 15
         Top = 102
         Width = 235
@@ -5207,10 +5207,11 @@ object frmAbout: TfrmAbout
         OnMouseLeave = URLLabelMouseLeave
       end
       object lblImageMagick2: TLabel
-        Left = 280
+        Left = 300
         Height = 15
         Top = 102
         Width = 255
+        Anchors = [akTop, akRight]
         Caption = 'https://www.microbee-mspp.org.au/repository/'
         Font.Color = clBlue
         ParentColor = False
@@ -5221,7 +5222,7 @@ object frmAbout: TfrmAbout
       end
       object memuBee512: TMemo
         Left = 0
-        Height = 234
+        Height = 227
         Top = 144
         Width = 561
         Align = alBottom
