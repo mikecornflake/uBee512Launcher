@@ -105,7 +105,7 @@ Begin
     oItem := lvcpmtoolsWorkingFolder.Selected;
 
   If oItem.SubItems.Count > 2 Then
-    Result := FSettings.WorkingFolder + oItem.Caption + oItem.SubItems[0];
+    Result := IncludeSlash(FSettings.WorkingFolder) + oItem.Caption + oItem.SubItems[0];
 End;
 
 Procedure TfrmDiskExplorer.SetSettings(AValue: TSettings);

@@ -46,11 +46,10 @@ object frmDiskExplorer: TfrmDiskExplorer
     0000000000000000000000000000000000000000000000000000000000000000
     0000
   }
+  Position = poMainFormCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  Position = poMainFormCenter
-  LCLVersion = '2.2.6.0'
   object tvFolders: TShellTreeView
     Left = 0
     Height = 456
@@ -60,9 +59,9 @@ object frmDiskExplorer: TfrmDiskExplorer
     FileSortType = fstAlphabet
     ReadOnly = True
     TabOrder = 0
-    OnChange = tvFoldersChange
     Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
     ObjectTypes = [otFolders, otHidden]
+    OnChange = tvFoldersChange
   end
   object Splitter1: TSplitter
     Left = 213
@@ -109,7 +108,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddDSKtoAClick
         end
         object btnAddFolderToA: TToolButton
-          Left = 41
+          Left = 42
           Hint = 'Mount selected folder into A:'
           Top = 2
           Caption = 'A:'
@@ -117,7 +116,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddFolderToAClick
         end
         object btnAddDSKtoB: TToolButton
-          Left = 89
+          Left = 91
           Hint = 'Mount selected file into B:'
           Top = 2
           Caption = 'B:'
@@ -125,7 +124,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddDSKtoBClick
         end
         object btnAddFolderToB: TToolButton
-          Left = 128
+          Left = 132
           Hint = 'Mount selected folder into B:'
           Top = 2
           Caption = 'B:'
@@ -133,21 +132,21 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddFolderToBClick
         end
         object ToolButton1: TToolButton
-          Left = 81
+          Left = 83
           Height = 22
           Top = 2
           Caption = 'ToolButton1'
           Style = tbsSeparator
         end
         object ToolButton2: TToolButton
-          Left = 167
+          Left = 173
           Height = 22
           Top = 2
           Caption = 'ToolButton2'
           Style = tbsSeparator
         end
         object btnAddDSKtoC: TToolButton
-          Left = 175
+          Left = 181
           Hint = 'Mount selected file into B:'
           Top = 2
           Caption = 'C:'
@@ -155,7 +154,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddDSKtoCClick
         end
         object btnAddFolderToC: TToolButton
-          Left = 215
+          Left = 223
           Hint = 'Mount selected folder into C:'
           Top = 2
           Caption = 'C:'
@@ -219,13 +218,13 @@ object frmDiskExplorer: TfrmDiskExplorer
       TabOrder = 2
       object tsFiles: TTabSheet
         Caption = 'Files in Disk'
-        ClientHeight = 248
-        ClientWidth = 499
+        ClientHeight = 240
+        ClientWidth = 501
         object lvcpmtoolsFiles: TListView
           Left = 0
-          Height = 248
+          Height = 240
           Top = 0
-          Width = 499
+          Width = 501
           Align = alClient
           Columns = <          
             item
@@ -261,13 +260,13 @@ object frmDiskExplorer: TfrmDiskExplorer
       end
       object tsText: TTabSheet
         Caption = 'Text / Raw'
-        ClientHeight = 248
-        ClientWidth = 499
+        ClientHeight = 240
+        ClientWidth = 501
         object memOutput: TMemo
           Left = 0
-          Height = 248
+          Height = 240
           Top = 0
-          Width = 499
+          Width = 501
           Align = alClient
           Lines.Strings = (
             'memOutput'
