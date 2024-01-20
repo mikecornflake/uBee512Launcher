@@ -37,8 +37,8 @@
 + Add Help - About and full acknowledgements
 + Expand Validator to PAK<x>/ROM<x>
 + Add support and validators for HDD<x>
-+ Add support and validators for IDE<x>
-+ Store ini file + log in appropriate location on Linux + macOS (GetSettingsDir?)
++ Add support for IDE<x>
++ (done?) Store ini file + log in appropriate location on Linux + macOS (GetSettingsDir?)
 + Prevent selection of invalid macros in main form (hide entirely?), or at least raise awareness
 + Add awareness of **RunCPM** folder structure
 
