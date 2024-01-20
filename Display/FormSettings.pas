@@ -201,11 +201,7 @@ End;
 
 Function TSettings.Folder: String;
 Begin
-  {$IFDEF WINDOWS}
-  Result := IncludeSlash(GetAppConfigDir(False)) + Application.Name;
-  {$ELSE}
-  Result := IncludeSlash(GetAppConfigDir(False)) + '.' + Application.Name;
-  {$ENDIF}
+  Result := ExcludeSlash(GetAppConfigDir(False));
   If Not DirectoryExists(Result) Then
     ForceDirectories(Result);
 End;
