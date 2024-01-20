@@ -25,6 +25,9 @@ Function FileRename(ASource, ADestination: String): Boolean;
 Function RenameSubfolders(ARoot: String; AOperation: TRenameSubFolderOption): Boolean;
 Function CopyFileForce(sSource, sDestination: String; bFailIfExists: Boolean = False): Boolean;
 
+// OS Safety
+Function FixOSPathDelimiter(AInput: String): String;
+
 // turns <EXEDIR> into actual exe folder and back again
 Function ExpandFolder(sFolder: String): String;
 Function ExpandFile(sFile: String): String;
@@ -47,6 +50,15 @@ Implementation
 
 Uses
   FileUtil, LazFileUtils, Forms, StrUtils;
+
+Function FixOSPathDelimiter(AInput: String): String;
+Begin
+  {$IFDEF WINDOWS}
+  Result := StringReplace(AInput, '/', '\', [rfReplaceAll]);
+  {$ELSE}
+  Result := StringReplace(AInput, '\', '/', [rfReplaceAll]);
+  {$ENDIF}
+End;
 
 Function ExpandFolder(sFolder: String): String;
 Begin

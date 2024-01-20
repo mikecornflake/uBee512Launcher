@@ -119,7 +119,8 @@ Implementation
 
 Uses
   IniFiles, cpmtoolsSupport, CPMSupport, LazFileUtils, StringSupport,
-  OSSupport, uBee512Support, FormMacroExplorer, FormDiskExplorer, FormDebug;
+  OSSupport, uBee512Support, FormMacroExplorer, FormDiskExplorer, FormDebug,
+  FormAbout;
 
   {$R *.lfm}
 
@@ -127,22 +128,6 @@ Uses
 
 Procedure TfrmMain.FormCreate(Sender: TObject);
 Begin
-//{$IFDEF DARWIN}
-//  cboType.Style := csDropDown;
-//  cboModel.Style := csDropDown;
-//  cboTitle.Style := csDropDown;
-//  cboFormatA.Style := csDropDown;
-//  cboFormatB.Style := csDropDown;
-//  cboFormatC.Style := csDropDown;
-//{$ELSE}
-//  cboType.Style := csDropDownList;
-//  cboModel.Style := csDropDownList;
-//  cboTitle.Style := csDropDownList;
-//  cboFormatA.Style := csDropDownList;
-//  cboFormatB.Style := csDropDownList;
-//  cboFormatC.Style := csDropDownList;
-//{$ENDIF}
-
   FUpdatingCombos := False;
 
   FActivated := False;
@@ -175,7 +160,7 @@ End;
 
 Procedure TfrmMain.mnuAboutClick(Sender: TObject);
 Begin
-  ShowMessage('TODO');
+  FormAbout.ShowAbout;
 End;
 
 Procedure TfrmMain.mnuExitClick(Sender: TObject);
