@@ -50,6 +50,7 @@
   + Display embedded ReadMe in the Preview Pane
   + Implement a "Mount ZIP" that extracts the DSK, then actually mounts that DSK in the CP/M system
 + Add support for Microbee Peripherals (Beetalker etc)
++ Add support for ROM/PAK.
 + Add support for **UBEEDISK** tools (to be honest, this means learning them first)
 + I keep thinking about adding ability for users to define their own system macros (by first copying an existing).
 + (Library): Write a CommandLine+Params_As_String to CommandLine+Array_of_Param
