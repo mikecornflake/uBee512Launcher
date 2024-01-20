@@ -34,16 +34,15 @@
 
 # TODO
 ## Short term
-+ Add Help - About and full acknowledgements
-+ Expand Validator to PAK<x>/ROM<x>
-+ Add support and validators for HDD<x>
-+ Add support for IDE<x>
-+ (done?) Store ini file + log in appropriate location on Linux + macOS (GetSettingsDir?)
++ Add Display options (psotion relative to launcher, monitor, opengl/sdl)
++ Expand Validator to PAKx/ROMx
++ Add support and validators for HDDx
++ Add support for IDEx
 + Prevent selection of invalid macros in main form (hide entirely?), or at least raise awareness
 + Add awareness of **RunCPM** folder structure
 
 ## Medium term
-+ Add support for non libdsk file formats
++ Add support for non libdsk file formats (this might not be a goal anymore - I hadn't realised ubee512 was so good at detecting disk format)
 + Continue to add support for working with DSK files prior to running in a CP/M system
   + Create blank DSK
   + DSK To/From folder (inc To/From **RunCPM** folder)
@@ -70,7 +69,6 @@
 + The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
 
 ## Screenshots
-+ We have "minimum viable product", just not platform independent yet
 + ![Image: Main UI](Images/Development_Screenshot_2.png)
 + ![Image: System Macros](Images/Development_Screenshot_1.png)
 
@@ -91,4 +89,5 @@ This is intended to be free code available to everyone for use everywhere.  Fran
 
 Mike Thompson
 mike.cornflake@gmail.com
-5 Jan 2024
+Project start 2 Jan 2024
+Updated 20 Jan 2024
