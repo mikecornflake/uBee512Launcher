@@ -131,6 +131,15 @@ Uses
 
 Procedure TfrmMain.FormCreate(Sender: TObject);
 Begin
+  {$IFDEF DARWIN}
+  cboType.Style := csDropDown;
+  cboModel.Style := csDropDown;
+  cboTitle.Style := csDropDown;
+  cboFormatA.Style := csDropDown;
+  cboFormatB.Style := csDropDown;
+  cboFormatC.Style := csDropDown;
+  {$ENDIF}
+
   FUpdatingCombos := False;
 
   FActivated := False;
