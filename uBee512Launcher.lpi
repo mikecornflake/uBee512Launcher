@@ -59,18 +59,6 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="Support\StringSupport.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Support\FileSupport.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Support\OSSupport.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="Display\FormSettings.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmSettings"/>
@@ -87,11 +75,6 @@
         <ComponentName Value="frmDefinitionExplorer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Support\logging.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="Logging"/>
       </Unit>
       <Unit>
         <Filename Value="Display\FormDebug.pas"/>
