@@ -89,8 +89,11 @@
 ### Build Notes
 + This project requires the IM_units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
   + Clone the entire project
-  + In Lazarus: open "uBee512Launcher.lpr"
-  + Then open "InspectorMike-common\Packages\IM_units.lpk", click on "Compile", then "Use" - "Add to Project"
+  + Install LazSerial (either use Lazarus Online Package Manager, or clone https://github.com/JurassicPork/TLazSerial)
+  + In Lazarus: "Project" "Open"
+    + Select "uBee512Launcher.lpr"
+  + Then "Package" "Open Package File (.lpk)"
+    + Select "InspectorMike-common\Packages\IM_units.lpk", click on "Compile", then "Use" - "Add to Project" (or "Use" - "Install")
   + You should now be able to compile "uBeeLauncher.lpr"
   
 # Acknowledgements
