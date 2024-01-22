@@ -21,7 +21,7 @@
 
 ### Whats new
 + "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
-+ Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let 
++ Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let uBee512 do the work.  User can still override...
 + Framework for Validators added.  Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.
 + UI has been reworked several times.
   + Disk Explorer is now it's own form (not needed for ROM Bees, so why waste space)
