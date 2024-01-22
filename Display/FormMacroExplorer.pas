@@ -57,7 +57,7 @@ Begin
   FActivated := False;
   LoadRC;
 
-  Caption := 'System Macro Explorer: ' + ubee512.RC;
+  Caption := 'System Definition Explorer: ' + ubee512.RC;
 End;
 
 Procedure TfrmDefinitionExplorer.FormActivate(Sender: TObject);

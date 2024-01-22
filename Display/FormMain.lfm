@@ -281,6 +281,7 @@ object frmMain: TfrmMain
             'ss80'
           )
           OnChange = DiskorFormatChange
+          Style = csDropDownList
           TabOrder = 3
         end
         object cboFormatB: TComboBox
@@ -308,6 +309,7 @@ object frmMain: TfrmMain
             'ss80'
           )
           OnChange = DiskorFormatChange
+          Style = csDropDownList
           TabOrder = 4
         end
         object cboFormatC: TComboBox
@@ -335,11 +337,72 @@ object frmMain: TfrmMain
             'ss80'
           )
           OnChange = DiskorFormatChange
+          Style = csDropDownList
           TabOrder = 5
+        end
+        object memDiskAlias: TMemo
+          AnchorSideLeft.Control = lblDiskAlias
+          AnchorSideTop.Control = lblDiskAlias
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = btnClearA
+          AnchorSideRight.Side = asrBottom
+          Left = 8
+          Height = 229
+          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut:'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'#13#10#13#10'WARNING: uBee512Launcher does not yet use Disk.Alias when reporting issues.'
+          Top = 131
+          Width = 470
+          Anchors = [akTop, akLeft, akRight]
+          ReadOnly = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 6
+          WordWrap = False
+        end
+        object lblDiskAlias: TLabel
+          AnchorSideLeft.Control = lblDiskA
+          Left = 8
+          Height = 15
+          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut:'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'#13#10#13#10'WARNING: uBee512Launcher does not yet use Disk.Alias when reporting issues.'
+          Top = 116
+          Width = 373
+          Caption = 'File "disks.alias" (Launcher does not yet use this, but uBee512 does)'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
         end
       end
       object tsROMs: TTabSheet
         Caption = 'ROMs'
+        ClientHeight = 371
+        ClientWidth = 487
+        object lblROMAlias: TLabel
+          AnchorSideLeft.Control = lblDiskA
+          Left = 8
+          Height = 15
+          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut:'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'#13#10#13#10'WARNING: uBee512Launcher does not yet use Disk.Alias when reporting issues.'
+          Top = 8
+          Width = 369
+          Caption = 'File "rom.alias" (Launcher does not yet use this, but uBee512 does)'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object memROMAlias: TMemo
+          AnchorSideLeft.Control = lblROMAlias
+          AnchorSideTop.Control = lblROMAlias
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = btnClearA
+          AnchorSideRight.Side = asrBottom
+          Left = 8
+          Height = 329
+          Hint = 'This file allows you to match shortcuts to physical files.'
+          Top = 23
+          Width = 464
+          Anchors = [akTop, akLeft, akRight]
+          ReadOnly = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 0
+          WordWrap = False
+        end
       end
       object TabSheet3: TTabSheet
         Caption = 'Peripherals'
@@ -405,6 +468,7 @@ object frmMain: TfrmMain
           'Custom'
         )
         OnChange = cboTypeChange
+        Style = csDropDownList
         TabOrder = 0
         Text = 'Disk'
       end
@@ -425,8 +489,8 @@ object frmMain: TfrmMain
         Width = 75
         ItemHeight = 15
         OnChange = cboModelChange
+        Style = csDropDownList
         TabOrder = 1
-        Text = '0'
       end
       object Label10: TLabel
         Left = 170
@@ -452,8 +516,8 @@ object frmMain: TfrmMain
         OnChange = cboTitleChange
         ParentShowHint = False
         ShowHint = True
+        Style = csDropDownList
         TabOrder = 2
-        Text = '0'
       end
       object btnMacroExplorer: TBitBtn
         AnchorSideRight.Control = memRC

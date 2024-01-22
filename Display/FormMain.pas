@@ -25,6 +25,8 @@ Type
     cboFormatA: TComboBox;
     cboTitle: TComboBox;
     cboType: TComboBox;
+    lblDiskAlias: TLabel;
+    lblROMAlias: TLabel;
     memCommandLine: TMemo;
     edtDiskA: TFileNameEdit;
     edtDiskB: TFileNameEdit;
@@ -38,6 +40,8 @@ Type
     lblDiskC: TLabel;
     lblPP: TLabel;
     MainMenu1: TMainMenu;
+    memDiskAlias: TMemo;
+    memROMAlias: TMemo;
     memRC: TMemo;
     Separator2: TMenuItem;
     mnuDebug: TMenuItem;
@@ -341,11 +345,25 @@ End;
 Procedure TfrmMain.LoadRC;
 Var
   iPrev: Integer;
+  bNew: Boolean;
+  sAlias: String;
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
   FLog.IncIndent;
   Try
-    uBee512.LoadRC;
+    bNew := uBee512.LoadRC;
+
+    // TODO Implement this correctly
+    If bNew Then
+    Begin
+      sAlias := IncludeSlash(ubee512.WorkingDir) + 'disks.alias';
+      If FileExists(sAlias) Then
+        memDiskAlias.Lines.LoadFromFile(sAlias);
+
+      sAlias := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
+      If FileExists(sAlias) Then
+        memROMAlias.Lines.LoadFromFile(sAlias);
+    End;
 
     cboModel.Items.CommaText := ',' + uBee512.Models;
 
@@ -483,10 +501,14 @@ Begin
 
     If (cboTitle.Text <> '') Then
     Begin
+      oModel := ubee512.Model(cboModel.Text);
       oMacro := ubee512.MacroByTitle(cboTitle.Text);
       If assigned(oMacro) Then
       Begin
-        sRC := '# ' + oMacro.Description + LineEnding;
+        If Assigned(oModel) Then
+          sRC := '# ' + oModel.Description + LineEnding
+        Else
+          sRC := '# ' + oMacro.Description + LineEnding;
         sRC += '[' + oMacro.Macro + ']' + LineEnding;
         sRC += oMacro.RC;
 

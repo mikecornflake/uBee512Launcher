@@ -5,8 +5,8 @@
 + ubee512Launcher instead allows inexperienced users (me) to easily view & select the available emulated systems defined in the setting file (and there's a lot of them)
 + Yeah, it's also for users (again, me) who are more comfortable with UI than command line.
 
-## Release v0.3 (beta)
-+ First beta release, lots to do yet
+## Release v0.4beta
++ Fourth beta release, still lots to do yet
 + [Link to precompiled binaries](bin)
 + To use:
   + If ubee512 is on your environment path, simply download relevant binary and run.
@@ -19,29 +19,41 @@
     + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
 
-## Implemented functionality:
-+ Allows user to choose a Microbee configuration using System Macros defined in ubee512rc
-+ Allows user to select DSK files, and mount these in A: B: or C:
-+ Launches a new instance of the **UBEE512** emulator using the chosen configuration
+### Whats new
++ "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
++ Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let 
++ Framework for Validators added.  Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.
++ UI has been reworked several times.
+  + Disk Explorer is now it's own form (not needed for ROM Bees, so why waste space)
+  + System Definitions now highlights which Definitions with known issues (as determined by the validators).  In addition to highlighting failed rows as red, needed to add red/green icons to workaround LCL shortcomings on macOS and Linux
+  + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
+  + Closing in on decent selection of icons.
+  + added teasers for "disks.alias" and "roms.alias".  Mainly to nag me into implementing these next
+ + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
+ + Signficant testing under macOS/Cocoa.  Bugger - Cocoa framework not fully implemented in LCL, so some workarounds for known issues with TComboBox and TListView
+ + Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here.
+ + Most dev work & testing done on Windows 11. 
 
 ## Notes on implementation
-+ Only allows bootable DSKs to be loaded in A:
++ Only allows bootable DSKs to be loaded in A: (only checks DSKs for bootability)
 + Has a "File Preview": for now, either shows contents of text files, or files inside a DSK (you need to load the patched **CPMTools** using "File" - "Settings" for the DSK listing to work)
 + Contents of DSK listed using either original **CPMtools** or patched **CPMTools** (allows for Microbee specific formats)
-+ Parses ubee512rc to build up System Macros, uses these in Main Form & Macro Explorer
-+ I know there looks like a lot of macros defined in ubee512.  Err, I'm currently filtering out about half - the ones I haven't researched
-+ Framework for Validators added.  Decent checks on SRAM, Disks, Tapes.
++ Parses ubee512rc to build up System Definitions, uses these in Main Form & Definitions Explorer
++ I know there looks like a lot of Definitions in ubee512rc sample.  Err, I'm currently filtering out about half - the ones I haven't researched
 
 # TODO
-## Short term
-+ Add Display options (psotion relative to launcher, monitor, opengl/sdl)
+
+## Short term (planned for 0.5beta)
++ Add Display options (position relative to launcher, monitor, opengl/sdl)
++ Add awareness of disks.alias and roms.alias (validator checks bth for the .alias files themselves, and use the alias when checking system definitions).
 + Expand Validator to PAKx/ROMx
-+ Add support and validators for HDDx
++ Add support for HDDx
 + Add support for IDEx
-+ Prevent selection of invalid macros in main form (hide entirely?), or at least raise awareness
++ Prevent selection of invalid Definitions in main form (hide entirely?), or at least raise awareness
+  + One "Issues" pane to rule them all?
 + Add awareness of **RunCPM** folder structure
 
-## Medium term
+## Medium term (not until 0.6beta or higher)
 + Add support for non libdsk file formats (this might not be a goal anymore - I hadn't realised ubee512 was so good at detecting disk format)
 + Continue to add support for working with DSK files prior to running in a CP/M system
   + Create blank DSK
@@ -51,8 +63,9 @@
   + Implement a "Mount ZIP" that extracts the DSK, then actually mounts that DSK in the CP/M system
 + Add support for Microbee Peripherals (Beetalker etc)
 + Add support for **UBEEDISK** tools (to be honest, this means learning them first)
-+ I keep thinking about adding ability for users to define their own system macros (by first copying an existing).
++ I keep thinking about adding ability for users to define their own System Definitions (by first copying an existing).
 + (Library): Write a CommandLine+Params_As_String to CommandLine+Array_of_Param
++ Expand disks.alias and roms.alias to a full UI for each - offering ability to QC/add/edit/delete entries
 
 ## Long Term 
 (_dreamer! you're nothing but a dreamer_)
@@ -61,16 +74,17 @@
 # Development Notes
 + Developed under windows using Lazarus 2.2.6 / fpc 3.2.2 / 64bit
 + Tested under Ubuntu & macOS using Lazarus 3.0 / fpc 3.2.2 / 64bit
-+ Uses sections directly copied from an OO framework I developed for other projects. That OO framework adds uncessary complications, as the intention for this project is to keep the design to a simplified application, only the support units were added.   + This uses the LCL for UI.  Means the project can be compiled for linux or other OS's.  Primary development is being done under Windows.
-+ LCL and FPC are both quickly evolving projects.  I've an ongoing project rationalising my support units.  Several of the routines in the Support folder were developed many years ago, filling voids in the then LCL/FPC.  If anyone stumbles across routines I can deprecate in favour of official LCL/FPC, let me know.
++ Uses a OO framework I developed while freelancing under "Inspector Mike".  
+  + There's some code tidy-up pending, this framework was developed during Lazarus & fpc early days (2009 to 2014).
+  + Both projects have since moved on, leaving me with some now redundant routines.
 
 ## Distribution
 + **UBEE512**, **UBEEDISK**, patched **CPMTools**, original **CPMTools** & **RunCPM** are NOT distributed with this application.  You'll have to download these separetely (see Acknowledgements)
 + The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
 
 ## Screenshots
-+ ![Image: Main UI](Images/Development_Screenshot_2.png)
-+ ![Image: System Macros](Images/Development_Screenshot_1.png)
+![Image: Main UI](Images/Development_Screenshot_2.png)
+![Image: System Macros](Images/Development_Screenshot_1.png)
 
 ### Build Notes
 + This project requires the IM_units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
@@ -97,4 +111,4 @@ This is intended to be free code available to everyone for use everywhere.  Fran
 Mike Thompson
 mike.cornflake@gmail.com
 Project start 2 Jan 2024
-Updated 20 Jan 2024
+Updated 22 Jan 2024

@@ -143,11 +143,13 @@ object frmSettings: TfrmSettings
     ClientWidth = 360
     TabOrder = 1
     object btnOK: TButton
-      Left = 218
+      AnchorSideRight.Control = btnCancel
+      Left = 233
       Height = 25
       Top = 5
-      Width = 63
+      Width = 47
       Anchors = [akTop, akRight]
+      BorderSpacing.Right = 2
       Caption = 'OK'
       ModalResult = 1
       OnClick = btnOKClick
@@ -173,10 +175,13 @@ object frmSettings: TfrmSettings
       TabOrder = 2
     end
     object btnSettingsFolder: TButton
+      AnchorSideLeft.Control = btnRescan
+      AnchorSideLeft.Side = asrBottom
       Left = 78
       Height = 25
       Top = 5
-      Width = 97
+      Width = 114
+      BorderSpacing.Left = 1
       Caption = 'Settings Folder'
       OnClick = btnSettingsFolderClick
       TabOrder = 3

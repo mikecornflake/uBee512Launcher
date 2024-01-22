@@ -57,7 +57,7 @@ Type
     Function GetExe: String;
     Procedure SetExe(AValue: String);
 
-    Procedure LoadRC;
+    Function LoadRC: Boolean; // If this is called, but no new RC is loaded, returns false.
     Function GetRC: String;
     Procedure SetRC(AValue: String);
   Private
@@ -276,7 +276,7 @@ Begin
   Result := FSystemMacros;
 End;
 
-Procedure TuBee512.LoadRC;
+Function TuBee512.LoadRC: Boolean;
 Var
   slTemp: TStringList;
   s, sLine, sTag, sNewTag: String;
@@ -286,6 +286,8 @@ Var
   oSystemMacro: TSystemMacro;
   iCount: Integer;
 Begin
+  Result := False;
+
   // Only load the file once
   If (FLoadedRC = FRC) Then
   Begin
@@ -410,6 +412,7 @@ Begin
       ClearBusy;
 
       FLoadedRC := FRC;
+      Result := True;
     End;
   End;
 End;
