@@ -93,7 +93,9 @@
   + In Lazarus: "Project" "Open"
     + Select "uBee512Launcher.lpr"
   + Then "Package" "Open Package File (.lpk)"
-    + Select "InspectorMike-common\Packages\IM_units.lpk", click on "Compile", then "Use" - "Add to Project" (or "Use" - "Install")
+    + Select "InspectorMike-common\Packages\IM_units.lpk"
+    + click on "Compile",
+    + Then "Use" - "Add to Project" (or "Use" - "Install")
   + You should now be able to compile "uBeeLauncher.lpr"
   
 # Acknowledgements
