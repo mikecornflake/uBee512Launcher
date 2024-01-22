@@ -19,7 +19,7 @@ Function cpmtoolsLS(AFilename: String): String;
 Implementation
 
 Uses
-  Forms, FileUtil, OSSupport, FileSupport, CPMSupport, StrUtils, Logging;
+  Forms, FileUtil, OSSupport, FileSupport, CPMSupport, StrUtils, Logs;
 
 Var
   FPath: String;

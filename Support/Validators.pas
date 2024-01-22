@@ -52,7 +52,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, Logging;
+  uBee512Support, Logs;
 
 { TSystemMacroValidator }
 

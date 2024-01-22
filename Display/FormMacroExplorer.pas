@@ -48,7 +48,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, OSSupport, Logging;
+  uBee512Support, OSSupport, Logs;
 
 {$R *.lfm}
 

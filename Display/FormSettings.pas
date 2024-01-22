@@ -70,7 +70,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, cpmtoolsSupport, FileSupport, Logging, LCLIntf;
+  uBee512Support, cpmtoolsSupport, FileSupport, Logs, LCLIntf;
 
 {$R *.lfm}
 

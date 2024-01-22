@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
-      <BuildNr Value="229"/>
+      <BuildNr Value="230"/>
       <Attributes pvaPreRelease="True"/>
     </VersionInfo>
     <BuildModes>
@@ -31,6 +31,9 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="IM_units"/>
+      </Item>
       <Item>
         <PackageName Value="LCL"/>
       </Item>

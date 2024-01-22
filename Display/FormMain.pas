@@ -7,7 +7,7 @@ Interface
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   EditBtn, StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
-  FormSettings, Logging;
+  FormSettings, Logs;
 
 Type
 
@@ -648,7 +648,7 @@ Begin
         sDebug += '  ' + s;
 
     Debug('Launching ubee512 with:' + LineEnding + sDebug);
-    memCommandLine.Lines.Text := '>'+Trim(sDebug);
+    memCommandLine.Lines.Text := '>' + Trim(sDebug);
     memCommandLine.Refresh;
 
     sResult := Trim(RunEx(sCommand, slParams));

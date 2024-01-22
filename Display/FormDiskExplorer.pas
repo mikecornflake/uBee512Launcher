@@ -64,7 +64,7 @@ Type
 Implementation
 
 Uses
-  FormMain, FileSupport, CPMSupport, StrUtils, Logging, OSSupport, ubee512Support,
+  FormMain, FileSupport, CPMSupport, StrUtils, Logs, OSSupport, ubee512Support,
   cpmtoolsSupport, LazFileUtils, StringSupport;
 
 {$R *.lfm}
@@ -253,7 +253,7 @@ Begin
     SetBusy;
     sSelectedFile := IncludeSlash(FSettings.WorkingFolder) + Item.Caption + Item.SubItems[0];
     Debug('Start Preview: ' + sSelectedFile);
-    Log_IncIndent;
+    Log.IncIndent;
 
     Try
       lvcpmtoolsFiles.Items.BeginUpdate;
@@ -314,7 +314,7 @@ Begin
 
       lvcpmtoolsFiles.Items.EndUpdate;
     Finally
-      Log_DecIndent;
+      Log.DecIndent;
       Debug('End Preview: ' + sSelectedFile);
 
       ClearBusy;

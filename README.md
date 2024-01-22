@@ -72,6 +72,13 @@
 + ![Image: Main UI](Images/Development_Screenshot_2.png)
 + ![Image: System Macros](Images/Development_Screenshot_1.png)
 
+### Build Notes
++ This project requires the IM_units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
+  + Clone the entire project
+  + In Lazarus: open "uBee512Launcher.lpr"
+  + Then open "InspectorMike-common\Packages\IM_units.lpk", click on "Compile", then "Use" - "Add to Project"
+  + You should now be able to compile "uBeeLauncher.lpr"
+  
 # Acknowledgements
 + User **uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.

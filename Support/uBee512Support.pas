@@ -93,7 +93,7 @@ Function uBee512: TuBee512;
 Implementation
 
 Uses
-  Forms, FileUtil, OSSupport, StringSupport, Logging;
+  Forms, FileUtil, OSSupport, StringSupport, Logs;
 
 Var
   FuBee512: TuBee512;
