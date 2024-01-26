@@ -55,15 +55,15 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
     Height = 570
     Top = 0
     Width = 897
-    ActivePage = tsMacros
+    ActivePage = tsDefinitions
     Align = alClient
     TabIndex = 0
     TabOrder = 0
-    object tsMacros: TTabSheet
-      Caption = 'System Macros'
+    object tsDefinitions: TTabSheet
+      Caption = 'System Definitions'
       ClientHeight = 542
       ClientWidth = 889
-      object lvSystemMacros: TListView
+      object lvDefinitions: TListView
         Left = 0
         Height = 423
         Top = 0
@@ -104,9 +104,9 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
         SortType = stText
         TabOrder = 0
         ViewStyle = vsReport
-        OnCustomDrawItem = lvSystemMacrosCustomDrawItem
-        OnDblClick = lvSystemMacrosDblClick
-        OnSelectItem = lvSystemMacrosSelectItem
+        OnCustomDrawItem = lvDefinitionsCustomDrawItem
+        OnDblClick = lvDefinitionsDblClick
+        OnSelectItem = lvDefinitionsSelectItem
       end
       object Splitter1: TSplitter
         Cursor = crVSplit

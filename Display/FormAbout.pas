@@ -1,13 +1,12 @@
 Unit FormAbout;
 
 {$mode objfpc}{$H+}
-
+{$WARN 5024 off : Parameter "$1" not used}
 Interface
 
 Uses
   Classes, ComCtrls,
-  Controls, Dialogs, ExtCtrls, FileUtil, Forms, Graphics, StdCtrls, SysUtils
-  {$IFDEF FFMPEG}, FrameHTMLs{$ENDIF};
+  Controls, Dialogs, ExtCtrls, FileUtil, Forms, Graphics, StdCtrls, SysUtils;
 
 Type
 
@@ -43,7 +42,6 @@ Type
     memLicence: TMemo;
     memAbout: TMemo;
     tsuBee512: TTabSheet;
-    tsFFMPEG: TTabSheet;
     tsImageMagick: TTabSheet;
     tsXPDF: TTabSheet;
     tsCredits: TTabSheet;
@@ -57,11 +55,6 @@ Type
       Shift: TShiftState; X, Y: Integer);
     Procedure URLLabelMouseEnter(Sender: TObject);
     Procedure URLLabelMouseLeave(Sender: TObject);
-  Protected
-    {$IFDEF FFMPEG}fmeFFmpeg: TFrameHTML;{$ENDIF}
-
-    Procedure HTMLHyperlink(Sender: TObject; AHREF: String);
-  Public
   End;
 
 Procedure ShowAbout;
@@ -69,7 +62,7 @@ Procedure ShowAbout;
 Implementation
 
 Uses
-  LCLIntf, VersionSupport, XPDFSupport, ImageMagickSupport, ffmpegSupport, OSSupport,
+  LCLIntf, VersionSupport, XPDFSupport, ImageMagickSupport, OSSupport,
   uBee512Support, FileSupport;
 
 {$R *.lfm}
@@ -132,27 +125,6 @@ Begin
   Else
     tsXPDF.TabVisible := False;
 
-  {$IFDEF FFMPEG}
-  If (FFmpegAvailable) Then
-  Begin
-    tsFFMPEG.TabVisible := True;
-    fmeFFmpeg := TFrameHTML.Create(Self);
-    fmeFFmpeg.Parent := tsFFMPEG;
-    fmeFFmpeg.Name := 'fmeFFmpeg';
-    fmeFFmpeg.Align := alClient;
-    fmeFFmpeg.Visible := True;
-
-    fmeFFmpeg.OnHyperlink := @HTMLHyperlink;
-
-    fmeFFmpeg.SetHTMLAsString(FFmpegHelpAboutBlurb);
-  End
-  Else
-  Begin
-    tsFFMPEG.TabVisible := False;
-    fmeFFmpeg := nil;
-  End;
-  {$ENDIF}
-
   If uBee512.Available Then
   Begin
     tsuBee512.TabVisible := True;
@@ -190,10 +162,6 @@ End;
 
 Procedure TfrmAbout.FormDestroy(Sender: TObject);
 Begin
-  {$IFDEF FFMPEG}
-  If Assigned(fmeFFmpeg) Then
-    FreeAndNil(fmeFFmpeg);
-  {$ENDIF}
 End;
 
 Procedure TfrmAbout.btnOKClick(Sender: TObject);
@@ -206,15 +174,6 @@ Begin
   TLabel(Sender).Font.Style := [];
   TLabel(Sender).Font.Color := clBlue;
   TLabel(Sender).Cursor := crDefault;
-End;
-
-Procedure TfrmAbout.HTMLHyperlink(Sender: TObject; AHREF: String);
-Begin
-  // TODO Make Platform Safe
-  If AHREF = 'FFMPEGLibraryLicenses' Then
-    LaunchFile('explorer.exe', Format('/e,"%s"', [FFmpegPath + '\..\licenses']))
-  Else
-    OpenURL(AHREF);
 End;
 
 Procedure TfrmAbout.URLLabelMouseEnter(Sender: TObject);

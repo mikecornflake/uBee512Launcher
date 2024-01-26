@@ -47,8 +47,8 @@ Type
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
     Procedure lvcpmtoolsWorkingFolderSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
-    Procedure tvFoldersChange(Sender: TObject; Node: TTreeNode);
+      {%H-}Selected: Boolean);
+    Procedure tvFoldersChange(Sender: TObject; {%H-}Node: TTreeNode);
   Private
     FActivated: Boolean;
     FLoadingDSK: Boolean;

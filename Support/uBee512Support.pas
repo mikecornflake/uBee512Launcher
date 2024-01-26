@@ -10,13 +10,13 @@ Uses
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
 
-  { TSystemMacro }
+  { TDefinition }
 
-  TSystemMacro = Class
+  TDefinition = Class
   Private
     FValidators: TValidators;
   Public
-    Macro: String;
+    Definition: String;
     Model: String;
     MbeeType: TMbeeType;
     Title: String;
@@ -42,7 +42,7 @@ Type
     MbeeType: TMbeeType;
   End;
 
-  TSystemMacros = Specialize TObjectList<TSystemMacro>;
+  TDefinitions = Specialize TObjectList<TDefinition>;
   TModels = Specialize TObjectList<TModel>;
 
   { TuBee512 }
@@ -51,7 +51,7 @@ Type
     FExe: String;
     FRC: String;
     FLoadedRC: String;
-    FSystemMacros: TSystemMacros;
+    FDefinitions: TDefinitions;
     FModels: TModels;
 
     Function GetExe: String;
@@ -68,10 +68,10 @@ Type
     Procedure Initialize;
     Function Available: Boolean;
 
-    Function SystemMacros: TSystemMacros;
-    Function Macro(ASystemMacro: String): TSystemMacro;
-    Function MacroByTitle(ATitle: String): TSystemMacro;
-    Function RCbyMacro(ASystemMacro: String): String;
+    Function Definitions: TDefinitions;
+    Function Definition(ADefinition: String): TDefinition;
+    Function DefinitionByTitle(ATitle: String): TDefinition;
+    Function RCbyDefinition(ADefinition: String): String;
     Function RCByTitle(ATitle: String): String;
     Function Models: String; // comma separated
     Function ModelsByType(AMbeeType: TMbeeType): String;
@@ -106,15 +106,15 @@ Begin
   Result := FuBee512;
 End;
 
-{ TSystemMacro }
+{ TDefinition }
 
-Constructor TSystemMacro.Create;
+Constructor TDefinition.Create;
 Begin
   FValidators := TValidators.Create(True);
-  FValidators.Add(TSystemMacroValidator.Create);
+  FValidators.Add(TDefinitionValidator.Create);
 End;
 
-Destructor TSystemMacro.Destroy;
+Destructor TDefinition.Destroy;
 Begin
   FreeAndNil(FValidators);
   Inherited Destroy;
@@ -142,7 +142,7 @@ Begin
   FLoadedRC := '';
 
   // OwnsObjects => No need for additional code to free contents
-  FSystemMacros := TSystemMacros.Create(True);
+  FDefinitions := TDefinitions.Create(True);
   FModels := TModels.Create(True);
 
   // From ubee512 readme
@@ -176,7 +176,7 @@ Begin
   Inherited Destroy;
 
   FreeAndNil(FModels);
-  FreeAndNil(FSystemMacros);
+  FreeAndNil(FDefinitions);
 End;
 
 Function TuBee512.Available: Boolean;
@@ -271,9 +271,9 @@ Begin
   Debug('detected ubee512rc=' + FRC);
 End;
 
-Function TuBee512.SystemMacros: TSystemMacros;
+Function TuBee512.Definitions: TDefinitions;
 Begin
-  Result := FSystemMacros;
+  Result := FDefinitions;
 End;
 
 Function TuBee512.LoadRC: Boolean;
@@ -283,7 +283,7 @@ Var
   sDescription: String;
   sProperty, sValue: String;
   c1, c2: Char;
-  oSystemMacro: TSystemMacro;
+  oDefinition: TDefinition;
   iCount: Integer;
 Begin
   Result := False;
@@ -301,12 +301,12 @@ Begin
     SetBusy;
     Debug('Start loading ' + FRC);
     slTemp := TStringList.Create;
-    FSystemMacros.Clear;
+    FDefinitions.Clear;
 
-    //FSystemMacros.Clear;
+    //FDefinitions.Clear;
     Try
       slTemp.LoadFromFile(FRC);
-      oSystemMacro := nil;
+      oDefinition := nil;
       sTag := '';
       sDescription := '';
       iCount := 0;
@@ -324,7 +324,7 @@ Begin
             '#':
               If c2 = '=' Then
               Begin
-                If Assigned(oSystemMacro) And (oSystemMacro.Macro <> '') And (iCount = 0) Then
+                If Assigned(oDefinition) And (oDefinition.Definition <> '') And (iCount = 0) Then
                 Begin
                   sDescription := '';
                   iCount := 1;
@@ -345,21 +345,21 @@ Begin
               End
               Else If (sTag <> sNewTag) Then
               Begin
-                // Start a new System Macro
+                // Start a new System Definition
                 sTag := sNewTag;
-                oSystemMacro := TSystemMacro.Create;
-                oSystemMacro.Macro := sTag;
-                oSystemMacro.Description := sDescription;
-                FSystemMacros.Add(oSystemMacro);
+                oDefinition := TDefinition.Create;
+                oDefinition.Definition := sTag;
+                oDefinition.Description := sDescription;
+                FDefinitions.Add(oDefinition);
                 iCount := 0;
               End;
             End;
-            '-': If (sTag <> '') And Assigned(oSystemMacro) Then
+            '-': If (sTag <> '') And Assigned(oDefinition) Then
               Begin
-                If oSystemMacro.RC = '' Then
-                  oSystemMacro.RC := sLine
+                If oDefinition.RC = '' Then
+                  oDefinition.RC := sLine
                 Else
-                  oSystemMacro.RC := oSystemMacro.RC + sLineBreak + sLine;
+                  oDefinition.RC := oDefinition.RC + sLineBreak + sLine;
 
                 If (Pos('--', sLine) > 0) Then
                 Begin
@@ -381,26 +381,26 @@ Begin
                 End;
 
                 Case sProperty Of
-                  'a': oSystemMacro.A := sValue;
-                  'b': oSystemMacro.B := sValue;
-                  'c': oSystemMacro.C := sValue;
-                  'col': oSystemMacro.Col := 'Colour';
+                  'a': oDefinition.A := sValue;
+                  'b': oDefinition.B := sValue;
+                  'c': oDefinition.C := sValue;
+                  'col': oDefinition.Col := 'Colour';
                   'monitor':
                     If sValue = 'a' Then
-                      oSystemMacro.Col := 'Amber'
+                      oDefinition.Col := 'Amber'
                     Else
-                      oSystemMacro.Col := sValue;
+                      oDefinition.Col := sValue;
                   'model':
                   Begin
-                    oSystemMacro.Model := sValue;
-                    oSystemMacro.MbeeType := MbeeType(sValue);
+                    oDefinition.Model := sValue;
+                    oDefinition.MbeeType := MbeeType(sValue);
                   End;
-                  'ide-a0': oSystemMacro.IDE := sValue;
-                  'tapei': oSystemMacro.TapeI := sValue;
-                  'tapeo': oSystemMacro.TapeO := sValue;
-                  'sram': oSystemMacro.SRAM := sValue;
-                  'sram-file': oSystemMacro.SRAM_file := sValue;
-                  'title': oSystemMacro.Title := TrimChars(sValue, ['"']);
+                  'ide-a0': oDefinition.IDE := sValue;
+                  'tapei': oDefinition.TapeI := sValue;
+                  'tapeo': oDefinition.TapeO := sValue;
+                  'sram': oDefinition.SRAM := sValue;
+                  'sram-file': oDefinition.SRAM_file := sValue;
+                  'title': oDefinition.Title := TrimChars(sValue, ['"']);
                 End;
               End;
           End;
@@ -408,7 +408,7 @@ Begin
       End;
     Finally
       slTemp.Free;
-      Debug(Format('End loading %s.  %d Macros loaded', [FRC, FSystemMacros.Count]));
+      Debug(Format('End loading %s.  %d Definitions loaded', [FRC, FDefinitions.Count]));
       ClearBusy;
 
       FLoadedRC := FRC;
@@ -417,61 +417,61 @@ Begin
   End;
 End;
 
-Function TuBee512.Macro(ASystemMacro: String): TSystemMacro;
+Function TuBee512.Definition(ADefinition: String): TDefinition;
 Var
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
   Result := nil;
 
-  For oMacro In FSystemMacros Do
-    If (oMacro.Macro = ASystemMacro) Then
+  For oDefinition In FDefinitions Do
+    If (oDefinition.Definition = ADefinition) Then
     Begin
-      Result := oMacro;
+      Result := oDefinition;
       Break;
     End;
 End;
 
-Function TuBee512.RCbyMacro(ASystemMacro: String): String;
+Function TuBee512.RCbyDefinition(ADefinition: String): String;
 Var
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
   Result := '';
-  oMacro := Macro(ASystemMacro);
-  If Assigned(oMacro) Then
-    Result := oMacro.RC;
+  oDefinition := Definition(ADefinition);
+  If Assigned(oDefinition) Then
+    Result := oDefinition.RC;
 End;
 
-Function TuBee512.MacroByTitle(ATitle: String): TSystemMacro;
+Function TuBee512.DefinitionByTitle(ATitle: String): TDefinition;
 Var
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
   Result := nil;
 
   If (Trim(ATitle) <> '') Then
-    For oMacro In FSystemMacros Do
-      If (oMacro.Title = ATitle) Then
+    For oDefinition In FDefinitions Do
+      If (oDefinition.Title = ATitle) Then
       Begin
-        Result := oMacro;
+        Result := oDefinition;
         Break;
       End;
 End;
 
 Function TuBee512.RCByTitle(ATitle: String): String;
 Var
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
   Result := '';
 
-  oMacro := MacroByTitle(ATitle);
-  If Assigned(oMacro) Then
-    Result := oMacro.RC;
+  oDefinition := DefinitionByTitle(ATitle);
+  If Assigned(oDefinition) Then
+    Result := oDefinition.RC;
 End;
 
 // Return a comma seperated sorted list of Microbee Models defined in the uBee512RC
 Function TuBee512.Models: String;
 Var
   slModels: TStringList;
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
   slModels := TStringList.Create;
   Try
@@ -479,9 +479,9 @@ Begin
     slModels.Sorted := True;
     slModels.Duplicates := dupIgnore;
 
-    For oMacro In FSystemMacros Do
-      If Trim(oMacro.Model) <> '' Then
-        slModels.Add(oMacro.Model);
+    For oDefinition In FDefinitions Do
+      If Trim(oDefinition.Model) <> '' Then
+        slModels.Add(oDefinition.Model);
 
     Result := slModels.CommaText;
   Finally
@@ -493,7 +493,7 @@ End;
 Function TuBee512.ModelsByType(AMbeeType: TMbeeType): String;
 Var
   slModels: TStringList;
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
   slModels := TStringList.Create;
   Try
@@ -501,9 +501,9 @@ Begin
     slModels.Sorted := True;
     slModels.Duplicates := dupIgnore;
 
-    For oMacro In FSystemMacros Do
-      If (Trim(oMacro.Model) <> '') And (oMacro.MbeeType = AMbeeType) Then
-        slModels.Add(oMacro.Model);
+    For oDefinition In FDefinitions Do
+      If (Trim(oDefinition.Model) <> '') And (oDefinition.MbeeType = AMbeeType) Then
+        slModels.Add(oDefinition.Model);
 
     Result := slModels.CommaText;
   Finally
@@ -529,7 +529,7 @@ End;
 Function TuBee512.Titles(AModel: String): String;
 Var
   slTitles: TStringList;
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
   sModel: String;
 Begin
   sModel := LowerCase(AModel);
@@ -539,10 +539,10 @@ Begin
     slTitles.Sorted := True;
     slTitles.Duplicates := dupIgnore;
 
-    For oMacro In FSystemMacros Do
-      If Lowercase(oMacro.Model) = sModel Then
-        If Trim(oMacro.Title) <> '' Then
-          slTitles.Add(oMacro.Title);
+    For oDefinition In FDefinitions Do
+      If Lowercase(oDefinition.Model) = sModel Then
+        If Trim(oDefinition.Title) <> '' Then
+          slTitles.Add(oDefinition.Title);
 
     Result := slTitles.CommaText;
   Finally

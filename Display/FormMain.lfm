@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 2468
+  Left = 876
   Height = 482
-  Top = 191
+  Top = 324
   Width = 876
   Caption = 'uBee512Launcher'
   ClientHeight = 462
@@ -503,7 +503,7 @@ object frmMain: TfrmMain
         ParentFont = False
       end
       object cboTitle: TComboBox
-        AnchorSideRight.Control = btnMacroExplorer
+        AnchorSideRight.Control = btnDefinitionExplorer
         AnchorSideBottom.Control = cboModel
         AnchorSideBottom.Side = asrBottom
         Left = 170
@@ -519,7 +519,7 @@ object frmMain: TfrmMain
         Style = csDropDownList
         TabOrder = 2
       end
-      object btnMacroExplorer: TBitBtn
+      object btnDefinitionExplorer: TBitBtn
         AnchorSideRight.Control = memRC
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = cboTitle
@@ -532,7 +532,7 @@ object frmMain: TfrmMain
         Anchors = [akTop, akRight, akBottom]
         Images = ilMain
         ImageIndex = 12
-        OnClick = btnMacroExplorerClick
+        OnClick = btnDefinitionExplorerClick
         TabOrder = 3
       end
       object memRC: TMemo
@@ -607,7 +607,7 @@ object frmMain: TfrmMain
       Top = 2
       Caption = 'Definitions'
       ImageIndex = 12
-      OnClick = btnMacroExplorerClick
+      OnClick = btnDefinitionExplorerClick
     end
     object ToolButton6: TToolButton
       Left = 261

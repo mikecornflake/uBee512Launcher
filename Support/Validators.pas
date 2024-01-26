@@ -9,41 +9,47 @@ Uses
 
 Type
 
+  TErrorLevel = (elNone, elInfo, elWarning, elError);
+
   { TValidator }
 
   TValidator = Class
   Protected
-    FValid: Boolean;
+    FRecommendation: String;
+    FErrorLevel: TErrorLevel;
     FDescription: String;
     FDisplayname: String;
     FOutcome: String;
+
+    Procedure SetLevel(AErrorLevel: TErrorLevel);
   Public
     Constructor Create; Virtual;
 
-    Procedure Process(ATarget: TObject); Virtual;
+    Procedure Process({%H-}ATarget: TObject); Virtual;
 
     Property DisplayName: String read FDisplayname;
     Property Description: String read FDescription;
-    Property Outcome: String read FOutcome;
 
-    Property Valid: Boolean read FValid;
+    Property ErrorLevel: TErrorLevel read FErrorLevel;
+    Property Outcome: String read FOutcome;
+    Property Recommendation: String read FRecommendation;
   End;
 
   { TValidators }
 
   TValidators = Class(Specialize TObjectList<TValidator>)
   Private
-    FValid: Boolean;
+    FErrorLevel: TErrorLevel;
   Public
     Procedure Process(ATarget: TObject);
 
     Function Outcome: String;
-    Property Valid: Boolean read FValid;
+    Property ErrorLevel: TErrorLevel read FErrorLevel;
   End;
 
-  { TSystemMacroValidator }
+  { TDefinitionValidator }
 
-  TSystemMacroValidator = Class(TValidator)
+  TDefinitionValidator = Class(TValidator)
   Public
     Constructor Create; Override;
     Procedure Process(ATarget: TObject); Override;
@@ -54,9 +60,9 @@ Implementation
 Uses
   uBee512Support, Logs;
 
-{ TSystemMacroValidator }
+{ TDefinitionValidator }
 
-Constructor TSystemMacroValidator.Create;
+Constructor TDefinitionValidator.Create;
 Begin
   Inherited Create;
 
@@ -65,9 +71,9 @@ Begin
     'This performs simple checks that the required files are present';
 End;
 
-Procedure TSystemMacroValidator.Process(ATarget: TObject);
+Procedure TDefinitionValidator.Process(ATarget: TObject);
 Var
-  oMacro: TSystemMacro;
+  oMacro: TDefinition;
   sBaseFolder: String;
 
   Procedure Check(ASubfolder: String; AFilename: String; AObject: String);
@@ -81,9 +87,9 @@ Var
 
       If DirectoryExists(sFolder) And Not FileExists(sFile) Then
       Begin
-        FValid := False;
         FOutcome += Format('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]) +
           LineEnding;
+        SetLevel(elError);
       End;
     End;
   End;
@@ -91,14 +97,15 @@ Var
 Begin
   Inherited Process(ATarget);
 
-  FValid := True;
+  FErrorLevel := elNone;
   FOutcome := '';
+  FRecommendation := '';
 
   sBaseFolder := IncludeTrailingBackslash(ubee512.WorkingDir);
 
-  If Assigned(ATarget) And (ATarget Is TSystemMacro) Then
+  If Assigned(ATarget) And (ATarget Is TDefinition) Then
   Begin
-    oMacro := TSystemMacro(ATarget);
+    oMacro := TDefinition(ATarget);
 
     Check('disks', oMacro.A, 'Disk');
     Check('disks', oMacro.B, 'Disk');
@@ -115,14 +122,17 @@ End;
 Procedure TValidators.Process(ATarget: TObject);
 Var
   oValidator: TValidator;
+
 Begin
-  FValid := True;
+  FErrorLevel := elNone;
+
   For oValidator In Self Do
   Begin
     oValidator.Process(ATarget);
-    FValid := FValid And oValidator.Valid;
+    If oValidator.ErrorLevel > FErrorLevel Then
+      FErrorLevel := oValidator.ErrorLevel;
 
-    If Not oValidator.Valid Then
+    If oValidator.ErrorLevel <> elNone Then
       Debug(oValidator.Outcome);
   End;
 End;
@@ -135,7 +145,7 @@ Begin
   sResult := '';
 
   For oValidator In Self Do
-    If Not oValidator.Valid Then
+    If oValidator.ErrorLevel <> elNone Then
       sResult := sResult + oValidator.Outcome + LineEnding;
 
   If sResult.EndsWith(LineEnding) Then
@@ -152,14 +162,23 @@ Begin
 
   FDescription := '';
   FDisplayname := '';
-  FValid := True;
+
+  FErrorlevel := elNone;
   FOutcome := '';
+  FRecommendation := '';
 End;
 
 Procedure TValidator.Process(ATarget: TObject);
 Begin
-  FValid := True;
+  FErrorlevel := elNone;
   FOutcome := '';
+  FRecommendation := '';
+End;
+
+Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
+Begin
+  If AErrorLevel > FErrorLevel Then
+    FErrorLevel := AErrorLevel;
 End;
 
 End.

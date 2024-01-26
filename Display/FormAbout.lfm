@@ -4894,7 +4894,7 @@ object frmAbout: TfrmAbout
     Font.Pitch = fpFixed
     Font.Quality = fqDraft
     ParentFont = False
-    TabIndex = 7
+    TabIndex = 6
     TabOrder = 1
     object tsAbout: TTabSheet
       Caption = 'About'
@@ -5184,10 +5184,6 @@ object frmAbout: TfrmAbout
         ScrollBars = ssAutoBoth
         TabOrder = 0
       end
-    end
-    object tsFFMPEG: TTabSheet
-      Caption = 'FFmpeg'
-      TabVisible = False
     end
     object tsuBee512: TTabSheet
       Caption = 'uBee512'

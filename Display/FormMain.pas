@@ -17,7 +17,7 @@ Type
     btnClearA: TSpeedButton;
     btnClearB: TSpeedButton;
     btnClearC: TSpeedButton;
-    btnMacroExplorer: TBitBtn;
+    btnDefinitionExplorer: TBitBtn;
     cboFormatB: TComboBox;
     cboFormatC: TComboBox;
     cboModel: TComboBox;
@@ -74,7 +74,7 @@ Type
     Procedure btnClearBClick(Sender: TObject);
     Procedure btnClearCClick(Sender: TObject);
     Procedure btnDiskExplorerClick(Sender: TObject);
-    Procedure btnMacroExplorerClick(Sender: TObject);
+    Procedure btnDefinitionExplorerClick(Sender: TObject);
     Procedure btnLaunchuBee512Click(Sender: TObject);
     Procedure btnTestClick(Sender: TObject);
     Procedure DiskorFormatChange(Sender: TObject);
@@ -103,7 +103,7 @@ Type
     Procedure RefreshUI;
     Procedure SaveSettings;
 
-    Procedure SetMacroCombo(ACombo: TComboBox; AValue: String);
+    Procedure SetDefinitionCombo(ACombo: TComboBox; AValue: String);
     Procedure SetSelectedDisk(AFilename: String; AFormat: String;
       AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
   End;
@@ -122,7 +122,7 @@ Implementation
 
 Uses
   IniFiles, cpmtoolsSupport, LazFileUtils, StringSupport, FileSupport,
-  OSSupport, uBee512Support, FormMacroExplorer, FormDiskExplorer, FormDebug,
+  OSSupport, uBee512Support, FormDefinitionExplorer, FormDiskExplorer, FormDebug,
   FormAbout;
 
   {$R *.lfm}
@@ -225,7 +225,7 @@ Begin
   RefreshUI;
 End;
 
-Procedure TfrmMain.SetMacroCombo(ACombo: TComboBox; AValue: String);
+Procedure TfrmMain.SetDefinitionCombo(ACombo: TComboBox; AValue: String);
 Var
   iIndex: Integer;
 Begin
@@ -295,9 +295,9 @@ Begin
     mtType := uBee512.MbeeType(sModel);
     sType := MBTypeStr[mtType];
 
-    SetMacroCombo(cboType, sType);
-    SetMacroCombo(cboModel, sModel);
-    SetMacroCombo(cboTitle, sTitle);
+    SetDefinitionCombo(cboType, sType);
+    SetDefinitionCombo(cboModel, sModel);
+    SetDefinitionCombo(cboTitle, sTitle);
   Finally
     FLog.DecIndent;
     oInifile.Free;
@@ -437,7 +437,7 @@ Begin
   End;
 End;
 
-Procedure TfrmMain.btnMacroExplorerClick(Sender: TObject);
+Procedure TfrmMain.btnDefinitionExplorerClick(Sender: TObject);
 Var
   oForm: TfrmDefinitionExplorer;
 Begin
@@ -446,8 +446,8 @@ Begin
     oForm.Title := cboTitle.Text;
     If oForm.ShowModal = mrOk Then
     Begin
-      SetMacroCombo(cboModel, oForm.Model);
-      SetMacroCombo(cboTitle, oForm.Title);
+      SetDefinitionCombo(cboModel, oForm.Model);
+      SetDefinitionCombo(cboTitle, oForm.Title);
     End;
   Finally
     oForm.Free;
@@ -487,7 +487,7 @@ Procedure TfrmMain.RefreshRC;
 Var
   sRC: String;
   oModel: TModel;
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
   sParam: String;
 
   Procedure AddDisk(ADrive: String; AEdit: TFileNameEdit; ACombo: TComboBox);
@@ -511,17 +511,17 @@ Begin
     If (cboTitle.Text <> '') Then
     Begin
       oModel := ubee512.Model(cboModel.Text);
-      oMacro := ubee512.MacroByTitle(cboTitle.Text);
-      If assigned(oMacro) Then
+      oDefinition := ubee512.DefinitionByTitle(cboTitle.Text);
+      If assigned(oDefinition) Then
       Begin
         If Assigned(oModel) Then
           sRC := '# ' + oModel.Description + LineEnding
         Else
-          sRC := '# ' + oMacro.Description + LineEnding;
-        sRC += '[' + oMacro.Macro + ']' + LineEnding;
-        sRC += oMacro.RC;
+          sRC := '# ' + oDefinition.Description + LineEnding;
+        sRC += '[' + oDefinition.Definition + ']' + LineEnding;
+        sRC += oDefinition.RC;
 
-        sParam += ' ' + oMacro.Macro;
+        sParam += ' ' + oDefinition.Definition;
       End;
     End
     Else If (cboModel.Text <> '') Then
@@ -570,14 +570,14 @@ End;
 
 Procedure TfrmMain.cboTitleChange(Sender: TObject);
 Var
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 Begin
-  oMacro := ubee512.MacroByTitle(cboTitle.Text);
-  If Assigned(oMacro) Then
+  oDefinition := ubee512.DefinitionByTitle(cboTitle.Text);
+  If Assigned(oDefinition) Then
   Begin
-    edtDiskA.Enabled := (Trim(oMacro.A) = '');
-    edtDiskB.Enabled := (Trim(oMacro.B) = '');
-    edtDiskC.Enabled := (Trim(oMacro.C) = '');
+    edtDiskA.Enabled := (Trim(oDefinition.A) = '');
+    edtDiskB.Enabled := (Trim(oDefinition.B) = '');
+    edtDiskC.Enabled := (Trim(oDefinition.C) = '');
 
     cboFormatA.Enabled := edtDiskA.Enabled;
     cboFormatB.Enabled := edtDiskB.Enabled;
@@ -619,7 +619,7 @@ Var
   sCommand, sResult, sDebug, s: String;
   bHasA: Boolean;
   slParams: TStringList;
-  oMacro: TSystemMacro;
+  oDefinition: TDefinition;
 
   Function AddDriveToCommand(ADrive: String; AEdit: TFilenameEdit; ACombo: TComboBox): Boolean;
   Var
@@ -655,8 +655,8 @@ Begin
     sCommand := Format('%s', [FSettings.UBEE512_exe]);
     If cboTitle.Text <> '' Then
     Begin
-      oMacro := ubee512.MacroByTitle(cboTitle.Text);
-      slParams.Add(oMacro.Macro);
+      oDefinition := ubee512.DefinitionByTitle(cboTitle.Text);
+      slParams.Add(oDefinition.Definition);
     End
     Else If cboModel.Text <> '' Then
       slParams.Add(Format('--model=%s', [cboModel.Text]));
