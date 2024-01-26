@@ -81,19 +81,24 @@ Type
     Function IsDisk(AExt: String): Boolean;
     Function WorkingDir: String;
 
+    Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
+    Function DiskAlias(AFilename: String): String;
+    Function ROMAlias(AFilename: String): String;
+
     Property Exe: String read GetExe write SetExe;
     Property RC: String read GetRC write SetRC;
   End;
 
 Const
   MBTypeStr: Array[TMbeeType] Of String = ('Disk', 'ROM', 'Custom');
+  ALIAS_NOT_FOUND = '!ALIAS_NOT_FOUND';
 
 Function uBee512: TuBee512;
 
 Implementation
 
 Uses
-  Forms, FileUtil, OSSupport, StringSupport, Logs;
+  Forms, FileUtil, FileSupport, OSSupport, StringSupport, Logs;
 
 Var
   FuBee512: TuBee512;
@@ -582,6 +587,30 @@ Begin
 {$ELSE}
   Result := IncludeTrailingBackslash(getuserdir) + '.ubee512';
 {$ENDIF}
+End;
+
+Function TuBee512.ValidFile(ASubfolder: String; AFilename: String): Boolean;
+Var
+  sFile: String;
+Begin
+  If FileIsAbsolute(AFilename) Then
+    sFile := AFilename
+  Else
+    sFile := IncludeSlash(WorkingDir) + AFilename;
+
+  Result := FileExists(AFilename);
+End;
+
+Function TuBee512.DiskAlias(AFilename: String): String;
+Begin
+  // TODO
+  Result := ALIAS_NOT_FOUND;
+End;
+
+Function TuBee512.ROMAlias(AFilename: String): String;
+Begin
+  // TODO
+  Result := ALIAS_NOT_FOUND;
 End;
 
 Initialization

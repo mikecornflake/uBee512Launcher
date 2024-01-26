@@ -58,7 +58,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, Logs;
+  uBee512Support, Logs, FileSupport;
 
 { TDefinitionValidator }
 
@@ -66,31 +66,82 @@ Constructor TDefinitionValidator.Create;
 Begin
   Inherited Create;
 
-  FDisplayName := 'System Macro Checker';
-  FDescription := 'System Macros are defined in ubee512rc.' + LineEnding +
+  FDisplayName := 'Definition Checker';
+  FDescription := 'Definitions are defined in ubee512rc.' + LineEnding +
     'This performs simple checks that the required files are present';
 End;
 
 Procedure TDefinitionValidator.Process(ATarget: TObject);
 Var
-  oMacro: TDefinition;
+  oDefinition: TDefinition;
   sBaseFolder: String;
+
+  Procedure AddOutcome(AFormatStr: String; arrParams: Array of Const);
+  Begin
+    FOutcome += Format(AFormatStr, arrParams) + LineEnding;
+  end;
+
+  Procedure AddRecommendation(AFormatStr: String; arrParams: Array of Const);
+  Begin
+    FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
+  end;
 
   Procedure Check(ASubfolder: String; AFilename: String; AObject: String);
   Var
-    sFolder, sFile: String;
+    sFolder, sAlias: String;
   Begin
     If AFilename <> '' Then
     Begin
       sFolder := sBaseFolder + ASubfolder;
-      sFile := IncludeTrailingBackslash(sFolder) + AFilename;
 
-      If DirectoryExists(sFolder) And Not FileExists(sFile) Then
-      Begin
-        FOutcome += Format('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]) +
-          LineEnding;
-        SetLevel(elError);
-      End;
+      If Not uBee512.ValidFile(ASubfolder, AFilename) Then
+        Case ASubfolder Of
+          'disks':
+          Begin
+            If FileIsAbsolute(AFilename) Then
+            BEgin
+              AddOutcome('%s "%s" not found', [AObject, AFilename]);
+              AddRecommendation('Ensure file %s exists', [AFilename]);
+              SetLevel(elError);
+            end
+            Else
+            Begin
+              sAlias := uBee512.DiskAlias(AFilename);
+
+              if (sAlias=ALIAS_NOT_FOUND) Then
+              Begin
+                AddOutcome('%s "%s" not found in "disks.alias" or "%s"', [AObject, AFilename, sFolder]);
+                AddRecommendation('Ensure file "%s" exists', [AFilename]);
+                AddRecommendation('Add "%s" entry to "disks.alias"', [AFilename]);
+                SetLevel(elError);
+              end
+              Else
+                If Not uBee512.ValidFile(ASubfolder, sAlias) Then
+                Begin
+                  AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"', [AObject, AFilename, sAlias]);
+                  if FileIsAbsolute(sAlias) Then
+                  Begin
+                    AddOutcome('%s "%s" not found', [AObject, AFilename]);
+                    AddRecommendation('Ensure file %s exists', [AFilename]);
+                    SetLevel(elError);
+                  end
+                  Else
+                  Begin
+                    AddOutcome('%s "%s" not found in "%s"', [AObject, sAlias, sFolder]);
+                    AddRecommendation('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
+                    SetLevel(elError);
+                  end;
+                end;
+            end;
+
+            FRecommendation := '';
+          End;
+          Else
+          Begin
+            AddOutcome('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]);
+            SetLevel(elError);
+          End;
+        End;
     End;
   End;
 
@@ -105,15 +156,15 @@ Begin
 
   If Assigned(ATarget) And (ATarget Is TDefinition) Then
   Begin
-    oMacro := TDefinition(ATarget);
+    oDefinition := TDefinition(ATarget);
 
-    Check('disks', oMacro.A, 'Disk');
-    Check('disks', oMacro.B, 'Disk');
-    Check('disks', oMacro.C, 'Disk');
-    Check('sram', oMacro.SRAM_file, 'SRAM');
-    Check('disks', oMacro.IDE, 'IDE image');
-    Check('tapes', oMacro.TapeI, 'Input Tape');
-    Check('tapes', oMacro.TapeO, 'Output Tape');
+    Check('disks', oDefinition.A, 'Disk');
+    Check('disks', oDefinition.B, 'Disk');
+    Check('disks', oDefinition.C, 'Disk');
+    Check('sram', oDefinition.SRAM_file, 'SRAM');
+    Check('disks', oDefinition.IDE, 'IDE image');
+    Check('tapes', oDefinition.TapeI, 'Input Tape');
+    Check('tapes', oDefinition.TapeO, 'Output Tape');
   End;
 End;
 
