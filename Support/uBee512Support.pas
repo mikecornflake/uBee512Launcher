@@ -477,7 +477,7 @@ Begin
   Begin
     LoadAliasFile(sAliasFile, FDisksAlias);
     Result := True;
-  end;
+  End;
 End;
 
 Function TuBee512.LoadROMAlias: Boolean;
@@ -492,7 +492,7 @@ Begin
   Begin
     LoadAliasFile(sAliasFile, FROMAlias);
     Result := True;
-  end;
+  End;
 End;
 
 Function TuBee512.Definition(ADefinition: String): TDefinition;

@@ -76,15 +76,15 @@ Var
   oDefinition: TDefinition;
   sBaseFolder: String;
 
-  Procedure AddOutcome(AFormatStr: String; arrParams: Array of Const);
+  Procedure AddOutcome(AFormatStr: String; arrParams: Array Of Const);
   Begin
     FOutcome += Format(AFormatStr, arrParams) + LineEnding;
-  end;
+  End;
 
-  Procedure AddRecommendation(AFormatStr: String; arrParams: Array of Const);
+  Procedure AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
   Begin
     FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
-  end;
+  End;
 
   Procedure Check(ASubfolder: String; AFilename: String; AObject: String);
   Var
@@ -99,45 +99,48 @@ Var
           'disks':
           Begin
             If FileIsAbsolute(AFilename) Then
-            BEgin
+            Begin
               AddOutcome('%s "%s" not found', [AObject, AFilename]);
               AddRecommendation('Ensure file %s exists', [AFilename]);
               SetLevel(elError);
-            end
+            End
             Else
             Begin
               sAlias := uBee512.DiskAlias(AFilename);
 
-              if (sAlias=ALIAS_NOT_FOUND) Then
+              If (sAlias = ALIAS_NOT_FOUND) Then
               Begin
-                AddOutcome('%s "%s" not found in "disks.alias" or "%s"', [AObject, AFilename, sFolder]);
+                AddOutcome('%s "%s" not found in "disks.alias" or "%s"',
+                  [AObject, AFilename, sFolder]);
                 AddRecommendation('Ensure file "%s" exists', [AFilename]);
                 AddRecommendation('Add "%s" entry to "disks.alias"', [AFilename]);
                 SetLevel(elError);
-              end
+              End
               Else
-                If Not uBee512.ValidFile(ASubfolder, sAlias) Then
+              If Not uBee512.ValidFile(ASubfolder, sAlias) Then
+              Begin
+                AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"',
+                  [AObject, AFilename, sAlias]);
+                If FileIsAbsolute(sAlias) Then
                 Begin
-                  AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"', [AObject, AFilename, sAlias]);
-                  if FileIsAbsolute(sAlias) Then
-                  Begin
-                    AddOutcome('%s "%s" not found', [AObject, AFilename]);
-                    AddRecommendation('Ensure file %s exists', [AFilename]);
-                    SetLevel(elError);
-                  end
-                  Else
-                  Begin
-                    AddOutcome('%s "%s" not found in "%s"', [AObject, sAlias, sFolder]);
-                    AddRecommendation('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
-                    SetLevel(elError);
-                  end;
-                end
+                  AddOutcome('%s "%s" not found', [AObject, AFilename]);
+                  AddRecommendation('Ensure file %s exists', [AFilename]);
+                  SetLevel(elError);
+                End
                 Else
                 Begin
-                  AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"', [AObject, AFilename, sAlias]);
-                  SetLevel(elInfo);
-                end;
-            end;
+                  AddOutcome('%s "%s" not found in "%s"', [AObject, sAlias, sFolder]);
+                  AddRecommendation('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
+                  SetLevel(elError);
+                End;
+              End
+              Else
+              Begin
+                AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"',
+                  [AObject, AFilename, sAlias]);
+                SetLevel(elInfo);
+              End;
+            End;
 
             FRecommendation := '';
           End;
