@@ -109,7 +109,7 @@ Begin
 
   Case oDefinition.Validators.ErrorLevel Of
     elNone: lvDefinitions.Canvas.Font.Color := clBlack;
-    elInfo: lvDefinitions.Canvas.Font.Color := clGreen;
+    elInfo: lvDefinitions.Canvas.Font.Color := TColor($006400);
     elWarning: lvDefinitions.Canvas.Font.Color := TColor($FF8C00);
     elError: lvDefinitions.Canvas.Font.Color := clBlack;
   End;

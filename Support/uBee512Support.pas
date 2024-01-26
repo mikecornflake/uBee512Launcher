@@ -9,6 +9,7 @@ Uses
 
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
+  TNameValueList = Specialize TDictionary<String, String>;
 
   { TDefinition }
 
@@ -48,25 +49,31 @@ Type
   { TuBee512 }
 
   TuBee512 = Class
+  Private
     FExe: String;
     FRC: String;
     FLoadedRC: String;
     FDefinitions: TDefinitions;
     FModels: TModels;
 
+    FDisksAlias: TNameValueList;
+    FROMAlias: TNameValueList;
+
     Function GetExe: String;
     Procedure SetExe(AValue: String);
 
-    Function LoadRC: Boolean; // If this is called, but no new RC is loaded, returns false.
     Function GetRC: String;
     Procedure SetRC(AValue: String);
-  Private
+    Function LoadDisksAlias: Boolean;
+    Function LoadROMAlias: Boolean;
   Public
     Constructor Create;
     Destructor Destroy; Override;
 
     Procedure Initialize;
     Function Available: Boolean;
+
+    Function LoadRC: Boolean; // If this is called, but no new RC is loaded, returns false.
 
     Function Definitions: TDefinitions;
     Function Definition(ADefinition: String): TDefinition;
@@ -98,7 +105,7 @@ Function uBee512: TuBee512;
 Implementation
 
 Uses
-  Forms, FileUtil, FileSupport, OSSupport, StringSupport, Logs;
+  Forms, FileUtil, FileSupport, OSSupport, StringSupport, StrUtils, Logs;
 
 Var
   FuBee512: TuBee512;
@@ -174,11 +181,17 @@ Begin
   AddModel('ppc85', 'Premium, PC85 32K ROM', mtROM);
   AddModel('scf', 'Standard Compact Flash Core board.', mtCustom);
   AddModel('tterm', 'Teleterm, ROM', mtROM);
+
+  FDisksAlias := TNameValueList.Create;
+  FROMAlias := TNameValueList.Create;
 End;
 
 Destructor TuBee512.Destroy;
 Begin
   Inherited Destroy;
+
+  FreeAndNil(FDisksAlias);
+  FreeAndNil(FROMAlias);
 
   FreeAndNil(FModels);
   FreeAndNil(FDefinitions);
@@ -418,8 +431,68 @@ Begin
 
       FLoadedRC := FRC;
       Result := True;
+
+      LoadDisksAlias;
     End;
   End;
+End;
+
+Procedure LoadAliasFile(Const AAliasFile: String; Var AAliasList: TNameValueList);
+Var
+  oAliases: TStringList;
+  sLine, sName, sValue, sTemp: String;
+Begin
+  oAliases := TStringList.Create;
+  Try
+    oAliases.LoadFromFile(AAliasFile);
+
+    For sLine In oAliases Do
+    Begin
+      sTemp := Trim(sLine);
+
+      If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
+      Begin
+        // Split sTemp into sName and sValue using spaces or tabs
+        sName := Trim(ExtractWord(1, sTemp, [' ', #9]));
+        sValue := Trim(ExtractWord(2, sTemp, [' ', #9]));
+
+        // Add to the sName-sValue dictionary
+        AAliasList.AddOrSetValue(sName, sValue);
+      End;
+    End;
+  Finally
+    oAliases.Free;
+  End;
+End;
+
+Function TuBee512.LoadDisksAlias: Boolean;
+Var
+  sAliasFile: String;
+Begin
+  Result := False;
+  FDisksAlias.Clear;
+
+  sAliasFile := IncludeSlash(WorkingDir) + 'disks.alias';
+  If FileExists(sAliasFile) Then
+  Begin
+    LoadAliasFile(sAliasFile, FDisksAlias);
+    Result := True;
+  end;
+End;
+
+Function TuBee512.LoadROMAlias: Boolean;
+Var
+  sAliasFile: String;
+Begin
+  Result := False;
+  FROMAlias.Clear;
+
+  sAliasFile := IncludeSlash(WorkingDir) + 'rom.alias';
+  If FileExists(sAliasFile) Then
+  Begin
+    LoadAliasFile(sAliasFile, FROMAlias);
+    Result := True;
+  end;
 End;
 
 Function TuBee512.Definition(ADefinition: String): TDefinition;
@@ -596,15 +669,19 @@ Begin
   If FileIsAbsolute(AFilename) Then
     sFile := AFilename
   Else
-    sFile := IncludeSlash(WorkingDir) + AFilename;
+    sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
 
   Result := FileExists(AFilename);
 End;
 
 Function TuBee512.DiskAlias(AFilename: String): String;
+Var
+  sValue: String;
 Begin
-  // TODO
-  Result := ALIAS_NOT_FOUND;
+  If FDisksAlias.TryGetValue(AFilename, sValue) Then
+    Result := sValue
+  Else
+    Result := ALIAS_NOT_FOUND;
 End;
 
 Function TuBee512.ROMAlias(AFilename: String): String;

@@ -131,6 +131,11 @@ Var
                     AddRecommendation('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
                     SetLevel(elError);
                   end;
+                end
+                Else
+                Begin
+                  AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"', [AObject, AFilename, sAlias]);
+                  SetLevel(elInfo);
                 end;
             end;
 
