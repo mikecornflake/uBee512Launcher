@@ -111,7 +111,7 @@ Type
     Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
 
     // Definition Lookups
-    // TODO, extend TDefinitions, move these there
+    // TODO Extend TDefinitions, move these there
     Function Definition(ADefinition: String): TDefinition;
     Function DefinitionByTitle(ATitle: String): TDefinition;
     Function RCbyDefinition(ADefinition: String): String;
@@ -121,7 +121,7 @@ Type
     Function Titles(AModel: String): String; // comma separated
 
     // Model Lookups
-    // TODO, extend TModels, move these there
+    // TODO Extend TModels, move these there
     Function Model(AModel: String): TModel;
     Function MbeeType(AModel: String): TMbeeType;
 
@@ -192,12 +192,14 @@ Begin
         If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
         Begin
           oItem := TDiskAlias.Create;
+
           // Split sTemp into sName and sValue using spaces or tabs
           oItem.Alias := Trim(ExtractWord(1, sTemp, [' ', #9]));
           oItem.Filename := Trim(ExtractWord(2, sTemp, [' ', #9]));
 
           Add(oItem);
 
+          // TODO Rework so that Validators understand their owners...
           oItem.Validator.Process(oItem.Validator);
         End;
       End;
@@ -695,7 +697,7 @@ Function TuBee512.IsDisk(AExt: String): Boolean;
 Var
   sExt: String;
 Begin
-  // TODO Implement uBee512 supported formats
+  // TODO Return uBee512 supported formats (see email from uBee)
   sExt := Lowercase(Trim(AExt));
 
   Result := (sExt = '.dsk');

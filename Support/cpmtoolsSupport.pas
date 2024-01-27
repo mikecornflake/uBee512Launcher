@@ -79,6 +79,7 @@ Var
   sExt: String;
 Begin
   // TODO Find out how to determine which file extensions cpmtools supports
+  // Gonna need to parse DiskDefs....
   sExt := Lowercase(Trim(AExt));
 
   Result := (sExt = '.dsk');

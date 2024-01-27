@@ -409,7 +409,7 @@ Begin
       Else
         memDiskAlias.Lines.Add('File %s not found', [uBee512.DiskAliases.Filename]);
 
-      // TODO Implement this correctly
+      // TODO Implement roms.alias summary correctly
       sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
       If FileExists(sAliasFile) Then
         memROMAlias.Lines.LoadFromFile(sAliasFile);
