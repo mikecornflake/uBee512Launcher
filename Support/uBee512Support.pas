@@ -13,7 +13,7 @@ Type
   // A Definition is a [] entry inside ubee512rc)
   TDefinition = Class
   Private
-    FValidators: TValidators;
+    FValidator: TDefinitionValidator;
   Public
     Definition: String;
     Model: String;
@@ -31,7 +31,7 @@ Type
     Constructor Create;
     Destructor Destroy; Override;
 
-    Property Validators: TValidators read FValidators;
+    Property Validator: TDefinitionValidator read FValidator;
   End;
 
   TDefinitions = Specialize TObjectList<TDefinition>;
@@ -157,7 +157,7 @@ Constructor TDiskAlias.Create;
 Begin
   Inherited Create;
 
-  FValidator := TDiskAliasValidator.Create;
+  FValidator := TDiskAliasValidator.Create(Self);
 End;
 
 Destructor TDiskAlias.Destroy;
@@ -173,7 +173,7 @@ Function TDiskAliases.Load: Boolean;
 Var
   oItem: TDiskAlias;
   oAliases: TStringList;
-  sLine, sTemp, sAliasFile: String;
+  sLine, sTemp: String;
 Begin
   Result := False;
   Clear;
@@ -199,8 +199,7 @@ Begin
 
           Add(oItem);
 
-          // TODO Rework so that Validators understand their owners...
-          oItem.Validator.Process(oItem.Validator);
+          oItem.Validator.Process;
         End;
       End;
     Finally
@@ -232,13 +231,12 @@ End;
 
 Constructor TDefinition.Create;
 Begin
-  FValidators := TValidators.Create(True);
-  FValidators.Add(TDefinitionValidator.Create);
+  FValidator := TDefinitionValidator.Create(Self);
 End;
 
 Destructor TDefinition.Destroy;
 Begin
-  FreeAndNil(FValidators);
+  FreeAndNil(FValidator);
   Inherited Destroy;
 End;
 

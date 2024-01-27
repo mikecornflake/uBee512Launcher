@@ -96,11 +96,11 @@ Begin
 
     memSystems.Lines.Text := sRC;
 
-    memIssues.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validators.ErrorLevel];
-    memIssues.Lines.Text := oDefinition.Validators.Outcome;
-    memRecommendations.Lines.Text := oDefinition.Validators.Recommendation;
+    memIssues.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
+    memIssues.Lines.Text := oDefinition.Validator.Outcome;
+    memRecommendations.Lines.Text := oDefinition.Validator.Recommendation;
 
-    btnOK.Enabled := TDefinition(Item.Data).Validators.ErrorLevel <> elError;
+    btnOK.Enabled := oDefinition.Validator.ErrorLevel <> elError;
   End
   Else
     memSystems.Lines.Clear;
@@ -113,13 +113,7 @@ Var
 Begin
   oDefinition := TDefinition(Item.Data);
 
-  lvDefinitions.Canvas.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validators.ErrorLevel];
-  //Case oDefinition.Validators.ErrorLevel Of
-  //  elNone: lvDefinitions.Canvas.Font.Color := clBlack;
-  //  elInfo: lvDefinitions.Canvas.Font.Color := TColor($006400);
-  //  elWarning: lvDefinitions.Canvas.Font.Color := TColor($FF8C00);
-  //  elError: lvDefinitions.Canvas.Font.Color := clRed;
-  //End;
+  lvDefinitions.Canvas.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
 End;
 
 Function TfrmDefinitionExplorer.GetTitle: String;
@@ -186,10 +180,10 @@ Begin
           oItem.SubItems.Add(sRam);
           oItem.SubItems.Add(oDefinition.Description);
 
-          oDefinition.Validators.Process(oDefinition);
+          oDefinition.Validator.Process;
           oItem.Data := oDefinition;
 
-          oItem.ImageIndex := Integer(oDefinition.Validators.ErrorLevel);
+          oItem.ImageIndex := Integer(oDefinition.Validator.ErrorLevel);
         End;
     Finally
       lvDefinitions.Items.EndUpdate;

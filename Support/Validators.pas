@@ -15,6 +15,7 @@ Type
 
   TValidator = Class
   Protected
+    FOwner: TObject;
     FRecommendation: String;
     FErrorLevel: TErrorLevel;
     FDescription: String;
@@ -23,9 +24,9 @@ Type
 
     Procedure SetLevel(AErrorLevel: TErrorLevel);
   Public
-    Constructor Create; Virtual;
+    Constructor Create(AOwner: TObject); Virtual;
 
-    Procedure Process({%H-}ATarget: TObject); Virtual;
+    Procedure Process; Virtual;
 
     Property DisplayName: String read FDisplayname;
     Property Description: String read FDescription;
@@ -41,8 +42,6 @@ Type
   Private
     FErrorLevel: TErrorLevel;
   Public
-    Procedure Process(ATarget: TObject);
-
     Function Outcome: String;
     Function Recommendation: String;
 
@@ -53,18 +52,17 @@ Type
 
   TDefinitionValidator = Class(TValidator)
   Public
-    Constructor Create; Override;
-    Procedure Process(ATarget: TObject); Override;
+    Constructor Create(AOwner: TObject); Override;
+    Procedure Process; Override;
   End;
 
   { TDiskAliasValidator }
 
   TDiskAliasValidator = Class(TValidator)
   Public
-    Constructor Create; Override;
-    Procedure Process(ATarget: TObject); Override;
+    Constructor Create(AOwner: TObject); Override;
+    Procedure Process; Override;
   End;
-
 
 Const
   ERRORLEVEL_COLOR: Array[TErrorLevel] Of TColor =
@@ -75,21 +73,84 @@ Implementation
 Uses
   uBee512Support, Logs, FileSupport, StrUtils;
 
-{ TDiskAliasValidator }
+{ TValidator }
 
-Constructor TDiskAliasValidator.Create;
+Constructor TValidator.Create(AOwner: TObject);
 Begin
   Inherited Create;
+
+  FOwner := AOwner;
+
+  FDescription := '';
+  FDisplayname := '';
+
+  FErrorlevel := elNone;
+  FOutcome := '';
+  FRecommendation := '';
+End;
+
+Procedure TValidator.Process;
+Begin
+  FErrorlevel := elNone;
+  FOutcome := '';
+  FRecommendation := '';
+End;
+
+Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
+Begin
+  If AErrorLevel > FErrorLevel Then
+    FErrorLevel := AErrorLevel;
+End;
+
+{ TValidators }
+
+Function TValidators.Outcome: String;
+Var
+  oValidator: TValidator;
+  sResult: String;
+Begin
+  sResult := '';
+
+  For oValidator In Self Do
+    If oValidator.ErrorLevel <> elNone Then
+      sResult := sResult + oValidator.Outcome + LineEnding;
+
+  sResult := TrimRightSet(sResult, [' ', #10, #13]);
+
+  Result := sResult;
+End;
+
+Function TValidators.Recommendation: String;
+Var
+  oValidator: TValidator;
+  sResult: String;
+Begin
+  sResult := '';
+
+  For oValidator In Self Do
+    If oValidator.ErrorLevel <> elNone Then
+      sResult := sResult + oValidator.Recommendation + LineEnding;
+
+  sResult := TrimRightSet(sResult, [' ', #10, #13]);
+
+  Result := sResult;
+End;
+
+{ TDiskAliasValidator }
+
+Constructor TDiskAliasValidator.Create(AOwner: TObject);
+Begin
+  Inherited Create(AOwner);
 
   FDisplayName := 'Disks.Alias Entry Checker';
   FDescription := 'This performs simple checks on each entry in Disks.Alias Entry Checker';
 End;
 
-Procedure TDiskAliasValidator.Process(ATarget: TObject);
+Procedure TDiskAliasValidator.Process;
 Var
-  sBaseFolder: Rawbytestring;
+  sBaseFolder: String;
 Begin
-  Inherited Process(ATarget);
+  Inherited Process;
 
   FErrorLevel := elNone;
   FOutcome := '';
@@ -97,22 +158,22 @@ Begin
 
   sBaseFolder := IncludeTrailingBackslash(ubee512.WorkingDir);
 
-  If Assigned(ATarget) And (ATarget Is TDefinition) Then;
+  If Assigned(FOwner) And (FOwner Is TDiskAlias) Then;
    // TODO Implement
 End;
 
 { TDefinitionValidator }
 
-Constructor TDefinitionValidator.Create;
+Constructor TDefinitionValidator.Create(AOwner: TObject);
 Begin
-  Inherited Create;
+  Inherited Create(AOwner);
 
   FDisplayName := 'Definition Checker';
   FDescription := 'Definitions are defined in ubee512rc.' + LineEnding +
     'This performs simple checks that the required files are present';
 End;
 
-Procedure TDefinitionValidator.Process(ATarget: TObject);
+Procedure TDefinitionValidator.Process;
 Var
   oDefinition: TDefinition;
   sBaseFolder: String;
@@ -197,7 +258,7 @@ Var
   End;
 
 Begin
-  Inherited Process(ATarget);
+  Inherited Process;
 
   FErrorLevel := elNone;
   FOutcome := '';
@@ -205,9 +266,9 @@ Begin
 
   sBaseFolder := IncludeTrailingBackslash(ubee512.WorkingDir);
 
-  If Assigned(ATarget) And (ATarget Is TDefinition) Then
+  If Assigned(FOwner) And (FOwner Is TDefinition) Then
   Begin
-    oDefinition := TDefinition(ATarget);
+    oDefinition := TDefinition(FOwner);
 
     Check('disks', oDefinition.A, 'Disk');
     Check('disks', oDefinition.B, 'Disk');
@@ -220,85 +281,6 @@ Begin
     FOutcome := TrimRightSet(FOutcome, [' ', #10, #13]);
     FRecommendation := TrimRightSet(FRecommendation, [' ', #10, #13]);
   End;
-End;
-
-{ TValidators }
-
-Procedure TValidators.Process(ATarget: TObject);
-Var
-  oValidator: TValidator;
-
-Begin
-  FErrorLevel := elNone;
-
-  For oValidator In Self Do
-  Begin
-    oValidator.Process(ATarget);
-    If oValidator.ErrorLevel > FErrorLevel Then
-      FErrorLevel := oValidator.ErrorLevel;
-
-    If oValidator.ErrorLevel <> elNone Then
-      Debug(oValidator.Outcome);
-  End;
-End;
-
-Function TValidators.Outcome: String;
-Var
-  oValidator: TValidator;
-  sResult: String;
-Begin
-  sResult := '';
-
-  For oValidator In Self Do
-    If oValidator.ErrorLevel <> elNone Then
-      sResult := sResult + oValidator.Outcome + LineEnding;
-
-  sResult := TrimRightSet(sResult, [' ', #10, #13]);
-
-  Result := sResult;
-End;
-
-Function TValidators.Recommendation: String;
-Var
-  oValidator: TValidator;
-  sResult: String;
-Begin
-  sResult := '';
-
-  For oValidator In Self Do
-    If oValidator.ErrorLevel <> elNone Then
-      sResult := sResult + oValidator.Recommendation + LineEnding;
-
-  sResult := TrimRightSet(sResult, [' ', #10, #13]);
-
-  Result := sResult;
-End;
-
-{ TValidator }
-
-Constructor TValidator.Create;
-Begin
-  Inherited Create;
-
-  FDescription := '';
-  FDisplayname := '';
-
-  FErrorlevel := elNone;
-  FOutcome := '';
-  FRecommendation := '';
-End;
-
-Procedure TValidator.Process(ATarget: TObject);
-Begin
-  FErrorlevel := elNone;
-  FOutcome := '';
-  FRecommendation := '';
-End;
-
-Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
-Begin
-  If AErrorLevel > FErrorLevel Then
-    FErrorLevel := AErrorLevel;
 End;
 
 End.
