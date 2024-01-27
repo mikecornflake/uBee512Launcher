@@ -9,6 +9,7 @@ Uses
 
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
+  TNameValue = Specialize TPair<String, String>;
   TNameValueList = Specialize TDictionary<String, String>;
 
   { TDefinition }
@@ -89,11 +90,13 @@ Type
     Function WorkingDir: String;
 
     Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
-    Function DiskAlias(AFilename: String): String;
-    Function ROMAlias(AFilename: String): String;
+    Function GetDiskByAlias(AFilename: String): String;
+    Function GetROMByAlias(AFilename: String): String;
 
     Property Exe: String read GetExe write SetExe;
     Property RC: String read GetRC write SetRC;
+
+    Property DiskAlias: TNameValueList read FDisksAlias;
   End;
 
 Const
@@ -674,7 +677,7 @@ Begin
   Result := FileExists(sFile);
 End;
 
-Function TuBee512.DiskAlias(AFilename: String): String;
+Function TuBee512.GetDiskByAlias(AFilename: String): String;
 Var
   sValue: String;
 Begin
@@ -684,7 +687,7 @@ Begin
     Result := ALIAS_NOT_FOUND;
 End;
 
-Function TuBee512.ROMAlias(AFilename: String): String;
+Function TuBee512.GetROMByAlias(AFilename: String): String;
 Begin
   // TODO
   Result := ALIAS_NOT_FOUND;

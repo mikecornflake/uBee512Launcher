@@ -111,7 +111,7 @@ Var
             End
             Else
             Begin
-              sAlias := uBee512.DiskAlias(AFilename);
+              sAlias := uBee512.GetDiskByAlias(AFilename);
 
               If (sAlias = ALIAS_NOT_FOUND) Then
               Begin

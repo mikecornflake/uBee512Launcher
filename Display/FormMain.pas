@@ -355,20 +355,60 @@ Procedure TfrmMain.LoadRC;
 Var
   iPrev: Integer;
   bNew: Boolean;
-  sAlias: String;
+  sAlias, sPartialAlias: String;
+  oPair: TNameValue;
+  slTemp: TStringList;
+
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
   FLog.IncIndent;
   Try
     bNew := uBee512.LoadRC;
 
-    // TODO Implement this correctly
     If bNew Then
     Begin
       sAlias := IncludeSlash(ubee512.WorkingDir) + 'disks.alias';
       If FileExists(sAlias) Then
-        memDiskAlias.Lines.LoadFromFile(sAlias);
+      Begin
+        // Analyse "disks.alias"
+        slTemp := TStringList.Create;
+        Try
+          sPartialAlias := '';
+          For oPair In uBee512.DiskAlias Do
+          Begin
+            If (Trim(oPair.Key) <> '') And (Trim(oPair.Value) <> '') Then
+              slTemp.Add('  %s %s', [oPair.Key, oPair.Value]);
 
+            If (Trim(oPair.Key) <> '') And (Trim(oPair.Value) = '') Then
+              sPartialAlias += oPair.Key + ', ';
+          End;
+          sPartialAlias := TrimChars(sPartialAlias, [' ', ',']);
+
+          memDiskAlias.Lines.Clear;
+          memDiskAlias.Lines.Add('There are %d aliases in "%s"',
+            [uBee512.DiskAlias.Count, sAlias]);
+
+          memDiskAlias.Lines.Add('');
+          If slTemp.Count > 0 Then
+          Begin
+            memDiskAlias.Lines.Add('The following %d entries are fully defined:', [slTemp.Count]);
+            memDiskAlias.Lines.AddStrings(slTemp);
+          End
+          Else
+            memDiskAlias.Lines.Add('There are no defined aliases');
+
+          If (sPartialAlias <> '') Then
+          Begin
+            memDiskAlias.Lines.Add('');
+            memDiskAlias.Lines.Add('The following entries are partially defined:');
+            memDiskAlias.Lines.Add('  ' + sPartialAlias);
+          End;
+        Finally
+          slTemp.Free;
+        End;
+      End;
+
+      // TODO Implement this correctly
       sAlias := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
       If FileExists(sAlias) Then
         memROMAlias.Lines.LoadFromFile(sAlias);

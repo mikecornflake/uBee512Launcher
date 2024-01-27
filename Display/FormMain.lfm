@@ -348,14 +348,13 @@ object frmMain: TfrmMain
           AnchorSideRight.Side = asrBottom
           Left = 8
           Height = 229
-          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut:'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'#13#10#13#10'WARNING: uBee512Launcher does not yet use Disk.Alias when reporting issues.'
+          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut):'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'
           Top = 131
           Width = 470
           Anchors = [akTop, akLeft, akRight]
           ReadOnly = True
           ScrollBars = ssAutoBoth
           TabOrder = 6
-          WordWrap = False
         end
         object lblDiskAlias: TLabel
           AnchorSideLeft.Control = lblDiskA
@@ -363,8 +362,8 @@ object frmMain: TfrmMain
           Height = 15
           Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut:'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'#13#10#13#10'WARNING: uBee512Launcher does not yet use Disk.Alias when reporting issues.'
           Top = 116
-          Width = 373
-          Caption = 'File "disks.alias" (Launcher does not yet use this, but uBee512 does)'
+          Width = 164
+          Caption = 'Defined aliases in "disks.alias"'
           Font.Style = [fsBold]
           ParentColor = False
           ParentFont = False
