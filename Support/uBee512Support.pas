@@ -9,11 +9,8 @@ Uses
 
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
-  TNameValue = Specialize TPair<String, String>;
-  TNameValueList = Specialize TDictionary<String, String>;
 
-  { TDefinition }
-
+  // A Definition is a [] entry inside ubee512rc)
   TDefinition = Class
   Private
     FValidators: TValidators;
@@ -37,6 +34,9 @@ Type
     Property Validators: TValidators read FValidators;
   End;
 
+  TDefinitions = Specialize TObjectList<TDefinition>;
+
+  // Hard coded list of Microbee Models (official and homebrew)
   TModel = Class
   Public
     Model: String;
@@ -44,8 +44,35 @@ Type
     MbeeType: TMbeeType;
   End;
 
-  TDefinitions = Specialize TObjectList<TDefinition>;
   TModels = Specialize TObjectList<TModel>;
+
+  // Entry within "disks.alias"
+  TDiskAlias = Class
+  Private
+    FValidator: TDiskAliasValidator;
+  Public
+    Alias: String;
+    Filename: String;
+
+    Constructor Create;
+    Destructor Destroy; Override;
+
+    Property Validator: TDiskAliasValidator read FValidator;
+  End;
+
+  // All entries within "disks.alias"
+
+  { TDiskAliases }
+
+  TDiskAliases = Class(Specialize TObjectList<TDiskAlias>)
+  Private
+    FFilename: String;
+  Public
+    Function Load: Boolean;
+    Function FilenameByAlias(AAlias: String): String;
+
+    Property Filename: String read FFilename;
+  End;
 
   { TuBee512 }
 
@@ -57,46 +84,49 @@ Type
     FDefinitions: TDefinitions;
     FModels: TModels;
 
-    FDisksAlias: TNameValueList;
-    FROMAlias: TNameValueList;
+    FDisksAliases: TDiskAliases;
 
     Function GetExe: String;
     Procedure SetExe(AValue: String);
 
     Function GetRC: String;
     Procedure SetRC(AValue: String);
-    Function LoadDisksAlias: Boolean;
-    Function LoadROMAlias: Boolean;
   Public
     Constructor Create;
     Destructor Destroy; Override;
 
-    Procedure Initialize;
-    Function Available: Boolean;
+    Procedure Initialize;        // Try to detect ubee512 binary/rc
+    Function Available: Boolean; // Has the ubee512 binary been found?
+    Property Exe: String read GetExe write SetExe; // ubee512 binary location
+    Function WorkingDir: String; // Location of ubee512 "home dir" (changes by OS)
 
-    Function LoadRC: Boolean; // If this is called, but no new RC is loaded, returns false.
+    // ubee512rc routines
+    Property RC: String read GetRC write SetRC;  // ubee512rc location
+    Function LoadRC: Boolean;                    // load (pseudo parse) ubee512rc
 
-    Function Definitions: TDefinitions;
+    Function Definitions: TDefinitions;          // entries within ubee512rc
+
+    // Helper Routines
+    Function IsDisk(AExt: String): Boolean;
+    Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
+
+    // Definition Lookups
+    // TODO, extend TDefinitions, move these there
     Function Definition(ADefinition: String): TDefinition;
     Function DefinitionByTitle(ATitle: String): TDefinition;
     Function RCbyDefinition(ADefinition: String): String;
     Function RCByTitle(ATitle: String): String;
     Function Models: String; // comma separated
     Function ModelsByType(AMbeeType: TMbeeType): String;
-    Function Model(AModel: String): TModel;
     Function Titles(AModel: String): String; // comma separated
+
+    // Model Lookups
+    // TODO, extend TModels, move these there
+    Function Model(AModel: String): TModel;
     Function MbeeType(AModel: String): TMbeeType;
-    Function IsDisk(AExt: String): Boolean;
-    Function WorkingDir: String;
 
-    Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
-    Function GetDiskByAlias(AFilename: String): String;
-    Function GetROMByAlias(AFilename: String): String;
-
-    Property Exe: String read GetExe write SetExe;
-    Property RC: String read GetRC write SetRC;
-
-    Property DiskAlias: TNameValueList read FDisksAlias;
+    // Disks.Alias routines
+    Property DiskAliases: TDiskAliases read FDisksAliases;
   End;
 
 Const
@@ -119,6 +149,81 @@ Begin
     FuBee512 := TuBee512.Create;
 
   Result := FuBee512;
+End;
+
+{ TDiskAlias }
+
+Constructor TDiskAlias.Create;
+Begin
+  Inherited Create;
+
+  FValidator := TDiskAliasValidator.Create;
+End;
+
+Destructor TDiskAlias.Destroy;
+Begin
+  FreeAndNil(FValidator);
+
+  Inherited Destroy;
+End;
+
+{ TDiskAliases }
+
+Function TDiskAliases.Load: Boolean;
+Var
+  oItem: TDiskAlias;
+  oAliases: TStringList;
+  sLine, sTemp, sAliasFile: String;
+Begin
+  Result := False;
+  Clear;
+
+  FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
+  If FileExists(FFilename) Then
+  Begin
+    oAliases := TStringList.Create;
+    Try
+      oAliases.LoadFromFile(FFilename);
+
+      For sLine In oAliases Do
+      Begin
+        sTemp := Trim(sLine);
+
+        If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
+        Begin
+          oItem := TDiskAlias.Create;
+          // Split sTemp into sName and sValue using spaces or tabs
+          oItem.Alias := Trim(ExtractWord(1, sTemp, [' ', #9]));
+          oItem.Filename := Trim(ExtractWord(2, sTemp, [' ', #9]));
+
+          Add(oItem);
+
+          oItem.Validator.Process(oItem.Validator);
+        End;
+      End;
+    Finally
+      oAliases.Free;
+    End;
+
+    Result := True;
+  End;
+
+End;
+
+Function TDiskAliases.FilenameByAlias(AAlias: String): String;
+Var
+  oItem: TDiskAlias;
+  sAlias: String;
+Begin
+  Result := ALIAS_NOT_FOUND;
+  sAlias := Lowercase(AAlias);
+
+  For oItem In Self Do
+    If Lowercase(oItem.Alias) = sAlias Then
+    Begin
+      Result := oItem.Filename;
+      Break;
+    End;
 End;
 
 { TDefinition }
@@ -159,6 +264,7 @@ Begin
   // OwnsObjects => No need for additional code to free contents
   FDefinitions := TDefinitions.Create(True);
   FModels := TModels.Create(True);
+  FDisksAliases := TDiskAliases.Create(True);
 
   // From ubee512 readme
   AddModel('1024k', 'Standard Premium Plus, 1024K DRAM FDD', mtFDD);
@@ -184,17 +290,14 @@ Begin
   AddModel('ppc85', 'Premium, PC85 32K ROM', mtROM);
   AddModel('scf', 'Standard Compact Flash Core board.', mtCustom);
   AddModel('tterm', 'Teleterm, ROM', mtROM);
-
-  FDisksAlias := TNameValueList.Create;
-  FROMAlias := TNameValueList.Create;
 End;
 
 Destructor TuBee512.Destroy;
 Begin
   Inherited Destroy;
 
-  FreeAndNil(FDisksAlias);
-  FreeAndNil(FROMAlias);
+  FreeAndNil(FDisksAliases);
+  //FreeAndNil(FROMAlias);
 
   FreeAndNil(FModels);
   FreeAndNil(FDefinitions);
@@ -435,66 +538,8 @@ Begin
       FLoadedRC := FRC;
       Result := True;
 
-      LoadDisksAlias;
+      FDisksAliases.Load;
     End;
-  End;
-End;
-
-Procedure LoadAliasFile(Const AAliasFile: String; Var AAliasList: TNameValueList);
-Var
-  oAliases: TStringList;
-  sLine, sName, sValue, sTemp: String;
-Begin
-  oAliases := TStringList.Create;
-  Try
-    oAliases.LoadFromFile(AAliasFile);
-
-    For sLine In oAliases Do
-    Begin
-      sTemp := Trim(sLine);
-
-      If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
-      Begin
-        // Split sTemp into sName and sValue using spaces or tabs
-        sName := Trim(ExtractWord(1, sTemp, [' ', #9]));
-        sValue := Trim(ExtractWord(2, sTemp, [' ', #9]));
-
-        // Add to the sName-sValue dictionary
-        AAliasList.AddOrSetValue(sName, sValue);
-      End;
-    End;
-  Finally
-    oAliases.Free;
-  End;
-End;
-
-Function TuBee512.LoadDisksAlias: Boolean;
-Var
-  sAliasFile: String;
-Begin
-  Result := False;
-  FDisksAlias.Clear;
-
-  sAliasFile := IncludeSlash(WorkingDir) + 'disks.alias';
-  If FileExists(sAliasFile) Then
-  Begin
-    LoadAliasFile(sAliasFile, FDisksAlias);
-    Result := True;
-  End;
-End;
-
-Function TuBee512.LoadROMAlias: Boolean;
-Var
-  sAliasFile: String;
-Begin
-  Result := False;
-  FROMAlias.Clear;
-
-  sAliasFile := IncludeSlash(WorkingDir) + 'rom.alias';
-  If FileExists(sAliasFile) Then
-  Begin
-    LoadAliasFile(sAliasFile, FROMAlias);
-    Result := True;
   End;
 End;
 
@@ -675,22 +720,6 @@ Begin
     sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
 
   Result := FileExists(sFile);
-End;
-
-Function TuBee512.GetDiskByAlias(AFilename: String): String;
-Var
-  sValue: String;
-Begin
-  If FDisksAlias.TryGetValue(AFilename, sValue) Then
-    Result := sValue
-  Else
-    Result := ALIAS_NOT_FOUND;
-End;
-
-Function TuBee512.GetROMByAlias(AFilename: String): String;
-Begin
-  // TODO
-  Result := ALIAS_NOT_FOUND;
 End;
 
 Initialization

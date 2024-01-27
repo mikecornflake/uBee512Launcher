@@ -355,8 +355,8 @@ Procedure TfrmMain.LoadRC;
 Var
   iPrev: Integer;
   bNew: Boolean;
-  sAlias, sPartialAlias: String;
-  oPair: TNameValue;
+  oAlias: TDiskAlias;
+  sAliasFile, sPartialAlias: String;
   slTemp: TStringList;
 
 Begin
@@ -367,26 +367,25 @@ Begin
 
     If bNew Then
     Begin
-      sAlias := IncludeSlash(ubee512.WorkingDir) + 'disks.alias';
-      If FileExists(sAlias) Then
+      If FileExists(uBee512.DiskAliases.Filename) Then
       Begin
         // Analyse "disks.alias"
         slTemp := TStringList.Create;
         Try
           sPartialAlias := '';
-          For oPair In uBee512.DiskAlias Do
+          For oAlias In uBee512.DiskAliases Do
           Begin
-            If (Trim(oPair.Key) <> '') And (Trim(oPair.Value) <> '') Then
-              slTemp.Add('  %s %s', [oPair.Key, oPair.Value]);
+            If (Trim(oAlias.Alias) <> '') And (Trim(oAlias.Filename) <> '') Then
+              slTemp.Add('  %s %s', [oAlias.Alias, oAlias.Filename]);
 
-            If (Trim(oPair.Key) <> '') And (Trim(oPair.Value) = '') Then
-              sPartialAlias += oPair.Key + ', ';
+            If (Trim(oAlias.Alias) <> '') And (Trim(oAlias.Filename) = '') Then
+              sPartialAlias += oAlias.Alias + ', ';
           End;
           sPartialAlias := TrimChars(sPartialAlias, [' ', ',']);
 
           memDiskAlias.Lines.Clear;
           memDiskAlias.Lines.Add('There are %d aliases in "%s"',
-            [uBee512.DiskAlias.Count, sAlias]);
+            [uBee512.DiskAliases.Count, uBee512.DiskAliases.Filename]);
 
           memDiskAlias.Lines.Add('');
           If slTemp.Count > 0 Then
@@ -406,12 +405,14 @@ Begin
         Finally
           slTemp.Free;
         End;
-      End;
+      End
+      Else
+        memDiskAlias.Lines.Add('File %s not found', [uBee512.DiskAliases.Filename]);
 
       // TODO Implement this correctly
-      sAlias := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
-      If FileExists(sAlias) Then
-        memROMAlias.Lines.LoadFromFile(sAlias);
+      sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
+      If FileExists(sAliasFile) Then
+        memROMAlias.Lines.LoadFromFile(sAliasFile);
     End;
 
     cboModel.Items.CommaText := ',' + uBee512.Models;

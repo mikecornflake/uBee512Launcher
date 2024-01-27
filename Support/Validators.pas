@@ -57,6 +57,15 @@ Type
     Procedure Process(ATarget: TObject); Override;
   End;
 
+  { TDiskAliasValidator }
+
+  TDiskAliasValidator = Class(TValidator)
+  Public
+    Constructor Create; Override;
+    Procedure Process(ATarget: TObject); Override;
+  End;
+
+
 Const
   ERRORLEVEL_COLOR: Array[TErrorLevel] Of TColor =
     (clBlack, TColor($006400), TColor($FF8C00), clRed);
@@ -65,6 +74,32 @@ Implementation
 
 Uses
   uBee512Support, Logs, FileSupport, StrUtils;
+
+{ TDiskAliasValidator }
+
+Constructor TDiskAliasValidator.Create;
+Begin
+  Inherited Create;
+
+  FDisplayName := 'Disks.Alias Entry Checker';
+  FDescription := 'This performs simple checks on each entry in Disks.Alias Entry Checker';
+End;
+
+Procedure TDiskAliasValidator.Process(ATarget: TObject);
+Var
+  sBaseFolder: Rawbytestring;
+Begin
+  Inherited Process(ATarget);
+
+  FErrorLevel := elNone;
+  FOutcome := '';
+  FRecommendation := '';
+
+  sBaseFolder := IncludeTrailingBackslash(ubee512.WorkingDir);
+
+  If Assigned(ATarget) And (ATarget Is TDefinition) Then;
+   // TODO
+End;
 
 { TDefinitionValidator }
 
@@ -111,7 +146,7 @@ Var
             End
             Else
             Begin
-              sAlias := uBee512.GetDiskByAlias(AFilename);
+              sAlias := uBee512.DiskAliases.FilenameByAlias(AFilename);
 
               If (sAlias = ALIAS_NOT_FOUND) Then
               Begin
@@ -120,7 +155,7 @@ Var
                 AddRecommendation('Ensure valid %s file exists (i.e. download from Repository)',
                   [AObject]);
                 AddRecommendation(
-                  '- Either add "%s" entry to "disks.alias".  The file can then have any name and be stored anywhere',
+                  '- Either add "%s" entry to "disks.alias" (the file can then have any name and be stored anywhere)',
                   [AFilename]);
                 AddRecommendation('- Or ensure file is named "%s" and placed directly in "%s"',
                   [AFilename, sFolder]);

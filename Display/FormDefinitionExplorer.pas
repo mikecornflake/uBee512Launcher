@@ -189,11 +189,7 @@ Begin
           oDefinition.Validators.Process(oDefinition);
           oItem.Data := oDefinition;
 
-          // TODO More Icons...
-          If oDefinition.Validators.ErrorLevel = elNone Then
-            oItem.ImageIndex := 0
-          Else
-            oItem.ImageIndex := 1;
+          oItem.ImageIndex := Integer(oDefinition.Validators.ErrorLevel);
         End;
     Finally
       lvDefinitions.Items.EndUpdate;
