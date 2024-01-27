@@ -5,7 +5,7 @@ Unit Validators;
 Interface
 
 Uses
-  Classes, SysUtils, Generics.Collections;
+  Classes, SysUtils, Generics.Collections, Graphics;
 
 Type
 
@@ -44,6 +44,8 @@ Type
     Procedure Process(ATarget: TObject);
 
     Function Outcome: String;
+    Function Recommendation: String;
+
     Property ErrorLevel: TErrorLevel read FErrorLevel;
   End;
 
@@ -55,10 +57,14 @@ Type
     Procedure Process(ATarget: TObject); Override;
   End;
 
+Const
+  ERRORLEVEL_COLOR: Array[TErrorLevel] Of TColor =
+    (clBlack, TColor($006400), TColor($FF8C00), clRed);
+
 Implementation
 
 Uses
-  uBee512Support, Logs, FileSupport;
+  uBee512Support, Logs, FileSupport, StrUtils;
 
 { TDefinitionValidator }
 
@@ -97,11 +103,10 @@ Var
       If Not uBee512.ValidFile(ASubfolder, AFilename) Then
         Case ASubfolder Of
           'disks':
-          Begin
             If FileIsAbsolute(AFilename) Then
             Begin
               AddOutcome('%s "%s" not found', [AObject, AFilename]);
-              AddRecommendation('Ensure file %s exists', [AFilename]);
+              AddRecommendation('Ensure valid file %s exists', [AFilename]);
               SetLevel(elError);
             End
             Else
@@ -112,8 +117,14 @@ Var
               Begin
                 AddOutcome('%s "%s" not found in "disks.alias" or "%s"',
                   [AObject, AFilename, sFolder]);
-                AddRecommendation('Ensure file "%s" exists', [AFilename]);
-                AddRecommendation('Add "%s" entry to "disks.alias"', [AFilename]);
+                AddRecommendation('Ensure valid %s file exists (i.e. download from Repository)',
+                  [AObject]);
+                AddRecommendation(
+                  '- Either add "%s" entry to "disks.alias".  The file can then have any name and be stored anywhere',
+                  [AFilename]);
+                AddRecommendation('- Or ensure file is named "%s" and placed directly in "%s"',
+                  [AFilename, sFolder]);
+                AddRecommendation('', []);
                 SetLevel(elError);
               End
               Else
@@ -141,9 +152,6 @@ Var
                 SetLevel(elInfo);
               End;
             End;
-
-            FRecommendation := '';
-          End;
           Else
           Begin
             AddOutcome('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]);
@@ -173,6 +181,9 @@ Begin
     Check('disks', oDefinition.IDE, 'IDE image');
     Check('tapes', oDefinition.TapeI, 'Input Tape');
     Check('tapes', oDefinition.TapeO, 'Output Tape');
+
+    FOutcome := TrimRightSet(FOutcome, [' ', #10, #13]);
+    FRecommendation := TrimRightSet(FRecommendation, [' ', #10, #13]);
   End;
 End;
 
@@ -207,8 +218,23 @@ Begin
     If oValidator.ErrorLevel <> elNone Then
       sResult := sResult + oValidator.Outcome + LineEnding;
 
-  If sResult.EndsWith(LineEnding) Then
-    sResult.TrimRight([#10, #13]);
+  sResult := TrimRightSet(sResult, [' ', #10, #13]);
+
+  Result := sResult;
+End;
+
+Function TValidators.Recommendation: String;
+Var
+  oValidator: TValidator;
+  sResult: String;
+Begin
+  sResult := '';
+
+  For oValidator In Self Do
+    If oValidator.ErrorLevel <> elNone Then
+      sResult := sResult + oValidator.Recommendation + LineEnding;
+
+  sResult := TrimRightSet(sResult, [' ', #10, #13]);
 
   Result := sResult;
 End;

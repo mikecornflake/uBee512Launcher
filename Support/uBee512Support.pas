@@ -671,7 +671,7 @@ Begin
   Else
     sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
 
-  Result := FileExists(AFilename);
+  Result := FileExists(sFile);
 End;
 
 Function TuBee512.DiskAlias(AFilename: String): String;

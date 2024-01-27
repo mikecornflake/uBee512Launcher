@@ -17,14 +17,17 @@ Type
     btnOK: TButton;
     ilFlags: TImageList;
     lvDefinitions: TListView;
+    memIssues: TMemo;
+    memRecommendations: TMemo;
     memRC: TMemo;
     memSystems: TMemo;
-    memIssues: TMemo;
     Panel1: TPanel;
+    pnlRight: TPanel;
     pnlBottom: TPanel;
     pcRC: TPageControl;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
+    Splitter3: TSplitter;
     tsDefinitions: TTabSheet;
     tsRC: TTabSheet;
     Procedure FormActivate(Sender: TObject);
@@ -92,7 +95,10 @@ Begin
     sRC += oDefinition.RC;
 
     memSystems.Lines.Text := sRC;
+
+    memIssues.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validators.ErrorLevel];
     memIssues.Lines.Text := oDefinition.Validators.Outcome;
+    memRecommendations.Lines.Text := oDefinition.Validators.Recommendation;
 
     btnOK.Enabled := TDefinition(Item.Data).Validators.ErrorLevel <> elError;
   End
@@ -107,12 +113,13 @@ Var
 Begin
   oDefinition := TDefinition(Item.Data);
 
-  Case oDefinition.Validators.ErrorLevel Of
-    elNone: lvDefinitions.Canvas.Font.Color := clBlack;
-    elInfo: lvDefinitions.Canvas.Font.Color := TColor($006400);
-    elWarning: lvDefinitions.Canvas.Font.Color := TColor($FF8C00);
-    elError: lvDefinitions.Canvas.Font.Color := clBlack;
-  End;
+  lvDefinitions.Canvas.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validators.ErrorLevel];
+  //Case oDefinition.Validators.ErrorLevel Of
+  //  elNone: lvDefinitions.Canvas.Font.Color := clBlack;
+  //  elInfo: lvDefinitions.Canvas.Font.Color := TColor($006400);
+  //  elWarning: lvDefinitions.Canvas.Font.Color := TColor($FF8C00);
+  //  elError: lvDefinitions.Canvas.Font.Color := clRed;
+  //End;
 End;
 
 Function TfrmDefinitionExplorer.GetTitle: String;

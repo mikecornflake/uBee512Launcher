@@ -1,12 +1,12 @@
 object frmDefinitionExplorer: TfrmDefinitionExplorer
   Left = 2414
-  Height = 605
+  Height = 626
   Top = 239
-  Width = 897
+  Width = 933
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'Definition Explorer'
-  ClientHeight = 605
-  ClientWidth = 897
+  ClientHeight = 626
+  ClientWidth = 933
   Icon.Data = {
     7E04000000000100010010100000010020006804000016000000280000001000
     0000200000000100200000000000000400006400000064000000000000000000
@@ -52,22 +52,22 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
   LCLVersion = '2.2.6.0'
   object pcRC: TPageControl
     Left = 0
-    Height = 570
+    Height = 591
     Top = 0
-    Width = 897
+    Width = 933
     ActivePage = tsDefinitions
     Align = alClient
     TabIndex = 0
     TabOrder = 0
     object tsDefinitions: TTabSheet
       Caption = 'System Definitions'
-      ClientHeight = 542
-      ClientWidth = 889
+      ClientHeight = 563
+      ClientWidth = 925
       object lvDefinitions: TListView
         Left = 0
-        Height = 423
+        Height = 384
         Top = 0
-        Width = 889
+        Width = 925
         Align = alClient
         Columns = <        
           item
@@ -112,26 +112,26 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
         Cursor = crVSplit
         Left = 0
         Height = 5
-        Top = 423
-        Width = 889
+        Top = 384
+        Width = 925
         Align = alBottom
         ResizeAnchor = akBottom
       end
       object pnlBottom: TPanel
         Left = 0
-        Height = 114
-        Top = 428
-        Width = 889
+        Height = 174
+        Top = 389
+        Width = 925
         Align = alBottom
         BevelOuter = bvNone
-        ClientHeight = 114
-        ClientWidth = 889
+        ClientHeight = 174
+        ClientWidth = 925
         TabOrder = 2
         object memSystems: TMemo
           Left = 0
-          Height = 114
+          Height = 174
           Top = 0
-          Width = 323
+          Width = 315
           Align = alLeft
           ReadOnly = True
           ScrollBars = ssAutoBoth
@@ -139,34 +139,66 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
           WordWrap = False
         end
         object Splitter2: TSplitter
-          Left = 323
-          Height = 114
+          Left = 315
+          Height = 174
           Top = 0
           Width = 5
         end
-        object memIssues: TMemo
-          Left = 328
-          Height = 114
+        object pnlRight: TPanel
+          Left = 320
+          Height = 174
           Top = 0
-          Width = 561
+          Width = 605
           Align = alClient
-          Font.Color = clRed
-          ParentFont = False
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
+          BevelOuter = bvNone
+          ClientHeight = 174
+          ClientWidth = 605
           TabOrder = 2
+          object memIssues: TMemo
+            Left = 0
+            Height = 77
+            Top = 0
+            Width = 605
+            Align = alTop
+            Font.Color = clRed
+            ParentFont = False
+            ReadOnly = True
+            ScrollBars = ssAutoBoth
+            TabOrder = 0
+          end
+          object memRecommendations: TMemo
+            Left = 0
+            Height = 92
+            Top = 82
+            Width = 605
+            Align = alClient
+            Font.Color = clBlack
+            ParentFont = False
+            ReadOnly = True
+            ScrollBars = ssAutoBoth
+            TabOrder = 1
+          end
+          object Splitter3: TSplitter
+            Cursor = crVSplit
+            Left = 0
+            Height = 5
+            Top = 77
+            Width = 605
+            Align = alTop
+            ResizeAnchor = akTop
+          end
         end
       end
     end
     object tsRC: TTabSheet
       Caption = 'uBee512rc'
-      ClientHeight = 542
-      ClientWidth = 889
+      ClientHeight = 563
+      ClientWidth = 925
       object memRC: TMemo
         Left = 0
-        Height = 542
+        Height = 563
         Top = 0
-        Width = 889
+        Width = 925
         Align = alClient
         ReadOnly = True
         ScrollBars = ssAutoBoth
@@ -177,15 +209,15 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
   object Panel1: TPanel
     Left = 0
     Height = 35
-    Top = 570
-    Width = 897
+    Top = 591
+    Width = 933
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 35
-    ClientWidth = 897
+    ClientWidth = 933
     TabOrder = 1
     object btnOK: TButton
-      Left = 733
+      Left = 769
       Height = 25
       Top = 5
       Width = 75
@@ -195,7 +227,7 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
       TabOrder = 0
     end
     object btnCancel: TButton
-      Left = 811
+      Left = 847
       Height = 25
       Top = 5
       Width = 75
