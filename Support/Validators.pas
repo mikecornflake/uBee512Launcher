@@ -138,7 +138,7 @@ Var
       If Not uBee512.ValidFile(ASubfolder, AFilename) Then
         Case ASubfolder Of
           'disks':
-            If FileIsAbsolute(AFilename) Then
+            If IsFileAbsolute(AFilename) Then
             Begin
               AddOutcome('%s "%s" not found', [AObject, AFilename]);
               AddRecommendation('Ensure valid file %s exists', [AFilename]);
@@ -146,6 +146,7 @@ Var
             End
             Else
             Begin
+              // Check "disks.alias"
               sAlias := uBee512.DiskAliases.FilenameByAlias(AFilename);
 
               If (sAlias = ALIAS_NOT_FOUND) Then
@@ -162,12 +163,11 @@ Var
                 AddRecommendation('', []);
                 SetLevel(elError);
               End
-              Else
-              If Not uBee512.ValidFile(ASubfolder, sAlias) Then
+              Else If Not uBee512.ValidFile(ASubfolder, sAlias) Then
               Begin
                 AddOutcome('%s "%s" found in "disks.alias", and resolves to "%s"',
                   [AObject, AFilename, sAlias]);
-                If FileIsAbsolute(sAlias) Then
+                If IsFileAbsolute(sAlias) Then
                 Begin
                   AddOutcome('%s "%s" not found', [AObject, AFilename]);
                   AddRecommendation('Ensure file %s exists', [AFilename]);
@@ -187,7 +187,7 @@ Var
                 SetLevel(elInfo);
               End;
             End;
-          Else
+          Else // Case ASubfolder Of
           Begin
             AddOutcome('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]);
             SetLevel(elError);

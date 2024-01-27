@@ -716,7 +716,7 @@ Function TuBee512.ValidFile(ASubfolder: String; AFilename: String): Boolean;
 Var
   sFile: String;
 Begin
-  If FileIsAbsolute(AFilename) Then
+  If IsFileAbsolute(AFilename) Then
     sFile := AFilename
   Else
     sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
