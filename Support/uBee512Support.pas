@@ -5,7 +5,7 @@ Unit uBee512Support;
 Interface
 
 Uses
-  Classes, SysUtils, Generics.Collections, uBee512Validators;
+  Classes, SysUtils, Generics.Collections, Validators, uBee512Validators;
 
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
@@ -89,13 +89,18 @@ Type
   TDiskAliases = Class(Specialize TObjectList<TDiskAlias>)
   Private
     FFilename: String;
+    FValidators: TValidators;
   Public
+    Constructor Create(AOwnsObjects: Boolean);
+    Destructor Destroy; Override;
+
     Function Load: Boolean;
     Function Save: Boolean;
 
     Function FilenameByAlias(AAlias: String): String;
 
     Property Filename: String read FFilename;
+    Property Validators: TValidators read FValidators;
   End;
 
   { TuBee512 }
@@ -177,6 +182,21 @@ End;
 
 { TDiskAliases }
 
+Constructor TDiskAliases.Create(AOwnsObjects: Boolean);
+Begin
+  Inherited Create(AOwnsObjects);
+
+  // Create with False as this list doesn't own each TValidator
+  FValidators := TValidators.Create(False);
+End;
+
+Destructor TDiskAliases.Destroy;
+Begin
+  FreeAndNil(FValidators);
+
+  Inherited Destroy;
+End;
+
 Function TDiskAliases.Load: Boolean;
 Var
   oItem: TDiskAlias;
@@ -185,6 +205,7 @@ Var
 Begin
   Result := False;
   Clear;
+  FValidators.Clear;
 
   FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
   If FileExists(FFilename) Then
@@ -198,6 +219,7 @@ Begin
         sTemp := Trim(sLine);
         oItem := TDiskAlias.Create;
         Add(oItem);
+        FValidators.Add(oItem.Validator); // Grab a _ref for Summary purposes
 
         If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
         Begin

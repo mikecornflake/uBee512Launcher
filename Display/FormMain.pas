@@ -353,11 +353,10 @@ End;
 
 Procedure TfrmMain.LoadRC;
 Var
-  iPrev, iOthers, iErrors, iAlias: Integer;
+  iPrev, iAlias: Integer;
   bNew: Boolean;
-  oAlias: TDiskAlias;
   sAliasFile: String;
-  slValid, slError, slOther: TStringList;
+  iInfo, iError, iWarning: Int64;
 
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
@@ -370,73 +369,42 @@ Begin
       If FileExists(uBee512.DiskAliases.Filename) Then
       Begin
         // Analyse "disks.alias"
-        slValid := TStringList.Create;
-        slError := TStringList.Create;
-        slOther := TStringList.Create;
-        iErrors := 0;
-        iOthers := 0;
-        iAlias := 0;
-        Try
-          For oAlias In uBee512.DiskAliases Do
-            If (Trim(oAlias.Alias) <> '') Then
-            Begin
-              Inc(iAlias);
-              If (oAlias.Validator.ErrorLevel <= elInfo) Then
-                slValid.Add('  %s %s', [oAlias.Alias, oAlias.Filename])
-              Else If (oAlias.Validator.ErrorLevel=elError) Then
-              Begin
-                Inc(iErrors);
-                slError.Add('  Error:  ' + oAlias.Validator.Outcome);
-                slError.Add('  Recommendation:' + oAlias.Validator.Recommendation);
-                slError.Add('');
-              End
-              Else
-              Begin
-                Inc(iOthers);
-                slOther.Add('  Warning:  ' + oAlias.Validator.Outcome);
-                slOther.Add('  Recommendation:' + oAlias.Validator.Recommendation);
-                slOther.Add('');
-              End;
-            end;
+        memDiskAlias.Lines.Clear;
 
-          memDiskAlias.Lines.Clear;
-          memDiskAlias.Lines.Add('There are %d aliases in "%s"',
-            [iAlias, uBee512.DiskAliases.Filename]);
+        iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
+        memDiskAlias.Lines.Add('There are %d aliases in "%s"',
+          [iAlias, uBee512.DiskAliases.Filename]);
 
-          memDiskAlias.Lines.Add('');
-          If slValid.Count > 0 Then
-          Begin
-            memDiskAlias.Lines.Add('The following %d entries are correct and ready to use:',
-              [slValid.Count]);
-            memDiskAlias.Lines.AddStrings(slValid);
-          End
-          Else
-            memDiskAlias.Lines.Add('There are no defined aliases');
+        memDiskAlias.Lines.Add('');
+        iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
+        If iInfo > 0 Then
+        Begin
+          memDiskAlias.Lines.Add('The following %d entries are correct and ready to use:',
+            [iInfo]);
+          memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elInfo]));
+        End
+        Else
+          memDiskAlias.Lines.Add('There are no defined aliases ready to use');
+        memDiskAlias.Lines.Add('');
 
-          memDiskAlias.Lines.Add('');
-          If slError.Count > 0 Then
-          Begin
-            memDiskAlias.Lines.Add('The following %d errors were found:', [iErrors]);
-            memDiskAlias.Lines.AddStrings(slError);
-          End
-          Else
-          Begin
-            memDiskAlias.Lines.Add('No errors were found.');
-            memDiskAlias.Lines.Add('');
-          End;
+        iError := uBee512.DiskAliases.Validators.Count([elError]);
+        If iError > 0 Then
+        Begin
+          memDiskAlias.Lines.Add('The following %d errors were found:', [iError]);
+          memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elError]));
+        End
+        Else
+          memDiskAlias.Lines.Add('No errors were found.');
+        memDiskAlias.Lines.Add('');
 
-          If slOther.Count > 0 Then
-          Begin
-            memDiskAlias.Lines.Add('The following %d warnings were found:', [iOthers]);
-            memDiskAlias.Lines.AddStrings(slOther);
-          End
-          Else
-            memDiskAlias.Lines.Add('No warnings were found.');
-        Finally
-          slValid.Free;
-          slError.Free;
-          slOther.Free;
-        End;
+        iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
+        If iWarning > 0 Then
+        Begin
+          memDiskAlias.Lines.Add('The following %d warnings were found:', [iWarning]);
+          memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elWarning]));
+        End
+        Else
+          memDiskAlias.Lines.Add('No warnings were found.');
       End
       Else
         memDiskAlias.Lines.Add('File %s not found', [uBee512.DiskAliases.Filename]);

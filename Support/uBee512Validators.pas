@@ -75,6 +75,15 @@ Begin
         AddRecommendation('    Or, place the Disk in "%s" and add just the filename to "disks.alias", ', [sBaseFolder]);
         AddRecommendation('    Or, add the absolute path to the Disk to "disks.alias"', []);
       End
+      Else If uBee512.ValidFile('disks', oItem.Filename) Then
+      Begin
+        FErrorLevel := elInfo;
+        If IsFileAbsolute(oItem.Filename) Then
+          AddOutcome('Alias "%s" is valid and will use file "%s"', [oItem.Alias, oItem.Filename])
+        Else
+          AddOutcome('Alias "%s" is valid and will use file "%s"',
+            [oItem.Alias, sBaseFolder + oItem.Filename]);
+      End
       Else If IsFileAbsolute(oItem.Filename) And Not (FileExists(oItem.Filename)) Then
       Begin
         FErrorLevel := elError;

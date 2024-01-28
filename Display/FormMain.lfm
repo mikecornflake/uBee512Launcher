@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 876
+  Left = 2419
   Height = 482
-  Top = 324
+  Top = 366
   Width = 876
   Caption = 'uBee512Launcher'
   ClientHeight = 462
@@ -536,7 +536,7 @@ object frmMain: TfrmMain
       end
       object memRC: TMemo
         Left = 8
-        Height = 341
+        Height = 342
         Top = 53
         Width = 369
         Anchors = [akTop, akLeft, akRight, akBottom]
