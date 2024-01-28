@@ -41,9 +41,8 @@
 + Parses ubee512rc to build up System Definitions, uses these in Main Form & Definitions Explorer
 + I know there looks like a lot of Definitions in ubee512rc sample.  Err, I'm currently filtering out about half - the ones I haven't researched
 
-## Validation Rules
+## Validation Rules (under development)
 + Results of Validation checks currently only visible in Definitions Explorer
-+ Current checks include:
 + uBee512rc Definition checks:
   + For disks assigned to A, B or C:
     + If absolute filename, does disk exist?  (Error flag if not)
@@ -52,7 +51,10 @@
 	  + If not: Does entry exist in "disks.alias"? (info flag if it does)
 	    + Is "disks.alias" entry valid? (checks both absolute and relative file paths). (Flag escalated to Error if not)
   + For --sram-file, --ide-a0, --tapei, --tapeo entries: Does file exist? (checks absolute and correct subfolder) (Error Flag if not) 	
-
++ "disk.alias" checks:
+  + Does the alias have a lookup filename? (warning flag if not)
+  + Does the lookup filename exist? (error flag if not)
+  
 # TODO
 
 ## Short term (planned for 0.5beta)

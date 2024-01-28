@@ -41,6 +41,18 @@ End;
 Procedure TDiskAliasValidator.Process;
 Var
   sBaseFolder: String;
+  oItem: TDiskAlias;
+
+  Procedure AddOutcome(AFormatStr: String; arrParams: Array Of Const);
+  Begin
+    FOutcome += Format(AFormatStr, arrParams) + LineEnding;
+  End;
+
+  Procedure AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
+  Begin
+    FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
+  End;
+
 Begin
   Inherited Process;
 
@@ -48,10 +60,43 @@ Begin
   FOutcome := '';
   FRecommendation := '';
 
-  sBaseFolder := IncludeTrailingBackslash(ubee512.WorkingDir);
+  sBaseFolder := IncludeSlash(ubee512.WorkingDir) + includeSlash('disks');
 
-  If Assigned(FOwner) And (FOwner Is TDiskAlias) Then;
-   // TODO Implement
+  If Assigned(FOwner) And (FOwner Is TDiskAlias) Then
+  Begin
+    oItem := TDiskAlias(FOwner);
+
+    If Trim(oItem.Alias) <> '' Then
+      If Trim(oItem.Filename) = '' Then
+      Begin
+        FErrorLevel := elWarning;
+        AddOutcome('%s is defined in "disks.alias", but has no lookup filename!', [oItem.Alias]);
+        AddRecommendation('  Either: Do not use alias "%s", ', [oItem.Alias]);
+        AddRecommendation('    Or, place the Disk in "%s" and add just the filename to "disks.alias", ', [sBaseFolder]);
+        AddRecommendation('    Or, add the absolute path to the Disk to "disks.alias"', []);
+      End
+      Else If IsFileAbsolute(oItem.Filename) And Not (FileExists(oItem.Filename)) Then
+      Begin
+        FErrorLevel := elError;
+        AddOutcome('Alias "%s" lookup file "%s" does not exist!', [oItem.Alias, oItem.Filename]);
+        AddRecommendation('  Ensure file %s exists:', [oItem.Filename]);
+        AddRecommendation('    Check filepath?', []);
+        AddRecommendation('    Download file from Repository?', []);
+      End
+      Else If Not IsFileAbsolute(oItem.Filename) And Not FileExists(sBaseFolder +
+        oItem.Filename) Then
+      Begin
+        FErrorLevel := elError;
+        AddOutcome('Alias "%s" lookup file "%s" can not be found in "%s"!',
+          [oItem.Alias, oItem.Filename, sBaseFolder]);
+        AddRecommendation('  Ensure file %s exists:', [oItem.Filename]);
+        AddRecommendation('    Check filepath?', []);
+        AddRecommendation('    Download file from Repository?', []);
+      End;
+
+    FOutcome := TrimRightSet(FOutcome, [' ', #10, #13]);
+    FRecommendation := TrimRightSet(FRecommendation, [' ', #10, #13]);
+  End;
 End;
 
 { TDefinitionValidator }
