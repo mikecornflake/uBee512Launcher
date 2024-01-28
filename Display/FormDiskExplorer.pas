@@ -1,7 +1,7 @@
 Unit FormDiskExplorer;
 
 {$mode ObjFPC}{$H+}
-
+{$WARN 5024 off : Parameter "$1" not used}
 Interface
 
 Uses
@@ -50,9 +50,8 @@ Type
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
-    Procedure lvFilesSelectItem(Sender: TObject; Item: TListItem;
-      {%H-}Selected: Boolean);
-    Procedure tvFoldersChange(Sender: TObject; {%H-}Node: TTreeNode);
+    Procedure lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+    Procedure tvFoldersChange(Sender: TObject; Node: TTreeNode);
   Private
     FActivated: Boolean;
     FLoadingDSK: Boolean;
@@ -241,8 +240,7 @@ Begin
   btnAddFolderToC.Enabled := True;
 End;
 
-Procedure TfrmDiskExplorer.lvFilesSelectItem(Sender: TObject;
-  Item: TListItem; Selected: Boolean);
+Procedure TfrmDiskExplorer.lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
 Var
   slTemp: TStringList;
   sSelectedFile, sDSKFile: String;
