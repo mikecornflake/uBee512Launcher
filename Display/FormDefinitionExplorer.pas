@@ -89,7 +89,7 @@ Begin
 
   If (Selected) And (Assigned(Item)) Then
   Begin
-    oDefinition := uBee512.Definition(Item.Caption);
+    oDefinition := uBee512.Definitions[Item.Caption];
     sRC := '# ' + oDefinition.Description + LineEnding;
     sRC += '[' + oDefinition.Definition + ']' + LineEnding;
     sRC += oDefinition.RC;

@@ -34,7 +34,19 @@ Type
     Property Validator: TDefinitionValidator read FValidator;
   End;
 
-  TDefinitions = Specialize TObjectList<TDefinition>;
+  TDefinitions = Class(Specialize TObjectList<TDefinition>)
+  Private
+    Function GetDefinition(ADefinition: String): TDefinition;
+  Public
+    Function DefinitionByTitle(ATitle: String): TDefinition;
+    Function RCbyDefinition(ADefinition: String): String;
+    Function RCByTitle(ATitle: String): String;
+    Function Models: String; // comma separated
+    Function ModelsByType(AMbeeType: TMbeeType): String;
+    Function Titles(AModel: String): String; // comma separated
+
+    Property Definition[ADefinition: String]: TDefinition Read GetDefinition; Default;
+  End;
 
   // Hard coded list of Microbee Models (official and homebrew)
   TModel = Class
@@ -44,7 +56,13 @@ Type
     MbeeType: TMbeeType;
   End;
 
-  TModels = Specialize TObjectList<TModel>;
+  TModels = Class(Specialize TObjectList<TModel>)
+  Private
+    Function GetModel(AModel: String): TModel;
+  Public
+    Function MbeeType(AModel: String): TMbeeType;
+    Property Model[AModel: String]: TModel Read GetModel; Default;
+  End;
 
   // Entry within "disks.alias"
   TDiskAlias = Class
@@ -104,29 +122,13 @@ Type
     Property RC: String read GetRC write SetRC;  // ubee512rc location
     Function LoadRC: Boolean;                    // load (pseudo parse) ubee512rc
 
-    Function Definitions: TDefinitions;          // entries within ubee512rc
-
     // Helper Routines
     Function IsDisk(AExt: String): Boolean;
     Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
 
-    // Definition Lookups
-    // TODO Extend TDefinitions, move these there
-    Function Definition(ADefinition: String): TDefinition;
-    Function DefinitionByTitle(ATitle: String): TDefinition;
-    Function RCbyDefinition(ADefinition: String): String;
-    Function RCByTitle(ATitle: String): String;
-    Function Models: String; // comma separated
-    Function ModelsByType(AMbeeType: TMbeeType): String;
-    Function Titles(AModel: String): String; // comma separated
-
-    // Model Lookups
-    // TODO Extend TModels, move these there
-    Function Model(AModel: String): TModel;
-    Function MbeeType(AModel: String): TMbeeType;
-
-    // Disks.Alias routines
-    Property DiskAliases: TDiskAliases read FDisksAliases;
+    Property DiskAliases: TDiskAliases read FDisksAliases;  // Contents of "disks.alias"
+    Property Definitions: TDefinitions Read FDefinitions;   // entries within ubee512rc
+    Property Models: TModels Read FModels;                  // Hard coded list
   End;
 
 Const
@@ -208,7 +210,6 @@ Begin
 
     Result := True;
   End;
-
 End;
 
 Function TDiskAliases.FilenameByAlias(AAlias: String): String;
@@ -240,7 +241,159 @@ Begin
   Inherited Destroy;
 End;
 
-  { TuBee512 }
+{ TDefinitions }
+
+Function TDefinitions.GetDefinition(ADefinition: String): TDefinition;
+Var
+  oDefinition: TDefinition;
+Begin
+  Result := nil;
+
+  For oDefinition In Self Do
+    If (oDefinition.Definition = ADefinition) Then
+    Begin
+      Result := oDefinition;
+      Break;
+    End;
+End;
+
+Function TDefinitions.RCbyDefinition(ADefinition: String): String;
+Var
+  oDefinition: TDefinition;
+Begin
+  Result := '';
+  oDefinition := GetDefinition(ADefinition);
+  If Assigned(oDefinition) Then
+    Result := oDefinition.RC;
+End;
+
+Function TDefinitions.DefinitionByTitle(ATitle: String): TDefinition;
+Var
+  oDefinition: TDefinition;
+Begin
+  Result := nil;
+
+  If (Trim(ATitle) <> '') Then
+    For oDefinition In Self Do
+      If (oDefinition.Title = ATitle) Then
+      Begin
+        Result := oDefinition;
+        Break;
+      End;
+End;
+
+Function TDefinitions.RCByTitle(ATitle: String): String;
+Var
+  oDefinition: TDefinition;
+Begin
+  Result := '';
+
+  oDefinition := DefinitionByTitle(ATitle);
+  If Assigned(oDefinition) Then
+    Result := oDefinition.RC;
+End;
+
+// Return a comma seperated sorted list of Microbee Models defined in the uBee512RC
+Function TDefinitions.Models: String;
+Var
+  slModels: TStringList;
+  oDefinition: TDefinition;
+Begin
+  slModels := TStringList.Create;
+  Try
+    // use the TStringlist to build up a sorted, unique list of models
+    slModels.Sorted := True;
+    slModels.Duplicates := dupIgnore;
+
+    For oDefinition In Self Do
+      If Trim(oDefinition.Model) <> '' Then
+        slModels.Add(oDefinition.Model);
+
+    Result := slModels.CommaText;
+  Finally
+    slModels.Free;
+  End;
+End;
+
+// Return a comma seperated list of Microbee Models by Type
+Function TDefinitions.ModelsByType(AMbeeType: TMbeeType): String;
+Var
+  slModels: TStringList;
+  oDefinition: TDefinition;
+Begin
+  slModels := TStringList.Create;
+  Try
+    // use the TStringlist to build up a sorted, unique list of models
+    slModels.Sorted := True;
+    slModels.Duplicates := dupIgnore;
+
+    For oDefinition In Self Do
+      If (Trim(oDefinition.Model) <> '') And (oDefinition.MbeeType = AMbeeType) Then
+        slModels.Add(oDefinition.Model);
+
+    Result := slModels.CommaText;
+  Finally
+    slModels.Free;
+  End;
+End;
+
+// Return a comma seperated list of Microbee systems defined in uBee512rc for
+// a particular Microbee Model
+Function TDefinitions.Titles(AModel: String): String;
+Var
+  slTitles: TStringList;
+  oDefinition: TDefinition;
+  sModel: String;
+Begin
+  sModel := LowerCase(AModel);
+  slTitles := TStringList.Create;
+  Try
+    // use the TStringlist to build up a sorted, unique list of models
+    slTitles.Sorted := True;
+    slTitles.Duplicates := dupIgnore;
+
+    For oDefinition In Self Do
+      If Lowercase(oDefinition.Model) = sModel Then
+        If Trim(oDefinition.Title) <> '' Then
+          slTitles.Add(oDefinition.Title);
+
+    Result := slTitles.CommaText;
+  Finally
+    slTitles.Free;
+  End;
+End;
+
+{ TModels }
+
+Function TModels.GetModel(AModel: String): TModel;
+Var
+  oModel: TModel;
+Begin
+  Result := nil;
+  For oModel In Self Do
+    If oModel.Model = AModel Then
+    Begin
+      Result := oModel;
+      Break;
+    End;
+End;
+
+Function TModels.MbeeType(AModel: String): TMbeeType;
+Var
+  oModel: TModel;
+  sModel: String;
+Begin
+  Result := mtCustom;
+  sModel := Lowercase(AModel);
+  For oModel In Self Do
+    If Lowercase(oModel.Model) = sModel Then
+    Begin
+      Result := oModel.MbeeType;
+      Break;
+    End;
+End;
+
+{ TuBee512 }
 
 Constructor TuBee512.Create;
 
@@ -395,11 +548,6 @@ Begin
   Debug('detected ubee512rc=' + FRC);
 End;
 
-Function TuBee512.Definitions: TDefinitions;
-Begin
-  Result := FDefinitions;
-End;
-
 Function TuBee512.LoadRC: Boolean;
 Var
   slTemp: TStringList;
@@ -517,7 +665,7 @@ Begin
                   'model':
                   Begin
                     oDefinition.Model := sValue;
-                    oDefinition.MbeeType := MbeeType(sValue);
+                    oDefinition.MbeeType := FModels.MbeeType(sValue);
                   End;
                   'ide-a0': oDefinition.IDE := sValue;
                   'tapei': oDefinition.TapeI := sValue;
@@ -541,154 +689,6 @@ Begin
       FDisksAliases.Load;
     End;
   End;
-End;
-
-Function TuBee512.Definition(ADefinition: String): TDefinition;
-Var
-  oDefinition: TDefinition;
-Begin
-  Result := nil;
-
-  For oDefinition In FDefinitions Do
-    If (oDefinition.Definition = ADefinition) Then
-    Begin
-      Result := oDefinition;
-      Break;
-    End;
-End;
-
-Function TuBee512.RCbyDefinition(ADefinition: String): String;
-Var
-  oDefinition: TDefinition;
-Begin
-  Result := '';
-  oDefinition := Definition(ADefinition);
-  If Assigned(oDefinition) Then
-    Result := oDefinition.RC;
-End;
-
-Function TuBee512.DefinitionByTitle(ATitle: String): TDefinition;
-Var
-  oDefinition: TDefinition;
-Begin
-  Result := nil;
-
-  If (Trim(ATitle) <> '') Then
-    For oDefinition In FDefinitions Do
-      If (oDefinition.Title = ATitle) Then
-      Begin
-        Result := oDefinition;
-        Break;
-      End;
-End;
-
-Function TuBee512.RCByTitle(ATitle: String): String;
-Var
-  oDefinition: TDefinition;
-Begin
-  Result := '';
-
-  oDefinition := DefinitionByTitle(ATitle);
-  If Assigned(oDefinition) Then
-    Result := oDefinition.RC;
-End;
-
-// Return a comma seperated sorted list of Microbee Models defined in the uBee512RC
-Function TuBee512.Models: String;
-Var
-  slModels: TStringList;
-  oDefinition: TDefinition;
-Begin
-  slModels := TStringList.Create;
-  Try
-    // use the TStringlist to build up a sorted, unique list of models
-    slModels.Sorted := True;
-    slModels.Duplicates := dupIgnore;
-
-    For oDefinition In FDefinitions Do
-      If Trim(oDefinition.Model) <> '' Then
-        slModels.Add(oDefinition.Model);
-
-    Result := slModels.CommaText;
-  Finally
-    slModels.Free;
-  End;
-End;
-
-// Return a comma seperated list of Microbee Models by Type
-Function TuBee512.ModelsByType(AMbeeType: TMbeeType): String;
-Var
-  slModels: TStringList;
-  oDefinition: TDefinition;
-Begin
-  slModels := TStringList.Create;
-  Try
-    // use the TStringlist to build up a sorted, unique list of models
-    slModels.Sorted := True;
-    slModels.Duplicates := dupIgnore;
-
-    For oDefinition In FDefinitions Do
-      If (Trim(oDefinition.Model) <> '') And (oDefinition.MbeeType = AMbeeType) Then
-        slModels.Add(oDefinition.Model);
-
-    Result := slModels.CommaText;
-  Finally
-    slModels.Free;
-  End;
-End;
-
-Function TuBee512.Model(AModel: String): TModel;
-Var
-  oModel: TModel;
-Begin
-  Result := nil;
-  For oModel In FModels Do
-    If oModel.Model = AModel Then
-    Begin
-      Result := oModel;
-      Break;
-    End;
-End;
-
-// Return a comma seperated list of Microbee systems defined in uBee512rc for
-// a particular Microbee Model
-Function TuBee512.Titles(AModel: String): String;
-Var
-  slTitles: TStringList;
-  oDefinition: TDefinition;
-  sModel: String;
-Begin
-  sModel := LowerCase(AModel);
-  slTitles := TStringList.Create;
-  Try
-    // use the TStringlist to build up a sorted, unique list of models
-    slTitles.Sorted := True;
-    slTitles.Duplicates := dupIgnore;
-
-    For oDefinition In FDefinitions Do
-      If Lowercase(oDefinition.Model) = sModel Then
-        If Trim(oDefinition.Title) <> '' Then
-          slTitles.Add(oDefinition.Title);
-
-    Result := slTitles.CommaText;
-  Finally
-    slTitles.Free;
-  End;
-End;
-
-Function TuBee512.MbeeType(AModel: String): TMbeeType;
-Var
-  oModel: TModel;
-  sModel: String;
-Begin
-  Result := mtCustom;
-  sModel := Lowercase(AModel);
-  For oModel In FModels Do
-    If Lowercase(oModel.Model) = sModel Then
-    Begin
-      Result := oModel.MbeeType;
-      Break;
-    End;
 End;
 
 Function TuBee512.IsDisk(AExt: String): Boolean;

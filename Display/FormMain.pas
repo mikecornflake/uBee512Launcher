@@ -292,7 +292,7 @@ Begin
     sModel := oIniFile.ReadString('Selected', 'Model', DEFAULT_MODEL);
     sTitle := oIniFile.ReadString('Selected', 'Title', DEFAULT_TITLE);
 
-    mtType := uBee512.MbeeType(sModel);
+    mtType := uBee512.Models.MbeeType(sModel);
     sType := MBTypeStr[mtType];
 
     SetDefinitionCombo(cboType, sType);
@@ -415,7 +415,7 @@ Begin
         memROMAlias.Lines.LoadFromFile(sAliasFile);
     End;
 
-    cboModel.Items.CommaText := ',' + uBee512.Models;
+    cboModel.Items.CommaText := ',' + uBee512.Definitions.Models;
 
     If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
     Begin
@@ -508,7 +508,7 @@ Begin
   Begin
     mtType := TMbeeType(cboType.ItemIndex);
 
-    cboModel.Items.CommaText := ',' + uBee512.ModelsByType(mtType);
+    cboModel.Items.CommaText := ',' + uBee512.Definitions.ModelsByType(mtType);
     If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
     Begin
       iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
@@ -551,8 +551,8 @@ Begin
 
     If (cboTitle.Text <> '') Then
     Begin
-      oModel := ubee512.Model(cboModel.Text);
-      oDefinition := ubee512.DefinitionByTitle(cboTitle.Text);
+      oModel := ubee512.Models[cboModel.Text];
+      oDefinition := ubee512.Definitions.DefinitionByTitle(cboTitle.Text);
       If assigned(oDefinition) Then
       Begin
         If Assigned(oModel) Then
@@ -567,7 +567,7 @@ Begin
     End
     Else If (cboModel.Text <> '') Then
     Begin
-      oModel := ubee512.Model(cboModel.Text);
+      oModel := ubee512.Models[cboModel.Text];
       If Assigned(oModel) Then
       Begin
         sRC := '# ' + oModel.Description + LineEnding;
@@ -593,7 +593,7 @@ Procedure TfrmMain.cboModelChange(Sender: TObject);
 Var
   iPrev: Integer;
 Begin
-  cboTitle.Items.CommaText := ',' + uBee512.Titles(cboModel.Text);
+  cboTitle.Items.CommaText := ',' + uBee512.Definitions.Titles(cboModel.Text);
 
   If (cboTitle.ItemIndex <> 0) And (cboTitle.Items.Count > 0) Then
   Begin
@@ -613,7 +613,7 @@ Procedure TfrmMain.cboTitleChange(Sender: TObject);
 Var
   oDefinition: TDefinition;
 Begin
-  oDefinition := ubee512.DefinitionByTitle(cboTitle.Text);
+  oDefinition := ubee512.Definitions.DefinitionByTitle(cboTitle.Text);
   If Assigned(oDefinition) Then
   Begin
     edtDiskA.Enabled := (Trim(oDefinition.A) = '');
@@ -696,7 +696,7 @@ Begin
     sCommand := Format('%s', [FSettings.UBEE512_exe]);
     If cboTitle.Text <> '' Then
     Begin
-      oDefinition := ubee512.DefinitionByTitle(cboTitle.Text);
+      oDefinition := ubee512.Definitions.DefinitionByTitle(cboTitle.Text);
       slParams.Add(oDefinition.Definition);
     End
     Else If cboModel.Text <> '' Then
