@@ -1,7 +1,7 @@
 Unit uBee512Support;
 
 {$mode ObjFPC}{$H+}
-
+{$WARN 5093 off : function result variable of a managed type does not seem to be initialized}
 Interface
 
 Uses
