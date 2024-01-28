@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
-  Left = 2419
-  Height = 482
-  Top = 366
-  Width = 876
+  Left = 2349
+  Height = 599
+  Top = 177
+  Width = 1013
   Caption = 'uBee512Launcher'
-  ClientHeight = 462
-  ClientWidth = 876
+  ClientHeight = 579
+  ClientWidth = 1013
   Constraints.MinHeight = 255
   Constraints.MinWidth = 700
   Menu = MainMenu1
@@ -16,27 +16,27 @@ object frmMain: TfrmMain
   LCLVersion = '2.2.6.0'
   object pnluBee512: TPanel
     Left = 0
-    Height = 399
+    Height = 516
     Top = 24
-    Width = 876
+    Width = 1013
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 399
-    ClientWidth = 876
+    ClientHeight = 516
+    ClientWidth = 1013
     TabOrder = 0
     object pcOptions: TPageControl
-      Left = 381
-      Height = 399
+      Left = 410
+      Height = 516
       Top = 0
-      Width = 495
-      ActivePage = tsROMs
+      Width = 603
+      ActivePage = tsDrive
       Align = alClient
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       object tsDrive: TTabSheet
         Caption = 'Drives'
-        ClientHeight = 371
-        ClientWidth = 487
+        ClientHeight = 488
+        ClientWidth = 595
         object lblDiskA: TLabel
           Left = 8
           Height = 15
@@ -54,7 +54,7 @@ object frmMain: TfrmMain
           Left = 48
           Height = 23
           Top = 8
-          Width = 312
+          Width = 420
           FilterIndex = 0
           HideDirectories = False
           ButtonWidth = 23
@@ -67,7 +67,7 @@ object frmMain: TfrmMain
           OnChange = DiskorFormatChange
         end
         object btnClearA: TSpeedButton
-          Left = 455
+          Left = 563
           Height = 23
           Top = 8
           Width = 23
@@ -111,7 +111,7 @@ object frmMain: TfrmMain
           OnClick = btnClearAClick
         end
         object btnClearB: TSpeedButton
-          Left = 455
+          Left = 563
           Height = 23
           Top = 43
           Width = 23
@@ -155,7 +155,7 @@ object frmMain: TfrmMain
           OnClick = btnClearBClick
         end
         object btnClearC: TSpeedButton
-          Left = 455
+          Left = 563
           Height = 23
           Top = 78
           Width = 23
@@ -205,7 +205,7 @@ object frmMain: TfrmMain
           Left = 48
           Height = 23
           Top = 43
-          Width = 312
+          Width = 420
           FilterIndex = 0
           HideDirectories = False
           ButtonWidth = 23
@@ -224,7 +224,7 @@ object frmMain: TfrmMain
           Left = 47
           Height = 23
           Top = 78
-          Width = 313
+          Width = 421
           FilterIndex = 0
           HideDirectories = False
           ButtonWidth = 23
@@ -258,7 +258,7 @@ object frmMain: TfrmMain
         end
         object cboFormatA: TComboBox
           AnchorSideRight.Control = btnClearA
-          Left = 362
+          Left = 470
           Height = 23
           Top = 8
           Width = 91
@@ -286,7 +286,7 @@ object frmMain: TfrmMain
         end
         object cboFormatB: TComboBox
           AnchorSideRight.Control = btnClearB
-          Left = 362
+          Left = 470
           Height = 23
           Top = 43
           Width = 91
@@ -314,7 +314,7 @@ object frmMain: TfrmMain
         end
         object cboFormatC: TComboBox
           AnchorSideRight.Control = btnClearC
-          Left = 362
+          Left = 470
           Height = 23
           Top = 78
           Width = 91
@@ -347,10 +347,10 @@ object frmMain: TfrmMain
           AnchorSideRight.Control = btnClearA
           AnchorSideRight.Side = asrBottom
           Left = 8
-          Height = 229
+          Height = 357
           Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut):'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'
           Top = 131
-          Width = 470
+          Width = 578
           Anchors = [akTop, akLeft, akRight]
           ReadOnly = True
           ScrollBars = ssAutoBoth
@@ -371,8 +371,8 @@ object frmMain: TfrmMain
       end
       object tsROMs: TTabSheet
         Caption = 'ROMs'
-        ClientHeight = 371
-        ClientWidth = 487
+        ClientHeight = 488
+        ClientWidth = 595
         object lblROMAlias: TLabel
           AnchorSideLeft.Control = lblDiskA
           Left = 8
@@ -395,7 +395,7 @@ object frmMain: TfrmMain
           Height = 329
           Hint = 'This file allows you to match shortcuts to physical files.'
           Top = 23
-          Width = 464
+          Width = 572
           Anchors = [akTop, akLeft, akRight]
           ReadOnly = True
           ScrollBars = ssAutoBoth
@@ -405,8 +405,8 @@ object frmMain: TfrmMain
       end
       object TabSheet3: TTabSheet
         Caption = 'Peripherals'
-        ClientHeight = 371
-        ClientWidth = 487
+        ClientHeight = 488
+        ClientWidth = 595
         object lblPP: TLabel
           Left = 8
           Height = 37
@@ -426,7 +426,7 @@ object frmMain: TfrmMain
           Left = 62
           Height = 23
           Top = 8
-          Width = 409
+          Width = 517
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 5
           ItemHeight = 15
@@ -436,13 +436,13 @@ object frmMain: TfrmMain
     end
     object pnlLeft: TPanel
       Left = 0
-      Height = 399
+      Height = 516
       Top = 0
-      Width = 376
+      Width = 405
       Align = alLeft
       BevelOuter = bvNone
-      ClientHeight = 399
-      ClientWidth = 376
+      ClientHeight = 516
+      ClientWidth = 405
       TabOrder = 1
       object Label6: TLabel
         Left = 8
@@ -508,7 +508,7 @@ object frmMain: TfrmMain
         Left = 170
         Height = 23
         Top = 21
-        Width = 168
+        Width = 197
         Anchors = [akLeft, akRight, akBottom]
         BorderSpacing.Right = 6
         ItemHeight = 15
@@ -519,11 +519,10 @@ object frmMain: TfrmMain
         TabOrder = 2
       end
       object btnDefinitionExplorer: TBitBtn
-        AnchorSideRight.Control = memRC
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = cboTitle
         AnchorSideBottom.Side = asrBottom
-        Left = 344
+        Left = 373
         Height = 23
         Hint = 'Launch Definition Explorer'
         Top = 21
@@ -534,21 +533,51 @@ object frmMain: TfrmMain
         OnClick = btnDefinitionExplorerClick
         TabOrder = 3
       end
-      object memRC: TMemo
-        Left = 8
-        Height = 342
-        Top = 53
-        Width = 369
+      object pnlSummary: TPanel
+        Left = 0
+        Height = 464
+        Top = 48
+        Width = 406
         Anchors = [akTop, akLeft, akRight, akBottom]
-        ReadOnly = True
-        ScrollBars = ssAutoBoth
+        BevelOuter = bvNone
+        ClientHeight = 464
+        ClientWidth = 406
         TabOrder = 4
-        WordWrap = False
+        object memRC: TMemo
+          Left = 0
+          Height = 255
+          Top = 0
+          Width = 406
+          Align = alClient
+          ReadOnly = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 0
+          WordWrap = False
+        end
+        object memSummary: TMemo
+          Left = 0
+          Height = 204
+          Top = 260
+          Width = 406
+          Align = alBottom
+          ReadOnly = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 1
+        end
+        object Splitter2: TSplitter
+          Cursor = crVSplit
+          Left = 0
+          Height = 5
+          Top = 255
+          Width = 406
+          Align = alBottom
+          ResizeAnchor = akBottom
+        end
       end
     end
     object Splitter1: TSplitter
-      Left = 376
-      Height = 399
+      Left = 405
+      Height = 516
       Top = 0
       Width = 5
     end
@@ -557,7 +586,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 24
     Top = 0
-    Width = 876
+    Width = 1013
     AutoSize = True
     Images = ilMain
     List = True
@@ -649,8 +678,8 @@ object frmMain: TfrmMain
   object memCommandLine: TMemo
     Left = 0
     Height = 39
-    Top = 423
-    Width = 876
+    Top = 540
+    Width = 1013
     Align = alBottom
     Lines.Strings = (
       '1'

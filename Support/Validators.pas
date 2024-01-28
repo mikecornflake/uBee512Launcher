@@ -92,7 +92,9 @@ End;
 Function TValidator.Summary: TStringArray;
 Begin
   SetLength(Result, 0);
-  AddStringToArray(Result, '  ' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome);
+  If Trim(FOutcome) <> '' Then
+    AddStringToArray(Result, '  ' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome);
+
   If Trim(FRecommendation) <> '' Then
     AddStringToArray(Result, '  Recommendation: ' + Trim(FRecommendation));
 End;

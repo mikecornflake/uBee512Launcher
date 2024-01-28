@@ -41,8 +41,10 @@ Type
     lblPP: TLabel;
     MainMenu1: TMainMenu;
     memDiskAlias: TMemo;
-    memROMAlias: TMemo;
     memRC: TMemo;
+    memSummary: TMemo;
+    memROMAlias: TMemo;
+    pnlSummary: TPanel;
     Separator2: TMenuItem;
     mnuDebug: TMenuItem;
     pnlLeft: TPanel;
@@ -55,6 +57,7 @@ Type
     mnuFile: TMenuItem;
     pnluBee512: TPanel;
     Splitter1: TSplitter;
+    Splitter2: TSplitter;
     ToolBar2: TToolBar;
     btnSettings: TToolButton;
     btnDiskExplorer: TToolButton;
@@ -586,6 +589,16 @@ Begin
 
     memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
     memRC.Lines.Text := sRC;
+
+    memSummary.Lines.Clear;
+    memSummary.Font.Color:=clBlack;
+
+    If Assigned(oDefinition) Then
+    Begin
+      oDefinition.Validator.Process;
+      memSummary.Font.Color:=ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
+      memSummary.Lines.AddStrings(oDefinition.Validator.Summary);
+    end;
   End;
 End;
 

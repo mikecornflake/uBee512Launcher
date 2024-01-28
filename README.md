@@ -42,7 +42,7 @@
 + I know there looks like a lot of Definitions in ubee512rc sample.  Err, I'm currently filtering out about half - the ones I haven't researched
 
 ## Validation Rules (under development)
-+ Results of Validation checks currently only visible in Definitions Explorer
++ Results of Validation checks currently visible in Definitions Explorer & Main Form (still to add "Issues" dialog)
 + uBee512rc Definition checks:
   + For disks assigned to A, B or C:
     + If absolute filename, does disk exist?  (Error flag if not)
