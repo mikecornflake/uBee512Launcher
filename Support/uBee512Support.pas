@@ -69,8 +69,12 @@ Type
   Private
     FValidator: TDiskAliasValidator;
   Public
+    // Next two for lines with aliases
     Alias: String;
     Filename: String;
+
+    // For blank lines or comments
+    Line: String;
 
     Constructor Create;
     Destructor Destroy; Override;
@@ -87,6 +91,8 @@ Type
     FFilename: String;
   Public
     Function Load: Boolean;
+    Function Save: Boolean;
+
     Function FilenameByAlias(AAlias: String): String;
 
     Property Filename: String read FFilename;
@@ -190,25 +196,54 @@ Begin
       For sLine In oAliases Do
       Begin
         sTemp := Trim(sLine);
+        oItem := TDiskAlias.Create;
+        Add(oItem);
 
         If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
         Begin
-          oItem := TDiskAlias.Create;
-
           // Split sTemp into sName and sValue using spaces or tabs
           oItem.Alias := Trim(ExtractWord(1, sTemp, [' ', #9]));
           oItem.Filename := Trim(ExtractWord(2, sTemp, [' ', #9]));
 
-          Add(oItem);
-
           oItem.Validator.Process;
-        End;
+        End
+        Else
+          oItem.Line := sTemp;
       End;
     Finally
       oAliases.Free;
     End;
 
     Result := True;
+  End;
+End;
+
+Function TDiskAliases.Save: Boolean;
+Var
+  slTemp: TStringList;
+  oItem: TDiskAlias;
+Begin
+  // TODO TDiskAliases.Save is untested.  Pending ability to edit disks.alias in UI
+  Result := False;
+
+  If Trim(FFilename <> '') Then
+    FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
+
+  slTemp := TStringList.Create;
+  Try
+    For oItem In Self Do
+      If Trim(oItem.Alias) = '' Then
+        slTemp.Add(oItem.Line)
+      Else
+        slTemp.Add('%s     %s', [oItem.Alias, oItem.Filename]);
+
+    Try
+      slTemp.SaveToFile(Filename);
+    Finally
+      Result := True;
+    End;
+  Finally
+    slTemp.Free;
   End;
 End;
 
