@@ -417,6 +417,9 @@ Begin
       Else
         memDiskAlias.Lines.Add('File %s not found', [uBee512.DiskAliases.Filename]);
 
+      memDiskAlias.SelStart := 0;
+      memDiskAlias.CaretPos := Point(0, 0);
+
       // TODO Implement roms.alias summary correctly
       sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
       If FileExists(sAliasFile) Then
@@ -565,6 +568,9 @@ Begin
 
     sRC := 'Using defaults from ubee512rc.[global-start]';
     sParam := '';
+
+    oDefinition := nil;
+    oModel := nil;
 
     If (cboTitle.Text <> '') Then
     Begin
