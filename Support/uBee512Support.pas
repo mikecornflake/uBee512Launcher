@@ -99,6 +99,8 @@ Type
 
     Function FilenameByAlias(AAlias: String): String;
 
+    Function ValidAliases: TStringArray;
+
     Property Filename: String read FFilename;
     Property Validators: TValidators read FValidators;
   End;
@@ -283,6 +285,17 @@ Begin
       Result := oItem.Filename;
       Break;
     End;
+End;
+
+Function TDiskAliases.ValidAliases: TStringArray;
+Var
+  oItem: TDiskAlias;
+Begin
+  SetLength(Result, 0);
+
+  For oItem In Self Do
+    If oItem.Validator.ErrorLevel = elInfo Then
+      AddStringToArray(Result, oItem.Alias);
 End;
 
 { TDefinition }

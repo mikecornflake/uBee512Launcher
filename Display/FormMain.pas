@@ -6,7 +6,7 @@ Interface
 
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  EditBtn, StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
+  StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
   FormSettings, Logs;
 
 Type
@@ -15,9 +15,13 @@ Type
 
   TfrmMain = Class(TForm)
     btnClearA: TSpeedButton;
+    btnExploreA: TSpeedButton;
     btnClearB: TSpeedButton;
     btnClearC: TSpeedButton;
     btnDefinitionExplorer: TBitBtn;
+    btnExploreB: TSpeedButton;
+    btnExploreA2: TSpeedButton;
+    btnExploreC: TSpeedButton;
     cboFormatB: TComboBox;
     cboFormatC: TComboBox;
     cboModel: TComboBox;
@@ -25,12 +29,12 @@ Type
     cboFormatA: TComboBox;
     cboTitle: TComboBox;
     cboType: TComboBox;
+    cboDiskA: TComboBox;
+    cboDiskB: TComboBox;
+    cboDiskC: TComboBox;
     lblDiskAlias: TLabel;
     lblROMAlias: TLabel;
     memCommandLine: TMemo;
-    edtDiskA: TFileNameEdit;
-    edtDiskB: TFileNameEdit;
-    edtDiskC: TFileNameEdit;
     ilMain: TImageList;
     Label10: TLabel;
     Label5: TLabel;
@@ -99,7 +103,7 @@ Type
 
     FLog: TLog;
 
-    Function DriveFormatAsParam(AEdit: TFilenameEdit; AFormat: TCombobox): String;
+    Function DriveFormatAsParam(AEdit: TComboBox; AFormat: TCombobox): String;
     Procedure LoadRC;
     Procedure LoadSettings;
     Procedure RefreshRC;
@@ -108,7 +112,7 @@ Type
 
     Procedure SetDefinitionCombo(ACombo: TComboBox; AValue: String);
     Procedure SetSelectedDisk(AFilename: String; AFormat: String;
-      AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
+      AFilenameEdit: TComboBox; AFormatCombo: TComboBox);
   End;
 
 Const
@@ -219,7 +223,7 @@ Begin
 End;
 
 Procedure TfrmMain.SetSelectedDisk(AFilename: String; AFormat: String;
-  AFilenameEdit: TFileNameEdit; AFormatCombo: TComboBox);
+  AFilenameEdit: TComboBox; AFormatCombo: TComboBox);
 Begin
   AFilename := Trim(AFilename);
   AFilenameEdit.Text := AFilename;
@@ -288,9 +292,9 @@ Begin
 
     LoadRC;
 
-    SetSelectedDisk(FSettings.A, FSettings.A_Format, edtDiskA, cboFormatA);
-    SetSelectedDisk(FSettings.B, FSettings.B_Format, edtDiskB, cboFormatB);
-    SetSelectedDisk(FSettings.C, FSettings.C_Format, edtDiskC, cboFormatC);
+    SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
+    SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
+    SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
 
     sModel := oIniFile.ReadString('Selected', 'Model', DEFAULT_MODEL);
     sTitle := oIniFile.ReadString('Selected', 'Title', DEFAULT_TITLE);
@@ -330,9 +334,9 @@ Begin
       oInifile.WriteInteger(Name, 'Height', Application.MainForm.Height);
     End;
 
-    FSettings.A := edtDiskA.Text;
-    FSettings.B := edtDiskB.Text;
-    FSettings.C := edtDiskC.Text;
+    FSettings.A := cboDiskA.Text;
+    FSettings.B := cboDiskB.Text;
+    FSettings.C := cboDiskC.Text;
 
     FSettings.A_Format := cboFormatA.Text;
     FSettings.B_Format := cboFormatB.Text;
@@ -385,6 +389,7 @@ Begin
           memDiskAlias.Lines.Add('The following %d entries are correct and ready to use:',
             [iInfo]);
           memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elInfo]));
+
         End
         Else
           memDiskAlias.Lines.Add('There are no defined aliases ready to use');
@@ -416,6 +421,14 @@ Begin
       sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
       If FileExists(sAliasFile) Then
         memROMAlias.Lines.LoadFromFile(sAliasFile);
+
+      cboDiskA.Items.Clear;
+      cboDiskB.Items.Clear;
+      cboDiskC.Items.Clear;
+
+      cboDiskA.Items.AddStrings(uBee512.DiskAliases.ValidAliases);
+      cboDiskB.Items.AddStrings(cboDiskA.Items);
+      cboDiskC.Items.AddStrings(cboDiskA.Items);
     End;
 
     cboModel.Items.CommaText := ',' + uBee512.Definitions.Models;
@@ -437,21 +450,21 @@ End;
 
 Procedure TfrmMain.btnClearAClick(Sender: TObject);
 Begin
-  edtDiskA.Text := '';
+  cboDiskA.Text := '';
   cboFormatA.Text := '';
   RefreshUI;
 End;
 
 Procedure TfrmMain.btnClearBClick(Sender: TObject);
 Begin
-  edtDiskB.Text := '';
+  cboDiskB.Text := '';
   cboFormatB.Text := '';
   RefreshUI;
 End;
 
 Procedure TfrmMain.btnClearCClick(Sender: TObject);
 Begin
-  edtDiskC.Text := '';
+  cboDiskC.Text := '';
   cboFormatC.Text := '';
   RefreshUI;
 End;
@@ -462,9 +475,9 @@ Var
 Begin
   oForm := TfrmDiskExplorer.Create(Self);
 
-  FSettings.A := edtDiskA.Text;
-  FSettings.B := edtDiskB.Text;
-  FSettings.C := edtDiskC.Text;
+  FSettings.A := cboDiskA.Text;
+  FSettings.B := cboDiskB.Text;
+  FSettings.C := cboDiskC.Text;
 
   oForm.Settings := FSettings;
   Try
@@ -472,9 +485,9 @@ Begin
     Begin
       FSettings.Assign(oForm.Settings);
 
-      SetSelectedDisk(FSettings.A, FSettings.A_Format, edtDiskA, cboFormatA);
-      SetSelectedDisk(FSettings.B, FSettings.B_Format, edtDiskB, cboFormatB);
-      SetSelectedDisk(FSettings.C, FSettings.C_Format, edtDiskC, cboFormatC);
+      SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
+      SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
+      SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
     End;
   Finally
     oForm.Free;
@@ -535,7 +548,7 @@ Var
   sParam: String;
   elMaxErrorLevel, elTemp: TErrorLevel;
 
-  Procedure AddDisk(ADrive: String; AEdit: TFileNameEdit; ACombo: TComboBox);
+  Procedure AddDisk(ADrive: String; AEdit: TComboBox; ACombo: TComboBox);
   Var
     sFormat: String;
   Begin
@@ -583,9 +596,9 @@ Begin
 
     If tsDrive.TabVisible Then
     Begin
-      AddDisk('a', edtDiskA, cboFormatA);
-      AddDisk('b', edtDiskB, cboFormatB);
-      AddDisk('c', edtDiskC, cboFormatC);
+      AddDisk('a', cboDiskA, cboFormatA);
+      AddDisk('b', cboDiskB, cboFormatB);
+      AddDisk('c', cboDiskC, cboFormatC);
     End;
 
     memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
@@ -603,13 +616,13 @@ Begin
 
       elTemp := oDefinition.Validator.ErrorLevel;
       If elTemp > elMaxErrorLevel Then
-        elTemp := elMaxErrorLevel;
+        elMaxErrorLevel := elTemp;
     End;
 
     // TODO Add Model Validators and display here
 
     // Color results according to the highest error found
-    memSummary.Font.Color := ERRORLEVEL_COLOR[elTemp];
+    memSummary.Font.Color := ERRORLEVEL_COLOR[elMaxErrorLevel];
   End;
 End;
 
@@ -640,23 +653,23 @@ Begin
   oDefinition := ubee512.Definitions.DefinitionByTitle(cboTitle.Text);
   If Assigned(oDefinition) Then
   Begin
-    edtDiskA.Enabled := (Trim(oDefinition.A) = '');
-    edtDiskB.Enabled := (Trim(oDefinition.B) = '');
-    edtDiskC.Enabled := (Trim(oDefinition.C) = '');
+    cboDiskA.Enabled := (Trim(oDefinition.A) = '');
+    cboDiskB.Enabled := (Trim(oDefinition.B) = '');
+    cboDiskC.Enabled := (Trim(oDefinition.C) = '');
 
-    cboFormatA.Enabled := edtDiskA.Enabled;
-    cboFormatB.Enabled := edtDiskB.Enabled;
-    cboFormatC.Enabled := edtDiskC.Enabled;
+    cboFormatA.Enabled := cboDiskA.Enabled;
+    cboFormatB.Enabled := cboDiskB.Enabled;
+    cboFormatC.Enabled := cboDiskC.Enabled;
 
-    btnClearA.Enabled := edtDiskA.Enabled;
-    btnClearB.Enabled := edtDiskB.Enabled;
-    btnClearC.Enabled := edtDiskC.Enabled;
+    btnClearA.Enabled := cboDiskA.Enabled;
+    btnClearB.Enabled := cboDiskB.Enabled;
+    btnClearC.Enabled := cboDiskC.Enabled;
   End;
 
   RefreshRC;
 End;
 
-Function TfrmMain.DriveFormatAsParam(AEdit: TFilenameEdit; AFormat: TCombobox): String;
+Function TfrmMain.DriveFormatAsParam(AEdit: TComboBox; AFormat: TCombobox): String;
 Var
   sFormat: TCaption;
 Begin
@@ -686,7 +699,7 @@ Var
   slParams: TStringList;
   oDefinition: TDefinition;
 
-  Function AddDriveToCommand(ADrive: String; AEdit: TFilenameEdit; ACombo: TComboBox): Boolean;
+  Function AddDriveToCommand(ADrive: String; AEdit: TComboBox; ACombo: TComboBox): Boolean;
   Var
     sFormat: String;
   Begin
@@ -728,11 +741,11 @@ Begin
 
     If tsDrive.TabVisible Then
     Begin
-      bHasA := AddDriveToCommand('a', edtDiskA, cboFormatA);
+      bHasA := AddDriveToCommand('a', cboDiskA, cboFormatA);
       If bHasA Then
       Begin
-        AddDriveToCommand('b', edtDiskB, cboFormatB);
-        AddDriveToCommand('c', edtDiskC, cboFormatC);
+        AddDriveToCommand('b', cboDiskB, cboFormatB);
+        AddDriveToCommand('c', cboDiskC, cboFormatC);
       End;
     End;
 
