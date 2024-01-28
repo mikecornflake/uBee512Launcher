@@ -533,6 +533,7 @@ Var
   oModel: TModel;
   oDefinition: TDefinition;
   sParam: String;
+  elMaxErrorLevel, elTemp: TErrorLevel;
 
   Procedure AddDisk(ADrive: String; AEdit: TFileNameEdit; ACombo: TComboBox);
   Var
@@ -590,15 +591,25 @@ Begin
     memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
     memRC.Lines.Text := sRC;
 
+    // Display the results of the validity checks relating to the current settings
     memSummary.Lines.Clear;
-    memSummary.Font.Color:=clBlack;
+    memSummary.Font.Color := clBlack;
+    elMaxErrorLevel := elNone;
 
     If Assigned(oDefinition) Then
     Begin
       oDefinition.Validator.Process;
-      memSummary.Font.Color:=ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
       memSummary.Lines.AddStrings(oDefinition.Validator.Summary);
-    end;
+
+      elTemp := oDefinition.Validator.ErrorLevel;
+      If elTemp > elMaxErrorLevel Then
+        elTemp := elMaxErrorLevel;
+    End;
+
+    // TODO Add Model Validators and display here
+
+    // Color results according to the highest error found
+    memSummary.Font.Color := ERRORLEVEL_COLOR[elTemp];
   End;
 End;
 
