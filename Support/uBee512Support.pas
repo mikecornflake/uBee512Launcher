@@ -5,7 +5,7 @@ Unit uBee512Support;
 Interface
 
 Uses
-  Classes, SysUtils, Generics.Collections, Validators;
+  Classes, SysUtils, Generics.Collections, uBee512Validators;
 
 Type
   TMbeeType = (mtFDD, mtROM, mtCustom);  // As built by Microbee
@@ -45,7 +45,7 @@ Type
     Function ModelsByType(AMbeeType: TMbeeType): String;
     Function Titles(AModel: String): String; // comma separated
 
-    Property Definition[ADefinition: String]: TDefinition Read GetDefinition; Default;
+    Property Definition[ADefinition: String]: TDefinition read GetDefinition; Default;
   End;
 
   // Hard coded list of Microbee Models (official and homebrew)
@@ -61,7 +61,7 @@ Type
     Function GetModel(AModel: String): TModel;
   Public
     Function MbeeType(AModel: String): TMbeeType;
-    Property Model[AModel: String]: TModel Read GetModel; Default;
+    Property Model[AModel: String]: TModel read GetModel; Default;
   End;
 
   // Entry within "disks.alias"
@@ -127,8 +127,8 @@ Type
     Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
 
     Property DiskAliases: TDiskAliases read FDisksAliases;  // Contents of "disks.alias"
-    Property Definitions: TDefinitions Read FDefinitions;   // entries within ubee512rc
-    Property Models: TModels Read FModels;                  // Hard coded list
+    Property Definitions: TDefinitions read FDefinitions;   // entries within ubee512rc
+    Property Models: TModels read FModels;                  // Hard coded list
   End;
 
 Const
