@@ -226,7 +226,7 @@ Begin
   // TODO TDiskAliases.Save is untested.  Pending ability to edit disks.alias in UI
   Result := False;
 
-  If Trim(FFilename <> '') Then
+  If (Trim(FFilename) <> '') Then
     FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
 
   slTemp := TStringList.Create;

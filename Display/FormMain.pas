@@ -123,7 +123,7 @@ Implementation
 Uses
   IniFiles, cpmtoolsSupport, LazFileUtils, StringSupport, FileSupport,
   OSSupport, uBee512Support, FormDefinitionExplorer, FormDiskExplorer, FormDebug,
-  FormAbout;
+  FormAbout, Validators;
 
   {$R *.lfm}
 
@@ -353,11 +353,11 @@ End;
 
 Procedure TfrmMain.LoadRC;
 Var
-  iPrev: Integer;
+  iPrev, iOthers, iErrors, iAlias: Integer;
   bNew: Boolean;
   oAlias: TDiskAlias;
-  sAliasFile, sPartialAlias: String;
-  slTemp: TStringList;
+  sAliasFile: String;
+  slValid, slError, slOther: TStringList;
 
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
@@ -370,40 +370,72 @@ Begin
       If FileExists(uBee512.DiskAliases.Filename) Then
       Begin
         // Analyse "disks.alias"
-        slTemp := TStringList.Create;
+        slValid := TStringList.Create;
+        slError := TStringList.Create;
+        slOther := TStringList.Create;
+        iErrors := 0;
+        iOthers := 0;
+        iAlias := 0;
         Try
-          sPartialAlias := '';
           For oAlias In uBee512.DiskAliases Do
-          Begin
-            If (Trim(oAlias.Alias) <> '') And (Trim(oAlias.Filename) <> '') Then
-              slTemp.Add('  %s %s', [oAlias.Alias, oAlias.Filename]);
-
-            If (Trim(oAlias.Alias) <> '') And (Trim(oAlias.Filename) = '') Then
-              sPartialAlias += oAlias.Alias + ', ';
-          End;
-          sPartialAlias := TrimChars(sPartialAlias, [' ', ',']);
+            If (Trim(oAlias.Alias) <> '') Then
+            Begin
+              Inc(iAlias);
+              If (oAlias.Validator.ErrorLevel <= elInfo) Then
+                slValid.Add('  %s %s', [oAlias.Alias, oAlias.Filename])
+              Else If (oAlias.Validator.ErrorLevel=elError) Then
+              Begin
+                Inc(iErrors);
+                slError.Add('  Error:  ' + oAlias.Validator.Outcome);
+                slError.Add('  Recommendation:' + oAlias.Validator.Recommendation);
+                slError.Add('');
+              End
+              Else
+              Begin
+                Inc(iOthers);
+                slOther.Add('  Warning:  ' + oAlias.Validator.Outcome);
+                slOther.Add('  Recommendation:' + oAlias.Validator.Recommendation);
+                slOther.Add('');
+              End;
+            end;
 
           memDiskAlias.Lines.Clear;
           memDiskAlias.Lines.Add('There are %d aliases in "%s"',
-            [uBee512.DiskAliases.Count, uBee512.DiskAliases.Filename]);
+            [iAlias, uBee512.DiskAliases.Filename]);
 
           memDiskAlias.Lines.Add('');
-          If slTemp.Count > 0 Then
+          If slValid.Count > 0 Then
           Begin
-            memDiskAlias.Lines.Add('The following %d entries are fully defined:', [slTemp.Count]);
-            memDiskAlias.Lines.AddStrings(slTemp);
+            memDiskAlias.Lines.Add('The following %d entries are correct and ready to use:',
+              [slValid.Count]);
+            memDiskAlias.Lines.AddStrings(slValid);
           End
           Else
             memDiskAlias.Lines.Add('There are no defined aliases');
 
-          If (sPartialAlias <> '') Then
+          memDiskAlias.Lines.Add('');
+          If slError.Count > 0 Then
           Begin
+            memDiskAlias.Lines.Add('The following %d errors were found:', [iErrors]);
+            memDiskAlias.Lines.AddStrings(slError);
+          End
+          Else
+          Begin
+            memDiskAlias.Lines.Add('No errors were found.');
             memDiskAlias.Lines.Add('');
-            memDiskAlias.Lines.Add('The following entries are partially defined:');
-            memDiskAlias.Lines.Add('  ' + sPartialAlias);
           End;
+
+          If slOther.Count > 0 Then
+          Begin
+            memDiskAlias.Lines.Add('The following %d warnings were found:', [iOthers]);
+            memDiskAlias.Lines.AddStrings(slOther);
+          End
+          Else
+            memDiskAlias.Lines.Add('No warnings were found.');
         Finally
-          slTemp.Free;
+          slValid.Free;
+          slError.Free;
+          slOther.Free;
         End;
       End
       Else
