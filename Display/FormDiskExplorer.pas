@@ -8,6 +8,10 @@ Uses
   Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs, ShellCtrls,
   ExtCtrls, ComCtrls, StdCtrls, FormSettings;
 
+// TODO FormDiskExplorer: Add ability to use selected disk to update "disk.Alias"
+// TODO FormDiskExplorer: Recognise if WorkingDirectory is selected, and make filenames relative
+// TODO FormDiskExplorer: Add right click to MainListView
+
 Type
 
   { TfrmDiskExplorer }
@@ -22,8 +26,8 @@ Type
     btnCancel: TButton;
     btnOK: TButton;
     ilMain: TImageList;
-    lvcpmtoolsFiles: TListView;
-    lvcpmtoolsWorkingFolder: TListView;
+    lvFilesInDisk: TListView;
+    lvFiles: TListView;
     memOutput: TMemo;
     Panel1: TPanel;
     pcPreview: TPageControl;
@@ -46,7 +50,7 @@ Type
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
-    Procedure lvcpmtoolsWorkingFolderSelectItem(Sender: TObject; Item: TListItem;
+    Procedure lvFilesSelectItem(Sender: TObject; Item: TListItem;
       {%H-}Selected: Boolean);
     Procedure tvFoldersChange(Sender: TObject; {%H-}Node: TTreeNode);
   Private
@@ -101,8 +105,8 @@ Var
   oItem: TListItem;
 Begin
   Result := '';
-  If Assigned(lvcpmtoolsWorkingFolder.Selected) Then
-    oItem := lvcpmtoolsWorkingFolder.Selected;
+  If Assigned(lvFiles.Selected) Then
+    oItem := lvFiles.Selected;
 
   If oItem.SubItems.Count > 2 Then
     Result := IncludeSlash(FSettings.WorkingFolder) + oItem.Caption + oItem.SubItems[0];
@@ -161,14 +165,14 @@ Begin
       FSettings.WorkingFolder := ExcludeSlash(tvFolders.Path);
       Debug('Start scanning folder: ' + FSettings.WorkingFolder);
 
-      lvcpmtoolsWorkingFolder.Items.BeginUpdate;
+      lvFiles.Items.BeginUpdate;
       Try
         // Clear current folder file list
-        lvcpmtoolsWorkingFolder.Clear;
+        lvFiles.Clear;
 
         // Clear Preview
         memOutput.Lines.Clear;
-        lvcpmtoolsFiles.Clear;
+        lvFilesInDisk.Clear;
 
         If FindFirst(IncludeSlash(FSettings.WorkingFolder) + '*.*', faAnyFile, oSearchRec) = 0 Then
           Repeat
@@ -181,7 +185,7 @@ Begin
               bBoot := bIsDisk And
                 (IsCPMBootableFile(IncludeSlash(FSettings.WorkingFolder) + oSearchRec.Name));
 
-              oListItem := lvcpmtoolsWorkingFolder.Items.Add;
+              oListItem := lvFiles.Items.Add;
               oListItem.Caption := ExtractFileNameWithoutExt(oSearchRec.Name);
               oListItem.SubItems.Add(sExt);
               oListItem.SubItems.Add(BOOLEAN_YES_NO[bBoot]);
@@ -197,7 +201,7 @@ Begin
 
         FindClose(oSearchRec);
       Finally
-        lvcpmtoolsWorkingFolder.Items.EndUpdate;
+        lvFiles.Items.EndUpdate;
         FLoadingDSK := False;
         Debug('End scanning folder: ' + FSettings.WorkingFolder);
       End;
@@ -215,11 +219,11 @@ Begin
   bDSKBootable := False;
   bDSK := False;
 
-  bFileSelected := Assigned(lvcpmtoolsWorkingFolder.Selected);
+  bFileSelected := Assigned(lvFiles.Selected);
 
   If bFileSelected Then
   Begin
-    oItem := lvcpmtoolsWorkingFolder.Selected;
+    oItem := lvFiles.Selected;
 
     If oItem.SubItems.Count > 2 Then
     Begin
@@ -237,7 +241,7 @@ Begin
   btnAddFolderToC.Enabled := True;
 End;
 
-Procedure TfrmDiskExplorer.lvcpmtoolsWorkingFolderSelectItem(Sender: TObject;
+Procedure TfrmDiskExplorer.lvFilesSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 Var
   slTemp: TStringList;
@@ -256,8 +260,8 @@ Begin
     Log.IncIndent;
 
     Try
-      lvcpmtoolsFiles.Items.BeginUpdate;
-      lvcpmtoolsFiles.Items.Clear;
+      lvFilesInDisk.Items.BeginUpdate;
+      lvFilesInDisk.Items.Clear;
       memOutput.Lines.Text := '';
 
       If Item.SubItems[0] = '.dsk' Then
@@ -278,7 +282,7 @@ Begin
             Begin
               arrFile := SplitString(arrStrings[6], '.');
 
-              oListItem := lvcpmtoolsFiles.Items.Add;
+              oListItem := lvFilesInDisk.Items.Add;
               oListItem.Caption := arrStrings[0];
               oListItem.SubItems.Add(arrFile[0]); // Filename
               oListItem.SubItems.Add(arrFile[1]); // Ext
@@ -309,10 +313,10 @@ Begin
       End;
 
       // There may be an error message the user needs to see
-      If (lvcpmtoolsFiles.Items.Count = 0) And (pcPreview.ActivePage = tsFiles) Then
+      If (lvFilesInDisk.Items.Count = 0) And (pcPreview.ActivePage = tsFiles) Then
         pcPreview.ActivePage := tsText;
 
-      lvcpmtoolsFiles.Items.EndUpdate;
+      lvFilesInDisk.Items.EndUpdate;
     Finally
       Log.DecIndent;
       Debug('End Preview: ' + sSelectedFile);

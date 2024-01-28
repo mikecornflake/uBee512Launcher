@@ -46,10 +46,11 @@ object frmDiskExplorer: TfrmDiskExplorer
     0000000000000000000000000000000000000000000000000000000000000000
     0000
   }
-  Position = poMainFormCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  Position = poMainFormCenter
+  LCLVersion = '2.2.6.0'
   object tvFolders: TShellTreeView
     Left = 0
     Height = 456
@@ -59,9 +60,9 @@ object frmDiskExplorer: TfrmDiskExplorer
     FileSortType = fstAlphabet
     ReadOnly = True
     TabOrder = 0
+    OnChange = tvFoldersChange
     Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
     ObjectTypes = [otFolders, otHidden]
-    OnChange = tvFoldersChange
   end
   object Splitter1: TSplitter
     Left = 213
@@ -108,7 +109,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddDSKtoAClick
         end
         object btnAddFolderToA: TToolButton
-          Left = 42
+          Left = 41
           Hint = 'Mount selected folder into A:'
           Top = 2
           Caption = 'A:'
@@ -116,7 +117,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddFolderToAClick
         end
         object btnAddDSKtoB: TToolButton
-          Left = 91
+          Left = 89
           Hint = 'Mount selected file into B:'
           Top = 2
           Caption = 'B:'
@@ -124,7 +125,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddDSKtoBClick
         end
         object btnAddFolderToB: TToolButton
-          Left = 132
+          Left = 128
           Hint = 'Mount selected folder into B:'
           Top = 2
           Caption = 'B:'
@@ -132,21 +133,21 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddFolderToBClick
         end
         object ToolButton1: TToolButton
-          Left = 83
+          Left = 81
           Height = 22
           Top = 2
           Caption = 'ToolButton1'
           Style = tbsSeparator
         end
         object ToolButton2: TToolButton
-          Left = 173
+          Left = 167
           Height = 22
           Top = 2
           Caption = 'ToolButton2'
           Style = tbsSeparator
         end
         object btnAddDSKtoC: TToolButton
-          Left = 181
+          Left = 175
           Hint = 'Mount selected file into B:'
           Top = 2
           Caption = 'C:'
@@ -154,7 +155,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddDSKtoCClick
         end
         object btnAddFolderToC: TToolButton
-          Left = 223
+          Left = 215
           Hint = 'Mount selected folder into C:'
           Top = 2
           Caption = 'C:'
@@ -162,7 +163,7 @@ object frmDiskExplorer: TfrmDiskExplorer
           OnClick = btnAddFolderToCClick
         end
       end
-      object lvcpmtoolsWorkingFolder: TListView
+      object lvFiles: TListView
         Left = 0
         Height = 149
         Top = 26
@@ -195,7 +196,7 @@ object frmDiskExplorer: TfrmDiskExplorer
         SortType = stText
         TabOrder = 1
         ViewStyle = vsReport
-        OnSelectItem = lvcpmtoolsWorkingFolderSelectItem
+        OnSelectItem = lvFilesSelectItem
       end
     end
     object Splitter2: TSplitter
@@ -218,13 +219,13 @@ object frmDiskExplorer: TfrmDiskExplorer
       TabOrder = 2
       object tsFiles: TTabSheet
         Caption = 'Files in Disk'
-        ClientHeight = 240
-        ClientWidth = 501
-        object lvcpmtoolsFiles: TListView
+        ClientHeight = 248
+        ClientWidth = 499
+        object lvFilesInDisk: TListView
           Left = 0
-          Height = 240
+          Height = 248
           Top = 0
-          Width = 501
+          Width = 499
           Align = alClient
           Columns = <          
             item
@@ -260,13 +261,13 @@ object frmDiskExplorer: TfrmDiskExplorer
       end
       object tsText: TTabSheet
         Caption = 'Text / Raw'
-        ClientHeight = 240
-        ClientWidth = 501
+        ClientHeight = 248
+        ClientWidth = 499
         object memOutput: TMemo
           Left = 0
-          Height = 240
+          Height = 248
           Top = 0
-          Width = 501
+          Width = 499
           Align = alClient
           Lines.Strings = (
             'memOutput'
