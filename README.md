@@ -63,12 +63,14 @@
 
 ## Short term (planned for 0.5beta)
 + Add Display options (position relative to launcher, monitor, opengl/sdl)
-+ Add awareness of disks.alias and roms.alias (validator checks bth for the .alias files themselves, and use the alias when checking system definitions).
-+ Expand Validator to PAKx/ROMx
-+ Add support for HDDx
-+ Add support for IDEx
-+ Prevent selection of invalid Definitions in main form (hide entirely?), or at least raise awareness
-  + One "Issues" pane to rule them all?
++ Integrate "disks.alias" updates into Disk Explorer (add disk to new/existing Alias)
++ Add awareness of roms.alias (before doing the below)
++ Add ROM checks to TModelValidator
++ Add TMainFormValidator
++ Add support for PAKx (inc Validator)
++ Add support for HDDx (inc Validator)
++ Add support for IDEx (inc Validator)
++ Add "Issues" pane to summarise ALL issues
 + Add awareness of **RunCPM** folder structure
 
 ## Medium term (not until 0.6beta or higher)
