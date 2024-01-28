@@ -7,7 +7,7 @@
 
 ## Release v0.4beta
 + Fourth beta release, still lots to do yet
-+ [Link to precompiled binaries](bin)
++ Now using Github releases, not Bin subfolder
 + To use:
   + If ubee512 is on your environment path, simply download relevant binary and run.
   + if ubee512 isn't on your environment path, either
@@ -40,6 +40,18 @@
 + Contents of DSK listed using either original **CPMtools** or patched **CPMTools** (allows for Microbee specific formats)
 + Parses ubee512rc to build up System Definitions, uses these in Main Form & Definitions Explorer
 + I know there looks like a lot of Definitions in ubee512rc sample.  Err, I'm currently filtering out about half - the ones I haven't researched
+
+## Validation Rules
++ Results of Validation checks currently only visible in Definitions Explorer
++ Current checks include:
++ uBee512rc Definition checks:
+  + For disks assigned to A, B or C:
+    + If absolute filename, does disk exist?  (Error flag if not)
+	+ If relative filename:
+	  + does disk exist in ubee512 working directory "disks" subfolder? (no flag if it does)
+	  + If not: Does entry exist in "disks.alias"? (info flag if it does)
+	    + Is "disks.alias" entry valid? (checks both absolute and relative file paths). (Flag escalated to Error if not)
+  + For --sram-file, --ide-a0, --tapei, --tapeo entries: Does file exist? (checks absolute and correct subfolder) (Error Flag if not) 	
 
 # TODO
 
