@@ -625,7 +625,18 @@ Begin
         elMaxErrorLevel := elTemp;
     End;
 
-    // TODO Add Model Validators and display here
+    If Assigned(oModel) Then
+    Begin
+      oModel.Validator.Process;
+
+      If memSummary.Lines.Count > 0 Then
+        memSummary.Lines.Add('');
+      memSummary.Lines.AddStrings(oModel.Validator.Summary);
+
+      elTemp := oModel.Validator.ErrorLevel;
+      If elTemp > elMaxErrorLevel Then
+        elMaxErrorLevel := elTemp;
+    End;
 
     // Color results according to the highest error found
     memSummary.Font.Color := ERRORLEVEL_COLOR[elMaxErrorLevel];

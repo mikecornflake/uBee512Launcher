@@ -54,6 +54,10 @@
 + "disk.alias" checks:
   + Does the alias have a lookup filename? (warning flag if not)
   + Does the lookup filename exist? (error flag if not)
++ Model checks
+  + Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
+  + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
+  + Is Boot Disk readonly? (Error flag is so)
   
 # TODO
 

@@ -24,9 +24,114 @@ Type
     Procedure Process; Override;
   End;
 
+  { TModelValidator }
+
+  TModelValidator = Class(TValidator)
+  Public
+    Constructor Create(AOwner: TObject); Override;
+    Procedure Process; Override;
+  End;
+
+
 Implementation
 
 Uses uBee512Support, FileSupport, StrUtils;
+
+{ TModelValidator }
+
+Constructor TModelValidator.Create(AOwner: TObject);
+Begin
+  Inherited Create(AOwner);
+
+  FDisplayName := 'Microbee Model Checker';
+  FDescription := 'This performs simple checks on each Model';
+End;
+
+Procedure TModelValidator.Process;
+Var
+  sBaseFolder, sModelBootDisk, sAliasFilename, sBoot: String;
+  oItem: TModel;
+  bHasBoot, bAliasExists, bAliasFilenameExists, bGenericBootExists, bReadOnly: Boolean;
+Begin
+  Inherited Process;
+
+  FErrorLevel := elNone;
+  FOutcome := '';
+  FRecommendation := '';
+
+  sBaseFolder := IncludeSlash(ubee512.WorkingDir) + includeSlash(SUBFOLDER_DISKS);
+
+  If Assigned(FOwner) And (FOwner Is TModel) Then
+  Begin
+    oItem := TModel(FOwner);
+
+    If (oItem.MbeeType = mtFDD) Or (oItem.MBeeType = mtCustom) Then
+    Begin
+      sModelBootDisk := oItem.Model + '.dsk';
+      sBoot := '';
+
+      bHasBoot := FileExists(sBaseFolder + sModelBootDisk);
+      sAliasFilename := uBee512.DiskAliases.FilenameByAlias(sModelBootDisk);
+      bAliasExists := (sAliasFilename <> ALIAS_NOT_FOUND);
+      bAliasFilenameExists := FileExists(sBaseFolder + sAliasFilename);
+      bGenericBootExists := FileExists(sBaseFolder + 'boot.dsk');
+
+      If bHasBoot Then
+        sBoot := sBaseFolder + sModelBootDisk
+      Else If bAliasFilenameExists Then
+        sBoot := sBaseFolder + sAliasFilename
+      Else If bGenericBootExists Then
+        sBoot := sBaseFolder + 'boot.dsk'
+      Else
+        sBoot := '';
+
+      bReadOnly := FileExists(sBoot) And (FileIsReadOnly(sBoot));
+
+      // Is there an obvious boot disk?
+      If bHasBoot Then
+      Begin
+        If bReadOnly Then
+        Begin
+          FErrorLevel := elError;
+          AddOutcome('Default boot disk for Model "%s" exists, and is "%s"', [oItem.Model, sBoot]);
+          AddOutcome('However, file "%s" is ReadOnly', [sBoot]);
+          AddRecommendation('Use file system tools to unset the ReadOnly flag on this file', []);
+        End
+        Else
+        Begin
+          FErrorLevel := elInfo;
+          AddOutcome('Default boot disk for Model "%s" exists, and is "%s"', [oItem.Model, sBoot]);
+          AddRecommendation('You do not need to specify a boot disk in order to run this model',
+            []);
+        End;
+      End
+      Else If bAliasExists Then
+      Begin
+        FErrorLevel := elWarning;
+        AddOutcome('Boot disk alias "%s" exists in "disks.alias", but is not configured',
+          [sModelBootDisk, sBoot]);
+        AddRecommendation('  Use of Alias is optional, you can directly populate ' +
+          '"Disk A" in uBee512Launcher', []);
+        AddRecommendation('  To configure the Alias, either place the Disk in "%s" ',
+          [sBaseFolder]);
+        AddRecommendation('  and add just the filename to "disks.alias", ', []);
+        AddRecommendation('  Or, add the absolute path to the Disk to "disks.alias"', []);
+      End
+      Else
+      Begin
+        FErrorLevel := elWarning;
+        AddOutcome('No default boot disk found', []);
+        AddRecommendation('  A boot disk will need to be selected prior to launching uBee512.',
+          []);
+        AddRecommendation('  Either by editing "ubee512rc", "disks.alias",', []);
+        AddRecommendation('  Or by populating "Disk A" in uBee512Launcher', []);
+      End;
+    End;
+
+    FOutcome := TrimRightSet(FOutcome, [' ', #10, #13]);
+    FRecommendation := TrimRightSet(FRecommendation, [' ', #10, #13]);
+  End;
+End;
 
 { TDiskAliasValidator }
 
@@ -43,16 +148,6 @@ Var
   sBaseFolder: String;
   oItem: TDiskAlias;
 
-  Procedure AddOutcome(AFormatStr: String; arrParams: Array Of Const);
-  Begin
-    FOutcome += Format(AFormatStr, arrParams) + LineEnding;
-  End;
-
-  Procedure AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
-  Begin
-    FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
-  End;
-
 Begin
   Inherited Process;
 
@@ -60,7 +155,7 @@ Begin
   FOutcome := '';
   FRecommendation := '';
 
-  sBaseFolder := IncludeSlash(ubee512.WorkingDir) + includeSlash('disks');
+  sBaseFolder := IncludeSlash(ubee512.WorkingDir) + includeSlash(SUBFOLDER_DISKS);
 
   If Assigned(FOwner) And (FOwner Is TDiskAlias) Then
   Begin
@@ -75,7 +170,7 @@ Begin
         AddRecommendation('    Or, place the Disk in "%s" and add just the filename to "disks.alias", ', [sBaseFolder]);
         AddRecommendation('    Or, add the absolute path to the Disk to "disks.alias"', []);
       End
-      Else If uBee512.ValidFile('disks', oItem.Filename) Then
+      Else If uBee512.ValidFile(SUBFOLDER_DISKS, oItem.Filename) Then
       Begin
         FErrorLevel := elInfo;
         If IsFileAbsolute(oItem.Filename) Then
@@ -124,16 +219,6 @@ Var
   oDefinition: TDefinition;
   sBaseFolder: String;
 
-  Procedure AddOutcome(AFormatStr: String; arrParams: Array Of Const);
-  Begin
-    FOutcome += Format(AFormatStr, arrParams) + LineEnding;
-  End;
-
-  Procedure AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
-  Begin
-    FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
-  End;
-
   Procedure Check(ASubfolder: String; AFilename: String; AObject: String);
   Var
     sFolder, sAlias: String;
@@ -144,7 +229,7 @@ Var
 
       If Not uBee512.ValidFile(ASubfolder, AFilename) Then
         Case ASubfolder Of
-          'disks':
+          SUBFOLDER_DISKS:
             If IsFileAbsolute(AFilename) Then
             Begin
               AddOutcome('%s "%s" not found', [AObject, AFilename]);
@@ -216,11 +301,11 @@ Begin
   Begin
     oDefinition := TDefinition(FOwner);
 
-    Check('disks', oDefinition.A, 'Disk');
-    Check('disks', oDefinition.B, 'Disk');
-    Check('disks', oDefinition.C, 'Disk');
+    Check(SUBFOLDER_DISKS, oDefinition.A, 'Disk');
+    Check(SUBFOLDER_DISKS, oDefinition.B, 'Disk');
+    Check(SUBFOLDER_DISKS, oDefinition.C, 'Disk');
+    Check(SUBFOLDER_DISKS, oDefinition.IDE, 'IDE image');
     Check('sram', oDefinition.SRAM_file, 'SRAM');
-    Check('disks', oDefinition.IDE, 'IDE image');
     Check('tapes', oDefinition.TapeI, 'Input Tape');
     Check('tapes', oDefinition.TapeO, 'Output Tape');
 

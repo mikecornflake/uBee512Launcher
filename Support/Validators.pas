@@ -23,6 +23,8 @@ Type
     FDisplayname: String;
     FOutcome: String;
 
+    Procedure AddOutcome(AFormatStr: String; arrParams: Array Of Const);
+    Procedure AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
     Procedure SetLevel(AErrorLevel: TErrorLevel);
   Public
     Constructor Create(AOwner: TObject); Virtual;
@@ -58,7 +60,7 @@ Const
   ERROR_LEVEL: Array[TErrorLevel] Of String = ('None', 'Info', 'Warning', 'Error');
 
   ERRORLEVEL_COLOR: Array[TErrorLevel] Of TColor =
-    (clBlack, TColor($006400), TColor($FF8C00), clRed);
+    (clBlack, TColor($006400), TColor($0084ACFF), clRed);
 
 
 Implementation
@@ -103,6 +105,16 @@ Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
 Begin
   If AErrorLevel > FErrorLevel Then
     FErrorLevel := AErrorLevel;
+End;
+
+Procedure TValidator.AddOutcome(AFormatStr: String; arrParams: Array Of Const);
+Begin
+  FOutcome += Format(AFormatStr, arrParams) + LineEnding;
+End;
+
+Procedure TValidator.AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
+Begin
+  FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
 End;
 
 { TValidators }

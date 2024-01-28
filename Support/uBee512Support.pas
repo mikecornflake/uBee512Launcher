@@ -49,11 +49,21 @@ Type
   End;
 
   // Hard coded list of Microbee Models (official and homebrew)
+
+  { TModel }
+
   TModel = Class
+  Protected
+    FValidator: TModelValidator;
   Public
     Model: String;
     Description: String;
     MbeeType: TMbeeType;
+
+    Constructor Create;
+    Destructor Destroy; Override;
+
+    Property Validator: TModelValidator read FValidator;
   End;
 
   TModels = Class(Specialize TObjectList<TModel>)
@@ -146,7 +156,8 @@ Type
 
 Const
   MBTypeStr: Array[TMbeeType] Of String = ('Disk', 'ROM', 'Custom');
-  ALIAS_NOT_FOUND = '!ALIAS_NOT_FOUND';
+  ALIAS_NOT_FOUND = 'ALIAS_NOT_FOUND';
+  SUBFOLDER_DISKS = 'disks';
 
 Function uBee512: TuBee512;
 
@@ -164,6 +175,22 @@ Begin
     FuBee512 := TuBee512.Create;
 
   Result := FuBee512;
+End;
+
+{ TModel }
+
+Constructor TModel.Create;
+Begin
+  Inherited Create;
+
+  FValidator := TModelValidator.Create(Self);
+End;
+
+Destructor TModel.Destroy;
+Begin
+  FreeAndNil(FValidator);
+
+  Inherited Destroy;
 End;
 
 { TDiskAlias }
