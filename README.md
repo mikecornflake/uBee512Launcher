@@ -64,12 +64,10 @@
 ## Short term (planned for 0.5beta)
 + Add Display options (position relative to launcher, monitor, opengl/sdl)
 + Integrate "disks.alias" updates into Disk Explorer (add disk to new/existing Alias)
-+ Add awareness of roms.alias (before doing the below)
++ Add awareness of roms.alias + native md5 (before doing the below)
 + Add ROM checks to TModelValidator
 + Add TMainFormValidator
 + Add support for PAKx (inc Validator)
-+ Add support for HDDx (inc Validator)
-+ Add support for IDEx (inc Validator)
 + Add "Issues" pane to summarise ALL issues
 + Add awareness of **RunCPM** folder structure
 
@@ -81,6 +79,8 @@
 + Add direct support for the zip file structure utilised by **@ChickenMan** on both MSPP forum and MicrobeeTechnology forum
   + Display embedded ReadMe in the Preview Pane
   + Implement a "Mount ZIP" that extracts the DSK, then actually mounts that DSK in the CP/M system
++ Add support for HDDx (inc Validator)
++ Add support for IDEx (inc Validator)
 + Add support for Microbee Peripherals (Beetalker etc)
 + Add support for **UBEEDISK** tools (to be honest, this means learning them first)
 + I keep thinking about adding ability for users to define their own System Definitions (by first copying an existing).
