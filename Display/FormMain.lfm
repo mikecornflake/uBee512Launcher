@@ -295,6 +295,9 @@ object frmMain: TfrmMain
           Top = 131
           Width = 451
           Anchors = [akTop, akLeft, akRight, akBottom]
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ParentFont = False
           ReadOnly = True
           ScrollBars = ssAutoBoth
           TabOrder = 3
@@ -684,6 +687,9 @@ object frmMain: TfrmMain
           Top = 0
           Width = 406
           Align = alClient
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ParentFont = False
           ReadOnly = True
           ScrollBars = ssAutoBoth
           TabOrder = 0
@@ -695,6 +701,9 @@ object frmMain: TfrmMain
           Top = 184
           Width = 406
           Align = alBottom
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ParentFont = False
           ReadOnly = True
           ScrollBars = ssAutoBoth
           TabOrder = 1

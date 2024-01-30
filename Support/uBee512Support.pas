@@ -126,6 +126,7 @@ Type
     FModels: TModels;
 
     FDisksAliases: TDiskAliases;
+    FValidator: TInstallationValidator;
 
     Function GetExe: String;
     Procedure SetExe(AValue: String);
@@ -152,6 +153,7 @@ Type
     Property DiskAliases: TDiskAliases read FDisksAliases;  // Contents of "disks.alias"
     Property Definitions: TDefinitions read FDefinitions;   // entries within ubee512rc
     Property Models: TModels read FModels;                  // Hard coded list
+    Property Validator: TInstallationValidator read FValidator;
   End;
 
 Const
@@ -516,6 +518,8 @@ Begin
   FModels := TModels.Create(True);
   FDisksAliases := TDiskAliases.Create(True);
 
+  FValidator := TInstallationValidator.Create(Self);
+
   // From ubee512 readme
   AddModel('1024k', 'Standard Premium Plus, 1024K DRAM FDD', mtFDD);
   AddModel('128k', 'Standard, 128K DRAM FDD (SBC)', mtFDD);
@@ -546,6 +550,8 @@ Destructor TuBee512.Destroy;
 Begin
   Inherited Destroy;
 
+  FreeAndNil(FValidator);
+
   FreeAndNil(FDisksAliases);
   //FreeAndNil(FROMAlias);
 
@@ -574,7 +580,11 @@ End;
 Procedure TuBee512.SetExe(AValue: String);
 Begin
   If FileExists(AValue) Then
+  Begin
     FExe := AValue;
+
+    FValidator.Process;
+  End;
 End;
 
 Procedure TuBee512.SetRC(AValue: String);
@@ -813,6 +823,8 @@ Var
 Begin
   If IsFileAbsolute(AFilename) Then
     sFile := AFilename
+  Else If (ASubfolder = '') Then
+    sFile := IncludeSlash(WorkingDir) + AFilename
   Else
     sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
 

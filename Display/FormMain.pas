@@ -613,12 +613,18 @@ Begin
     // Display the results of the validity checks relating to the current settings
     memSummary.Lines.Clear;
     memSummary.Font.Color := clBlack;
-    elMaxErrorLevel := elNone;
+
+    memSummary.Lines.AddStrings(uBee512.Validator.Summary(True));
+    elMaxErrorLevel := uBee512.Validator.ErrorLevel;
 
     If Assigned(oDefinition) Then
     Begin
       oDefinition.Validator.Process;
-      memSummary.Lines.AddStrings(oDefinition.Validator.Summary);
+
+      If memSummary.Lines.Count > 0 Then
+        memSummary.Lines.Add('');
+
+      memSummary.Lines.AddStrings(oDefinition.Validator.Summary(True));
 
       elTemp := oDefinition.Validator.ErrorLevel;
       If elTemp > elMaxErrorLevel Then
@@ -631,7 +637,7 @@ Begin
 
       If memSummary.Lines.Count > 0 Then
         memSummary.Lines.Add('');
-      memSummary.Lines.AddStrings(oModel.Validator.Summary);
+      memSummary.Lines.AddStrings(oModel.Validator.Summary(True));
 
       elTemp := oModel.Validator.ErrorLevel;
       If elTemp > elMaxErrorLevel Then

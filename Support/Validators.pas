@@ -34,7 +34,7 @@ Type
     Property DisplayName: String read FDisplayname;
     Property Description: String read FDescription;
 
-    Function Summary: TStringArray;
+    Function Summary(AShowHeader: Boolean = False): TStringArray;
 
     Property ErrorLevel: TErrorLevel read FErrorLevel;
     Property Outcome: String read FOutcome;
@@ -51,7 +51,7 @@ Type
     Function Recommendation: String;
 
     Function Count(AErrorLevels: TErrorLevels): Integer;
-    Function Summary(AErrorLevels: TErrorLevels): TStringArray;
+    Function Summary(AErrorLevels: TErrorLevels; AShowHeader: Boolean = False): TStringArray;
 
     Property ErrorLevel: TErrorLevel read FErrorLevel;
   End;
@@ -60,8 +60,7 @@ Const
   ERROR_LEVEL: Array[TErrorLevel] Of String = ('None', 'Info', 'Warning', 'Error');
 
   ERRORLEVEL_COLOR: Array[TErrorLevel] Of TColor =
-    (clBlack, TColor($006400), TColor($0084ACFF), clRed);
-
+    (clBlack, TColor($006400), TColor($0055FF), clRed);
 
 Implementation
 
@@ -91,9 +90,17 @@ Begin
   FRecommendation := '';
 End;
 
-Function TValidator.Summary: TStringArray;
+Function TValidator.Summary(AShowHeader: Boolean = False): TStringArray;
 Begin
   SetLength(Result, 0);
+
+  If AShowHeader And (Trim(FOutcome) <> '') Then
+  Begin
+    AddStringToArray(Result, FDisplayName);
+    AddStringToArray(Result, DupeString('=', Length(FDisplayName)));
+    AddStringToArray(Result, FDescription);
+  End;
+
   If Trim(FOutcome) <> '' Then
     AddStringToArray(Result, '  ' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome);
 
@@ -162,18 +169,33 @@ Begin
       Inc(Result);
 End;
 
-Function TValidators.Summary(AErrorLevels: TErrorLevels): TStringArray;
+Function TValidators.Summary(AErrorLevels: TErrorLevels;
+  AShowHeader: Boolean = False): TStringArray;
 Var
   oValidator: TValidator;
+  oLast: TValidator;
 Begin
   SetLength(Result, 0);
 
+  oLast := nil;
+
   For oValidator In Self Do
+  Begin
+    If AShowHeader And (Not Assigned(oLast) Or (oValidator.ClassType <> oLast.ClassType)) Then
+    Begin
+      AddStringToArray(Result, oValidator.DisplayName);
+      AddStringToArray(Result, DupeString('=', Length(oValidator.DisplayName)));
+      AddStringToArray(Result, oValidator.Description);
+
+      oLast := oValidator;
+    End;
+
     If oValidator.ErrorLevel In AErrorLevels Then
     Begin
       AddStringsToArray(Result, oValidator.Summary);
       AddStringToArray(Result, '');
     End;
+  End;
 
   // Remove the trailing blank line
   If Length(Result) > 0 Then

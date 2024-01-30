@@ -32,10 +32,75 @@ Type
     Procedure Process; Override;
   End;
 
+  { TInstallationValidator }
+
+  TInstallationValidator = Class(TValidator)
+  Public
+    Constructor Create(AOwner: TObject); Override;
+    Procedure Process; Override;
+  End;
 
 Implementation
 
 Uses uBee512Support, FileSupport, StrUtils;
+
+{ TInstallationValidator }
+
+Constructor TInstallationValidator.Create(AOwner: TObject);
+Begin
+  Inherited Create(AOwner);
+
+  FDisplayName := 'uBee512 Installation';
+  FDescription := 'This performs simple checks for each Model.';
+End;
+
+Procedure TInstallationValidator.Process;
+Var
+  sBaseFolder: String;
+
+  Procedure Check(ASubfolder: String; AFilename: String; AObject: String;
+    AErrorLevel: TErrorLevel; ARec: String = '');
+  Var
+    sFolder: String;
+  Begin
+    If AFilename <> '' Then
+    Begin
+      sFolder := sBaseFolder + ASubfolder;
+
+      If Not uBee512.ValidFile(ASubfolder, AFilename) Then
+      Begin
+        SetLevel(AErrorLevel);
+        AddOutcome('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]);
+        If (ARec = '') Then
+          AddRecommendation('  Download "%s" from Repository', [AFilename])
+        Else
+          AddRecommendation('  ' + ARec, []);
+      End;
+    End;
+  End;
+
+Begin
+  Inherited Process;
+
+  FErrorLevel := elNone;
+  FOutcome := '';
+  FRecommendation := '';
+
+  sBaseFolder := IncludeSlash(ubee512.WorkingDir);
+
+  If Assigned(FOwner) And (FOwner Is TuBee512) Then
+  Begin
+    Check('roms', 'charrom.bin', 'Character ROM', elError);
+    Check('roms', 'rom1.bin', 'Default boot ROM BN54', elError);
+
+    Check('', 'ubee512rc', 'uBee512 Setting file', elError,
+      'Copy & rename "configs\ubee512rc.sample", and place in uBee512 folder');
+    Check('', 'roms.alias', 'ROM lookup file', elWarning,
+      'Copy & rename "configs\roms.alias.sample", and place in uBee512 folder');
+    Check('', 'disks.alias', 'ROM lookup file', elWarning,
+      'Copy & rename "configs\disks.alias.sample", and place in uBee512 folder');
+  End;
+End;
 
 { TModelValidator }
 
@@ -43,8 +108,8 @@ Constructor TModelValidator.Create(AOwner: TObject);
 Begin
   Inherited Create(AOwner);
 
-  FDisplayName := 'Microbee Model Checker';
-  FDescription := 'This performs simple checks on each Model';
+  FDisplayName := 'Microbee Models';
+  FDescription := 'This performs simple checks for each Model.';
 End;
 
 Procedure TModelValidator.Process;
@@ -108,14 +173,14 @@ Begin
       Else If bAliasExists Then
       Begin
         FErrorLevel := elWarning;
-        AddOutcome('Boot disk alias "%s" exists in "disks.alias", but is not configured',
-          [sModelBootDisk, sBoot]);
-        AddRecommendation('  Use of Alias is optional, you can directly populate ' +
-          '"Disk A" in uBee512Launcher', []);
-        AddRecommendation('  To configure the Alias, either place the Disk in "%s" ',
-          [sBaseFolder]);
-        AddRecommendation('  and add just the filename to "disks.alias", ', []);
-        AddRecommendation('  Or, add the absolute path to the Disk to "disks.alias"', []);
+        AddOutcome('Boot disk alias "%s" is not configured', [sModelBootDisk]);
+
+        AddRecommendation('  Use of Alias is optional: ', []);
+        AddRecommendation('    You can directly populate "Disk A"', []);
+        AddRecommendation('  To configure the Alias:', []);
+        AddRecommendation('    either place the Disk in "%s" ', [sBaseFolder]);
+        AddRecommendation('    and add just the filename to "disks.alias", ', []);
+        AddRecommendation('    Or, add the absolute path to the Disk to "disks.alias"', []);
       End
       Else
       Begin
@@ -139,8 +204,8 @@ Constructor TDiskAliasValidator.Create(AOwner: TObject);
 Begin
   Inherited Create(AOwner);
 
-  FDisplayName := 'Disks.Alias Entry Checker';
-  FDescription := 'This performs simple checks on each entry in Disks.Alias Entry Checker';
+  FDisplayName := '"Disks.Alias"';
+  FDescription := 'This performs simple checks on each entry in Disks.Alias Entry Checker.';
 End;
 
 Procedure TDiskAliasValidator.Process;
@@ -209,9 +274,8 @@ Constructor TDefinitionValidator.Create(AOwner: TObject);
 Begin
   Inherited Create(AOwner);
 
-  FDisplayName := 'Definition Checker';
-  FDescription := 'Definitions are defined in ubee512rc.' + LineEnding +
-    'This performs simple checks that the required files are present';
+  FDisplayName := 'Definitions';
+  FDescription := 'Checks the contents of each definition in ubee512rc.  Currently only checks disks, sram & tapes.';
 End;
 
 Procedure TDefinitionValidator.Process;
