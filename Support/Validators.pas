@@ -58,7 +58,7 @@ Type
 
 Const
   ERROR_LEVEL: Array[TErrorLevel] Of String = ('None', 'Info', 'Warning', 'Error');
-
+  ERROR_LEVEL_HTML: Array[TErrorLevel] Of String = ('black', 'green', 'orange', 'red');
   ERRORLEVEL_COLOR: Array[TErrorLevel] Of TColor =
     (clBlack, TColor($006400), TColor($0055FF), clRed);
 
@@ -96,16 +96,17 @@ Begin
 
   If AShowHeader And (Trim(FOutcome) <> '') Then
   Begin
-    AddStringToArray(Result, FDisplayName);
-    AddStringToArray(Result, DupeString('=', Length(FDisplayName)));
-    AddStringToArray(Result, FDescription);
+    AddStringToArray(Result, '<h3>' + FDisplayName + '</h3>');
+    AddStringToArray(Result, '<blockquote>' + FDescription + '</blockquote>');
   End;
 
   If Trim(FOutcome) <> '' Then
-    AddStringToArray(Result, '  ' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome);
+    AddStringToArray(Result, '  <p style="color:' + ERROR_LEVEL_HTML[FErrorLevel] +
+      ';">' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
 
   If Trim(FRecommendation) <> '' Then
-    AddStringToArray(Result, '  Recommendation: ' + Trim(FRecommendation));
+    AddStringToArray(Result, '  Recommendation: <blockquote>' +
+      Trim(FRecommendation) + '</blockquote>');
 End;
 
 Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
@@ -116,12 +117,12 @@ End;
 
 Procedure TValidator.AddOutcome(AFormatStr: String; arrParams: Array Of Const);
 Begin
-  FOutcome += Format(AFormatStr, arrParams) + LineEnding;
+  FOutcome += Format(AFormatStr, arrParams) + '<br>' + LineEnding;
 End;
 
 Procedure TValidator.AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
 Begin
-  FRecommendation += Format(AFormatStr, arrParams) + LineEnding;
+  FRecommendation += Format(AFormatStr, arrParams) + '<br>' + LineEnding;
 End;
 
 { TValidators }
@@ -139,6 +140,9 @@ Begin
 
   sResult := TrimRightSet(sResult, [' ', #10, #13]);
 
+  //If sResult <> '' Then
+  //  sResult := '<p>' + sResult + '</p>';
+
   Result := sResult;
 End;
 
@@ -154,6 +158,9 @@ Begin
       sResult := sResult + oValidator.Recommendation + LineEnding;
 
   sResult := TrimRightSet(sResult, [' ', #10, #13]);
+
+  //If sResult <> '' Then
+  //  sResult := '<p>' + sResult + '</p>';
 
   Result := sResult;
 End;
@@ -183,8 +190,7 @@ Begin
   Begin
     If AShowHeader And (Not Assigned(oLast) Or (oValidator.ClassType <> oLast.ClassType)) Then
     Begin
-      AddStringToArray(Result, oValidator.DisplayName);
-      AddStringToArray(Result, DupeString('=', Length(oValidator.DisplayName)));
+      AddStringToArray(Result, '<h1>' + oValidator.DisplayName + '</h1>');
       AddStringToArray(Result, oValidator.Description);
 
       oLast := oValidator;

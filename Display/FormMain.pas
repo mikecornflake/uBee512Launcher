@@ -7,7 +7,7 @@ Interface
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
-  FormSettings, Logs;
+  FormSettings, Logs, FrameHTMLs;
 
 Type
 
@@ -44,11 +44,11 @@ Type
     lblDiskC: TLabel;
     lblPP: TLabel;
     MainMenu1: TMainMenu;
-    memDiskAlias: TMemo;
-    memRC: TMemo;
-    memSummary: TMemo;
+    pnlDiskAlias: TPanel;
+    pnlRC: TPanel;
     memROMAlias: TMemo;
     pnlSummary: TPanel;
+    pnlRCSummary: TPanel;
     Separator2: TMenuItem;
     mnuDebug: TMenuItem;
     pnlLeft: TPanel;
@@ -100,6 +100,8 @@ Type
     FActivated: Boolean;
     FLoadingDSK: Boolean;
     FUpdatingCombos: Boolean;
+
+    fmeDiskAlias, fmeRC, fmeSummary: TFrameHTML;
 
     FLog: TLog;
 
@@ -157,6 +159,24 @@ Begin
   Debug(LineEnding + '-----------------------');
   Debug(Application.ExeName);
   Debug(FLog.Filename);
+
+  fmeDiskAlias := TFrameHTML.Create(Self);
+  fmeDiskAlias.Parent := pnlDiskAlias;
+  fmeDiskAlias.Align := alClient;
+  fmeDiskAlias.Visible := True;
+  fmeDiskAlias.Name := 'fmeDiskAlias';
+
+  fmeRC := TFrameHTML.Create(Self);
+  fmeRC.Parent := pnlRC;
+  fmeRC.Align := alClient;
+  fmeRC.Visible := True;
+  fmeRC.Name := 'fmeRC';
+
+  fmeSummary := TFrameHTML.Create(Self);
+  fmeSummary.Parent := pnlSummary;
+  fmeSummary.Align := alClient;
+  fmeSummary.Visible := True;
+  fmeSummary.Name := 'fmeSummary';
 End;
 
 Procedure TfrmMain.FormActivate(Sender: TObject);
@@ -175,6 +195,10 @@ Begin
 
   FreeAndNil(FSettings);
   FreeAndNil(FLog);
+
+  FreeAndNil(fmeDiskAlias);
+  FreeAndNil(fmeRC);
+  FreeAndNil(fmeSummary);
 End;
 
 Procedure TfrmMain.mnuAboutClick(Sender: TObject);
@@ -302,9 +326,15 @@ Begin
     mtType := uBee512.Models.MbeeType(sModel);
     sType := MBTypeStr[mtType];
 
-    SetDefinitionCombo(cboType, sType);
-    SetDefinitionCombo(cboModel, sModel);
-    SetDefinitionCombo(cboTitle, sTitle);
+    FUpdatingCombos := True;
+    Try
+      SetDefinitionCombo(cboType, sType);
+      SetDefinitionCombo(cboModel, sModel);
+      SetDefinitionCombo(cboTitle, sTitle);
+    Finally
+      FUpdatingCombos := False;
+      RefreshRC;
+    End;
   Finally
     FLog.DecIndent;
     oInifile.Free;
@@ -364,6 +394,7 @@ Var
   bNew: Boolean;
   sAliasFile: String;
   iInfo, iError, iWarning: Int64;
+  sAlias: String;
 
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
@@ -376,49 +407,44 @@ Begin
       If FileExists(uBee512.DiskAliases.Filename) Then
       Begin
         // Analyse "disks.alias"
-        memDiskAlias.Lines.Clear;
+        sAlias := '';
 
         iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
-        memDiskAlias.Lines.Add('There are %d aliases in "%s"',
+        sAlias += Format('There are %d aliases in "%s"<br><br>',
           [iAlias, uBee512.DiskAliases.Filename]);
 
-        memDiskAlias.Lines.Add('');
         iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
         If iInfo > 0 Then
         Begin
-          memDiskAlias.Lines.Add('The following %d entries are correct and ready to use:',
+          sAlias += Format('The following %d entries are correct and ready to use:<br>',
             [iInfo]);
-          memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elInfo]));
-
+          sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
         End
         Else
-          memDiskAlias.Lines.Add('There are no defined aliases ready to use');
-        memDiskAlias.Lines.Add('');
+          sAlias += 'There are no defined aliases ready to use<br>';
 
         iError := uBee512.DiskAliases.Validators.Count([elError]);
         If iError > 0 Then
         Begin
-          memDiskAlias.Lines.Add('The following %d errors were found:', [iError]);
-          memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elError]));
+          sAlias += Format('The following %d errors were found:<br>', [iError]);
+          sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
         End
         Else
-          memDiskAlias.Lines.Add('No errors were found.');
-        memDiskAlias.Lines.Add('');
+          sAlias += 'No errors were found.<br>';
 
         iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
         If iWarning > 0 Then
         Begin
-          memDiskAlias.Lines.Add('The following %d warnings were found:', [iWarning]);
-          memDiskAlias.Lines.AddStrings(uBee512.DiskAliases.Validators.Summary([elWarning]));
+          sAlias += Format('The following %d warnings were found:<br>', [iWarning]);
+          sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
         End
         Else
-          memDiskAlias.Lines.Add('No warnings were found.');
+          sAlias += 'No warnings were found.<br>';
       End
       Else
-        memDiskAlias.Lines.Add('File %s not found', [uBee512.DiskAliases.Filename]);
+        sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
 
-      memDiskAlias.SelStart := 0;
-      memDiskAlias.CaretPos := Point(0, 0);
+      fmeDiskAlias.SetHTMLAsString('<body>' + sAlias + '</body>');
 
       // TODO Implement roms.alias summary correctly
       sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
@@ -548,8 +574,9 @@ Var
   sRC: String;
   oModel: TModel;
   oDefinition: TDefinition;
-  sParam: String;
+  sParam, sSummary: String;
   elMaxErrorLevel, elTemp: TErrorLevel;
+  arrSummary: TStringArray;
 
   Procedure AddDisk(ADrive: String; AEdit: TComboBox; ACombo: TComboBox);
   Var
@@ -608,23 +635,22 @@ Begin
     End;
 
     memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
-    memRC.Lines.Text := sRC;
+    fmeRC.SetHTMLAsString('<body>' + ValidateHTML(sRC) + '</body>');
 
     // Display the results of the validity checks relating to the current settings
-    memSummary.Lines.Clear;
-    memSummary.Font.Color := clBlack;
+    SetLength(arrSummary, 0);
 
-    memSummary.Lines.AddStrings(uBee512.Validator.Summary(True));
+    AddStringsToArray(arrSummary, uBee512.Validator.Summary(True));
     elMaxErrorLevel := uBee512.Validator.ErrorLevel;
 
     If Assigned(oDefinition) Then
     Begin
       oDefinition.Validator.Process;
 
-      If memSummary.Lines.Count > 0 Then
-        memSummary.Lines.Add('');
+      If Length(arrSummary) > 0 Then
+        AddStringToArray(arrSummary, '');
 
-      memSummary.Lines.AddStrings(oDefinition.Validator.Summary(True));
+      AddStringsToArray(arrSummary, oDefinition.Validator.Summary(True));
 
       elTemp := oDefinition.Validator.ErrorLevel;
       If elTemp > elMaxErrorLevel Then
@@ -635,17 +661,19 @@ Begin
     Begin
       oModel.Validator.Process;
 
-      If memSummary.Lines.Count > 0 Then
-        memSummary.Lines.Add('');
-      memSummary.Lines.AddStrings(oModel.Validator.Summary(True));
+      If Length(arrSummary) > 0 Then
+        AddStringToArray(arrSummary, '');
+
+      AddStringsToArray(arrSummary, oModel.Validator.Summary(True));
 
       elTemp := oModel.Validator.ErrorLevel;
       If elTemp > elMaxErrorLevel Then
         elMaxErrorLevel := elTemp;
     End;
 
-    // Color results according to the highest error found
-    memSummary.Font.Color := ERRORLEVEL_COLOR[elMaxErrorLevel];
+    sSummary := ArrayToString(arrSummary);
+
+    fmeSummary.SetHTMLAsString('<body>' + sSummary + '</body>');
   End;
 End;
 

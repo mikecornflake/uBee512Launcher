@@ -35,3 +35,5 @@ backup/uBee512Launcher.lpi
 /lib/i386-win32/uBee512Support.ppu
 /uBee512Launcher.exe
 /*.dbg
+/TestHarnesses/iPro_test.exe
+/TestHarnesses/lib/x86_64-win64

@@ -37,6 +37,15 @@ Begin
   s += '<p style="background-color:Tomato;">Lorem ipsum...</p>';
   s += '<p style="color:red;">Red text</p>';
   SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
+  SetHTMLAsString(s);
 End;
 
 Procedure TForm1.SetHTMLAsString(AHTML: String);

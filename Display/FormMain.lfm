@@ -283,25 +283,6 @@ object frmMain: TfrmMain
           Style = csDropDownList
           TabOrder = 2
         end
-        object memDiskAlias: TMemo
-          AnchorSideLeft.Control = lblDiskAlias
-          AnchorSideTop.Control = lblDiskAlias
-          AnchorSideTop.Side = asrBottom
-          AnchorSideRight.Control = btnClearA
-          AnchorSideRight.Side = asrBottom
-          Left = 8
-          Height = 280
-          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut):'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'
-          Top = 131
-          Width = 451
-          Anchors = [akTop, akLeft, akRight, akBottom]
-          Font.Height = -11
-          Font.Name = 'Courier New'
-          ParentFont = False
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
-          TabOrder = 3
-        end
         object lblDiskAlias: TLabel
           AnchorSideLeft.Control = lblDiskA
           Left = 8
@@ -327,7 +308,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           ItemHeight = 15
           OnChange = DiskorFormatChange
-          TabOrder = 4
+          TabOrder = 3
         end
         object cboDiskB: TComboBox
           AnchorSideLeft.Control = lblDiskB
@@ -342,7 +323,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           ItemHeight = 15
           OnChange = DiskorFormatChange
-          TabOrder = 5
+          TabOrder = 4
         end
         object cboDiskC: TComboBox
           AnchorSideLeft.Control = lblDiskC
@@ -357,7 +338,7 @@ object frmMain: TfrmMain
           BorderSpacing.Right = 2
           ItemHeight = 15
           OnChange = DiskorFormatChange
-          TabOrder = 6
+          TabOrder = 5
         end
         object btnExploreA: TSpeedButton
           AnchorSideTop.Control = btnClearA
@@ -505,6 +486,25 @@ object frmMain: TfrmMain
             14FFB57E0FFFB57C0BFFB57C09FFB57C09FFB57C09FFB57C09FFB57C09FFB57C
             09FFB57C09FFB57C09FFB57C0BFFB57E0FFFB78114FFB782187C
           }
+        end
+        object pnlDiskAlias: TPanel
+          AnchorSideLeft.Control = lblDiskAlias
+          AnchorSideTop.Control = lblDiskAlias
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = btnClearA
+          AnchorSideRight.Side = asrBottom
+          Left = 8
+          Height = 280
+          Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut):'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'
+          Top = 131
+          Width = 451
+          Anchors = [akTop, akLeft, akRight, akBottom]
+          BevelOuter = bvNone
+          Caption = 'fmeDiskAlias'
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ParentFont = False
+          TabOrder = 6
         end
       end
       object tsROMs: TTabSheet
@@ -671,7 +671,7 @@ object frmMain: TfrmMain
         OnClick = btnDefinitionExplorerClick
         TabOrder = 3
       end
-      object pnlSummary: TPanel
+      object pnlRCSummary: TPanel
         Left = 0
         Height = 388
         Top = 48
@@ -681,33 +681,6 @@ object frmMain: TfrmMain
         ClientHeight = 388
         ClientWidth = 406
         TabOrder = 4
-        object memRC: TMemo
-          Left = 0
-          Height = 179
-          Top = 0
-          Width = 406
-          Align = alClient
-          Font.Height = -11
-          Font.Name = 'Courier New'
-          ParentFont = False
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
-          TabOrder = 0
-          WordWrap = False
-        end
-        object memSummary: TMemo
-          Left = 0
-          Height = 204
-          Top = 184
-          Width = 406
-          Align = alBottom
-          Font.Height = -11
-          Font.Name = 'Courier New'
-          ParentFont = False
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
-          TabOrder = 1
-        end
         object Splitter2: TSplitter
           Cursor = crVSplit
           Left = 0
@@ -716,6 +689,32 @@ object frmMain: TfrmMain
           Width = 406
           Align = alBottom
           ResizeAnchor = akBottom
+        end
+        object pnlRC: TPanel
+          Left = 0
+          Height = 179
+          Top = 0
+          Width = 406
+          Align = alClient
+          BevelOuter = bvNone
+          Caption = 'fmeRC'
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ParentFont = False
+          TabOrder = 1
+        end
+        object pnlSummary: TPanel
+          Left = 0
+          Height = 204
+          Top = 184
+          Width = 406
+          Align = alBottom
+          BevelOuter = bvNone
+          Caption = 'fmeSummary'
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ParentFont = False
+          TabOrder = 2
         end
       end
     end
@@ -883,8 +882,8 @@ object frmMain: TfrmMain
     OnClick = btnDiskExplorerClick
   end
   object MainMenu1: TMainMenu
-    Left = 88
-    Top = 120
+    Left = 80
+    Top = 96
     object mnuFile: TMenuItem
       Caption = '&File'
       object mnuSettings: TMenuItem
@@ -915,8 +914,8 @@ object frmMain: TfrmMain
     end
   end
   object ilMain: TImageList
-    Left = 152
-    Top = 120
+    Left = 136
+    Top = 96
     Bitmap = {
       4C7A0E0000001000000010000000E81800000000000078DAED5B07549557BAFD
       D7AC793393CC9A2493C9249A9764266626654CA219638989C4AE91B1A098C41A
