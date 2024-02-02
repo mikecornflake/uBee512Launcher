@@ -100,6 +100,7 @@ Type
   Private
     FFilename: String;
     FValidators: TValidators;
+    Function GetAlias(AAlias: String): TDiskAlias;
   Public
     Constructor Create(AOwnsObjects: Boolean);
     Destructor Destroy; Override;
@@ -108,11 +109,14 @@ Type
     Function Save: Boolean;
 
     Function FilenameByAlias(AAlias: String): String;
+    Function SetAlias(AAlias: String; AFilename: String): Boolean;
 
     Function ValidAliases: TStringArray;
 
     Property Filename: String read FFilename;
     Property Validators: TValidators read FValidators;
+
+    Property DiskAlias[AAlias: String]: TDiskAlias read GetAlias; Default;
   End;
 
   { TuBee512 }
@@ -300,20 +304,48 @@ Begin
   End;
 End;
 
-Function TDiskAliases.FilenameByAlias(AAlias: String): String;
+Function TDiskAliases.GetAlias(AAlias: String): TDiskAlias;
 Var
-  oItem: TDiskAlias;
   sAlias: String;
+  oItem: TDiskAlias;
 Begin
-  Result := ALIAS_NOT_FOUND;
+  Result := nil;
   sAlias := Lowercase(AAlias);
 
   For oItem In Self Do
     If Lowercase(oItem.Alias) = sAlias Then
     Begin
-      Result := oItem.Filename;
+      Result := oItem;
       Break;
     End;
+End;
+
+Function TDiskAliases.FilenameByAlias(AAlias: String): String;
+Var
+  oItem: TDiskAlias;
+  sAlias: String;
+Begin
+  oItem := GetAlias(AAlias);
+
+  If Assigned(oItem) Then
+    Result := oItem.Filename
+  Else
+    Result := ALIAS_NOT_FOUND;
+End;
+
+Function TDiskAliases.SetAlias(AAlias: String; AFilename: String): Boolean;
+Var
+  sAlias: String;
+  oItem: TDiskAlias;
+Begin
+  Result := False;
+  oItem := GetAlias(AAlias);
+
+  If Assigned(oItem) Then
+  Begin
+    oItem.Filename := AFilename;
+    Result := True;
+  End;
 End;
 
 Function TDiskAliases.ValidAliases: TStringArray;

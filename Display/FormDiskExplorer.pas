@@ -6,7 +6,7 @@ Interface
 
 Uses
   Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs, ShellCtrls,
-  ExtCtrls, ComCtrls, StdCtrls, FormSettings;
+  ExtCtrls, ComCtrls, StdCtrls, Menus, FormSettings;
 
 // TODO FormDiskExplorer: Add ability to use selected disk to update "disk.Alias"
 // TODO FormDiskExplorer: Recognise if WorkingDirectory is selected, and make filenames relative
@@ -17,25 +17,41 @@ Type
   { TfrmDiskExplorer }
 
   TfrmDiskExplorer = Class(TForm)
-    btnAddDSKtoA: TToolButton;
-    btnAddDSKtoB: TToolButton;
-    btnAddDSKtoC: TToolButton;
-    btnAddFolderToA: TToolButton;
-    btnAddFolderToB: TToolButton;
-    btnAddFolderToC: TToolButton;
     btnCancel: TButton;
     btnOK: TButton;
     ilMain: TImageList;
     lvFilesInDisk: TListView;
     lvFiles: TListView;
     memOutput: TMemo;
+    mnuA: TMenuItem;
+    mnuB: TMenuItem;
+    mnuC: TMenuItem;
+    mnuEjectB: TMenuItem;
+    mnuEjectC: TMenuItem;
+    mnuInsertDiskB: TMenuItem;
+    mnuInsertDiskC: TMenuItem;
+    mnuInsertFolderB: TMenuItem;
+    mnuInsertFolderC: TMenuItem;
+    pmB: TPopupMenu;
+    pmC: TPopupMenu;
+    pmDiskAlias: TPopupMenu;
+    Separator1: TMenuItem;
+    mnuEjectA: TMenuItem;
+    mnuInsertDiskA: TMenuItem;
+    mnuInsertFolderA: TMenuItem;
     Panel1: TPanel;
     pcPreview: TPageControl;
     pnlCPMToolsMain: TPanel;
     pnldskFiles: TPanel;
+    pmA: TPopupMenu;
+    Separator2: TMenuItem;
+    Separator3: TMenuItem;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     ToolBar1: TToolBar;
+    btnA: TToolButton;
+    btnB: TToolButton;
+    btnC: TToolButton;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
     tsFiles: TTabSheet;
@@ -51,7 +67,15 @@ Type
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
     Procedure lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+    Procedure mnuEjectAClick(Sender: TObject);
+    Procedure mnuEjectBClick(Sender: TObject);
+    Procedure mnuEjectCClick(Sender: TObject);
+    Procedure pmAPopup(Sender: TObject);
+    Procedure pmBPopup(Sender: TObject);
+    Procedure pmCPopup(Sender: TObject);
+    Procedure pmDiskAliasPopup(Sender: TObject);
     Procedure tvFoldersChange(Sender: TObject; Node: TTreeNode);
+    Procedure AssignDiskAlias(Sender: TObject);
   Private
     FActivated: Boolean;
     FLoadingDSK: Boolean;
@@ -92,6 +116,8 @@ Begin
 
     FActivated := True;
   End;
+
+  RefreshUI;
 End;
 
 Procedure TfrmDiskExplorer.FormDestroy(Sender: TObject);
@@ -123,31 +149,55 @@ End;
 Procedure TfrmDiskExplorer.btnAddDSKtoAClick(Sender: TObject);
 Begin
   FSettings.A := SelectedFile;
+  btnA.Hint := FSettings.A;
 End;
 
 Procedure TfrmDiskExplorer.btnAddDSKtoBClick(Sender: TObject);
 Begin
   FSettings.B := SelectedFile;
+  btnB.Hint := FSettings.B;
 End;
 
 Procedure TfrmDiskExplorer.btnAddDSKtoCClick(Sender: TObject);
 Begin
   FSettings.C := SelectedFile;
+  btnC.Hint := FSettings.C;
 End;
 
 Procedure TfrmDiskExplorer.btnAddFolderToAClick(Sender: TObject);
 Begin
   FSettings.A := ExcludeSlash(tvFolders.Path);
+  btnA.Hint := FSettings.A;
 End;
 
 Procedure TfrmDiskExplorer.btnAddFolderToBClick(Sender: TObject);
 Begin
   FSettings.B := ExcludeSlash(tvFolders.Path);
+  btnB.Hint := FSettings.B;
 End;
 
 Procedure TfrmDiskExplorer.btnAddFolderToCClick(Sender: TObject);
 Begin
   FSettings.C := ExcludeSlash(tvFolders.Path);
+  btnC.Hint := FSettings.C;
+End;
+
+Procedure TfrmDiskExplorer.mnuEjectAClick(Sender: TObject);
+Begin
+  FSettings.A := '';
+  btnA.Hint := FSettings.A;
+End;
+
+Procedure TfrmDiskExplorer.mnuEjectBClick(Sender: TObject);
+Begin
+  FSettings.B := '';
+  btnB.Hint := FSettings.B;
+End;
+
+Procedure TfrmDiskExplorer.mnuEjectCClick(Sender: TObject);
+Begin
+  FSettings.C := '';
+  btnC.Hint := FSettings.C;
 End;
 
 Procedure TfrmDiskExplorer.tvFoldersChange(Sender: TObject; Node: TTreeNode);
@@ -202,6 +252,10 @@ Begin
         FindClose(oSearchRec);
       Finally
         lvFiles.Items.EndUpdate;
+
+        If lvFiles.Items.Count > 0 Then
+          lvFiles.Items[0].Selected := True;
+
         FLoadingDSK := False;
         Debug('End scanning folder: ' + FSettings.WorkingFolder);
       End;
@@ -232,13 +286,21 @@ Begin
     End;
   End;
 
-  btnAddDSKToA.Enabled := bDSK And bDSKBootable;
-  btnAddDSKToB.Enabled := bDSK;
-  btnAddDSKToC.Enabled := bDSK;
+  mnuInsertDiskA.Enabled := bDSK And bDSKBootable;
+  mnuInsertDiskB.Enabled := bDSK;
+  mnuInsertDiskC.Enabled := bDSK;
 
-  btnAddFolderToA.Enabled := True;
-  btnAddFolderToB.Enabled := True;
-  btnAddFolderToC.Enabled := True;
+  mnuInsertFolderA.Enabled := True;
+  mnuInsertFolderB.Enabled := True;
+  mnuInsertFolderC.Enabled := True;
+
+  btnA.Hint := FSettings.A;
+  btnB.Hint := FSettings.B;
+  btnC.Hint := FSettings.C;
+
+  mnuA.Caption := FSettings.A;
+  mnuB.Caption := FSettings.B;
+  mnuC.Caption := FSettings.C;
 End;
 
 Procedure TfrmDiskExplorer.lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
@@ -325,6 +387,84 @@ Begin
   End;
 
   RefreshUI;
+End;
+
+Procedure TfrmDiskExplorer.pmAPopup(Sender: TObject);
+Var
+  sSelected: String;
+Begin
+  sSelected := SelectedFile;
+  If sSelected <> '' Then
+    sSelected := ExtractFileName(sSelected);
+
+  mnuA.Caption := FSettings.A;
+  mnuInsertDiskA.Caption := Format('Insert disk "%s"', [sSelected]);
+  mnuInsertFolderA.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
+End;
+
+Procedure TfrmDiskExplorer.pmBPopup(Sender: TObject);
+Var
+  sSelected: String;
+Begin
+  sSelected := SelectedFile;
+  If sSelected <> '' Then
+    sSelected := ExtractFileName(sSelected);
+
+  mnuB.Caption := FSettings.B;
+  mnuInsertDiskB.Caption := Format('Insert disk "%s"', [sSelected]);
+  mnuInsertFolderB.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
+End;
+
+Procedure TfrmDiskExplorer.pmCPopup(Sender: TObject);
+Var
+  sSelected: String;
+Begin
+  sSelected := SelectedFile;
+  If sSelected <> '' Then
+    sSelected := ExtractFileName(sSelected);
+
+  mnuC.Caption := FSettings.C;
+  mnuInsertDiskC.Caption := Format('Insert disk "%s"', [sSelected]);
+  mnuInsertFolderC.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
+End;
+
+Procedure TfrmDiskExplorer.pmDiskAliasPopup(Sender: TObject);
+Var
+  oAlias: TDiskAlias;
+  oMenu: TMenuItem;
+Begin
+  pmDiskAlias.Items.Clear;
+  For oAlias In uBee512.DiskAliases Do
+    If (oAlias.Alias <> '') Then
+    Begin
+      oMenu := TMenuItem.Create(pmDiskAlias);
+      oMenu.Caption := Format('%s=%s', [oAlias.Alias, oAlias.Filename]);
+      oMenu.OnClick := @AssignDiskAlias;
+
+      pmDiskAlias.Items.Add(oMenu);
+    End;
+End;
+
+Procedure TfrmDiskExplorer.AssignDiskAlias(Sender: TObject);
+Var
+  oMenu: TMenuItem;
+  sFilename, sAlias: String;
+  oDiskAlias: TDiskAlias;
+Begin
+  If Sender Is TMenuItem Then
+  Begin
+    oMenu := TMenuItem(Sender);
+    sFilename := SelectedFile;
+    sAlias := Trim(ExtractWord(1, oMenu.Caption, ['=']));
+
+    oDiskAlias := uBee512.DiskAliases[sAlias];
+    If Assigned(oDiskAlias) Then
+    Begin
+      // TODO ensure DiskAliases are saved
+      oDiskAlias.Filename := sFilename;
+      oDiskAlias.Validator.Process;
+    End;
+  End;
 End;
 
 End.

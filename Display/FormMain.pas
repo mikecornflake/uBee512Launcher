@@ -106,6 +106,7 @@ Type
     Function DriveFormatAsParam(AEdit: TComboBox; AFormat: TCombobox): String;
     Procedure LoadRC;
     Procedure LoadSettings;
+    Procedure RefreshDiskAliasSummary;
     Procedure RefreshRC;
     Procedure RefreshUI;
     Procedure SaveSettings;
@@ -367,13 +368,66 @@ Begin
   End;
 End;
 
+Procedure TfrmMain.RefreshDiskAliasSummary;
+var
+  sAlias: String;
+  iAlias, iInfo, iError, iWarning: Int64;
+Begin
+  If FileExists(uBee512.DiskAliases.Filename) Then
+  Begin
+    // Analyse "disks.alias"
+    sAlias := '';
+
+    iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
+    sAlias += Format('<p>There are %d aliases in "%s"</p>',
+      [iAlias, uBee512.DiskAliases.Filename]);
+
+    sAlias += '<br><p>';
+    iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
+    If iInfo > 0 Then
+    Begin
+      sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
+        [iInfo]);
+      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
+    End
+    Else
+      sAlias += 'There are no defined aliases ready to use';
+    sAlias += '</p>';
+
+    iError := uBee512.DiskAliases.Validators.Count([elError]);
+    If iError > 0 Then
+    Begin
+      sAlias += '<br><p>';
+      sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
+      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
+      sAlias += '</p>';
+    End
+    Else
+      sAlias += 'No errors were found';
+
+    sAlias += '<br><p>';
+    iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
+    If iWarning > 0 Then
+    Begin
+      sAlias += Format('<b>The following %d warnings were found:</b><br>', [iWarning]);
+      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
+    End
+    Else
+      sAlias += 'No warnings were found';
+    sAlias += '</p>';
+  End
+  Else
+    sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
+
+  //Clipboard.AsText := '<body>' + sAlias + '</body>';
+  SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
+end;
+
 Procedure TfrmMain.LoadRC;
 Var
-  iPrev, iAlias: Integer;
+  iPrev: Integer;
   bNew: Boolean;
   sAliasFile: String;
-  iInfo, iError, iWarning: Int64;
-  sAlias: String;
 
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
@@ -385,54 +439,8 @@ Begin
     Begin
       Caption := Format('%s %s:  uBee512 Folder=[%s]', [Application.Title,
         GetFileVersion, uBee512.WorkingDir]);
-      If FileExists(uBee512.DiskAliases.Filename) Then
-      Begin
-        // Analyse "disks.alias"
-        sAlias := '';
 
-        iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
-        sAlias += Format('<p>There are %d aliases in "%s"</p>',
-          [iAlias, uBee512.DiskAliases.Filename]);
-
-        sAlias += '<br><p>';
-        iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
-        If iInfo > 0 Then
-        Begin
-          sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
-            [iInfo]);
-          sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
-        End
-        Else
-          sAlias += 'There are no defined aliases ready to use';
-        sAlias += '</p>';
-
-        iError := uBee512.DiskAliases.Validators.Count([elError]);
-        If iError > 0 Then
-        Begin
-          sAlias += '<br><p>';
-          sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
-          sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
-          sAlias += '</p>';
-        End
-        Else
-          sAlias += 'No errors were found';
-
-        sAlias += '<br><p>';
-        iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
-        If iWarning > 0 Then
-        Begin
-          sAlias += Format('<b>The following %d warnings were found:</b><br>', [iWarning]);
-          sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
-        End
-        Else
-          sAlias += 'No warnings were found';
-        sAlias += '</p>';
-      End
-      Else
-        sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
-
-      Clipboard.AsText := '<body>' + sAlias + '</body>';
-      SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
+      RefreshDiskAliasSummary;
 
       // TODO Implement roms.alias summary correctly
       sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
@@ -505,6 +513,8 @@ Begin
       SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
       SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
       SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
+
+      RefreshDiskAliasSummary;
     End;
   Finally
     oForm.Free;
