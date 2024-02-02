@@ -6,8 +6,8 @@ Interface
 
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus,
-  FormSettings, Logs, FrameHTMLs;
+  StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus, IpHtml,
+  FormSettings, Logs;
 
 Type
 
@@ -44,11 +44,11 @@ Type
     lblDiskC: TLabel;
     lblPP: TLabel;
     MainMenu1: TMainMenu;
-    pnlDiskAlias: TPanel;
-    pnlRC: TPanel;
     memROMAlias: TMemo;
-    pnlSummary: TPanel;
+    htmlDiskAlias: TIpHtmlPanel;
+    htmlRC: TIpHtmlPanel;
     pnlRCSummary: TPanel;
+    htmlSummary: TIpHtmlPanel;
     Separator2: TMenuItem;
     mnuDebug: TMenuItem;
     pnlLeft: TPanel;
@@ -101,8 +101,6 @@ Type
     FLoadingDSK: Boolean;
     FUpdatingCombos: Boolean;
 
-    fmeDiskAlias, fmeRC, fmeSummary: TFrameHTML;
-
     FLog: TLog;
 
     Function DriveFormatAsParam(AEdit: TComboBox; AFormat: TCombobox): String;
@@ -130,9 +128,10 @@ Var
 Implementation
 
 Uses
-  IniFiles, cpmtoolsSupport, LazFileUtils, StringSupport, FileSupport,
-  OSSupport, uBee512Support, FormDefinitionExplorer, FormDiskExplorer, FormDebug,
-  FormAbout, Validators;
+  IniFiles, LazFileUtils,
+  Validators, cpmtoolsSupport, StringSupport, FileSupport, ControlsSupport,
+  OSSupport, uBee512Support, VersionSupport,
+  FormDefinitionExplorer, FormDiskExplorer, FormDebug, FormAbout;
 
   {$R *.lfm}
 
@@ -160,23 +159,7 @@ Begin
   Debug(Application.ExeName);
   Debug(FLog.Filename);
 
-  fmeDiskAlias := TFrameHTML.Create(Self);
-  fmeDiskAlias.Parent := pnlDiskAlias;
-  fmeDiskAlias.Align := alClient;
-  fmeDiskAlias.Visible := True;
-  fmeDiskAlias.Name := 'fmeDiskAlias';
-
-  fmeRC := TFrameHTML.Create(Self);
-  fmeRC.Parent := pnlRC;
-  fmeRC.Align := alClient;
-  fmeRC.Visible := True;
-  fmeRC.Name := 'fmeRC';
-
-  fmeSummary := TFrameHTML.Create(Self);
-  fmeSummary.Parent := pnlSummary;
-  fmeSummary.Align := alClient;
-  fmeSummary.Visible := True;
-  fmeSummary.Name := 'fmeSummary';
+  Caption := Format('%s %s', [Application.Title, GetFileVersion]);
 End;
 
 Procedure TfrmMain.FormActivate(Sender: TObject);
@@ -195,10 +178,6 @@ Begin
 
   FreeAndNil(FSettings);
   FreeAndNil(FLog);
-
-  FreeAndNil(fmeDiskAlias);
-  FreeAndNil(fmeRC);
-  FreeAndNil(fmeSummary);
 End;
 
 Procedure TfrmMain.mnuAboutClick(Sender: TObject);
@@ -404,6 +383,7 @@ Begin
 
     If bNew Then
     Begin
+      Caption := Format('%s %s:  uBee512 Folder=[%s]', [Application.Title, GetFileVersion, uBee512.WorkingDir]);
       If FileExists(uBee512.DiskAliases.Filename) Then
       Begin
         // Analyse "disks.alias"
@@ -444,7 +424,7 @@ Begin
       Else
         sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
 
-      fmeDiskAlias.SetHTMLAsString('<body>' + sAlias + '</body>');
+      SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
 
       // TODO Implement roms.alias summary correctly
       sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
@@ -635,9 +615,10 @@ Begin
     End;
 
     memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
-    fmeRC.SetHTMLAsString('<body>' + ValidateHTML(sRC) + '</body>');
+    SetHTML(htmlRC, '<body>' + ValidateHTML(sRC) + '</body>');
 
     // Display the results of the validity checks relating to the current settings
+    arrSummary := nil;
     SetLength(arrSummary, 0);
 
     AddStringsToArray(arrSummary, uBee512.Validator.Summary(True));
@@ -673,7 +654,7 @@ Begin
 
     sSummary := ArrayToString(arrSummary);
 
-    fmeSummary.SetHTMLAsString('<body>' + sSummary + '</body>');
+    SetHTML(htmlSummary, '<body>' + sSummary + '</body>');
   End;
 End;
 
@@ -722,7 +703,7 @@ End;
 
 Function TfrmMain.DriveFormatAsParam(AEdit: TComboBox; AFormat: TCombobox): String;
 Var
-  sFormat: TCaption;
+  sFormat: String;
 Begin
   Result := '';
 

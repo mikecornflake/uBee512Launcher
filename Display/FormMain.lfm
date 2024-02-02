@@ -487,7 +487,7 @@ object frmMain: TfrmMain
             09FFB57C09FFB57C09FFB57C0BFFB57E0FFFB78114FFB782187C
           }
         end
-        object pnlDiskAlias: TPanel
+        object htmlDiskAlias: TIpHtmlPanel
           AnchorSideLeft.Control = lblDiskAlias
           AnchorSideTop.Control = lblDiskAlias
           AnchorSideTop.Side = asrBottom
@@ -499,11 +499,18 @@ object frmMain: TfrmMain
           Top = 131
           Width = 451
           Anchors = [akTop, akLeft, akRight, akBottom]
-          BevelOuter = bvNone
-          Caption = 'fmeDiskAlias'
-          Font.Height = -11
-          Font.Name = 'Courier New'
-          ParentFont = False
+          FixedTypeface = 'Courier New'
+          DefaultTypeFace = 'Default'
+          DefaultFontSize = 10
+          FlagErrors = False
+          PrintSettings.MarginLeft = 0.5
+          PrintSettings.MarginTop = 0.5
+          PrintSettings.MarginRight = 0.5
+          PrintSettings.MarginBottom = 0.5
+          PrintSettings.Preview.Left = 480
+          PrintSettings.Preview.Top = 300
+          PrintSettings.Preview.Width = 1440
+          PrintSettings.Preview.Height = 900
           TabOrder = 6
         end
       end
@@ -690,30 +697,44 @@ object frmMain: TfrmMain
           Align = alBottom
           ResizeAnchor = akBottom
         end
-        object pnlRC: TPanel
+        object htmlRC: TIpHtmlPanel
           Left = 0
           Height = 179
           Top = 0
           Width = 406
           Align = alClient
-          BevelOuter = bvNone
-          Caption = 'fmeRC'
-          Font.Height = -11
-          Font.Name = 'Courier New'
-          ParentFont = False
+          FixedTypeface = 'Courier New'
+          DefaultTypeFace = 'Default'
+          DefaultFontSize = 10
+          FlagErrors = False
+          PrintSettings.MarginLeft = 0.5
+          PrintSettings.MarginTop = 0.5
+          PrintSettings.MarginRight = 0.5
+          PrintSettings.MarginBottom = 0.5
+          PrintSettings.Preview.Left = 480
+          PrintSettings.Preview.Top = 300
+          PrintSettings.Preview.Width = 1440
+          PrintSettings.Preview.Height = 900
           TabOrder = 1
         end
-        object pnlSummary: TPanel
+        object htmlSummary: TIpHtmlPanel
           Left = 0
           Height = 204
           Top = 184
           Width = 406
           Align = alBottom
-          BevelOuter = bvNone
-          Caption = 'fmeSummary'
-          Font.Height = -11
-          Font.Name = 'Courier New'
-          ParentFont = False
+          FixedTypeface = 'Courier New'
+          DefaultTypeFace = 'Default'
+          DefaultFontSize = 10
+          FlagErrors = False
+          PrintSettings.MarginLeft = 0.5
+          PrintSettings.MarginTop = 0.5
+          PrintSettings.MarginRight = 0.5
+          PrintSettings.MarginBottom = 0.5
+          PrintSettings.Preview.Left = 480
+          PrintSettings.Preview.Top = 300
+          PrintSettings.Preview.Width = 1440
+          PrintSettings.Preview.Height = 900
           TabOrder = 2
         end
       end
