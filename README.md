@@ -60,9 +60,9 @@
   + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
   + Is Boot Disk readonly? (Error flag is so)
  + Installation checks
-  + Does charrom.bin & rom1.bin exist?  (Error flag if not)
-  + Does "ubee512rc" exist? (Error flag if not)
-  + Does "disks.alias" and "roms.alias" exist? (Warning flag if not)
+   + Does charrom.bin & rom1.bin exist?  (Error flag if not)
+   + Does "ubee512rc" exist? (Error flag if not)
+   + Does "disks.alias" and "roms.alias" exist? (Warning flag if not)
   
 # TODO
 
