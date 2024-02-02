@@ -70,7 +70,7 @@ Var
       If Not uBee512.ValidFile(ASubfolder, AFilename) Then
       Begin
         SetLevel(AErrorLevel);
-        AddOC('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]);
+        AddOC('%s "%s" not found in "%s"', [AObject, AFilename, sFolder], AErrorLevel);
         If (ARec = '') Then
           AddRM('Download "%s" from Repository', [AFilename])
         Else
@@ -158,14 +158,15 @@ Begin
         If bReadOnly Then
         Begin
           SetLevel(elError);
-          AddOC('Default boot disk for Model "%s" exists, and is "%s"', [oItem.Model, sBoot]);
-          AddOC('However, file "%s" is ReadOnly', [sBoot]);
+          AddOC('Default boot disk for Model "%s" exists, and is "%s", ' +
+            'However, file is ReadOnly', [oItem.Model, sBoot], elError);
           AddRM('Use file system tools to unset the ReadOnly flag on this file', []);
         End
         Else
         Begin
           SetLevel(elInfo);
-          AddOC('Default boot disk for Model "%s" exists, and is "%s"', [oItem.Model, sBoot]);
+          AddOC('Default boot disk for Model "%s" exists, and is "%s"',
+            [oItem.Model, sBoot], elInfo);
           AddRM('You do not need to specify a boot disk in order to run this model',
             []);
         End;
@@ -173,7 +174,7 @@ Begin
       Else If bAliasExists Then
       Begin
         SetLevel(elWarning);
-        AddOC('Boot disk alias "%s" is not configured', [sModelBootDisk]);
+        AddOC('Boot disk alias "%s" is not configured', [sModelBootDisk], elWarning);
 
         AddRM('  Use of Alias is optional: ', []);
         StartRMList;
@@ -189,8 +190,8 @@ Begin
       Else
       Begin
         SetLevel(elWarning);
-        AddOC('No default boot disk found', []);
-        AddRM('A boot disk will need to be selected prior to launching uBee512.',          []);
+        AddOC('No default boot disk found', [], elWarning);
+        AddRM('A boot disk will need to be selected prior to launching uBee512.', []);
         StartRMList;
         AddRM('Either by editing "ubee512rc", "disks.alias",', []);
         AddRM('Or by populating "Disk A" in uBee512Launcher', []);
@@ -235,7 +236,9 @@ Begin
       If Trim(oItem.Filename) = '' Then
       Begin
         FErrorLevel := elWarning;
-        AddOC('%s is defined in "disks.alias", but has no lookup filename!', [oItem.Alias]);
+        AddOC('%s is defined in "disks.alias", but has no lookup filename!',
+          [oItem.Alias], elWarning);
+
         StartRMList;
         AddRM('Do not use alias "%s", ', [oItem.Alias]);
         AddRM('Or, place the Disk in "%s" and add just the filename to "disks.alias", ',
@@ -247,15 +250,17 @@ Begin
       Begin
         FErrorLevel := elInfo;
         If IsFileAbsolute(oItem.Filename) Then
-          AddOC('Alias "%s" is valid and will use file "%s"', [oItem.Alias, oItem.Filename])
+          AddOC('Alias "%s" is valid and will use file "%s"',
+            [oItem.Alias, oItem.Filename], elInfo)
         Else
           AddOC('Alias "%s" is valid and will use file "%s"',
-            [oItem.Alias, sBaseFolder + oItem.Filename]);
+            [oItem.Alias, sBaseFolder + oItem.Filename], elInfo);
       End
       Else If IsFileAbsolute(oItem.Filename) And Not (FileExists(oItem.Filename)) Then
       Begin
         FErrorLevel := elError;
-        AddOC('Alias "%s" lookup file "%s" does not exist!', [oItem.Alias, oItem.Filename]);
+        AddOC('Alias "%s" lookup file "%s" does not exist!',
+          [oItem.Alias, oItem.Filename], elError);
         AddRM('Ensure file %s exists:', [oItem.Filename]);
         StartRMList;
         AddRM('Check filepath?', []);
@@ -267,8 +272,8 @@ Begin
       Begin
         FErrorLevel := elError;
         AddOC('Alias "%s" lookup file "%s" can not be found in "%s"!',
-          [oItem.Alias, oItem.Filename, sBaseFolder]);
-        AddRM('Ensure file %s exists:', [oItem.Filename]);
+          [oItem.Alias, oItem.Filename, sBaseFolder], elError);
+        AddRM('Ensure file "%s" exists:', [oItem.Filename]);
         StartRMList;
         AddRM('Check filepath?', []);
         AddRM('Download file from Repository?', []);
@@ -308,9 +313,9 @@ Var
           SUBFOLDER_DISKS:
             If IsFileAbsolute(AFilename) Then
             Begin
-              AddOC('%s "%s" not found', [AObject, AFilename]);
-              AddRM('Ensure valid file %s exists', [AFilename]);
               SetLevel(elError);
+              AddOC('%s "%s" not found', [AObject, AFilename], elError);
+              AddRM('Ensure valid file %s exists', [AFilename]);
             End
             Else
             Begin
@@ -320,8 +325,10 @@ Var
               If (sAlias = ALIAS_NOT_FOUND) Then
               Begin
                 SetLevel(elError);
+
                 AddOC('%s "%s" not found in "disks.alias" or "%s"',
-                  [AObject, AFilename, sFolder]);
+                  [AObject, AFilename, sFolder], elError);
+
                 AddRM('Ensure valid %s file exists (i.e. download from Repository)',
                   [AObject]);
                 StartRMList;
@@ -334,18 +341,17 @@ Var
               End
               Else If Not uBee512.ValidFile(ASubfolder, sAlias) Then
               Begin
+                SetLevel(elError);
                 AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
-                  [AObject, AFilename, sAlias]);
+                  [AObject, AFilename, sAlias], elError);
                 If IsFileAbsolute(sAlias) Then
                 Begin
-                  SetLevel(elError);
-                  AddOC('%s "%s" not found', [AObject, AFilename]);
-                  AddRM('Ensure file %s exists', [AFilename]);
+                  AddOC('%s "%s" not found', [AObject, AFilename], elError);
+                  AddRM('Ensure file "%s" exists', [AFilename]);
                 End
                 Else
                 Begin
-                  SetLevel(elError);
-                  AddOC('%s "%s" not found in "%s"', [AObject, sAlias, sFolder]);
+                  AddOC('%s "%s" not found in "%s"', [AObject, sAlias, sFolder], elError);
                   AddRM('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
                 End;
               End
@@ -353,13 +359,18 @@ Var
               Begin
                 SetLevel(elInfo);
                 AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
-                  [AObject, AFilename, sAlias]);
+                  [AObject, AFilename, sAlias], elInfo);
               End;
             End;
           Else // Case ASubfolder Of
           Begin
             SetLevel(elError);
-            AddOC('%s "%s" not found in "%s"', [AObject, AFilename, sFolder]);
+            AddOC('%s "%s" not found in "%s"', [AObject, AFilename, sFolder], elError);
+            AddRM('Ensure file "%s" exists:', [AFilename]);
+            StartRMList;
+            AddRM('Check filepath?', []);
+            AddRM('Download file from Repository?', []);
+            EndRMList;
           End;
         End;
     End;

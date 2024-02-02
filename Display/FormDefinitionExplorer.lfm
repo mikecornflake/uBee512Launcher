@@ -127,17 +127,6 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
         ClientHeight = 174
         ClientWidth = 925
         TabOrder = 2
-        object memSystems: TMemo
-          Left = 0
-          Height = 174
-          Top = 0
-          Width = 315
-          Align = alLeft
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
-          TabOrder = 0
-          WordWrap = False
-        end
         object Splitter2: TSplitter
           Left = 315
           Height = 174
@@ -153,31 +142,7 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
           BevelOuter = bvNone
           ClientHeight = 174
           ClientWidth = 605
-          TabOrder = 2
-          object memIssues: TMemo
-            Left = 0
-            Height = 77
-            Top = 0
-            Width = 605
-            Align = alTop
-            Font.Color = clRed
-            ParentFont = False
-            ReadOnly = True
-            ScrollBars = ssAutoBoth
-            TabOrder = 0
-          end
-          object memRecommendations: TMemo
-            Left = 0
-            Height = 92
-            Top = 82
-            Width = 605
-            Align = alClient
-            Font.Color = clBlack
-            ParentFont = False
-            ReadOnly = True
-            ScrollBars = ssAutoBoth
-            TabOrder = 1
-          end
+          TabOrder = 1
           object Splitter3: TSplitter
             Cursor = crVSplit
             Left = 0
@@ -187,6 +152,66 @@ object frmDefinitionExplorer: TfrmDefinitionExplorer
             Align = alTop
             ResizeAnchor = akTop
           end
+          object htmlIssues: TIpHtmlPanel
+            Left = 0
+            Height = 77
+            Top = 0
+            Width = 605
+            Align = alTop
+            FixedTypeface = 'Courier New'
+            DefaultTypeFace = 'default'
+            DefaultFontSize = 10
+            FlagErrors = False
+            PrintSettings.MarginLeft = 0.5
+            PrintSettings.MarginTop = 0.5
+            PrintSettings.MarginRight = 0.5
+            PrintSettings.MarginBottom = 0.5
+            PrintSettings.Preview.Left = 480
+            PrintSettings.Preview.Top = 300
+            PrintSettings.Preview.Width = 1440
+            PrintSettings.Preview.Height = 900
+            TabOrder = 1
+          end
+          object htmlRecommendations: TIpHtmlPanel
+            Left = 0
+            Height = 92
+            Top = 82
+            Width = 605
+            Align = alClient
+            FixedTypeface = 'Courier New'
+            DefaultTypeFace = 'default'
+            DefaultFontSize = 10
+            FlagErrors = False
+            PrintSettings.MarginLeft = 0.5
+            PrintSettings.MarginTop = 0.5
+            PrintSettings.MarginRight = 0.5
+            PrintSettings.MarginBottom = 0.5
+            PrintSettings.Preview.Left = 480
+            PrintSettings.Preview.Top = 300
+            PrintSettings.Preview.Width = 1440
+            PrintSettings.Preview.Height = 900
+            TabOrder = 2
+          end
+        end
+        object htmlSystems: TIpHtmlPanel
+          Left = 0
+          Height = 174
+          Top = 0
+          Width = 315
+          Align = alLeft
+          FixedTypeface = 'Courier New'
+          DefaultTypeFace = 'default'
+          DefaultFontSize = 10
+          FlagErrors = False
+          PrintSettings.MarginLeft = 0.5
+          PrintSettings.MarginTop = 0.5
+          PrintSettings.MarginRight = 0.5
+          PrintSettings.MarginBottom = 0.5
+          PrintSettings.Preview.Left = 480
+          PrintSettings.Preview.Top = 300
+          PrintSettings.Preview.Width = 1440
+          PrintSettings.Preview.Height = 900
+          TabOrder = 2
         end
       end
     end

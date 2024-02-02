@@ -44,9 +44,9 @@ Type
     lblDiskC: TLabel;
     lblPP: TLabel;
     MainMenu1: TMainMenu;
+    htmlRC: TIpHtmlPanel;
     memROMAlias: TMemo;
     htmlDiskAlias: TIpHtmlPanel;
-    htmlRC: TIpHtmlPanel;
     pnlRCSummary: TPanel;
     htmlSummary: TIpHtmlPanel;
     Separator2: TMenuItem;
@@ -128,7 +128,7 @@ Var
 Implementation
 
 Uses
-  IniFiles, LazFileUtils,
+  IniFiles, LazFileUtils, Clipbrd,
   Validators, cpmtoolsSupport, StringSupport, FileSupport, ControlsSupport,
   OSSupport, uBee512Support, VersionSupport,
   FormDefinitionExplorer, FormDiskExplorer, FormDebug, FormAbout;
@@ -431,6 +431,7 @@ Begin
       Else
         sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
 
+      Clipboard.AsText := '<body>' + sAlias + '</body>';
       SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
 
       // TODO Implement roms.alias summary correctly
@@ -809,12 +810,8 @@ Begin
 End;
 
 Procedure TfrmMain.btnTestClick(Sender: TObject);
-Var
-  sResult, sCommand: String;
 Begin
-  sCommand := Format('%s', [FSettings.UBEE512_exe]);
-  sResult := Trim(RunEx(sCommand, ['--conio', '--echo', '@UBEE_USERHOME@', '--exit=-1']));
-  Debug('Test ' + sResult);
+
 End;
 
 Procedure TfrmMain.DiskorFormatChange(Sender: TObject);

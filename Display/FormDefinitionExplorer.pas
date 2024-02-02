@@ -6,7 +6,7 @@ Interface
 
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
-  StdCtrls;
+  StdCtrls, IpHtml;
 
 Type
 
@@ -17,10 +17,10 @@ Type
     btnOK: TButton;
     ilFlags: TImageList;
     lvDefinitions: TListView;
-    memIssues: TMemo;
-    memRecommendations: TMemo;
+    htmlIssues: TIpHtmlPanel;
     memRC: TMemo;
-    memSystems: TMemo;
+    htmlRecommendations: TIpHtmlPanel;
+    htmlSystems: TIpHtmlPanel;
     Panel1: TPanel;
     pnlRight: TPanel;
     pnlBottom: TPanel;
@@ -51,7 +51,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, OSSupport, Logs, Validators;
+  uBee512Support, OSSupport, ControlsSupport, StringSupport, Logs, Validators;
 
 {$R *.lfm}
 
@@ -94,16 +94,20 @@ Begin
     sRC += '[' + oDefinition.Definition + ']' + LineEnding;
     sRC += oDefinition.RC;
 
-    memSystems.Lines.Text := sRC;
+    SetHTML(htmlSystems, '<body>' + ValidateHTML(sRC) + '</body>');
 
-    memIssues.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
-    memIssues.Lines.Text := oDefinition.Validator.Outcome;
-    memRecommendations.Lines.Text := oDefinition.Validator.Recommendation;
+    htmlIssues.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
+    setHTML(htmlIssues, '<body>' + oDefinition.Validator.Outcome + '</body>');
+    setHTML(htmlRecommendations, '<body>' + oDefinition.Validator.Recommendation + '</body>');
 
     btnOK.Enabled := oDefinition.Validator.ErrorLevel <> elError;
   End
   Else
-    memSystems.Lines.Clear;
+  Begin
+    SetHTML(htmlSystems, '<body/>');
+    setHTML(htmlIssues, '<body/>');
+    setHTML(htmlRecommendations, '<body/>');
+  End;
 End;
 
 Procedure TfrmDefinitionExplorer.lvDefinitionsCustomDrawItem(Sender: TCustomListView;
@@ -158,8 +162,11 @@ Begin
       uBee512.LoadRC;
       pcRC.ActivePage := tsDefinitions;
 
+      SetHTML(htmlSystems, '');
+      setHTML(htmlIssues, '');
+      setHTML(htmlRecommendations, '');
+
       lvDefinitions.Items.Clear;
-      memSystems.Lines.Clear;
       lvDefinitions.Items.BeginUpdate;
 
       For oDefinition In uBee512.Definitions Do

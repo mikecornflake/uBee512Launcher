@@ -697,12 +697,12 @@ object frmMain: TfrmMain
           Align = alBottom
           ResizeAnchor = akBottom
         end
-        object htmlRC: TIpHtmlPanel
+        object htmlSummary: TIpHtmlPanel
           Left = 0
-          Height = 179
-          Top = 0
+          Height = 204
+          Top = 184
           Width = 406
-          Align = alClient
+          Align = alBottom
           FixedTypeface = 'Courier New'
           DefaultTypeFace = 'Default'
           DefaultFontSize = 10
@@ -717,14 +717,14 @@ object frmMain: TfrmMain
           PrintSettings.Preview.Height = 900
           TabOrder = 1
         end
-        object htmlSummary: TIpHtmlPanel
+        object htmlRC: TIpHtmlPanel
           Left = 0
-          Height = 204
-          Top = 184
+          Height = 179
+          Top = 0
           Width = 406
-          Align = alBottom
+          Align = alClient
           FixedTypeface = 'Courier New'
-          DefaultTypeFace = 'Default'
+          DefaultTypeFace = 'default'
           DefaultFontSize = 10
           FlagErrors = False
           PrintSettings.MarginLeft = 0.5

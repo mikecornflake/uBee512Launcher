@@ -24,7 +24,7 @@ Type
     FOutcome: String;
     FRMList: Boolean;
 
-    Procedure AddOC(AFormatStr: String; arrParams: Array Of Const);
+    Procedure AddOC(AFormatStr: String; arrParams: Array Of Const; AError: TErrorLevel = elNone);
     Procedure AddRM(AFormatStr: String; arrParams: Array Of Const);
     Procedure StartRMList;
     Procedure EndRMList;
@@ -106,12 +106,11 @@ Begin
   End;
 
   If Trim(FOutcome) <> '' Then
-    AddStringToArray(Result, '  <p style="color:' + ERROR_LEVEL_HTML[FErrorLevel] +
-      ';">' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
+    AddStringToArray(Result, '<p>'+ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
 
   If Trim(FRecommendation) <> '' Then
-    AddStringToArray(Result, '  Recommendation(s):<br> <blockquote>' + Trim(FRecommendation) +
-      '</blockquote>');
+    AddStringToArray(Result, '<p>Recommendation(s):<br> <blockquote>' +
+      Trim(FRecommendation) + '</blockquote></p>');
 End;
 
 Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
@@ -120,9 +119,14 @@ Begin
     FErrorLevel := AErrorLevel;
 End;
 
-Procedure TValidator.AddOC(AFormatStr: String; arrParams: Array Of Const);
+Procedure TValidator.AddOC(AFormatStr: String; arrParams: Array Of Const;
+  AError: TErrorLevel = elNone);
+Var
+  sP: String;
 Begin
-  FOutcome += Format(AFormatStr, arrParams) + '<br>' + LineEnding;
+  sP := '<span style="color:' + ERROR_LEVEL_HTML[AError] + ';">';
+
+  FOutcome += sP + Format(AFormatStr, arrParams) + '</span>' + LineEnding;
 End;
 
 Procedure TValidator.AddRM(AFormatStr: String; arrParams: Array Of Const);
