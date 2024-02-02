@@ -286,6 +286,9 @@ Begin
   If (Trim(FFilename) <> '') Then
     FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
 
+  If FileExists(FFilename) Then
+    CopyFileForce(FFilename, FFilename + '.bak');
+
   slTemp := TStringList.Create;
   Try
     For oItem In Self Do

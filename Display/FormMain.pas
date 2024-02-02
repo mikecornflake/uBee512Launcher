@@ -369,7 +369,7 @@ Begin
 End;
 
 Procedure TfrmMain.RefreshDiskAliasSummary;
-var
+Var
   sAlias: String;
   iAlias, iInfo, iError, iWarning: Int64;
 Begin
@@ -421,7 +421,7 @@ Begin
 
   //Clipboard.AsText := '<body>' + sAlias + '</body>';
   SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
-end;
+End;
 
 Procedure TfrmMain.LoadRC;
 Var
@@ -514,8 +514,12 @@ Begin
       SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
       SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
 
-      RefreshDiskAliasSummary;
-    End;
+      uBee512.DiskAliases.Save;
+    End
+    Else // Undo any changes made
+      uBee512.DiskAliases.Load;
+
+    RefreshDiskAliasSummary;
   Finally
     oForm.Free;
   End;

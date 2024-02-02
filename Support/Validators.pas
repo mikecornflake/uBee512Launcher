@@ -106,7 +106,7 @@ Begin
   End;
 
   If Trim(FOutcome) <> '' Then
-    AddStringToArray(Result, '<p>'+ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
+    AddStringToArray(Result, '<p>' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
 
   If Trim(FRecommendation) <> '' Then
     AddStringToArray(Result, '<p>Recommendation(s):<br> <blockquote>' +
