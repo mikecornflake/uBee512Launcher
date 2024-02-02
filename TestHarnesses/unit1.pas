@@ -5,7 +5,7 @@ Unit Unit1;
 Interface
 
 Uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Ipfilebroker, IpHtml;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, IpHtml;
 
 Type
 
@@ -16,7 +16,6 @@ Type
     Procedure FormCreate(Sender: TObject);
   Private
     Procedure SetHTMLAsString(AHTML: String);
-    Procedure LoadFromStream(AStream: TStream);
 
   Public
 
@@ -26,6 +25,9 @@ Var
   Form1: TForm1;
 
 Implementation
+
+Uses
+  ControlsSupport;
 
 {$R *.lfm}
 
@@ -37,7 +39,7 @@ Begin
   s += '<p style="background-color:Tomato;">Lorem ipsum...</p>';
   s += '<p style="color:red;">Red text</p>';
   SetHTMLAsString(s);
-  SetHTMLAsString(s);
+  SetHTMLAsString(s);  //Testing for memleak
   SetHTMLAsString(s);
   SetHTMLAsString(s);
   SetHTMLAsString(s);
@@ -49,39 +51,8 @@ Begin
 End;
 
 Procedure TForm1.SetHTMLAsString(AHTML: String);
-Var
-  oStream: TStringStream;
 Begin
-  oStream := TStringStream.Create(AHTML);
-  Try
-    LoadFromStream(oStream);
-  Finally
-    oStream.Free;
-  End;
-End;
-
-Type
-  // Expose the OnGetImageX property
-  THackIpHtml = Class(TIpHtml);
-
-Procedure TForm1.LoadFromStream(AStream: TStream);
-Var
-  oHTML: THackIpHtml;
-Begin
-  Try
-    oHTML := THackIpHtml.Create; // Beware: Will be freed automatically by htmlPanel
-
-    AStream.Position := 0;
-    oHTML.LoadFromStream(AStream);
-
-    AStream.Position := 0;
-
-    IpHtmlPanel1.SetHtml(oHTML);
-  Except
-    On E: Exception Do
-      MessageDlg('Unable to open HTML' + #13 + 'Error: ' + E.Message,
-        mtError, [mbCancel], 0);
-  End;
+  SetHTML(IpHtmlPanel1, AHTML);
 End;
 
 End.
