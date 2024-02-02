@@ -29,6 +29,7 @@
   + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
   + Closing in on decent selection of icons.
   + added teasers for "disks.alias" and "roms.alias".  Mainly to nag me into implementing these next
+  + Now displaying validator results using HTML (tested under Linux/macOS)
  + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
  + Signficant testing under macOS/Cocoa.  Bugger - Cocoa framework not fully implemented in LCL, so some workarounds for known issues with TComboBox and TListView
  + Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here.
@@ -55,9 +56,13 @@
   + Does the alias have a lookup filename? (warning flag if not)
   + Does the lookup filename exist? (error flag if not)
 + Model checks
-  + Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
+  + For each model: Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
   + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
   + Is Boot Disk readonly? (Error flag is so)
+ + Installation checks
+  + Does charrom.bin & rom1.bin exist?  (Error flag if not)
+  + Does "ubee512rc" exist? (Error flag if not)
+  + Does "disks.alias" and "roms.alias" exist? (Warning flag if not)
   
 # TODO
 
