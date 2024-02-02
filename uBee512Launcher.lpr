@@ -7,7 +7,7 @@ Uses {$IFDEF UNIX}
   Athreads, {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, FormMain, FormDebug, FormAbout, uBee512Support, 
-uBee512Validators { you can add units after this };
+uBee512Validators, DialogDiskAlias { you can add units after this };
 
 {$R *.res}
 
@@ -17,5 +17,6 @@ Begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmDebug, frmDebug);
+  Application.CreateForm(TdlgDiskAlias, dlgDiskAlias);
   Application.Run;
 End.
