@@ -105,10 +105,11 @@ Var
 Begin
   Result := '';
   If Assigned(lvFiles.Selected) Then
+  Begin
     oItem := lvFiles.Selected;
-
-  If oItem.SubItems.Count > 2 Then
-    Result := IncludeSlash(FSettings.WorkingFolder) + oItem.Caption + oItem.SubItems[0];
+    If oItem.SubItems.Count > 2 Then
+      Result := IncludeSlash(FSettings.WorkingFolder) + oItem.Caption + oItem.SubItems[0];
+  End;
 End;
 
 Procedure TfrmDiskExplorer.SetSettings(AValue: TSettings);

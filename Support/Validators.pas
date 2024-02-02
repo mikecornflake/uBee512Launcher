@@ -22,9 +22,12 @@ Type
     FDescription: String;
     FDisplayname: String;
     FOutcome: String;
+    FRMList: Boolean;
 
-    Procedure AddOutcome(AFormatStr: String; arrParams: Array Of Const);
-    Procedure AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
+    Procedure AddOC(AFormatStr: String; arrParams: Array Of Const);
+    Procedure AddRM(AFormatStr: String; arrParams: Array Of Const);
+    Procedure StartRMList;
+    Procedure EndRMList;
     Procedure SetLevel(AErrorLevel: TErrorLevel);
   Public
     Constructor Create(AOwner: TObject); Virtual;
@@ -81,6 +84,8 @@ Begin
   FErrorlevel := elNone;
   FOutcome := '';
   FRecommendation := '';
+
+  FRMList := False;
 End;
 
 Procedure TValidator.Process;
@@ -105,8 +110,8 @@ Begin
       ';">' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
 
   If Trim(FRecommendation) <> '' Then
-    AddStringToArray(Result, '  Recommendation: <blockquote>' +
-      Trim(FRecommendation) + '</blockquote>');
+    AddStringToArray(Result, '  Recommendation(s):<br> <blockquote>' + Trim(FRecommendation) +
+      '</blockquote>');
 End;
 
 Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
@@ -115,14 +120,30 @@ Begin
     FErrorLevel := AErrorLevel;
 End;
 
-Procedure TValidator.AddOutcome(AFormatStr: String; arrParams: Array Of Const);
+Procedure TValidator.AddOC(AFormatStr: String; arrParams: Array Of Const);
 Begin
   FOutcome += Format(AFormatStr, arrParams) + '<br>' + LineEnding;
 End;
 
-Procedure TValidator.AddRecommendation(AFormatStr: String; arrParams: Array Of Const);
+Procedure TValidator.AddRM(AFormatStr: String; arrParams: Array Of Const);
 Begin
+  If FRMList Then
+    FRecommendation += '<li>';
   FRecommendation += Format(AFormatStr, arrParams) + '<br>' + LineEnding;
+  If FRMList Then
+    FRecommendation += '</li>';
+End;
+
+Procedure TValidator.StartRMList;
+Begin
+  FRMList := True;
+  FRecommendation += '<ul>';
+End;
+
+Procedure TValidator.EndRMList;
+Begin
+  FRMList := False;
+  FRecommendation += '</ul>';
 End;
 
 { TValidators }

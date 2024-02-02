@@ -396,9 +396,11 @@ Begin
         iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
         If iInfo > 0 Then
         Begin
-          sAlias += Format('The following %d entries are correct and ready to use:<br>',
+          sAlias += '<p>';
+          sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
             [iInfo]);
           sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
+          sAlias += '</p>';
         End
         Else
           sAlias += 'There are no defined aliases ready to use<br>';
@@ -406,8 +408,10 @@ Begin
         iError := uBee512.DiskAliases.Validators.Count([elError]);
         If iError > 0 Then
         Begin
-          sAlias += Format('The following %d errors were found:<br>', [iError]);
+          sAlias += '<p>';
+          sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
           sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
+          sAlias += '</p>';
         End
         Else
           sAlias += 'No errors were found.<br>';
@@ -415,8 +419,10 @@ Begin
         iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
         If iWarning > 0 Then
         Begin
-          sAlias += Format('The following %d warnings were found:<br>', [iWarning]);
+          sAlias += '<p>';
+          sAlias += Format('<b>The following %d warnings were found:</b><br>', [iWarning]);
           sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
+          sAlias += '</p>';
         End
         Else
           sAlias += 'No warnings were found.<br>';

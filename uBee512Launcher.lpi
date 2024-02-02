@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="269"/>
+      <BuildNr Value="271"/>
       <Attributes pvaPreRelease="True"/>
     </VersionInfo>
     <BuildModes>
@@ -90,6 +90,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
               <StripSymbols Value="True"/>
             </Debugging>
             <LinkSmart Value="True"/>
