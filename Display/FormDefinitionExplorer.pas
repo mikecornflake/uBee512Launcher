@@ -118,12 +118,14 @@ End;
 
 Function TfrmDefinitionExplorer.GetTitle: String;
 Begin
+  Result := '';
   If Assigned(lvDefinitions.Selected) Then
     Result := lvDefinitions.Selected.SubItems[1];
 End;
 
 Function TfrmDefinitionExplorer.GetModel: String;
 Begin
+  Result := '';
   If Assigned(lvDefinitions.Selected) Then
     Result := lvDefinitions.Selected.SubItems[0];
 End;

@@ -383,49 +383,50 @@ Begin
 
     If bNew Then
     Begin
-      Caption := Format('%s %s:  uBee512 Folder=[%s]', [Application.Title, GetFileVersion, uBee512.WorkingDir]);
+      Caption := Format('%s %s:  uBee512 Folder=[%s]', [Application.Title,
+        GetFileVersion, uBee512.WorkingDir]);
       If FileExists(uBee512.DiskAliases.Filename) Then
       Begin
         // Analyse "disks.alias"
         sAlias := '';
 
         iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
-        sAlias += Format('There are %d aliases in "%s"<br><br>',
+        sAlias += Format('<p>There are %d aliases in "%s"</p>',
           [iAlias, uBee512.DiskAliases.Filename]);
 
+        sAlias += '<br><p>';
         iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
         If iInfo > 0 Then
         Begin
-          sAlias += '<p>';
           sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
             [iInfo]);
           sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
-          sAlias += '</p>';
         End
         Else
-          sAlias += 'There are no defined aliases ready to use<br>';
+          sAlias += 'There are no defined aliases ready to use';
+        sAlias += '</p>';
 
         iError := uBee512.DiskAliases.Validators.Count([elError]);
         If iError > 0 Then
         Begin
-          sAlias += '<p>';
+          sAlias += '<br><p>';
           sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
           sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
           sAlias += '</p>';
         End
         Else
-          sAlias += 'No errors were found.<br>';
+          sAlias += 'No errors were found';
 
+        sAlias += '<br><p>';
         iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
         If iWarning > 0 Then
         Begin
-          sAlias += '<p>';
           sAlias += Format('<b>The following %d warnings were found:</b><br>', [iWarning]);
           sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
-          sAlias += '</p>';
         End
         Else
-          sAlias += 'No warnings were found.<br>';
+          sAlias += 'No warnings were found';
+        sAlias += '</p>';
       End
       Else
         sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
