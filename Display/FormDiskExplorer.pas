@@ -18,6 +18,7 @@ Type
 
   TfrmDiskExplorer = Class(TForm)
     btnCancel: TButton;
+    btnDiskAliasClear: TToolButton;
     btnOK: TButton;
     ilMain: TImageList;
     lvFilesInDisk: TListView;
@@ -34,7 +35,8 @@ Type
     mnuInsertFolderC: TMenuItem;
     pmB: TPopupMenu;
     pmC: TPopupMenu;
-    pmDiskAlias: TPopupMenu;
+    pmDiskAliasSet: TPopupMenu;
+    pmDiskAliasClear: TPopupMenu;
     Separator1: TMenuItem;
     mnuEjectA: TMenuItem;
     mnuInsertDiskA: TMenuItem;
@@ -53,7 +55,7 @@ Type
     btnB: TToolButton;
     btnC: TToolButton;
     ToolButton1: TToolButton;
-    ToolButton2: TToolButton;
+    btnDiskAliasSet: TToolButton;
     tsFiles: TTabSheet;
     tsText: TTabSheet;
     tvFolders: TShellTreeView;
@@ -63,6 +65,8 @@ Type
     Procedure btnAddFolderToAClick(Sender: TObject);
     Procedure btnAddFolderToBClick(Sender: TObject);
     Procedure btnAddFolderToCClick(Sender: TObject);
+    Procedure btnDiskAliasClearClick(Sender: TObject);
+    Procedure btnDiskAliasSetClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
@@ -73,10 +77,13 @@ Type
     Procedure pmAPopup(Sender: TObject);
     Procedure pmBPopup(Sender: TObject);
     Procedure pmCPopup(Sender: TObject);
-    Procedure pmDiskAliasPopup(Sender: TObject);
+    Procedure pmDiskAliasClearPopup(Sender: TObject);
+    Procedure pmDiskAliasSetPopup(Sender: TObject);
     Procedure tvFoldersChange(Sender: TObject; Node: TTreeNode);
     Procedure AssignDiskAlias(Sender: TObject);
   Private
+    FSet: Boolean;
+
     FActivated: Boolean;
     FLoadingDSK: Boolean;
     FSettings: TSettings;
@@ -180,6 +187,16 @@ Procedure TfrmDiskExplorer.btnAddFolderToCClick(Sender: TObject);
 Begin
   FSettings.C := ExcludeSlash(tvFolders.Path);
   btnC.Hint := FSettings.C;
+End;
+
+Procedure TfrmDiskExplorer.btnDiskAliasClearClick(Sender: TObject);
+Begin
+
+End;
+
+Procedure TfrmDiskExplorer.btnDiskAliasSetClick(Sender: TObject);
+Begin
+
 End;
 
 Procedure TfrmDiskExplorer.mnuEjectAClick(Sender: TObject);
@@ -301,6 +318,8 @@ Begin
   mnuA.Caption := FSettings.A;
   mnuB.Caption := FSettings.B;
   mnuC.Caption := FSettings.C;
+
+  btnDiskAliasSet.Enabled := bDSK;
 End;
 
 Procedure TfrmDiskExplorer.lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
@@ -428,20 +447,41 @@ Begin
   mnuInsertFolderC.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
 End;
 
-Procedure TfrmDiskExplorer.pmDiskAliasPopup(Sender: TObject);
+Procedure TfrmDiskExplorer.pmDiskAliasClearPopup(Sender: TObject);
 Var
   oAlias: TDiskAlias;
   oMenu: TMenuItem;
 Begin
-  pmDiskAlias.Items.Clear;
+  FSet := False;
+
+  pmDiskAliasClear.Items.Clear;
   For oAlias In uBee512.DiskAliases Do
-    If (oAlias.Alias <> '') Then
+    If (oAlias.Alias <> '') And (oAlias.Filename <> '') Then
     Begin
-      oMenu := TMenuItem.Create(pmDiskAlias);
+      oMenu := TMenuItem.Create(pmDiskAliasSet);
       oMenu.Caption := Format('%s=%s', [oAlias.Alias, oAlias.Filename]);
       oMenu.OnClick := @AssignDiskAlias;
 
-      pmDiskAlias.Items.Add(oMenu);
+      pmDiskAliasClear.Items.Add(oMenu);
+    End;
+End;
+
+Procedure TfrmDiskExplorer.pmDiskAliasSetPopup(Sender: TObject);
+Var
+  oAlias: TDiskAlias;
+  oMenu: TMenuItem;
+Begin
+  FSet := True;
+
+  pmDiskAliasSet.Items.Clear;
+  For oAlias In uBee512.DiskAliases Do
+    If (oAlias.Alias <> '') Then
+    Begin
+      oMenu := TMenuItem.Create(pmDiskAliasSet);
+      oMenu.Caption := Format('%s=%s', [oAlias.Alias, oAlias.Filename]);
+      oMenu.OnClick := @AssignDiskAlias;
+
+      pmDiskAliasSet.Items.Add(oMenu);
     End;
 End;
 
@@ -454,13 +494,15 @@ Begin
   If Sender Is TMenuItem Then
   Begin
     oMenu := TMenuItem(Sender);
-    sFilename := SelectedFile;
     sAlias := Trim(ExtractWord(1, oMenu.Caption, ['=']));
+    If FSet Then
+      sFilename := SelectedFile
+    Else
+      sFilename := '';
 
     oDiskAlias := uBee512.DiskAliases[sAlias];
     If Assigned(oDiskAlias) Then
     Begin
-      // TODO ensure DiskAliases are saved
       oDiskAlias.Filename := sFilename;
       oDiskAlias.Validator.Process;
     End;

@@ -137,13 +137,23 @@ object frmDiskExplorer: TfrmDiskExplorer
           Caption = 'ToolButton1'
           Style = tbsSeparator
         end
-        object ToolButton2: TToolButton
+        object btnDiskAliasSet: TToolButton
           Left = 158
-          Hint = 'Warning: Changes to Disk Aliases are permanent (even if you click Cancel)'
           Top = 2
-          Caption = 'Disks Alias'
-          DropdownMenu = pmDiskAlias
+          Caption = 'Set Disk Alias'
+          DropdownMenu = pmDiskAliasSet
           ImageIndex = 12
+          ParentShowHint = False
+          ShowHint = True
+          Style = tbsButtonDrop
+        end
+        object btnDiskAliasClear: TToolButton
+          Left = 266
+          Top = 2
+          Caption = 'Clear Disk Alias'
+          DropdownMenu = pmDiskAliasClear
+          ImageIndex = 12
+          OnArrowClick = btnDiskAliasClearClick
           ParentShowHint = False
           ShowHint = True
           Style = tbsButtonDrop
@@ -554,9 +564,14 @@ object frmDiskExplorer: TfrmDiskExplorer
       OnClick = mnuEjectCClick
     end
   end
-  object pmDiskAlias: TPopupMenu
-    OnPopup = pmDiskAliasPopup
+  object pmDiskAliasSet: TPopupMenu
+    OnPopup = pmDiskAliasSetPopup
     Left = 408
+    Top = 80
+  end
+  object pmDiskAliasClear: TPopupMenu
+    OnPopup = pmDiskAliasClearPopup
+    Left = 528
     Top = 80
   end
 end
