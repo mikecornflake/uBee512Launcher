@@ -154,6 +154,9 @@ Type
     Function IsDisk(AExt: String): Boolean;
     Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
 
+    // If a file is within the Working Dir, then make the file relative
+    Function ShrinkFile(ASubfolder: String; AFilename: String): String;
+
     Property DiskAliases: TDiskAliases read FDisksAliases;  // Contents of "disks.alias"
     Property Definitions: TDefinitions read FDefinitions;   // entries within ubee512rc
     Property Models: TModels read FModels;                  // Hard coded list
@@ -864,6 +867,19 @@ Begin
     sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
 
   Result := FileExists(sFile);
+End;
+
+Function TuBee512.ShrinkFile(ASubfolder: String; AFilename: String): String;
+Var
+  sFolder: String;
+Begin
+  // Not doing this case-insensitive due to Linux :-(
+  sFolder := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder);
+
+  If (Pos(sFolder, AFilename) > 0) Then
+    Result := Copy(AFilename, Length(sFolder) + 1, Length(AFilename))
+  Else
+    Result := AFilename;
 End;
 
 Initialization
