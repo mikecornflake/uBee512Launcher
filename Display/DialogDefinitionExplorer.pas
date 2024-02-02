@@ -188,10 +188,9 @@ Begin
             sRam += oDefinition.SRAM_File;
           oItem.SubItems.Add(sRam);
           oItem.SubItems.Add(oDefinition.Description);
-
-          oDefinition.Validator.Process;
           oItem.Data := oDefinition;
 
+          oDefinition.Validator.Process;
           oItem.ImageIndex := Integer(oDefinition.Validator.ErrorLevel);
         End;
     Finally

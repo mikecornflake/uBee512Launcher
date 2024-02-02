@@ -65,13 +65,13 @@ Type
     ToolBar2: TToolBar;
     btnSettings: TToolButton;
     btnDiskExplorer: TToolButton;
+    btnDiskAlias: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     btnLaunchuBee512: TToolButton;
     ToolButton4: TToolButton;
     btnDebug: TToolButton;
     ToolButton5: TToolButton;
-    ToolButton6: TToolButton;
     btnTest: TToolButton;
     ToolButton7: TToolButton;
     tsDrive: TTabSheet;
@@ -80,6 +80,7 @@ Type
     Procedure btnClearAClick(Sender: TObject);
     Procedure btnClearBClick(Sender: TObject);
     Procedure btnClearCClick(Sender: TObject);
+    Procedure btnDiskAliasClick(Sender: TObject);
     Procedure btnDiskExplorerClick(Sender: TObject);
     Procedure btnDefinitionExplorerClick(Sender: TObject);
     Procedure btnLaunchuBee512Click(Sender: TObject);
@@ -132,7 +133,7 @@ Uses
   IniFiles, LazFileUtils, Clipbrd,
   Validators, cpmtoolsSupport, StringSupport, FileSupport, ControlsSupport,
   OSSupport, uBee512Support, VersionSupport,
-  DialogDefinitionExplorer, DialogDiskExplorer, DialogDebug, DialogAbout;
+  DialogDefinitionExplorer, DialogDiskExplorer, DialogDebug, DialogAbout, DialogDiskAlias;
 
   {$R *.lfm}
 
@@ -492,6 +493,23 @@ Begin
   cboDiskC.Text := '';
   cboFormatC.Text := '';
   RefreshUI;
+End;
+
+Procedure TfrmMain.btnDiskAliasClick(Sender: TObject);
+Var
+  oForm: TdlgDiskAlias;
+Begin
+  oForm := TdlgDiskAlias.Create(Self);
+
+  Try
+    If oForm.ShowModal = mrOk Then
+      uBee512.DiskAliases.Save  // commit
+    Else
+      uBee512.DiskAliases.Load; // undo
+
+    RefreshDiskAliasSummary;
+  Finally
+  End;
 End;
 
 Procedure TfrmMain.btnDiskExplorerClick(Sender: TObject);

@@ -143,7 +143,7 @@ Begin
       Result := IncludeSlash(FSettings.WorkingFolder) + oItem.Caption + oItem.SubItems[0];
 
       Result := uBee512.ShrinkFile('disks', Result);
-    end;
+    End;
   End;
 End;
 
