@@ -1,4 +1,4 @@
-object frmDebug: TfrmDebug
+object dlgDebug: TdlgDebug
   Left = 460
   Height = 471
   Top = 149

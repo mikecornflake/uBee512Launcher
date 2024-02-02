@@ -1,4 +1,4 @@
-object frmAbout: TfrmAbout
+object dlgAbout: TdlgAbout
   Left = 576
   Height = 479
   Top = 140

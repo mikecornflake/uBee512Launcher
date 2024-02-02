@@ -1,4 +1,4 @@
-Unit FormDebug;
+Unit DialogDebug;
 
 {$mode ObjFPC}{$H+}
 
@@ -9,9 +9,9 @@ Uses
 
 Type
 
-  { TfrmDebug }
+  { TdlgDebug }
 
-  TfrmDebug = Class(TForm)
+  TdlgDebug = Class(TForm)
     Button1: TButton;
     bntClear: TButton;
     memDebug: TMemo;
@@ -27,21 +27,21 @@ Type
   End;
 
 Var
-  frmDebug: TfrmDebug;
+  dlgDebug: TdlgDebug;
 
 Implementation
 
 {$R *.lfm}
 
-{ TfrmDebug }
+{ TdlgDebug }
 
-Procedure TfrmDebug.FormCreate(Sender: TObject);
+Procedure TdlgDebug.FormCreate(Sender: TObject);
 Begin
   FActivated := False;
   FFile := '';
 End;
 
-Procedure TfrmDebug.FormActivate(Sender: TObject);
+Procedure TdlgDebug.FormActivate(Sender: TObject);
 Var
   iLen: SizeInt;
 Begin
@@ -58,14 +58,14 @@ Begin
   End;
 End;
 
-Procedure TfrmDebug.bntClearClick(Sender: TObject);
+Procedure TdlgDebug.bntClearClick(Sender: TObject);
 Begin
   memDebug.Lines.Clear;
   If FileExists(FFile) Then
     DeleteFile(FFile);
 End;
 
-Procedure TfrmDebug.Load(AFilename: String);
+Procedure TdlgDebug.Load(AFilename: String);
 Begin
   FFile := AFilename;
 

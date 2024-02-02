@@ -1,4 +1,4 @@
-Unit FormAbout;
+Unit DialogAbout;
 
 {$mode objfpc}{$H+}
 {$WARN 5024 off : Parameter "$1" not used}
@@ -10,9 +10,9 @@ Uses
 
 Type
 
-  { TfrmAbout }
+  { TdlgAbout }
 
-  TfrmAbout = Class(TForm)
+  TdlgAbout = Class(TForm)
     Bevel1: TBevel;
     btnOK: TButton;
     Label3: TLabel;
@@ -69,9 +69,9 @@ Uses
 
 Procedure ShowAbout;
 Var
-  oAbout: TfrmAbout;
+  oAbout: TdlgAbout;
 Begin
-  oAbout := TfrmAbout.Create(Application.MainForm);
+  oAbout := TdlgAbout.Create(Application.MainForm);
   Try
     oAbout.ShowModal;
   Finally
@@ -79,7 +79,7 @@ Begin
   End;
 End;
 
-Procedure TfrmAbout.FormCreate(Sender: TObject);
+Procedure TdlgAbout.FormCreate(Sender: TObject);
 Var
   oResourceStrings: TStringList;
   sFolder: String;
@@ -160,30 +160,30 @@ Begin
   lblApplicationTitle.Caption := Application.Title;
 End;
 
-Procedure TfrmAbout.FormDestroy(Sender: TObject);
+Procedure TdlgAbout.FormDestroy(Sender: TObject);
 Begin
 End;
 
-Procedure TfrmAbout.btnOKClick(Sender: TObject);
+Procedure TdlgAbout.btnOKClick(Sender: TObject);
 Begin
   Close;
 End;
 
-Procedure TfrmAbout.URLLabelMouseLeave(Sender: TObject);
+Procedure TdlgAbout.URLLabelMouseLeave(Sender: TObject);
 Begin
   TLabel(Sender).Font.Style := [];
   TLabel(Sender).Font.Color := clBlue;
   TLabel(Sender).Cursor := crDefault;
 End;
 
-Procedure TfrmAbout.URLLabelMouseEnter(Sender: TObject);
+Procedure TdlgAbout.URLLabelMouseEnter(Sender: TObject);
 Begin
   TLabel(Sender).Font.Style := [fsUnderLine];
   TLabel(Sender).Font.Color := clRed;
   TLabel(Sender).Cursor := crHandPoint;
 End;
 
-Procedure TfrmAbout.URLLabelMouseDown(Sender: TObject; Button: TMouseButton;
+Procedure TdlgAbout.URLLabelMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 Begin
   OpenURL(TLabel(Sender).Caption);

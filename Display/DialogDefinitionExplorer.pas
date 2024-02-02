@@ -1,4 +1,4 @@
-Unit FormDefinitionExplorer;
+Unit DialogDefinitionExplorer;
 
 {$mode ObjFPC}{$H+}
 
@@ -10,9 +10,9 @@ Uses
 
 Type
 
-  { TfrmDefinitionExplorer }
+  { TdlgDefinitionExplorer }
 
-  TfrmDefinitionExplorer = Class(TForm)
+  TdlgDefinitionExplorer = Class(TForm)
     btnCancel: TButton;
     btnOK: TButton;
     ilFlags: TImageList;
@@ -55,7 +55,7 @@ Uses
 
 {$R *.lfm}
 
-Procedure TfrmDefinitionExplorer.FormCreate(Sender: TObject);
+Procedure TdlgDefinitionExplorer.FormCreate(Sender: TObject);
 Begin
   FActivated := False;
   LoadRC;
@@ -63,7 +63,7 @@ Begin
   Caption := 'System Definition Explorer: ' + ubee512.RC;
 End;
 
-Procedure TfrmDefinitionExplorer.FormActivate(Sender: TObject);
+Procedure TdlgDefinitionExplorer.FormActivate(Sender: TObject);
 Begin
   If Not Factivated Then
   Begin
@@ -73,13 +73,13 @@ Begin
   End;
 End;
 
-Procedure TfrmDefinitionExplorer.lvDefinitionsDblClick(Sender: TObject);
+Procedure TdlgDefinitionExplorer.lvDefinitionsDblClick(Sender: TObject);
 Begin
   If (Assigned(lvDefinitions.Selected)) And (btnOK.Enabled) Then
     ModalResult := mrOk;
 End;
 
-Procedure TfrmDefinitionExplorer.lvDefinitionsSelectItem(Sender: TObject;
+Procedure TdlgDefinitionExplorer.lvDefinitionsSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 Var
   oDefinition: TDefinition;
@@ -110,7 +110,7 @@ Begin
   End;
 End;
 
-Procedure TfrmDefinitionExplorer.lvDefinitionsCustomDrawItem(Sender: TCustomListView;
+Procedure TdlgDefinitionExplorer.lvDefinitionsCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; Var DefaultDraw: Boolean);
 Var
   oDefinition: TDefinition;
@@ -120,21 +120,21 @@ Begin
   lvDefinitions.Canvas.Font.Color := ERRORLEVEL_COLOR[oDefinition.Validator.ErrorLevel];
 End;
 
-Function TfrmDefinitionExplorer.GetTitle: String;
+Function TdlgDefinitionExplorer.GetTitle: String;
 Begin
   Result := '';
   If Assigned(lvDefinitions.Selected) Then
     Result := lvDefinitions.Selected.SubItems[1];
 End;
 
-Function TfrmDefinitionExplorer.GetModel: String;
+Function TdlgDefinitionExplorer.GetModel: String;
 Begin
   Result := '';
   If Assigned(lvDefinitions.Selected) Then
     Result := lvDefinitions.Selected.SubItems[0];
 End;
 
-Procedure TfrmDefinitionExplorer.SetTitle(AValue: String);
+Procedure TdlgDefinitionExplorer.SetTitle(AValue: String);
 Var
   sTitle: String;
   oItem: TListItem;
@@ -148,7 +148,7 @@ Begin
     End;
 End;
 
-Procedure TfrmDefinitionExplorer.LoadRC;
+Procedure TdlgDefinitionExplorer.LoadRC;
 Var
   oDefinition: TDefinition;
   oItem: TListItem;

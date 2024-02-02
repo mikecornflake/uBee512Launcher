@@ -1,4 +1,4 @@
-Unit FormDiskExplorer;
+Unit DialogDiskExplorer;
 
 {$mode ObjFPC}{$H+}
 {$WARN 5024 off : Parameter "$1" not used}
@@ -6,17 +6,15 @@ Interface
 
 Uses
   Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs, ShellCtrls,
-  ExtCtrls, ComCtrls, StdCtrls, Menus, FormSettings;
+  ExtCtrls, ComCtrls, StdCtrls, Menus, DialogSettings;
 
-// TODO FormDiskExplorer: Add ability to use selected disk to update "disk.Alias"
-// TODO FormDiskExplorer: Recognise if WorkingDirectory is selected, and make filenames relative
 // TODO FormDiskExplorer: Add right click to MainListView
 
 Type
 
-  { TfrmDiskExplorer }
+  { TdlgDiskExplorer }
 
-  TfrmDiskExplorer = Class(TForm)
+  TdlgDiskExplorer = Class(TForm)
     btnCancel: TButton;
     btnDiskAliasClear: TToolButton;
     btnOK: TButton;
@@ -103,16 +101,16 @@ Uses
 
 {$R *.lfm}
 
-{ TfrmDiskExplorer }
+{ TdlgDiskExplorer }
 
-Procedure TfrmDiskExplorer.FormCreate(Sender: TObject);
+Procedure TdlgDiskExplorer.FormCreate(Sender: TObject);
 Begin
   FActivated := False;
   FLoadingDSK := False;
   FSettings := TSettings.Create;
 End;
 
-Procedure TfrmDiskExplorer.FormActivate(Sender: TObject);
+Procedure TdlgDiskExplorer.FormActivate(Sender: TObject);
 Begin
   If Not FActivated Then
   Begin
@@ -127,12 +125,12 @@ Begin
   RefreshUI;
 End;
 
-Procedure TfrmDiskExplorer.FormDestroy(Sender: TObject);
+Procedure TdlgDiskExplorer.FormDestroy(Sender: TObject);
 Begin
   FreeAndNil(FSettings);
 End;
 
-Function TfrmDiskExplorer.SelectedFile: String;
+Function TdlgDiskExplorer.SelectedFile: String;
 Var
   oItem: TListItem;
 Begin
@@ -149,7 +147,7 @@ Begin
   End;
 End;
 
-Procedure TfrmDiskExplorer.SetSettings(AValue: TSettings);
+Procedure TdlgDiskExplorer.SetSettings(AValue: TSettings);
 Begin
   Assert(Assigned(FSettings), 'TfrmSettings.FSetting not assigned');
 
@@ -157,71 +155,71 @@ Begin
     FSettings.Assign(AValue);
 End;
 
-Procedure TfrmDiskExplorer.btnAddDSKtoAClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnAddDSKtoAClick(Sender: TObject);
 Begin
   FSettings.A := SelectedFile;
   btnA.Hint := FSettings.A;
 End;
 
-Procedure TfrmDiskExplorer.btnAddDSKtoBClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnAddDSKtoBClick(Sender: TObject);
 Begin
   FSettings.B := SelectedFile;
   btnB.Hint := FSettings.B;
 End;
 
-Procedure TfrmDiskExplorer.btnAddDSKtoCClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnAddDSKtoCClick(Sender: TObject);
 Begin
   FSettings.C := SelectedFile;
   btnC.Hint := FSettings.C;
 End;
 
-Procedure TfrmDiskExplorer.btnAddFolderToAClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnAddFolderToAClick(Sender: TObject);
 Begin
   FSettings.A := ExcludeSlash(tvFolders.Path);
   btnA.Hint := FSettings.A;
 End;
 
-Procedure TfrmDiskExplorer.btnAddFolderToBClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnAddFolderToBClick(Sender: TObject);
 Begin
   FSettings.B := ExcludeSlash(tvFolders.Path);
   btnB.Hint := FSettings.B;
 End;
 
-Procedure TfrmDiskExplorer.btnAddFolderToCClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnAddFolderToCClick(Sender: TObject);
 Begin
   FSettings.C := ExcludeSlash(tvFolders.Path);
   btnC.Hint := FSettings.C;
 End;
 
-Procedure TfrmDiskExplorer.btnDiskAliasClearClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnDiskAliasClearClick(Sender: TObject);
 Begin
 
 End;
 
-Procedure TfrmDiskExplorer.btnDiskAliasSetClick(Sender: TObject);
+Procedure TdlgDiskExplorer.btnDiskAliasSetClick(Sender: TObject);
 Begin
 
 End;
 
-Procedure TfrmDiskExplorer.mnuEjectAClick(Sender: TObject);
+Procedure TdlgDiskExplorer.mnuEjectAClick(Sender: TObject);
 Begin
   FSettings.A := '';
   btnA.Hint := FSettings.A;
 End;
 
-Procedure TfrmDiskExplorer.mnuEjectBClick(Sender: TObject);
+Procedure TdlgDiskExplorer.mnuEjectBClick(Sender: TObject);
 Begin
   FSettings.B := '';
   btnB.Hint := FSettings.B;
 End;
 
-Procedure TfrmDiskExplorer.mnuEjectCClick(Sender: TObject);
+Procedure TdlgDiskExplorer.mnuEjectCClick(Sender: TObject);
 Begin
   FSettings.C := '';
   btnC.Hint := FSettings.C;
 End;
 
-Procedure TfrmDiskExplorer.tvFoldersChange(Sender: TObject; Node: TTreeNode);
+Procedure TdlgDiskExplorer.tvFoldersChange(Sender: TObject; Node: TTreeNode);
 Var
   oSearchRec: TSearchRec;
   oListItem: TListItem;
@@ -286,7 +284,7 @@ Begin
   End;
 End;
 
-Procedure TfrmDiskExplorer.RefreshUI;
+Procedure TdlgDiskExplorer.RefreshUI;
 Var
   bFileSelected, bDSKBootable, bDSK: Boolean;
   oItem: TListItem;
@@ -326,7 +324,7 @@ Begin
   btnDiskAliasSet.Enabled := bDSK;
 End;
 
-Procedure TfrmDiskExplorer.lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+Procedure TdlgDiskExplorer.lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
 Var
   slTemp: TStringList;
   sSelectedFile, sDSKFile: String;
@@ -412,7 +410,7 @@ Begin
   RefreshUI;
 End;
 
-Procedure TfrmDiskExplorer.pmAPopup(Sender: TObject);
+Procedure TdlgDiskExplorer.pmAPopup(Sender: TObject);
 Var
   sSelected: String;
 Begin
@@ -425,7 +423,7 @@ Begin
   mnuInsertFolderA.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
 End;
 
-Procedure TfrmDiskExplorer.pmBPopup(Sender: TObject);
+Procedure TdlgDiskExplorer.pmBPopup(Sender: TObject);
 Var
   sSelected: String;
 Begin
@@ -438,7 +436,7 @@ Begin
   mnuInsertFolderB.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
 End;
 
-Procedure TfrmDiskExplorer.pmCPopup(Sender: TObject);
+Procedure TdlgDiskExplorer.pmCPopup(Sender: TObject);
 Var
   sSelected: String;
 Begin
@@ -451,7 +449,7 @@ Begin
   mnuInsertFolderC.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
 End;
 
-Procedure TfrmDiskExplorer.pmDiskAliasClearPopup(Sender: TObject);
+Procedure TdlgDiskExplorer.pmDiskAliasClearPopup(Sender: TObject);
 Var
   oAlias: TDiskAlias;
   oMenu: TMenuItem;
@@ -470,7 +468,7 @@ Begin
     End;
 End;
 
-Procedure TfrmDiskExplorer.pmDiskAliasSetPopup(Sender: TObject);
+Procedure TdlgDiskExplorer.pmDiskAliasSetPopup(Sender: TObject);
 Var
   oAlias: TDiskAlias;
   oMenu: TMenuItem;
@@ -489,7 +487,7 @@ Begin
     End;
 End;
 
-Procedure TfrmDiskExplorer.AssignDiskAlias(Sender: TObject);
+Procedure TdlgDiskExplorer.AssignDiskAlias(Sender: TObject);
 Var
   oMenu: TMenuItem;
   sFilename, sAlias: String;

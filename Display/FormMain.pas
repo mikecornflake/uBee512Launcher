@@ -7,7 +7,7 @@ Interface
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus, IpHtml,
-  FormSettings, Logs;
+  DialogSettings, Logs;
 
 Type
 
@@ -132,7 +132,7 @@ Uses
   IniFiles, LazFileUtils, Clipbrd,
   Validators, cpmtoolsSupport, StringSupport, FileSupport, ControlsSupport,
   OSSupport, uBee512Support, VersionSupport,
-  FormDefinitionExplorer, FormDiskExplorer, FormDebug, FormAbout;
+  DialogDefinitionExplorer, DialogDiskExplorer, DialogDebug, DialogAbout;
 
   {$R *.lfm}
 
@@ -183,7 +183,7 @@ End;
 
 Procedure TfrmMain.mnuAboutClick(Sender: TObject);
 Begin
-  FormAbout.ShowAbout;
+  DialogAbout.ShowAbout;
 End;
 
 Procedure TfrmMain.mnuExitClick(Sender: TObject);
@@ -193,9 +193,9 @@ End;
 
 Procedure TfrmMain.mnuDebugClick(Sender: TObject);
 Var
-  oDebug: TfrmDebug;
+  oDebug: TdlgDebug;
 Begin
-  oDebug := TfrmDebug.Create(Self);
+  oDebug := TdlgDebug.Create(Self);
   Try
     oDebug.Load(FLog.Filename);
 
@@ -207,9 +207,9 @@ End;
 
 Procedure TfrmMain.mnuSettingsClick(Sender: TObject);
 Var
-  oForm: TfrmSettings;
+  oForm: TdlgSettings;
 Begin
-  oForm := TfrmSettings.Create(Self);
+  oForm := TdlgSettings.Create(Self);
   Try
     oForm.Settings := FSettings;
 
@@ -496,9 +496,9 @@ End;
 
 Procedure TfrmMain.btnDiskExplorerClick(Sender: TObject);
 Var
-  oForm: TfrmDiskExplorer;
+  oForm: TdlgDiskExplorer;
 Begin
-  oForm := TfrmDiskExplorer.Create(Self);
+  oForm := TdlgDiskExplorer.Create(Self);
 
   FSettings.A := cboDiskA.Text;
   FSettings.B := cboDiskB.Text;
@@ -527,9 +527,9 @@ End;
 
 Procedure TfrmMain.btnDefinitionExplorerClick(Sender: TObject);
 Var
-  oForm: TfrmDefinitionExplorer;
+  oForm: TdlgDefinitionExplorer;
 Begin
-  oForm := TfrmDefinitionExplorer.Create(Self);
+  oForm := TdlgDefinitionExplorer.Create(Self);
   Try
     oForm.Title := cboTitle.Text;
     If oForm.ShowModal = mrOk Then

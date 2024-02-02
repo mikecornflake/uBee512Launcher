@@ -6,8 +6,8 @@ Uses {$IFDEF UNIX}
   Cthreads, {$ENDIF} {$IFDEF HASAMIGA}
   Athreads, {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, FormMain, FormDebug, FormAbout, uBee512Support, 
-uBee512Validators, DialogDiskAlias { you can add units after this };
+  Forms, FormMain, DialogDebug, uBee512Support, 
+  uBee512Validators { you can add units after this };
 
 {$R *.res}
 
@@ -16,7 +16,6 @@ Begin
   Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmDebug, frmDebug);
-  Application.CreateForm(TdlgDiskAlias, dlgDiskAlias);
+  Application.CreateForm(TdlgDebug, dlgDebug);
   Application.Run;
 End.

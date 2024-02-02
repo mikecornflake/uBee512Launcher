@@ -283,7 +283,6 @@ Var
   slTemp: TStringList;
   oItem: TDiskAlias;
 Begin
-  // TODO TDiskAliases.Save is untested.  Pending ability to edit disks.alias in UI
   Result := False;
 
   If (Trim(FFilename) <> '') Then
@@ -329,7 +328,6 @@ End;
 Function TDiskAliases.FilenameByAlias(AAlias: String): String;
 Var
   oItem: TDiskAlias;
-  sAlias: String;
 Begin
   oItem := GetAlias(AAlias);
 
@@ -341,7 +339,6 @@ End;
 
 Function TDiskAliases.SetAlias(AAlias: String; AFilename: String): Boolean;
 Var
-  sAlias: String;
   oItem: TDiskAlias;
 Begin
   Result := False;

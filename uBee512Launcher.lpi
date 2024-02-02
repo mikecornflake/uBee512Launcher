@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="280"/>
+      <BuildNr Value="283"/>
       <Attributes pvaPreRelease="True"/>
     </VersionInfo>
     <BuildModes>
@@ -153,9 +153,9 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="Display\FormSettings.pas"/>
+        <Filename Value="Display\DialogSettings.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmSettings"/>
+        <ComponentName Value="dlgSettings"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
@@ -164,16 +164,16 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="Display\FormDefinitionExplorer.pas"/>
+        <Filename Value="Display\DialogDefinitionExplorer.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmDefinitionExplorer"/>
+        <ComponentName Value="dlgDefinitionExplorer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="Display\FormDebug.pas"/>
+        <Filename Value="Display\DialogDebug.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmDebug"/>
+        <ComponentName Value="dlgDebug"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
@@ -182,16 +182,16 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="Display\FormDiskExplorer.pas"/>
+        <Filename Value="Display\DialogDiskExplorer.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmDiskExplorer"/>
+        <ComponentName Value="dlgDiskExplorer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="Display\FormAbout.pas"/>
+        <Filename Value="Display\DialogAbout.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmAbout"/>
+        <ComponentName Value="dlgAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
@@ -203,6 +203,7 @@
         <Filename Value="Display\DialogDiskAlias.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="dlgDiskAlias"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
     </Units>

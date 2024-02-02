@@ -1,4 +1,4 @@
-object frmDiskExplorer: TfrmDiskExplorer
+object dlgDiskExplorer: TdlgDiskExplorer
   Left = 2278
   Height = 488
   Top = 293

@@ -1,4 +1,4 @@
-Unit FormSettings;
+Unit DialogSettings;
 
 {$mode ObjFPC}{$H+}
 
@@ -34,9 +34,9 @@ Type
     Function Folder: String;
   End;
 
-  { TfrmSettings }
+  { TdlgSettings }
 
-  TfrmSettings = Class(TForm)
+  TdlgSettings = Class(TForm)
     btnRescan: TButton;
     btnOK: TButton;
     btnCancel: TButton;
@@ -74,15 +74,15 @@ Uses
 
 {$R *.lfm}
 
-{ TfrmSettings }
+{ TdlgSettings }
 
-Procedure TfrmSettings.FormCreate(Sender: TObject);
+Procedure TdlgSettings.FormCreate(Sender: TObject);
 Begin
   FSettings := TSettings.Create;
   FActivated := False;
 End;
 
-Procedure TfrmSettings.FormActivate(Sender: TObject);
+Procedure TdlgSettings.FormActivate(Sender: TObject);
 Begin
   If Not FActivated Then
   Begin
@@ -94,7 +94,7 @@ Begin
   End;
 End;
 
-Procedure TfrmSettings.btnOKClick(Sender: TObject);
+Procedure TdlgSettings.btnOKClick(Sender: TObject);
 Begin
   FSettings.UBEE512_exe := edtuBee512exe.Text;
   FSettings.UBEE512_rc := edtuBee512rc.Text;
@@ -104,12 +104,12 @@ Begin
   ModalResult := mrOk;
 End;
 
-Procedure TfrmSettings.btnSettingsFolderClick(Sender: TObject);
+Procedure TdlgSettings.btnSettingsFolderClick(Sender: TObject);
 Begin
   OpenDocument(FSettings.Folder);
 End;
 
-Procedure TfrmSettings.btnRescanClick(Sender: TObject);
+Procedure TdlgSettings.btnRescanClick(Sender: TObject);
 Begin
   Debug('TfrmSettings.btnRescanClick');
 
@@ -118,7 +118,7 @@ Begin
   LoadControls;
 End;
 
-Procedure TfrmSettings.SetSettings(AValue: TSettings);
+Procedure TdlgSettings.SetSettings(AValue: TSettings);
 Begin
   Assert(Assigned(FSettings), 'TfrmSettings.FSetting not assigned');
 
@@ -126,7 +126,7 @@ Begin
     FSettings.Assign(AValue);
 End;
 
-Procedure TfrmSettings.LoadControls;
+Procedure TdlgSettings.LoadControls;
 Begin
   edtuBee512exe.Text := FSettings.UBEE512_exe;
   edtuBee512rc.Text := FSettings.UBEE512_rc;

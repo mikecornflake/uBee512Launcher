@@ -1,4 +1,4 @@
-object frmDefinitionExplorer: TfrmDefinitionExplorer
+object dlgDefinitionExplorer: TdlgDefinitionExplorer
   Left = 2414
   Height = 626
   Top = 239

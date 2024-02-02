@@ -1,4 +1,4 @@
-object frmSettings: TfrmSettings
+object dlgSettings: TdlgSettings
   Left = 2643
   Height = 330
   Top = 154
