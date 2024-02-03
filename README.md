@@ -19,7 +19,7 @@
     + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
 
-### Whats new
+### Whats new (Trunk)
 + "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
 + Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let uBee512 do the work.  User can still override...
 + Framework for Validators added (See section on Validation Rules below).  
@@ -34,10 +34,8 @@
   + Closing in on decent selection of icons.
   + Now displaying validator results using HTML
   + Integrate "disks.alias" updates into Disk Explorer (add disk to new/existing Alias).  Also added new Disk Alias dialog
- + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
- + Signficant testing under macOS/Cocoa.  Bugger - Cocoa framework not fully implemented in LCL, so some workarounds for known issues with TComboBox and TListView
- + Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here.
- + Most dev work & testing done on Windows 11. 
++ Add Display options (position relative to launcher, monitor, opengl/sdl)
++ Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
 
 ## Notes on implementation
 + Only allows bootable DSKs to be loaded in A: (only checks DSKs for bootability)
@@ -45,6 +43,9 @@
 + Contents of DSK listed using either original **CPMtools** or patched **CPMTools** (allows for Microbee specific formats)
 + Parses ubee512rc to build up System Definitions, uses these in Main Form & Definitions Explorer
 + I know there looks like a lot of Definitions in ubee512rc sample.  Err, I'm currently filtering out about half - the ones I haven't researched
++ Signficant testing under macOS/Cocoa.  Bugger - Cocoa framework not fully implemented in LCL, so some workarounds for known issues with TComboBox and TListView
++ Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here.
++ Most dev work & testing done on Windows 11. 
 
 ## Validation Rules (under development)
 + Results of Validation checks currently visible in Definitions Explorer & Main Form (still to add "Issues" dialog)
@@ -71,15 +72,16 @@
 # TODO
 
 ## Short term (planned for 0.5beta)
-+ Add Display options (position relative to launcher, monitor, opengl/sdl)
-+ Add awareness of roms.alias + native md5 (before doing the below)
-+ Add ROM checks to TModelValidator
 + Add TMainFormValidator
-+ Add support for PAKx (inc Validator)
 + Add "Issues" pane to summarise ALL issues
-+ Add awareness of **RunCPM** folder structure
 
 ## Medium term (not until 0.6beta or higher)
++ Add awareness of **RunCPM** folder structure
++ Add awareness of roms.alias + native md5 (before doing the below)
++ Add boot ROM checks to TModelValidator
++ Add support for PAKx (inc Validator)
++ Add support for HDDx (inc Validator)
++ Add support for IDEx (inc Validator)
 + Add support for non libdsk file formats (this might not be a goal anymore - I hadn't realised ubee512 was so good at detecting disk format)
 + Continue to add support for working with DSK files prior to running in a CP/M system
   + Create blank DSK
@@ -87,13 +89,11 @@
 + Add direct support for the zip file structure utilised by **@ChickenMan** on both MSPP forum and MicrobeeTechnology forum
   + Display embedded ReadMe in the Preview Pane
   + Implement a "Mount ZIP" that extracts the DSK, then actually mounts that DSK in the CP/M system
-+ Add support for HDDx (inc Validator)
-+ Add support for IDEx (inc Validator)
 + Add support for Microbee Peripherals (Beetalker etc)
 + Add support for **UBEEDISK** tools (to be honest, this means learning them first)
 + I keep thinking about adding ability for users to define their own System Definitions (by first copying an existing).
 + (Library): Write a CommandLine+Params_As_String to CommandLine+Array_of_Param
-+ Expand disks.alias and roms.alias to a full UI for each - offering ability to QC/add/edit/delete entries
++ Expand roms.alias to a full UI - offering ability to QC/add/edit/delete entries
 
 ## Long Term 
 (_dreamer! you're nothing but a dreamer_)
@@ -145,4 +145,4 @@ This is intended to be free code available to everyone for use everywhere.  Fran
 Mike Thompson
 mike.cornflake@gmail.com
 Project start 2 Jan 2024
-Updated 22 Jan 2024
+Updated 3 Feb 2024
