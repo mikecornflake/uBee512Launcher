@@ -1,42 +1,42 @@
 object frmMain: TfrmMain
-  Left = 2349
+  Left = 498
   Height = 523
-  Top = 177
-  Width = 886
+  Top = 260
+  Width = 932
   Caption = 'uBee512Launcher'
-  ClientHeight = 503
-  ClientWidth = 886
+  ClientHeight = 523
+  ClientWidth = 932
   Constraints.MinHeight = 255
   Constraints.MinWidth = 700
   Menu = MainMenu1
+  ShowHint = True
+  LCLVersion = '3.99.0.0'
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  ShowHint = True
-  LCLVersion = '2.2.6.0'
   object pnluBee512: TPanel
     Left = 0
-    Height = 440
+    Height = 460
     Top = 24
-    Width = 886
+    Width = 932
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 440
-    ClientWidth = 886
+    ClientHeight = 460
+    ClientWidth = 932
     TabOrder = 0
     object pcOptions: TPageControl
       Left = 410
-      Height = 440
+      Height = 460
       Top = 0
-      Width = 476
-      ActivePage = tsDrive
+      Width = 522
+      ActivePage = tsVideo
       Align = alClient
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 0
       object tsDrive: TTabSheet
         Caption = 'Drives'
-        ClientHeight = 412
-        ClientWidth = 468
+        ClientHeight = 432
+        ClientWidth = 514
         object lblDiskA: TLabel
           Left = 8
           Height = 15
@@ -48,7 +48,7 @@ object frmMain: TfrmMain
           ParentFont = False
         end
         object btnClearA: TSpeedButton
-          Left = 436
+          Left = 482
           Height = 23
           Top = 8
           Width = 23
@@ -92,7 +92,7 @@ object frmMain: TfrmMain
           OnClick = btnClearAClick
         end
         object btnClearB: TSpeedButton
-          Left = 436
+          Left = 482
           Height = 23
           Top = 43
           Width = 23
@@ -136,7 +136,7 @@ object frmMain: TfrmMain
           OnClick = btnClearBClick
         end
         object btnClearC: TSpeedButton
-          Left = 436
+          Left = 482
           Height = 23
           Top = 78
           Width = 23
@@ -201,7 +201,7 @@ object frmMain: TfrmMain
         end
         object cboFormatA: TComboBox
           AnchorSideRight.Control = btnClearA
-          Left = 343
+          Left = 389
           Height = 23
           Top = 8
           Width = 91
@@ -223,13 +223,13 @@ object frmMain: TfrmMain
             'ss40s'
             'ss80'
           )
-          OnChange = DiskorFormatChange
           Style = csDropDownList
           TabOrder = 0
+          OnChange = DiskorFormatChange
         end
         object cboFormatB: TComboBox
           AnchorSideRight.Control = btnClearB
-          Left = 343
+          Left = 389
           Height = 23
           Top = 43
           Width = 91
@@ -251,13 +251,13 @@ object frmMain: TfrmMain
             'ss40s'
             'ss80'
           )
-          OnChange = DiskorFormatChange
           Style = csDropDownList
           TabOrder = 1
+          OnChange = DiskorFormatChange
         end
         object cboFormatC: TComboBox
           AnchorSideRight.Control = btnClearC
-          Left = 343
+          Left = 389
           Height = 23
           Top = 78
           Width = 91
@@ -279,9 +279,9 @@ object frmMain: TfrmMain
             'ss40s'
             'ss80'
           )
-          OnChange = DiskorFormatChange
           Style = csDropDownList
           TabOrder = 2
+          OnChange = DiskorFormatChange
         end
         object lblDiskAlias: TLabel
           AnchorSideLeft.Control = lblDiskA
@@ -302,13 +302,13 @@ object frmMain: TfrmMain
           Left = 48
           Height = 23
           Top = 8
-          Width = 268
+          Width = 314
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 5
           BorderSpacing.Right = 2
           ItemHeight = 15
-          OnChange = DiskorFormatChange
           TabOrder = 3
+          OnChange = DiskorFormatChange
         end
         object cboDiskB: TComboBox
           AnchorSideLeft.Control = lblDiskB
@@ -317,13 +317,13 @@ object frmMain: TfrmMain
           Left = 48
           Height = 23
           Top = 43
-          Width = 268
+          Width = 314
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 5
           BorderSpacing.Right = 2
           ItemHeight = 15
-          OnChange = DiskorFormatChange
           TabOrder = 4
+          OnChange = DiskorFormatChange
         end
         object cboDiskC: TComboBox
           AnchorSideLeft.Control = lblDiskC
@@ -332,18 +332,18 @@ object frmMain: TfrmMain
           Left = 47
           Height = 23
           Top = 78
-          Width = 269
+          Width = 315
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 5
           BorderSpacing.Right = 2
           ItemHeight = 15
-          OnChange = DiskorFormatChange
           TabOrder = 5
+          OnChange = DiskorFormatChange
         end
         object btnExploreA: TSpeedButton
           AnchorSideTop.Control = btnClearA
           AnchorSideRight.Control = cboFormatA
-          Left = 318
+          Left = 364
           Height = 23
           Hint = 'Select disk or folder'
           Top = 8
@@ -393,7 +393,7 @@ object frmMain: TfrmMain
         object btnExploreB: TSpeedButton
           AnchorSideTop.Control = btnClearB
           AnchorSideRight.Control = cboFormatB
-          Left = 318
+          Left = 364
           Height = 23
           Hint = 'Select disk or folder'
           Top = 43
@@ -443,7 +443,7 @@ object frmMain: TfrmMain
         object btnExploreC: TSpeedButton
           AnchorSideTop.Control = btnClearC
           AnchorSideRight.Control = cboFormatC
-          Left = 318
+          Left = 364
           Height = 23
           Hint = 'Select disk or folder'
           Top = 78
@@ -494,10 +494,10 @@ object frmMain: TfrmMain
           AnchorSideRight.Control = btnClearA
           AnchorSideRight.Side = asrBottom
           Left = 8
-          Height = 280
+          Height = 300
           Hint = 'This file allows you to match shortcuts to physical files.'#13#10'Example (will allow you to run the [CIAB] shortcut):'#13#10'  ciab.ss80   "C:\Microbee\Disks\ciab_system_master_85_03_ss80.dsk"'
           Top = 131
-          Width = 451
+          Width = 497
           Anchors = [akTop, akLeft, akRight, akBottom]
           FixedTypeface = 'Courier New'
           DefaultTypeFace = 'Default'
@@ -514,10 +514,95 @@ object frmMain: TfrmMain
           TabOrder = 6
         end
       end
+      object tsVideo: TTabSheet
+        Caption = 'Video'
+        ClientHeight = 432
+        ClientWidth = 514
+        object rgVideoType: TRadioGroup
+          Left = 8
+          Height = 148
+          Top = 4
+          Width = 232
+          AutoFill = True
+          Caption = '--video-type=?'
+          ChildSizing.LeftRightSpacing = 6
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          ClientHeight = 128
+          ClientWidth = 228
+          ItemIndex = 0
+          Items.Strings = (
+            'Don''t set (default is SDL hw)'
+            'gl : OpenGL hardware rendering'
+            'hw : SDL hardware rendering'
+            'sw : SDL software rendering'
+          )
+          TabOrder = 0
+          OnSelectionChanged = rgVideoTypeSelectionChanged
+        end
+        object rgMonitor: TRadioGroup
+          Left = 248
+          Height = 182
+          Top = 4
+          Width = 232
+          AutoFill = True
+          Caption = '--monitor=?'
+          ChildSizing.LeftRightSpacing = 6
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          ClientHeight = 162
+          ClientWidth = 228
+          ItemIndex = 0
+          Items.Strings = (
+            'Don''t set (default is colour or green)'
+            'a : amber monitor.'
+            'g : green monitor.'
+            'w : white monitor, (white on black)'
+            'b : black monitor, (black on white)'
+            'c : colour monitor.'
+          )
+          TabOrder = 1
+          OnSelectionChanged = rgVideoTypeSelectionChanged
+        end
+        object rgColour: TRadioGroup
+          Left = 8
+          Height = 152
+          Top = 152
+          Width = 232
+          AutoFill = True
+          Caption = 'Colour circuitry (standard models)'
+          ChildSizing.LeftRightSpacing = 6
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          ClientHeight = 132
+          ClientWidth = 228
+          ItemIndex = 0
+          Items.Strings = (
+            'Don''t set (default mono)'
+            '--mono : Disable colour'
+            '--col-type=0 : RGB analogue'
+            '--col-type=1 : RGBrgb monitor'
+          )
+          TabOrder = 2
+          OnSelectionChanged = rgVideoTypeSelectionChanged
+        end
+      end
       object tsROMs: TTabSheet
         Caption = 'ROMs'
-        ClientHeight = 412
-        ClientWidth = 468
+        ClientHeight = 432
+        ClientWidth = 514
         object lblROMAlias: TLabel
           AnchorSideLeft.Control = lblDiskA
           Left = 8
@@ -540,7 +625,7 @@ object frmMain: TfrmMain
           Height = 329
           Hint = 'This file allows you to match shortcuts to physical files.'
           Top = 23
-          Width = 445
+          Width = 491
           Anchors = [akTop, akLeft, akRight]
           ReadOnly = True
           ScrollBars = ssAutoBoth
@@ -550,8 +635,8 @@ object frmMain: TfrmMain
       end
       object TabSheet3: TTabSheet
         Caption = 'Peripherals'
-        ClientHeight = 412
-        ClientWidth = 468
+        ClientHeight = 432
+        ClientWidth = 514
         object lblPP: TLabel
           Left = 8
           Height = 37
@@ -571,7 +656,7 @@ object frmMain: TfrmMain
           Left = 62
           Height = 23
           Top = 8
-          Width = 390
+          Width = 436
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 5
           ItemHeight = 15
@@ -581,12 +666,12 @@ object frmMain: TfrmMain
     end
     object pnlLeft: TPanel
       Left = 0
-      Height = 440
+      Height = 460
       Top = 0
       Width = 405
       Align = alLeft
       BevelOuter = bvNone
-      ClientHeight = 440
+      ClientHeight = 460
       ClientWidth = 405
       TabOrder = 1
       object Label6: TLabel
@@ -611,10 +696,10 @@ object frmMain: TfrmMain
           'ROM'
           'Custom'
         )
-        OnChange = cboTypeChange
         Style = csDropDownList
         TabOrder = 0
         Text = 'Disk'
+        OnChange = cboTypeChange
       end
       object Label5: TLabel
         Left = 90
@@ -632,9 +717,9 @@ object frmMain: TfrmMain
         Top = 21
         Width = 75
         ItemHeight = 15
-        OnChange = cboModelChange
         Style = csDropDownList
         TabOrder = 1
+        OnChange = cboModelChange
       end
       object Label10: TLabel
         Left = 170
@@ -657,11 +742,11 @@ object frmMain: TfrmMain
         Anchors = [akLeft, akRight, akBottom]
         BorderSpacing.Right = 6
         ItemHeight = 15
-        OnChange = cboTitleChange
         ParentShowHint = False
         ShowHint = True
         Style = csDropDownList
         TabOrder = 2
+        OnChange = cboTitleChange
       end
       object btnDefinitionExplorer: TBitBtn
         AnchorSideRight.Side = asrBottom
@@ -675,24 +760,24 @@ object frmMain: TfrmMain
         Anchors = [akTop, akRight, akBottom]
         Images = ilMain
         ImageIndex = 12
-        OnClick = btnDefinitionExplorerClick
         TabOrder = 3
+        OnClick = btnDefinitionExplorerClick
       end
       object pnlRCSummary: TPanel
         Left = 0
-        Height = 388
+        Height = 408
         Top = 48
         Width = 406
         Anchors = [akTop, akLeft, akRight, akBottom]
         BevelOuter = bvNone
-        ClientHeight = 388
+        ClientHeight = 408
         ClientWidth = 406
         TabOrder = 4
         object Splitter2: TSplitter
           Cursor = crVSplit
           Left = 0
           Height = 5
-          Top = 179
+          Top = 199
           Width = 406
           Align = alBottom
           ResizeAnchor = akBottom
@@ -700,7 +785,7 @@ object frmMain: TfrmMain
         object htmlSummary: TIpHtmlPanel
           Left = 0
           Height = 204
-          Top = 184
+          Top = 204
           Width = 406
           Align = alBottom
           FixedTypeface = 'Courier New'
@@ -719,7 +804,7 @@ object frmMain: TfrmMain
         end
         object htmlRC: TIpHtmlPanel
           Left = 0
-          Height = 179
+          Height = 199
           Top = 0
           Width = 406
           Align = alClient
@@ -741,7 +826,7 @@ object frmMain: TfrmMain
     end
     object Splitter1: TSplitter
       Left = 405
-      Height = 440
+      Height = 460
       Top = 0
       Width = 5
     end
@@ -750,7 +835,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 24
     Top = 0
-    Width = 886
+    Width = 932
     AutoSize = True
     Images = ilMain
     List = True
@@ -805,8 +890,8 @@ object frmMain: TfrmMain
       Left = 532
       Top = 2
       Caption = 'Test'
-      OnClick = btnTestClick
       Visible = False
+      OnClick = btnTestClick
     end
     object ToolButton7: TToolButton
       Left = 524
@@ -841,8 +926,8 @@ object frmMain: TfrmMain
   object memCommandLine: TMemo
     Left = 0
     Height = 39
-    Top = 464
-    Width = 886
+    Top = 484
+    Width = 932
     Align = alBottom
     Lines.Strings = (
       '1'
@@ -854,7 +939,7 @@ object frmMain: TfrmMain
   end
   object btnExploreA2: TSpeedButton
     AnchorSideRight.Control = cboFormatA
-    Left = 737
+    Left = 783
     Height = 23
     Hint = 'Select disk or folder'
     Top = 120

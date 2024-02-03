@@ -128,7 +128,7 @@
   + You should now be able to compile "uBeeLauncher.lpr"
   
 # Acknowledgements
-+ User **uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
++ User **@uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.
 + **UBEE512**, **UBEEDISK** & patched **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
 + Original **CPMTools** (2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/.  This doesn't support most Microbee disk formats.

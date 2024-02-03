@@ -49,6 +49,9 @@ Type
     htmlDiskAlias: TIpHtmlPanel;
     pnlRCSummary: TPanel;
     htmlSummary: TIpHtmlPanel;
+    rgVideoType: TRadioGroup;
+    rgMonitor: TRadioGroup;
+    rgColour: TRadioGroup;
     Separator2: TMenuItem;
     mnuDebug: TMenuItem;
     pnlLeft: TPanel;
@@ -62,6 +65,7 @@ Type
     pnluBee512: TPanel;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
+    tsVideo: TTabSheet;
     ToolBar2: TToolBar;
     btnSettings: TToolButton;
     btnDiskExplorer: TToolButton;
@@ -96,6 +100,7 @@ Type
     Procedure mnuExitClick(Sender: TObject);
     Procedure mnuDebugClick(Sender: TObject);
     Procedure mnuSettingsClick(Sender: TObject);
+    Procedure rgVideoTypeSelectionChanged(Sender: TObject);
   Private
     FSettings: TSettings;
     FActivated: Boolean;
@@ -111,6 +116,10 @@ Type
     Procedure RefreshRC;
     Procedure RefreshUI;
     Procedure SaveSettings;
+
+    Function VideoTypeOpt: String;
+    Function MonitorOpt: String;
+    Function ColourOpt: String;
 
     Procedure SetDefinitionCombo(ACombo: TComboBox; AValue: String);
     Procedure SetSelectedDisk(AFilename: String; AFormat: String;
@@ -228,6 +237,11 @@ Begin
   End;
 End;
 
+Procedure TfrmMain.rgVideoTypeSelectionChanged(Sender: TObject);
+Begin
+  RefreshRC;
+End;
+
 Procedure TfrmMain.RefreshUI;
 Begin
   Debug('RefreshUI (FUpdatingCombos=%d)', [FUpdatingCombos]);
@@ -300,6 +314,8 @@ Begin
       AddDisk('b', cboDiskB, cboFormatB);
       AddDisk('c', cboDiskC, cboFormatC);
     End;
+
+    sParam := Trim(VideoTypeOpt + ' ' + ColourOpt + ' ' + MonitorOpt) + sParam;
 
     memCommandLine.Lines.Text := Trim(Format('>"%s" %s', [uBee512.Exe, Trim(sParam)]));
     SetHTML(htmlRC, '<body>' + ValidateHTML(sRC) + '</body>');
@@ -429,6 +445,10 @@ Begin
       SetDefinitionCombo(cboType, sType);
       SetDefinitionCombo(cboModel, sModel);
       SetDefinitionCombo(cboTitle, sTitle);
+
+      rgColour.ItemIndex := FSettings.ColourOpt;
+      rgMonitor.ItemIndex := FSettings.MonitorOpt;
+      rgVideoType.ItemIndex := FSettings.VideoTypeOpt;
     Finally
       Dec(FUpdatingCombos);
       RefreshRC;
@@ -470,6 +490,10 @@ Begin
     FSettings.B_Format := cboFormatB.Text;
     FSettings.C_Format := cboFormatC.Text;
 
+    FSettings.ColourOpt := rgColour.ItemIndex;
+    FSettings.MonitorOpt := rgMonitor.ItemIndex;
+    FSettings.VideoTypeOpt := rgVideoType.ItemIndex;
+
     FSettings.SaveSettings(oInifile);
 
     // No need to save Type, it's inferred from Model
@@ -483,6 +507,41 @@ Begin
     oInifile.UpdateFile;
   Finally
     oInifile.Free;
+  End;
+End;
+
+Function TfrmMain.VideoTypeOpt: String;
+Begin
+  Case rgVideoType.ItemIndex Of
+    1: Result := '--video-type=gl';
+    2: Result := '--video-type=hw';
+    3: Result := '--video-type=sw';
+    Else
+      Result := ''
+  End;
+End;
+
+Function TfrmMain.MonitorOpt: String;
+Begin
+  Case rgMonitor.ItemIndex Of
+    1: Result := '--monitor=a';
+    2: Result := '--monitor=g';
+    3: Result := '--monitor=w';
+    4: Result := '--monitor=b';
+    5: Result := '--monitor=c';
+    Else
+      Result := ''
+  End;
+End;
+
+Function TfrmMain.ColourOpt: String;
+Begin
+  Case rgColour.ItemIndex Of
+    1: Result := '--mono';
+    2: Result := '--col-type=0';
+    3: Result := '--col-type=1';
+    Else
+      Result := '';
   End;
 End;
 
@@ -832,6 +891,16 @@ Begin
   slParams := TStringList.Create;
   Try
     sCommand := Format('%s', [FSettings.UBEE512_exe]);
+
+    If VideoTypeOpt <> '' Then
+      slParams.Add(VideoTypeOpt);
+
+    If ColourOpt <> '' Then
+      slParams.Add(ColourOpt);
+
+    If MonitorOpt <> '' Then
+      slParams.Add(MonitorOpt);
+
     If cboTitle.Text <> '' Then
     Begin
       oDefinition := ubee512.Definitions.DefinitionByTitle(cboTitle.Text);

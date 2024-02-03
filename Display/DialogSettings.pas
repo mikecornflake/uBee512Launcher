@@ -23,6 +23,8 @@ Type
     A, B, C: String;
     A_Format, B_Format, C_Format: String;
 
+    ColourOpt, MonitorOpt, VideoTypeOpt: Integer;
+
     Procedure ValidatePaths;
     Procedure InitialisePaths;
 
@@ -175,6 +177,10 @@ Begin
   B_Format := AInifile.ReadString('Selected', 'Disk B Format', '');
   C_Format := AInifile.ReadString('Selected', 'Disk C Format', '');
 
+  ColourOpt := AInifile.ReadInteger('Option', 'Colour', 0);
+  MonitorOpt := AInifile.ReadInteger('Option', 'Monitor', 0);
+  VideoTypeOpt := AInifile.ReadInteger('Option', 'Video Type', 0);
+
   ValidatePaths;
 
   Debug('TSettings.LoadSettings uBee512exe=' + uBee512.exe);
@@ -197,6 +203,10 @@ Begin
   AInifile.WriteString('Selected', 'Disk A Format', A_Format);
   AInifile.WriteString('Selected', 'Disk B Format', B_Format);
   AInifile.WriteString('Selected', 'Disk C Format', C_Format);
+
+  AInifile.WriteInteger('Option', 'Colour', ColourOpt);
+  AInifile.WriteInteger('Option', 'Monitor', MonitorOpt);
+  AInifile.WriteInteger('Option', 'Video Type', VideoTypeOpt);
 End;
 
 Function TSettings.Folder: String;
