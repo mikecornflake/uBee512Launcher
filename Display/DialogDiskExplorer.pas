@@ -16,12 +16,13 @@ Type
 
   TdlgDiskExplorer = Class(TForm)
     btnCancel: TButton;
-    btnDiskAliasClear: TToolButton;
     btnOK: TButton;
     ilMain: TImageList;
     lvFilesInDisk: TListView;
     lvFiles: TListView;
     memOutput: TMemo;
+    mnuDiskAliasAssign: TMenuItem;
+    mnuDiskAliasClear: TMenuItem;
     mnuA: TMenuItem;
     mnuB: TMenuItem;
     mnuC: TMenuItem;
@@ -33,8 +34,7 @@ Type
     mnuInsertFolderC: TMenuItem;
     pmB: TPopupMenu;
     pmC: TPopupMenu;
-    pmDiskAliasSet: TPopupMenu;
-    pmDiskAliasClear: TPopupMenu;
+    pmDiskAlias: TPopupMenu;
     Separator1: TMenuItem;
     mnuEjectA: TMenuItem;
     mnuInsertDiskA: TMenuItem;
@@ -53,7 +53,7 @@ Type
     btnB: TToolButton;
     btnC: TToolButton;
     ToolButton1: TToolButton;
-    btnDiskAliasSet: TToolButton;
+    btnDiskAlias: TToolButton;
     tsFiles: TTabSheet;
     tsText: TTabSheet;
     tvFolders: TShellTreeView;
@@ -75,13 +75,10 @@ Type
     Procedure pmAPopup(Sender: TObject);
     Procedure pmBPopup(Sender: TObject);
     Procedure pmCPopup(Sender: TObject);
-    Procedure pmDiskAliasClearPopup(Sender: TObject);
-    Procedure pmDiskAliasSetPopup(Sender: TObject);
+    Procedure pmDiskAliasPopup(Sender: TObject);
     Procedure tvFoldersChange(Sender: TObject; Node: TTreeNode);
     Procedure AssignDiskAlias(Sender: TObject);
   Private
-    FSet: Boolean;
-
     FActivated: Boolean;
     FLoadingDSK: Boolean;
     FSettings: TSettings;
@@ -301,7 +298,7 @@ Begin
     If oItem.SubItems.Count > 2 Then
     Begin
       bDSKBootable := oItem.SubItems[1] = 'Yes';
-      bDSK := (oItem.SubItems[0] = '.dsk');
+      bDSK := uBee512.IsDisk(oItem.SubItems[0]);
     End;
   End;
 
@@ -321,7 +318,10 @@ Begin
   mnuB.Caption := FSettings.B;
   mnuC.Caption := FSettings.C;
 
-  btnDiskAliasSet.Enabled := bDSK;
+  btnDiskAlias.Enabled := True;
+
+  mnuDiskAliasAssign.Enabled := bDSK;
+  mnuDiskAliasClear.Enabled := True;
 End;
 
 Procedure TdlgDiskExplorer.lvFilesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
@@ -449,41 +449,33 @@ Begin
   mnuInsertFolderC.Caption := Format('Insert folder "%s"', [tvFolders.Path]);
 End;
 
-Procedure TdlgDiskExplorer.pmDiskAliasClearPopup(Sender: TObject);
+Procedure TdlgDiskExplorer.pmDiskAliasPopup(Sender: TObject);
 Var
   oAlias: TDiskAlias;
   oMenu: TMenuItem;
 Begin
-  FSet := False;
-
-  pmDiskAliasClear.Items.Clear;
-  For oAlias In uBee512.DiskAliases Do
-    If (oAlias.Alias <> '') And (oAlias.Filename <> '') Then
-    Begin
-      oMenu := TMenuItem.Create(pmDiskAliasSet);
-      oMenu.Caption := Format('%s=%s', [oAlias.Alias, oAlias.Filename]);
-      oMenu.OnClick := @AssignDiskAlias;
-
-      pmDiskAliasClear.Items.Add(oMenu);
-    End;
-End;
-
-Procedure TdlgDiskExplorer.pmDiskAliasSetPopup(Sender: TObject);
-Var
-  oAlias: TDiskAlias;
-  oMenu: TMenuItem;
-Begin
-  FSet := True;
-
-  pmDiskAliasSet.Items.Clear;
+  mnuDiskAliasAssign.Clear;
   For oAlias In uBee512.DiskAliases Do
     If (oAlias.Alias <> '') Then
     Begin
-      oMenu := TMenuItem.Create(pmDiskAliasSet);
+      oMenu := TMenuItem.Create(pmDiskAlias);
       oMenu.Caption := Format('%s=%s', [oAlias.Alias, oAlias.Filename]);
       oMenu.OnClick := @AssignDiskAlias;
+      oMenu.Tag := 1;
 
-      pmDiskAliasSet.Items.Add(oMenu);
+      mnuDiskAliasAssign.Add(oMenu)
+    End;
+
+  mnuDiskAliasClear.Clear;
+  For oAlias In uBee512.DiskAliases Do
+    If (oAlias.Alias <> '') And (oAlias.Filename <> '') Then
+    Begin
+      oMenu := TMenuItem.Create(pmDiskAlias);
+      oMenu.Caption := Format('%s=%s', [oAlias.Alias, oAlias.Filename]);
+      oMenu.OnClick := @AssignDiskAlias;
+      oMenu.Tag := 2;
+
+      mnuDiskAliasClear.Add(oMenu);
     End;
 End;
 
@@ -497,7 +489,7 @@ Begin
   Begin
     oMenu := TMenuItem(Sender);
     sAlias := Trim(ExtractWord(1, oMenu.Caption, ['=']));
-    If FSet Then
+    If (oMenu.Tag=1) Then
       sFilename := SelectedFile
     Else
       sFilename := '';

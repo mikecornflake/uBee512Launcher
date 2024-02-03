@@ -137,23 +137,12 @@ object dlgDiskExplorer: TdlgDiskExplorer
           Caption = 'ToolButton1'
           Style = tbsSeparator
         end
-        object btnDiskAliasSet: TToolButton
+        object btnDiskAlias: TToolButton
           Left = 158
           Top = 2
-          Caption = 'Set Disk Alias'
-          DropdownMenu = pmDiskAliasSet
+          Caption = 'Disk Alias'
+          DropdownMenu = pmDiskAlias
           ImageIndex = 12
-          ParentShowHint = False
-          ShowHint = True
-          Style = tbsButtonDrop
-        end
-        object btnDiskAliasClear: TToolButton
-          Left = 266
-          Top = 2
-          Caption = 'Clear Disk Alias'
-          DropdownMenu = pmDiskAliasClear
-          ImageIndex = 12
-          OnArrowClick = btnDiskAliasClearClick
           ParentShowHint = False
           ShowHint = True
           Style = tbsButtonDrop
@@ -564,14 +553,15 @@ object dlgDiskExplorer: TdlgDiskExplorer
       OnClick = mnuEjectCClick
     end
   end
-  object pmDiskAliasSet: TPopupMenu
-    OnPopup = pmDiskAliasSetPopup
+  object pmDiskAlias: TPopupMenu
+    OnPopup = pmDiskAliasPopup
     Left = 408
     Top = 80
-  end
-  object pmDiskAliasClear: TPopupMenu
-    OnPopup = pmDiskAliasClearPopup
-    Left = 528
-    Top = 80
+    object mnuDiskAliasAssign: TMenuItem
+      Caption = 'Assign'
+    end
+    object mnuDiskAliasClear: TMenuItem
+      Caption = 'Clear'
+    end
   end
 end
