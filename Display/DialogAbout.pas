@@ -65,7 +65,7 @@ Uses
   LCLIntf, VersionSupport, XPDFSupport, ImageMagickSupport, OSSupport,
   uBee512Support, FileSupport;
 
-{$R *.lfm}
+  {$R *.lfm}
 
 Procedure ShowAbout;
 Var

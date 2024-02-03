@@ -8,7 +8,7 @@ Uses
   Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs, ShellCtrls,
   ExtCtrls, ComCtrls, StdCtrls, Menus, DialogSettings;
 
-// TODO FormDiskExplorer: Add right click to MainListView
+  // TODO FormDiskExplorer: Add right click to MainListView
 
 Type
 
@@ -96,9 +96,9 @@ Uses
   FormMain, FileSupport, CPMSupport, StrUtils, Logs, OSSupport, ubee512Support,
   cpmtoolsSupport, LazFileUtils, StringSupport;
 
-{$R *.lfm}
+  {$R *.lfm}
 
-{ TdlgDiskExplorer }
+  { TdlgDiskExplorer }
 
 Procedure TdlgDiskExplorer.FormCreate(Sender: TObject);
 Begin
@@ -240,7 +240,8 @@ Begin
         memOutput.Lines.Clear;
         lvFilesInDisk.Clear;
 
-        If FindFirst(IncludeSlash(FSettings.WorkingFolder) + '*.*', faAnyFile, oSearchRec) = 0 Then
+        If FindFirst(IncludeSlash(FSettings.WorkingFolder) + '*.*',
+          faAnyFile, oSearchRec) = 0 Then
           Repeat
             If (oSearchRec.Name <> '.') And (oSearchRec.Name <> '..') And
               (oSearchRec.Name <> '') Then
@@ -249,7 +250,8 @@ Begin
               bIsDisk := ubee512.IsDisk(sExt) Or cpmtoolsIsDisk(sExt);
               bIsText := IsTextfile(sExt);
               bBoot := bIsDisk And
-                (IsCPMBootableFile(IncludeSlash(FSettings.WorkingFolder) + oSearchRec.Name));
+                (IsCPMBootableFile(IncludeSlash(FSettings.WorkingFolder) +
+                oSearchRec.Name));
 
               oListItem := lvFiles.Items.Add;
               oListItem.Caption := ExtractFileNameWithoutExt(oSearchRec.Name);
@@ -463,7 +465,7 @@ Begin
       oMenu.OnClick := @AssignDiskAlias;
       oMenu.Tag := 1;
 
-      mnuDiskAliasAssign.Add(oMenu)
+      mnuDiskAliasAssign.Add(oMenu);
     End;
 
   mnuDiskAliasClear.Clear;
@@ -489,7 +491,7 @@ Begin
   Begin
     oMenu := TMenuItem(Sender);
     sAlias := Trim(ExtractWord(1, oMenu.Caption, ['=']));
-    If (oMenu.Tag=1) Then
+    If (oMenu.Tag = 1) Then
       sFilename := SelectedFile
     Else
       sFilename := '';

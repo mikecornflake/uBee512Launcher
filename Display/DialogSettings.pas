@@ -72,9 +72,9 @@ Implementation
 Uses
   uBee512Support, cpmtoolsSupport, FileSupport, Logs, LCLIntf;
 
-{$R *.lfm}
+  {$R *.lfm}
 
-{ TdlgSettings }
+  { TdlgSettings }
 
 Procedure TdlgSettings.FormCreate(Sender: TObject);
 Begin

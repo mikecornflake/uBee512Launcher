@@ -133,11 +133,12 @@ Uses
   IniFiles, LazFileUtils, Clipbrd,
   Validators, cpmtoolsSupport, StringSupport, FileSupport, ControlsSupport,
   OSSupport, uBee512Support, VersionSupport,
-  DialogDefinitionExplorer, DialogDiskExplorer, DialogDebug, DialogAbout, DialogDiskAlias;
+  DialogDefinitionExplorer, DialogDiskExplorer, DialogDebug, DialogAbout,
+  DialogDiskAlias;
 
   {$R *.lfm}
 
-{ TfrmMain }
+  { TfrmMain }
 
 Procedure TfrmMain.FormCreate(Sender: TObject);
 Begin
@@ -388,7 +389,6 @@ Var
   sModel, sTitle: String;
   sIniFile, sType: String;
   mtType: TMbeeType;
-
 Begin
   sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
   Debug('Loading ' + sInifile);
@@ -501,22 +501,23 @@ Begin
     sAlias += Format('<p>There are %d aliases in "%s"</p>',
       [iAlias, uBee512.DiskAliases.Filename]);
 
-    sAlias += '<br><p>';
+    sAlias += '<br>' + LineEnding + '<p>';
     iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
     If iInfo > 0 Then
     Begin
       sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
         [iInfo]);
+      sAlias += LineEnding;
       sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
     End
     Else
       sAlias += 'There are no defined aliases ready to use';
-    sAlias += '</p>';
+    sAlias += '</p>' + LineEnding;
 
     iError := uBee512.DiskAliases.Validators.Count([elError]);
     If iError > 0 Then
     Begin
-      sAlias += '<br><p>';
+      sAlias += '<br>' + LineEnding + '<p>';
       sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
       sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
       sAlias += '</p>';
@@ -524,7 +525,7 @@ Begin
     Else
       sAlias += 'No errors were found';
 
-    sAlias += '<br><p>';
+    sAlias += '<br>' + LineEnding + '<p>';
     iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
     If iWarning > 0 Then
     Begin
@@ -538,7 +539,7 @@ Begin
   Else
     sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
 
-  //Clipboard.AsText := '<body>' + sAlias + '</body>';
+  Clipboard.AsText := '<body>' + sAlias + '</body>';
   SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
 End;
 
@@ -547,7 +548,6 @@ Var
   iPrev: Integer;
   bNew: Boolean;
   sAliasFile: String;
-
 Begin
   Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
   FLog.IncIndent;

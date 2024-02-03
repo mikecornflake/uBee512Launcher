@@ -378,7 +378,7 @@ Begin
 
   If Assigned(AAlias) Then
   Begin
-    Debug('TDiskAliases.Delete '+AAlias.Alias);
+    Debug('TDiskAliases.Delete ' + AAlias.Alias);
 
     i := FValidators.IndexOf(AAlias.Validator);
     If i <> -1 Then
@@ -393,15 +393,15 @@ Begin
 End;
 
 Function TDiskAliases.Add(AAlias: String): TDiskAlias;
-var
+Var
   oAlias: TDiskAlias;
-begin
-  Result := Nil;
+Begin
+  Result := nil;
 
   oAlias := GetAlias(AAlias);
   If Not Assigned(oAlias) Then
   Begin
-    Debug('TDiskAliases.Add '+AAlias);
+    Debug('TDiskAliases.Add ' + AAlias);
 
     oAlias := TDiskAlias.Create;
     oAlias.Alias := AAlias;
@@ -411,8 +411,8 @@ begin
     FValidators.Add(oAlias.Validator);
 
     Result := oAlias;
-  end;
-end;
+  End;
+End;
 
 { TDefinition }
 
@@ -804,7 +804,7 @@ Begin
             Begin
               sNewTag := TextBetween(sLine, '[', ']');
 
-                // Exclude non-system Tags
+              // Exclude non-system Tags
               If (sNewTag = 'global-start') Or (sNewTag = 'global-end') Or
                 (sNewTag = 'list') Or (sNewTag = 'listall') Then
               Begin
@@ -899,11 +899,11 @@ End;
 
 Function TuBee512.WorkingDir: String;
 Begin
-{$IFDEF WINDOWS}
+  {$IFDEF WINDOWS}
   Result := ExtractFileDir(FExe);
-{$ELSE}
+  {$ELSE}
   Result := IncludeTrailingBackslash(getuserdir) + '.ubee512';
-{$ENDIF}
+  {$ENDIF}
 End;
 
 Function TuBee512.ValidFile(ASubfolder: String; AFilename: String): Boolean;

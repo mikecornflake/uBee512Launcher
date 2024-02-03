@@ -179,10 +179,10 @@ object dlgDiskAlias: TdlgDiskAlias
     0000FC0070E4E0000000E00088E4000000000000A0E4000000000000B8E40000
     00000000D0E4000700000007E8E400070000003F00E5003F0000
   }
+  Position = poOwnerFormCenter
+  LCLVersion = '3.99.0.0'
   OnActivate = FormActivate
   OnCreate = FormCreate
-  Position = poOwnerFormCenter
-  LCLVersion = '2.2.6.0'
   object tbMain: TToolBar
     Left = 0
     Height = 26

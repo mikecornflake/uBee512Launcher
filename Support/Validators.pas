@@ -25,7 +25,8 @@ Type
     FOutcome: String;
     FRMList: Boolean;
 
-    Procedure AddOC(AFormatStr: String; arrParams: Array Of Const; AError: TErrorLevel = elNone);
+    Procedure AddOC(AFormatStr: String; arrParams: Array Of Const;
+      AError: TErrorLevel = elNone);
     Procedure AddRM(AFormatStr: String; arrParams: Array Of Const);
     Procedure StartRMList;
     Procedure EndRMList;
@@ -73,7 +74,7 @@ Implementation
 Uses
   Logs, StrUtils, StringSupport;
 
-{ TValidator }
+  { TValidator }
 
 Constructor TValidator.Create(AOwner: TObject);
 Begin
@@ -111,11 +112,12 @@ Begin
   End;
 
   If Trim(FOutcome) <> '' Then
-    AddStringToArray(Result, '<p>' + ERROR_LEVEL[FErrorLevel] + ': ' + FOutcome + '</p>');
+    AddStringToArray(Result, '<p><b>' + ERROR_LEVEL[FErrorLevel] + '</b>: ' +
+      FOutcome + '</p>');
 
   If Trim(FRecommendation) <> '' Then
-    AddStringToArray(Result, '<p>Recommendation(s):<br> <blockquote>' +
-      Trim(FRecommendation) + '</blockquote></p>');
+    AddStringToArray(Result, LineEnding + '<p>Recommendation(s):<p>' +
+      LineEnding + Trim(FRecommendation));
 End;
 
 Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
@@ -136,28 +138,38 @@ Var
 Begin
   sP := '<span style="color:' + ERROR_LEVEL_HTML[AError] + ';">';
 
-  FOutcome += sP + Format(AFormatStr, arrParams) + '</span>' + LineEnding;
+  FOutcome += sP + Format(AFormatStr, arrParams) + '</span>';
+  FOutcome += LineEnding;
 End;
 
 Procedure TValidator.AddRM(AFormatStr: String; arrParams: Array Of Const);
 Begin
   If FRMList Then
     FRecommendation += '<li>';
-  FRecommendation += Format(AFormatStr, arrParams) + '<br>' + LineEnding;
+
+  FRecommendation += Format(AFormatStr, arrParams);
+
+  If Not FRMList Then
+    FRecommendation += LineEnding;
+
   If FRMList Then
     FRecommendation += '</li>';
+
+  FRecommendation += LineEnding;
 End;
 
 Procedure TValidator.StartRMList;
 Begin
   FRMList := True;
-  FRecommendation += '<ul>';
+
+  FRecommendation += '<ul>' + LineEnding;
 End;
 
 Procedure TValidator.EndRMList;
 Begin
   FRMList := False;
-  FRecommendation += '</ul>';
+
+  FRecommendation += '</ul>' + LineEnding;
 End;
 
 { TValidators }

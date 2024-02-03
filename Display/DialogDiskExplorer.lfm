@@ -46,11 +46,11 @@ object dlgDiskExplorer: TdlgDiskExplorer
     0000000000000000000000000000000000000000000000000000000000000000
     0000
   }
+  Position = poMainFormCenter
+  LCLVersion = '3.99.0.0'
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  Position = poMainFormCenter
-  LCLVersion = '2.2.6.0'
   object tvFolders: TShellTreeView
     Left = 0
     Height = 456
@@ -58,11 +58,10 @@ object dlgDiskExplorer: TdlgDiskExplorer
     Width = 213
     Align = alLeft
     FileSortType = fstAlphabet
-    ReadOnly = True
     TabOrder = 0
-    OnChange = tvFoldersChange
     Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
     ObjectTypes = [otFolders, otHidden]
+    OnChange = tvFoldersChange
   end
   object Splitter1: TSplitter
     Left = 213

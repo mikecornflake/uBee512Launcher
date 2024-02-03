@@ -52,9 +52,9 @@ Begin
     iLen := Length(memDebug.Text);
     If iLen > 0 Then
     Begin
-      memDebug.SelStart := iLen-1;
+      memDebug.SelStart := iLen - 1;
       memDebug.SelLength := 0;
-    end;
+    End;
   End;
 End;
 

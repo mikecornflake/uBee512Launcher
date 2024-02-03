@@ -33,7 +33,7 @@ Type
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure lvDefinitionsCustomDrawItem(Sender: TCustomListView; Item: TListItem;
-      {%H-}State: TCustomDrawState; Var {%H-}DefaultDraw: Boolean);
+    {%H-}State: TCustomDrawState; Var {%H-}DefaultDraw: Boolean);
     Procedure lvDefinitionsDblClick(Sender: TObject);
     Procedure lvDefinitionsSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   Private
@@ -53,7 +53,7 @@ Implementation
 Uses
   uBee512Support, OSSupport, ControlsSupport, StringSupport, Logs, Validators;
 
-{$R *.lfm}
+  {$R *.lfm}
 
 Procedure TdlgDefinitionExplorer.FormCreate(Sender: TObject);
 Begin

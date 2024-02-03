@@ -64,7 +64,7 @@ Uses
   Validators,
   OSSupport, FileSupport, ControlsSupport, StringSupport;
 
-{ TdlgDiskAlias }
+  { TdlgDiskAlias }
 
 Procedure TdlgDiskAlias.FormCreate(Sender: TObject);
 Begin
@@ -227,7 +227,7 @@ Begin
   If Assigned(FSelected) Then
   Begin
     sAlias := InputBox('Edit Alias', 'Enter a new Alias', FSelected.Alias);
-    If (sAlias <> '') And (sAlias<>FSelected.Alias) Then
+    If (sAlias <> '') And (sAlias <> FSelected.Alias) Then
     Begin
       oAlias := uBee512.DiskAliases[sAlias];
 

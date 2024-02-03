@@ -37,3 +37,7 @@ backup/uBee512Launcher.lpi
 /*.dbg
 /TestHarnesses/iPro_test.exe
 /TestHarnesses/lib/x86_64-win64
+/HeapTrace.log
+/Display/backup
+/Support/backup
+/backup

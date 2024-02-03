@@ -22,14 +22,18 @@
 ### Whats new
 + "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
 + Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let uBee512 do the work.  User can still override...
-+ Framework for Validators added.  Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.
++ Framework for Validators added (See section on Validation Rules below).  
+  + Disk Alias Validator added (finished)
+  + Installation Validator added (Not sure what else to check, but this got me thinking about adding Installation Aids)
+  + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.)
+  + Microbee Model Validator added (Only checks default boot disks for Disk Models.  No checks for boot ROMs for IC models)
 + UI has been reworked several times.
   + Disk Explorer is now it's own form (not needed for ROM Bees, so why waste space)
   + System Definitions now highlights which Definitions with known issues (as determined by the validators).  In addition to highlighting failed rows as red, needed to add red/green icons to workaround LCL shortcomings on macOS and Linux
   + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
   + Closing in on decent selection of icons.
-  + added teasers for "disks.alias" and "roms.alias".  Mainly to nag me into implementing these next
-  + Now displaying validator results using HTML (tested under Linux/macOS)
+  + Now displaying validator results using HTML
+  + Integrate "disks.alias" updates into Disk Explorer (add disk to new/existing Alias).  Also added new Disk Alias dialog
  + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
  + Signficant testing under macOS/Cocoa.  Bugger - Cocoa framework not fully implemented in LCL, so some workarounds for known issues with TComboBox and TListView
  + Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here.
@@ -68,7 +72,6 @@
 
 ## Short term (planned for 0.5beta)
 + Add Display options (position relative to launcher, monitor, opengl/sdl)
-+ Integrate "disks.alias" updates into Disk Explorer (add disk to new/existing Alias)
 + Add awareness of roms.alias + native md5 (before doing the below)
 + Add ROM checks to TModelValidator
 + Add TMainFormValidator
@@ -97,8 +100,9 @@
 + Investigate automating a running instance of **UBEE512** (allow dynamic changing of disks)
 
 # Development Notes
-+ Developed under windows using Lazarus 2.2.6 / fpc 3.2.2 / 64bit
-+ Tested under Ubuntu & macOS using Lazarus 3.0 / fpc 3.2.2 / 64bit
++ Developed under windows using Lazarus Trunk (3.99) / fpc 3.2.2 / 64bit
++ Tested under Ubuntu & macOS using Lazarus Trunk (3.99) / fpc 3.2.2 / 64bit
++ Due to changes in TurboPowerHTML rendering only use Lazarus Trunk for compiling releases.
 + Uses a OO framework I developed while freelancing under "Inspector Mike".  
   + There's some code tidy-up pending, this framework was developed during Lazarus & fpc early days (2009 to 2014).
   + Both projects have since moved on, leaving me with some now redundant routines.

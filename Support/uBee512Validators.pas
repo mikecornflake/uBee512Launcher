@@ -52,7 +52,7 @@ Implementation
 
 Uses uBee512Support, FileSupport, StrUtils;
 
-{ TInstallationValidator }
+  { TInstallationValidator }
 
 Function TInstallationValidator.GetTarget: String;
 Begin
@@ -204,7 +204,7 @@ Begin
         StartRMList;
         AddRM('    You can directly populate "Disk A"', []);
         EndRMList;
-        AddRM('  To configure the Alias:', []);
+        AddRM('  Or, to configure the Alias:', []);
         StartRMList;
         AddRM('    either place the Disk in "%s" ', [sBaseFolder]);
         AddRM('    and add just the filename to "disks.alias", ', []);
@@ -250,7 +250,6 @@ Procedure TDiskAliasValidator.Process;
 Var
   sBaseFolder: String;
   oItem: TDiskAlias;
-
 Begin
   Inherited Process;
 
@@ -272,10 +271,10 @@ Begin
           [oItem.Alias], elWarning);
 
         StartRMList;
-        AddRM('Do not use alias "%s", ', [oItem.Alias]);
-        AddRM('Or, place the Disk in "%s" and add just the filename to "disks.alias", ',
+        AddRM('Alias "%s" is optional; do not use it, ', [oItem.Alias]);
+        AddRM('Or, place the Disk in "%s" and assign in "disks.alias", ',
           [sBaseFolder]);
-        AddRM('Or, add the absolute path to the Disk to "disks.alias"', []);
+        AddRM('Or, assign the absolute path to the Disk in "disks.alias"', []);
         EndRMList;
       End
       Else If uBee512.ValidFile(SUBFOLDER_DISKS, oItem.Filename) Then
@@ -299,8 +298,8 @@ Begin
         AddRM('Download file from Repository?', []);
         EndRMList;
       End
-      Else If Not IsFileAbsolute(oItem.Filename) And Not FileExists(sBaseFolder +
-        oItem.Filename) Then
+      Else If Not IsFileAbsolute(oItem.Filename) And Not FileExists(
+        sBaseFolder + oItem.Filename) Then
       Begin
         FErrorLevel := elError;
         AddOC('Alias "%s" lookup file "%s" can not be found in "%s"!',
@@ -332,7 +331,8 @@ Begin
   Inherited Create(AOwner);
 
   FDisplayName := 'Definitions';
-  FDescription := 'Checks the contents of each definition in ubee512rc.  Currently only checks disks, sram & tapes.';
+  FDescription :=
+    'Checks the contents of each definition in ubee512rc.  Currently only checks disks, sram & tapes.';
 End;
 
 Procedure TDefinitionValidator.Process;
@@ -391,7 +391,8 @@ Var
                 End
                 Else
                 Begin
-                  AddOC('%s "%s" not found in "%s"', [AObject, sAlias, sFolder], elError);
+                  AddOC('%s "%s" not found in "%s"',
+                    [AObject, sAlias, sFolder], elError);
                   AddRM('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
                 End;
               End
