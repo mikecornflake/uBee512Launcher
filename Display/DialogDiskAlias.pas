@@ -10,6 +10,8 @@ Uses
 
 Type
 
+  // TODO Ensure Disk Alias terminology (Add/Edit/Delete/Clear/Assign) is used consistently across UI (inc Validators)
+
   { TdlgDiskAlias }
 
   TdlgDiskAlias = Class(TForm)
@@ -29,6 +31,7 @@ Type
     btnAdd: TToolButton;
     btnDelete: TToolButton;
     btnAssign: TToolButton;
+    btnEdit: TToolButton;
     ToolButton2: TToolButton;
     btnClear: TToolButton;
     tsAliases: TTabSheet;
@@ -36,6 +39,7 @@ Type
     Procedure btnAddClick(Sender: TObject);
     Procedure btnAssignClick(Sender: TObject);
     Procedure btnDeleteClick(Sender: TObject);
+    Procedure btnEditClick(Sender: TObject);
     Procedure FormActivate(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure lvAliasCustomDrawItem(Sender: TCustomListView; Item: TListItem;
@@ -215,6 +219,39 @@ Begin
     End;
 End;
 
+Procedure TdlgDiskAlias.btnEditClick(Sender: TObject);
+Var
+  sAlias, sSummary: String;
+  oAlias: TDiskAlias;
+Begin
+  If Assigned(FSelected) Then
+  Begin
+    sAlias := InputBox('Edit Alias', 'Enter a new Alias', FSelected.Alias);
+    If (sAlias <> '') And (sAlias<>FSelected.Alias) Then
+    Begin
+      oAlias := uBee512.DiskAliases[sAlias];
+
+      If Assigned(oAlias) Then
+      Begin
+        MessageDlg(Format('Unable to edit %s.  %s already exists', [FSelected.Alias, sAlias]),
+          mtError, [mbOK], 0);
+        Exit;
+      End
+      Else
+      Begin
+        FSelected.Alias := sAlias;
+        FSelected.Validator.Process;
+
+        lvAlias.Selected.Caption := sAlias;
+        lvAlias.Refresh;
+
+        sSummary := ArrayToString(FSelected.Validator.Summary(False), '');
+        SetHTML(htmlSummary, '<body>' + sSummary + '</body>');
+      End;
+    End;
+  End;
+End;
+
 Procedure TdlgDiskAlias.lvAliasCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; Var DefaultDraw: Boolean);
 Var
@@ -243,6 +280,7 @@ End;
 Procedure TdlgDiskAlias.RefreshUI;
 Begin
   btnAdd.Enabled := True;
+  btnEdit.Enabled := Assigned(FSelected);
   btnDelete.Enabled := Assigned(FSelected);
   btnClear.Enabled := Assigned(FSelected) And (FSelected.Filename <> '');
   btnAssign.Enabled := Assigned(FSelected);
