@@ -18,23 +18,24 @@
 	  + Alternatively, use the Definition Explorer (Bee icon) to select preferred model 
     + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
-
-### Whats new (Trunk)
 + "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
 + Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let uBee512 do the work.  User can still override...
+
+### Whats new (Trunk)
 + Framework for Validators added (See section on Validation Rules below).  
   + Disk Alias Validator added (finished)
   + Installation Validator added (Not sure what else to check, but this got me thinking about adding Installation Aids)
   + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.)
   + Microbee Model Validator added (Only checks default boot disks for Disk Models.  No checks for boot ROMs for IC models)
++ Integrate "disks.alias" updates into Disk Explorer (Assign disk to existing Alias, Clear existing Alias).  
++ Also added new Disk Alias dialog (Add/Delete Alias, Edit Alias name.  Assign disk/clear assignment for Alias.  Display validator checks)
++ Add Display options (position relative to launcher, monitor, opengl/sdl)
 + UI has been reworked several times.
   + Disk Explorer is now it's own form (not needed for ROM Bees, so why waste space)
   + System Definitions now highlights which Definitions with known issues (as determined by the validators).  In addition to highlighting failed rows as red, needed to add red/green icons to workaround LCL shortcomings on macOS and Linux
   + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
   + Closing in on decent selection of icons.
   + Now displaying validator results using HTML
-  + Integrate "disks.alias" updates into Disk Explorer (add disk to new/existing Alias).  Also added new Disk Alias dialog
-+ Add Display options (position relative to launcher, monitor, opengl/sdl)
 + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
 
 ## Notes on implementation
