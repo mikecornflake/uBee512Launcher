@@ -15,6 +15,7 @@ Type
   { TValidator }
 
   TValidator = Class
+  Private
   Protected
     FOwner: TObject;
     FRecommendation: String;
@@ -29,11 +30,13 @@ Type
     Procedure StartRMList;
     Procedure EndRMList;
     Procedure SetLevel(AErrorLevel: TErrorLevel);
+    Function GetTarget: String; Virtual;
   Public
     Constructor Create(AOwner: TObject); Virtual;
 
     Procedure Process; Virtual;
 
+    Property Target: String read GetTarget;
     Property DisplayName: String read FDisplayname;
     Property Description: String read FDescription;
 
@@ -93,6 +96,8 @@ Begin
   FErrorlevel := elNone;
   FOutcome := '';
   FRecommendation := '';
+
+  Debug(FDisplayname + ': validating ' + Target);
 End;
 
 Function TValidator.Summary(AShowHeader: Boolean = False): TStringArray;
@@ -117,6 +122,11 @@ Procedure TValidator.SetLevel(AErrorLevel: TErrorLevel);
 Begin
   If AErrorLevel > FErrorLevel Then
     FErrorLevel := AErrorLevel;
+End;
+
+Function TValidator.GetTarget: String;
+Begin
+  Result := '';
 End;
 
 Procedure TValidator.AddOC(AFormatStr: String; arrParams: Array Of Const;

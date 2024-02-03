@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="284"/>
+      <BuildNr Value="295"/>
       <Attributes pvaPreRelease="True"/>
     </VersionInfo>
     <BuildModes>
@@ -66,6 +66,10 @@
             <CompilerMessages>
               <IgnoredMessages idx6058="True" idx5071="True"/>
             </CompilerMessages>
+            <CustomOptions Value="-dDEBUG"/>
+            <OtherDefines Count="1">
+              <Define0 Value="DEBUG"/>
+            </OtherDefines>
           </Other>
         </CompilerOptions>
       </Item>
@@ -235,6 +239,10 @@
       <CompilerMessages>
         <IgnoredMessages idx6058="True" idx5071="True"/>
       </CompilerMessages>
+      <CustomOptions Value="-dDEBUG"/>
+      <OtherDefines Count="1">
+        <Define0 Value="DEBUG"/>
+      </OtherDefines>
     </Other>
   </CompilerOptions>
   <Debugging>

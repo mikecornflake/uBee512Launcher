@@ -12,6 +12,9 @@ Uses {$IFDEF UNIX}
 {$R *.res}
 
 Begin
+  {$IFDEF DEBUG}
+  SetHeapTraceOutput('HeapTrace.log');
+  {$ENDIF}
   RequireDerivedFormResource := True;
   Application.Scaled:=True;
   Application.Initialize;

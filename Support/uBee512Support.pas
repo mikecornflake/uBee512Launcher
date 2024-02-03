@@ -76,7 +76,7 @@ Type
 
   // Entry within "disks.alias"
   TDiskAlias = Class
-  Private
+  Protected
     FValidator: TDiskAliasValidator;
   Public
     // Next two for lines with aliases
@@ -112,6 +112,9 @@ Type
     Function SetAlias(AAlias: String; AFilename: String): Boolean;
 
     Function ValidAliases: TStringArray;
+
+    Function Delete(AAlias: TDiskAlias): Boolean;
+    Function Add(AAlias: String): TDiskAlias;
 
     Property Filename: String read FFilename;
     Property Validators: TValidators read FValidators;
@@ -248,6 +251,7 @@ Begin
   FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
   If FileExists(FFilename) Then
   Begin
+    Debug('Loading ' + FFilename);
     oAliases := TStringList.Create;
     Try
       oAliases.LoadFromFile(FFilename);
@@ -256,7 +260,7 @@ Begin
       Begin
         sTemp := Trim(sLine);
         oItem := TDiskAlias.Create;
-        Add(oItem);
+        Inherited Add(oItem);
         FValidators.Add(oItem.Validator); // Grab a _ref for Summary purposes
 
         If (sTemp <> '') And (Copy(sTemp, 1, 1) <> '#') Then
@@ -289,8 +293,12 @@ Begin
     FFilename := IncludeSlash(uBee512.WorkingDir) + 'disks.alias';
 
   If FileExists(FFilename) Then
+  Begin
+    Debug('Creating backup ' + FFilename + '.bak');
     CopyFileForce(FFilename, FFilename + '.bak');
+  End;
 
+  Debug('Saving ' + FFilename);
   slTemp := TStringList.Create;
   Try
     For oItem In Self Do
@@ -361,6 +369,50 @@ Begin
     If oItem.Validator.ErrorLevel = elInfo Then
       AddStringToArray(Result, oItem.Alias);
 End;
+
+Function TDiskAliases.Delete(AAlias: TDiskAlias): Boolean;
+Var
+  i: Int64;
+Begin
+  Result := False;
+
+  If Assigned(AAlias) Then
+  Begin
+    Debug('TDiskAliases.Delete '+AAlias.Alias);
+
+    i := FValidators.IndexOf(AAlias.Validator);
+    If i <> -1 Then
+      FValidators.Delete(i);
+
+    i := IndexOf(AAlias);
+    If i <> -1 Then
+      Inherited Delete(i);
+
+    Result := True;
+  End;
+End;
+
+Function TDiskAliases.Add(AAlias: String): TDiskAlias;
+var
+  oAlias: TDiskAlias;
+begin
+  Result := Nil;
+
+  oAlias := GetAlias(AAlias);
+  If Not Assigned(oAlias) Then
+  Begin
+    Debug('TDiskAliases.Add '+AAlias);
+
+    oAlias := TDiskAlias.Create;
+    oAlias.Alias := AAlias;
+    oAlias.Validator.Process;
+
+    Inherited Add(oAlias);
+    FValidators.Add(oAlias.Validator);
+
+    Result := oAlias;
+  end;
+end;
 
 { TDefinition }
 
@@ -554,6 +606,8 @@ Begin
   FDisksAliases := TDiskAliases.Create(True);
 
   FValidator := TInstallationValidator.Create(Self);
+
+  Debug('Creating hard coded list of Microbee Models');
 
   // From ubee512 readme
   AddModel('1024k', 'Standard Premium Plus, 1024K DRAM FDD', mtFDD);

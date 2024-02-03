@@ -100,7 +100,7 @@ Type
     FSettings: TSettings;
     FActivated: Boolean;
     FLoadingDSK: Boolean;
-    FUpdatingCombos: Boolean;
+    FUpdatingCombos: Integer;
 
     FLog: TLog;
 
@@ -150,7 +150,7 @@ Begin
   cboFormatC.Style := csDropDown;
   {$ENDIF}
 
-  FUpdatingCombos := False;
+  FUpdatingCombos := 0;
 
   FActivated := False;
   FLoadingDSK := False;
@@ -227,364 +227,10 @@ Begin
   End;
 End;
 
-Procedure TfrmMain.SetSelectedDisk(AFilename: String; AFormat: String;
-  AFilenameEdit: TComboBox; AFormatCombo: TComboBox);
+Procedure TfrmMain.RefreshUI;
 Begin
-  AFilename := Trim(AFilename);
-  AFilenameEdit.Text := AFilename;
-  AFormatCombo.Text := AFormat;
-
-  RefreshUI;
-End;
-
-Procedure TfrmMain.SetDefinitionCombo(ACombo: TComboBox; AValue: String);
-Var
-  iIndex: Integer;
-Begin
-  iIndex := ACombo.Items.IndexOf(AValue);
-  If (iIndex >= 0) Then
-  Begin
-    ACombo.ItemIndex := iIndex;
-
-    FUpdatingCombos := True;
-    Try
-      // Working around a Cocoa issue (.OnChange not firing when csDropdownlist
-      If ACombo = cboType Then
-        cboTypeChange(Self)
-      Else If ACombo = cboModel Then
-        cboModelChange(Self)
-      Else If ACombo = cboTitle Then
-        cboTitleChange(Self)
-      Else
-        ACombo.OnChange(Self);
-    Finally
-      FUpdatingCombos := False;
-      RefreshRC;
-    End;
-  End;
-End;
-
-Procedure TfrmMain.LoadSettings;
-Var
-  iLeft, iWidth, iTop, iHeight: Integer;
-  oIniFile: TIniFile;
-  sModel, sTitle: String;
-  sIniFile, sType: String;
-  mtType: TMbeeType;
-
-Begin
-  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
-  Debug('Loading ' + sInifile);
-  FLog.IncIndent;
-
-  oIniFile := TIniFile.Create(sIniFile);
-  Try
-    // Default, load Window Settings
-    iLeft := oInifile.ReadInteger(Name, 'Left', Application.MainForm.Left);
-    iTop := oInifile.ReadInteger(Name, 'Top', Application.MainForm.Top);
-    iWidth := oInifile.ReadInteger(Name, 'Width', Application.MainForm.Width);
-    iHeight := oInifile.ReadInteger(Name, 'Height', Application.MainForm.Height);
-
-    SetBounds(iLeft, iTop, iWidth, iHeight);
-    MakeFullyVisible;
-
-    If oInifile.ReadBool(Name, 'Maximised', False) Then
-      Application.MainForm.WindowState := wsMaximized
-    Else
-      Application.MainForm.WindowState := wsNormal;
-
-    FSettings.LoadSettings(oIniFile);
-
-    LoadRC;
-
-    SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
-    SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
-    SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
-
-    sModel := oIniFile.ReadString('Selected', 'Model', DEFAULT_MODEL);
-    sTitle := oIniFile.ReadString('Selected', 'Title', DEFAULT_TITLE);
-
-    mtType := uBee512.Models.MbeeType(sModel);
-    sType := MBTypeStr[mtType];
-
-    FUpdatingCombos := True;
-    Try
-      SetDefinitionCombo(cboType, sType);
-      SetDefinitionCombo(cboModel, sModel);
-      SetDefinitionCombo(cboTitle, sTitle);
-    Finally
-      FUpdatingCombos := False;
-      RefreshRC;
-    End;
-  Finally
-    FLog.DecIndent;
-    oInifile.Free;
-  End;
-End;
-
-Procedure TfrmMain.SaveSettings;
-Var
-  oInifile: TIniFile;
-  sInifile: String;
-Begin
-  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
-  Debug('Saving ' + sInifile);
-
-  oInifile := TIniFile.Create(sInifile);
-
-  // Do all the SaveSettings work in memory
-  oInifile.CacheUpdates := True;
-  Try
-    oInifile.WriteBool(Name, 'Maximised', Application.MainForm.WindowState = wsMaximized);
-
-    If WindowState <> wsMaximized Then
-    Begin
-      oInifile.WriteInteger(Name, 'Left', Application.MainForm.Left);
-      oInifile.WriteInteger(Name, 'Top', Application.MainForm.Top);
-      oInifile.WriteInteger(Name, 'Width', Application.MainForm.Width);
-      oInifile.WriteInteger(Name, 'Height', Application.MainForm.Height);
-    End;
-
-    FSettings.A := cboDiskA.Text;
-    FSettings.B := cboDiskB.Text;
-    FSettings.C := cboDiskC.Text;
-
-    FSettings.A_Format := cboFormatA.Text;
-    FSettings.B_Format := cboFormatB.Text;
-    FSettings.C_Format := cboFormatC.Text;
-
-    FSettings.SaveSettings(oInifile);
-
-    // No need to save Type, it's inferred from Model
-    oIniFile.WriteString('Selected', 'Model', cboModel.Text);
-    oIniFile.WriteString('Selected', 'Title', cboTitle.Text);
-
-    // And flush the settings out in one go
-    // This works around an AVG issue whereby
-    // it locks the ini file during repeated writes
-    // causing a CreateError exception to be thrown
-    oInifile.UpdateFile;
-  Finally
-    oInifile.Free;
-  End;
-End;
-
-Procedure TfrmMain.RefreshDiskAliasSummary;
-Var
-  sAlias: String;
-  iAlias, iInfo, iError, iWarning: Int64;
-Begin
-  If FileExists(uBee512.DiskAliases.Filename) Then
-  Begin
-    // Analyse "disks.alias"
-    sAlias := '';
-
-    iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
-    sAlias += Format('<p>There are %d aliases in "%s"</p>',
-      [iAlias, uBee512.DiskAliases.Filename]);
-
-    sAlias += '<br><p>';
-    iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
-    If iInfo > 0 Then
-    Begin
-      sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
-        [iInfo]);
-      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
-    End
-    Else
-      sAlias += 'There are no defined aliases ready to use';
-    sAlias += '</p>';
-
-    iError := uBee512.DiskAliases.Validators.Count([elError]);
-    If iError > 0 Then
-    Begin
-      sAlias += '<br><p>';
-      sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
-      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
-      sAlias += '</p>';
-    End
-    Else
-      sAlias += 'No errors were found';
-
-    sAlias += '<br><p>';
-    iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
-    If iWarning > 0 Then
-    Begin
-      sAlias += Format('<b>The following %d warnings were found:</b><br>', [iWarning]);
-      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
-    End
-    Else
-      sAlias += 'No warnings were found';
-    sAlias += '</p>';
-  End
-  Else
-    sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
-
-  //Clipboard.AsText := '<body>' + sAlias + '</body>';
-  SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
-End;
-
-Procedure TfrmMain.LoadRC;
-Var
-  iPrev: Integer;
-  bNew: Boolean;
-  sAliasFile: String;
-
-Begin
-  Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
-  FLog.IncIndent;
-  Try
-    bNew := uBee512.LoadRC;
-
-    If bNew Then
-    Begin
-      Caption := Format('%s %s:  uBee512 Folder=[%s]', [Application.Title,
-        GetFileVersion, uBee512.WorkingDir]);
-
-      RefreshDiskAliasSummary;
-
-      // TODO Implement roms.alias summary correctly
-      sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
-      If FileExists(sAliasFile) Then
-        memROMAlias.Lines.LoadFromFile(sAliasFile);
-
-      cboDiskA.Items.Clear;
-      cboDiskB.Items.Clear;
-      cboDiskC.Items.Clear;
-
-      cboDiskA.Items.AddStrings(uBee512.DiskAliases.ValidAliases);
-      cboDiskB.Items.AddStrings(cboDiskA.Items);
-      cboDiskC.Items.AddStrings(cboDiskA.Items);
-    End;
-
-    cboModel.Items.CommaText := ',' + uBee512.Definitions.Models;
-
-    If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
-    Begin
-      // Try and load the previous value instead of resetting
-      iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
-      If iPrev >= 0 Then
-        cboModel.ItemIndex := iPrev
-      Else
-        cboModel.ItemIndex := 0;
-      cboModel.OnChange(Self);
-    End;
-  Finally
-    FLog.DecIndent;
-  End;
-End;
-
-Procedure TfrmMain.btnClearAClick(Sender: TObject);
-Begin
-  cboDiskA.Text := '';
-  cboFormatA.Text := '';
-  RefreshUI;
-End;
-
-Procedure TfrmMain.btnClearBClick(Sender: TObject);
-Begin
-  cboDiskB.Text := '';
-  cboFormatB.Text := '';
-  RefreshUI;
-End;
-
-Procedure TfrmMain.btnClearCClick(Sender: TObject);
-Begin
-  cboDiskC.Text := '';
-  cboFormatC.Text := '';
-  RefreshUI;
-End;
-
-Procedure TfrmMain.btnDiskAliasClick(Sender: TObject);
-Var
-  oForm: TdlgDiskAlias;
-Begin
-  oForm := TdlgDiskAlias.Create(Self);
-
-  Try
-    If oForm.ShowModal = mrOk Then
-      uBee512.DiskAliases.Save  // commit
-    Else
-      uBee512.DiskAliases.Load; // undo
-
-    RefreshDiskAliasSummary;
-  Finally
-  End;
-End;
-
-Procedure TfrmMain.btnDiskExplorerClick(Sender: TObject);
-Var
-  oForm: TdlgDiskExplorer;
-Begin
-  oForm := TdlgDiskExplorer.Create(Self);
-
-  FSettings.A := cboDiskA.Text;
-  FSettings.B := cboDiskB.Text;
-  FSettings.C := cboDiskC.Text;
-
-  oForm.Settings := FSettings;
-  Try
-    If oForm.ShowModal = mrOk Then
-    Begin
-      FSettings.Assign(oForm.Settings);
-
-      SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
-      SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
-      SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
-
-      uBee512.DiskAliases.Save;
-    End
-    Else // Undo any changes made
-      uBee512.DiskAliases.Load;
-
-    RefreshDiskAliasSummary;
-  Finally
-    oForm.Free;
-  End;
-End;
-
-Procedure TfrmMain.btnDefinitionExplorerClick(Sender: TObject);
-Var
-  oForm: TdlgDefinitionExplorer;
-Begin
-  oForm := TdlgDefinitionExplorer.Create(Self);
-  Try
-    oForm.Title := cboTitle.Text;
-    If oForm.ShowModal = mrOk Then
-    Begin
-      SetDefinitionCombo(cboModel, oForm.Model);
-      SetDefinitionCombo(cboTitle, oForm.Title);
-    End;
-  Finally
-    oForm.Free;
-  End;
-End;
-
-Procedure TfrmMain.cboTypeChange(Sender: TObject);
-Var
-  mtType: TMbeeType;
-  iPrev: Integer;
-Begin
-  tsDrive.TabVisible := cboType.Text <> 'ROM';
-  If tsDrive.TabVisible Then
-    pcOptions.ActivePage := tsDrive;
-
-  If cboType.ItemIndex >= 0 Then
-  Begin
-    mtType := TMbeeType(cboType.ItemIndex);
-
-    cboModel.Items.CommaText := ',' + uBee512.Definitions.ModelsByType(mtType);
-    If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
-    Begin
-      iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
-      If iPrev >= 0 Then
-        cboModel.ItemIndex := iPrev
-      Else
-        cboModel.ItemIndex := 0;
-
-      cboModelChange(Self);
-    End;
-  End;
+  Debug('RefreshUI (FUpdatingCombos=%d)', [FUpdatingCombos]);
+  btnLaunchuBee512.Enabled := (uBee512.Available) And (cboModel.Text <> '');
 
   RefreshRC;
 End;
@@ -609,7 +255,7 @@ Var
   End;
 
 Begin
-  If Not FUpdatingCombos Then
+  If FUpdatingCombos = 0 Then
   Begin
     Debug('RefreshRC');
 
@@ -698,10 +344,391 @@ Begin
   End;
 End;
 
+Procedure TfrmMain.SetSelectedDisk(AFilename: String; AFormat: String;
+  AFilenameEdit: TComboBox; AFormatCombo: TComboBox);
+Begin
+  AFilename := Trim(AFilename);
+  AFilenameEdit.Text := AFilename;
+  AFormatCombo.Text := AFormat;
+
+  RefreshUI;
+End;
+
+Procedure TfrmMain.SetDefinitionCombo(ACombo: TComboBox; AValue: String);
+Var
+  iIndex: Integer;
+Begin
+  iIndex := ACombo.Items.IndexOf(AValue);
+  If (iIndex >= 0) Then
+  Begin
+    ACombo.ItemIndex := iIndex;
+
+    Inc(FUpdatingCombos);
+    Try
+      // Working around a Cocoa issue (.OnChange not firing when csDropdownlist
+      If ACombo = cboType Then
+        cboTypeChange(Self)
+      Else If ACombo = cboModel Then
+        cboModelChange(Self)
+      Else If ACombo = cboTitle Then
+        cboTitleChange(Self)
+      Else
+        ACombo.OnChange(Self);
+    Finally
+      Dec(FUpdatingCombos);
+      RefreshRC;
+    End;
+  End;
+End;
+
+Procedure TfrmMain.LoadSettings;
+Var
+  iLeft, iWidth, iTop, iHeight: Integer;
+  oIniFile: TIniFile;
+  sModel, sTitle: String;
+  sIniFile, sType: String;
+  mtType: TMbeeType;
+
+Begin
+  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
+  Debug('Loading ' + sInifile);
+  FLog.IncIndent;
+
+  oIniFile := TIniFile.Create(sIniFile);
+  Try
+    // Default, load Window Settings
+    iLeft := oInifile.ReadInteger(Name, 'Left', Application.MainForm.Left);
+    iTop := oInifile.ReadInteger(Name, 'Top', Application.MainForm.Top);
+    iWidth := oInifile.ReadInteger(Name, 'Width', Application.MainForm.Width);
+    iHeight := oInifile.ReadInteger(Name, 'Height', Application.MainForm.Height);
+
+    SetBounds(iLeft, iTop, iWidth, iHeight);
+    MakeFullyVisible;
+
+    If oInifile.ReadBool(Name, 'Maximised', False) Then
+      Application.MainForm.WindowState := wsMaximized
+    Else
+      Application.MainForm.WindowState := wsNormal;
+
+    FSettings.LoadSettings(oIniFile);
+
+    Inc(FUpdatingCombos);
+    Try
+      LoadRC;
+
+      SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
+      SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
+      SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
+
+      sModel := oIniFile.ReadString('Selected', 'Model', DEFAULT_MODEL);
+      sTitle := oIniFile.ReadString('Selected', 'Title', DEFAULT_TITLE);
+
+      mtType := uBee512.Models.MbeeType(sModel);
+      sType := MBTypeStr[mtType];
+
+      SetDefinitionCombo(cboType, sType);
+      SetDefinitionCombo(cboModel, sModel);
+      SetDefinitionCombo(cboTitle, sTitle);
+    Finally
+      Dec(FUpdatingCombos);
+      RefreshRC;
+    End;
+  Finally
+    FLog.DecIndent;
+    oInifile.Free;
+  End;
+End;
+
+Procedure TfrmMain.SaveSettings;
+Var
+  oInifile: TIniFile;
+  sInifile: String;
+Begin
+  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
+  Debug('Saving ' + sInifile);
+
+  oInifile := TIniFile.Create(sInifile);
+
+  // Do all the SaveSettings work in memory
+  oInifile.CacheUpdates := True;
+  Try
+    oInifile.WriteBool(Name, 'Maximised', Application.MainForm.WindowState = wsMaximized);
+
+    If WindowState <> wsMaximized Then
+    Begin
+      oInifile.WriteInteger(Name, 'Left', Application.MainForm.Left);
+      oInifile.WriteInteger(Name, 'Top', Application.MainForm.Top);
+      oInifile.WriteInteger(Name, 'Width', Application.MainForm.Width);
+      oInifile.WriteInteger(Name, 'Height', Application.MainForm.Height);
+    End;
+
+    FSettings.A := cboDiskA.Text;
+    FSettings.B := cboDiskB.Text;
+    FSettings.C := cboDiskC.Text;
+
+    FSettings.A_Format := cboFormatA.Text;
+    FSettings.B_Format := cboFormatB.Text;
+    FSettings.C_Format := cboFormatC.Text;
+
+    FSettings.SaveSettings(oInifile);
+
+    // No need to save Type, it's inferred from Model
+    oIniFile.WriteString('Selected', 'Model', cboModel.Text);
+    oIniFile.WriteString('Selected', 'Title', cboTitle.Text);
+
+    // And flush the settings out in one go
+    // This works around an AVG issue whereby
+    // it locks the ini file during repeated writes
+    // causing a CreateError exception to be thrown
+    oInifile.UpdateFile;
+  Finally
+    oInifile.Free;
+  End;
+End;
+
+Procedure TfrmMain.RefreshDiskAliasSummary;
+Var
+  sAlias: String;
+  iAlias, iInfo, iError, iWarning: Int64;
+Begin
+  sAlias := '';
+  If FileExists(uBee512.DiskAliases.Filename) Then
+  Begin
+    // Analyse "disks.alias"
+    Debug('Refresh summary of ' + uBee512.DiskAliases.Filename);
+
+    iAlias := uBee512.DiskAliases.Validators.Count([elInfo, elWarning, elError]);
+    sAlias += Format('<p>There are %d aliases in "%s"</p>',
+      [iAlias, uBee512.DiskAliases.Filename]);
+
+    sAlias += '<br><p>';
+    iInfo := uBee512.DiskAliases.Validators.Count([elInfo]);
+    If iInfo > 0 Then
+    Begin
+      sAlias += Format('<b>The following %d entries are correct and ready to use:</b><br>',
+        [iInfo]);
+      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elInfo]));
+    End
+    Else
+      sAlias += 'There are no defined aliases ready to use';
+    sAlias += '</p>';
+
+    iError := uBee512.DiskAliases.Validators.Count([elError]);
+    If iError > 0 Then
+    Begin
+      sAlias += '<br><p>';
+      sAlias += Format('<b>The following %d errors were found:</b><br>', [iError]);
+      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elError]));
+      sAlias += '</p>';
+    End
+    Else
+      sAlias += 'No errors were found';
+
+    sAlias += '<br><p>';
+    iWarning := uBee512.DiskAliases.Validators.Count([elWarning]);
+    If iWarning > 0 Then
+    Begin
+      sAlias += Format('<b>The following %d warnings were found:</b><br>', [iWarning]);
+      sAlias += ArrayToString(uBee512.DiskAliases.Validators.Summary([elWarning]));
+    End
+    Else
+      sAlias += 'No warnings were found';
+    sAlias += '</p>';
+  End
+  Else
+    sAlias += Format('File %s not found<br>', [uBee512.DiskAliases.Filename]);
+
+  //Clipboard.AsText := '<body>' + sAlias + '</body>';
+  SetHTML(htmlDiskAlias, '<body>' + sAlias + '</body>');
+End;
+
+Procedure TfrmMain.LoadRC;
+Var
+  iPrev: Integer;
+  bNew: Boolean;
+  sAliasFile: String;
+
+Begin
+  Debug(Format('Loading ubee512rc [%s]', [uBee512.RC]));
+  FLog.IncIndent;
+  Try
+    bNew := uBee512.LoadRC;
+
+    If bNew Then
+    Begin
+      Caption := Format('%s %s:  uBee512 Folder=[%s]', [Application.Title,
+        GetFileVersion, uBee512.WorkingDir]);
+
+      RefreshDiskAliasSummary;
+
+      // TODO Implement roms.alias summary correctly
+      sAliasFile := IncludeSlash(ubee512.WorkingDir) + 'roms.alias';
+      If FileExists(sAliasFile) Then
+        memROMAlias.Lines.LoadFromFile(sAliasFile);
+
+      cboDiskA.Items.Clear;
+      cboDiskB.Items.Clear;
+      cboDiskC.Items.Clear;
+
+      cboDiskA.Items.AddStrings(uBee512.DiskAliases.ValidAliases);
+      cboDiskB.Items.AddStrings(cboDiskA.Items);
+      cboDiskC.Items.AddStrings(cboDiskA.Items);
+    End;
+
+    Inc(FUpdatingCombos);
+    Try
+      cboModel.Items.CommaText := ',' + uBee512.Definitions.Models;
+
+      If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
+      Begin
+        // Try and load the previous value instead of resetting
+        iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
+        If iPrev >= 0 Then
+          cboModel.ItemIndex := iPrev
+        Else
+          cboModel.ItemIndex := 0;
+        cboModel.OnChange(Self);
+      End;
+    Finally
+      Dec(FUpdatingCombos);
+    End;
+  Finally
+    FLog.DecIndent;
+  End;
+End;
+
+Procedure TfrmMain.btnClearAClick(Sender: TObject);
+Begin
+  cboDiskA.Text := '';
+  cboFormatA.Text := '';
+  RefreshUI;
+End;
+
+Procedure TfrmMain.btnClearBClick(Sender: TObject);
+Begin
+  cboDiskB.Text := '';
+  cboFormatB.Text := '';
+  RefreshUI;
+End;
+
+Procedure TfrmMain.btnClearCClick(Sender: TObject);
+Begin
+  cboDiskC.Text := '';
+  cboFormatC.Text := '';
+  RefreshUI;
+End;
+
+Procedure TfrmMain.btnDiskAliasClick(Sender: TObject);
+Var
+  oForm: TdlgDiskAlias;
+Begin
+  oForm := TdlgDiskAlias.Create(Self);
+
+  Try
+    If oForm.ShowModal = mrOk Then
+      uBee512.DiskAliases.Save  // commit
+    Else
+      uBee512.DiskAliases.Load; // undo
+
+    RefreshDiskAliasSummary;
+  Finally
+  End;
+End;
+
+Procedure TfrmMain.btnDiskExplorerClick(Sender: TObject);
+Var
+  oForm: TdlgDiskExplorer;
+Begin
+  oForm := TdlgDiskExplorer.Create(Self);
+
+  FSettings.A := cboDiskA.Text;
+  FSettings.B := cboDiskB.Text;
+  FSettings.C := cboDiskC.Text;
+
+  oForm.Settings := FSettings;
+  Try
+    If oForm.ShowModal = mrOk Then
+    Begin
+      FSettings.Assign(oForm.Settings);
+
+      Inc(FUpdatingCombos);
+      Try
+        SetSelectedDisk(FSettings.A, FSettings.A_Format, cboDiskA, cboFormatA);
+        SetSelectedDisk(FSettings.B, FSettings.B_Format, cboDiskB, cboFormatB);
+        SetSelectedDisk(FSettings.C, FSettings.C_Format, cboDiskC, cboFormatC);
+      Finally
+        Dec(FUpdatingCombos);
+      End;
+
+      uBee512.DiskAliases.Save;
+    End
+    Else // Undo any changes made
+      uBee512.DiskAliases.Load;
+
+    RefreshDiskAliasSummary;
+  Finally
+    oForm.Free;
+  End;
+End;
+
+Procedure TfrmMain.btnDefinitionExplorerClick(Sender: TObject);
+Var
+  oForm: TdlgDefinitionExplorer;
+Begin
+  oForm := TdlgDefinitionExplorer.Create(Self);
+  Try
+    oForm.Title := cboTitle.Text;
+    If oForm.ShowModal = mrOk Then
+    Begin
+      SetDefinitionCombo(cboModel, oForm.Model);
+      SetDefinitionCombo(cboTitle, oForm.Title);
+    End;
+  Finally
+    oForm.Free;
+  End;
+End;
+
+Procedure TfrmMain.cboTypeChange(Sender: TObject);
+Var
+  mtType: TMbeeType;
+  iPrev: Integer;
+  sPrev: String;
+Begin
+  sPrev := cboModel.Text;
+
+  tsDrive.TabVisible := cboType.Text <> 'ROM';
+  If tsDrive.TabVisible Then
+    pcOptions.ActivePage := tsDrive;
+
+  If cboType.ItemIndex >= 0 Then
+  Begin
+    mtType := TMbeeType(cboType.ItemIndex);
+
+    cboModel.Items.CommaText := ',' + uBee512.Definitions.ModelsByType(mtType);
+    If (cboModel.ItemIndex <> 0) And (cboModel.Items.Count > 0) Then
+    Begin
+      iPrev := cboModel.Items.IndexOf(DEFAULT_MODEL);
+      If iPrev >= 0 Then
+        cboModel.ItemIndex := iPrev
+      Else
+        cboModel.ItemIndex := 0;
+
+      If (sPrev <> cboModel.Text) Then
+        cboModelChange(Self);
+    End;
+  End;
+
+  If (sPrev <> cboModel.Text) Then
+    RefreshRC;
+End;
+
 Procedure TfrmMain.cboModelChange(Sender: TObject);
 Var
   iPrev: Integer;
+  sPrev: TCaption;
 Begin
+  sPrev := cboTitle.Text;
+
   cboTitle.Items.CommaText := ',' + uBee512.Definitions.Titles(cboModel.Text);
 
   If (cboTitle.ItemIndex <> 0) And (cboTitle.Items.Count > 0) Then
@@ -712,10 +739,12 @@ Begin
     Else
       cboTitle.ItemIndex := 1;
 
-    cboTitleChange(Self);
+    If (sPrev <> cboTitle.Text) Then
+      cboTitleChange(Self);
   End;
 
-  RefreshUI;
+  If (sPrev <> cboTitle.Text) Then
+    RefreshUI;
 End;
 
 Procedure TfrmMain.cboTitleChange(Sender: TObject);
@@ -848,14 +877,6 @@ End;
 
 Procedure TfrmMain.DiskorFormatChange(Sender: TObject);
 Begin
-  RefreshRC;
-End;
-
-Procedure TfrmMain.RefreshUI;
-Begin
-  Debug('RefreshUI');
-  btnLaunchuBee512.Enabled := (uBee512.Available) And (cboModel.Text <> '');
-
   RefreshRC;
 End;
 

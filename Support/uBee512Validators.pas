@@ -11,6 +11,8 @@ Type
   { TDefinitionValidator }
 
   TDefinitionValidator = Class(TValidator)
+  Protected
+    Function GetTarget: String; Override;
   Public
     Constructor Create(AOwner: TObject); Override;
     Procedure Process; Override;
@@ -19,6 +21,8 @@ Type
   { TDiskAliasValidator }
 
   TDiskAliasValidator = Class(TValidator)
+  Protected
+    Function GetTarget: String; Override;
   Public
     Constructor Create(AOwner: TObject); Override;
     Procedure Process; Override;
@@ -27,6 +31,8 @@ Type
   { TModelValidator }
 
   TModelValidator = Class(TValidator)
+  Protected
+    Function GetTarget: String; Override;
   Public
     Constructor Create(AOwner: TObject); Override;
     Procedure Process; Override;
@@ -35,6 +41,8 @@ Type
   { TInstallationValidator }
 
   TInstallationValidator = Class(TValidator)
+  Protected
+    Function GetTarget: String; Override;
   Public
     Constructor Create(AOwner: TObject); Override;
     Procedure Process; Override;
@@ -45,6 +53,14 @@ Implementation
 Uses uBee512Support, FileSupport, StrUtils;
 
 { TInstallationValidator }
+
+Function TInstallationValidator.GetTarget: String;
+Begin
+  If Assigned(FOwner) And (FOwner Is TuBee512) Then
+    Result := '"' + TuBee512(FOwner).WorkingDir + '"'
+  Else
+    Result := Inherited GetTarget;
+End;
 
 Constructor TInstallationValidator.Create(AOwner: TObject);
 Begin
@@ -103,6 +119,14 @@ Begin
 End;
 
 { TModelValidator }
+
+Function TModelValidator.GetTarget: String;
+Begin
+  If Assigned(FOwner) And (FOwner Is TModel) Then
+    Result := '--model=' + TModel(FOwner).Model
+  Else
+    Result := Inherited GetTarget;
+End;
 
 Constructor TModelValidator.Create(AOwner: TObject);
 Begin
@@ -206,6 +230,14 @@ End;
 
 { TDiskAliasValidator }
 
+Function TDiskAliasValidator.GetTarget: String;
+Begin
+  If Assigned(FOwner) And (FOwner Is TDiskAlias) Then
+    Result := '"' + TDiskAlias(FOwner).Alias + '"'
+  Else
+    Result := Inherited GetTarget;
+End;
+
 Constructor TDiskAliasValidator.Create(AOwner: TObject);
 Begin
   Inherited Create(AOwner);
@@ -286,6 +318,14 @@ Begin
 End;
 
 { TDefinitionValidator }
+
+Function TDefinitionValidator.GetTarget: String;
+Begin
+  If Assigned(FOwner) And (FOwner Is TDefinition) Then
+    Result := '[' + TDefinition(FOwner).Definition + ']'
+  Else
+    Result := Inherited GetTarget;
+End;
 
 Constructor TDefinitionValidator.Create(AOwner: TObject);
 Begin

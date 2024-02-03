@@ -192,32 +192,36 @@ object dlgDiskAlias: TdlgDiskAlias
     List = True
     ShowCaptions = True
     TabOrder = 0
-    object btnInsert: TToolButton
+    object btnAdd: TToolButton
       Left = 1
       Top = 2
-      Caption = 'Insert'
+      Caption = 'Add'
       ImageIndex = 4
+      OnClick = btnAddClick
     end
     object btnDelete: TToolButton
-      Left = 59
+      Left = 52
       Top = 2
       Caption = 'Delete'
       ImageIndex = 5
+      OnClick = btnDeleteClick
     end
-    object ToolButton3: TToolButton
-      Left = 129
+    object btnClear: TToolButton
+      Left = 122
       Top = 2
       Caption = 'Clear'
       ImageIndex = 8
+      OnClick = btnClearClick
     end
-    object btnChange: TToolButton
-      Left = 185
+    object btnAssign: TToolButton
+      Left = 178
       Top = 2
-      Caption = 'Change'
+      Caption = 'Assign...'
       ImageIndex = 7
+      OnClick = btnAssignClick
     end
     object ToolButton2: TToolButton
-      Left = 121
+      Left = 114
       Height = 22
       Top = 2
       Caption = 'ToolButton2'
@@ -296,6 +300,7 @@ object dlgDiskAlias: TdlgDiskAlias
         SortType = stText
         TabOrder = 0
         ViewStyle = vsReport
+        OnCustomDrawItem = lvAliasCustomDrawItem
         OnSelectItem = lvAliasSelectItem
       end
     end
@@ -988,5 +993,12 @@ object dlgDiskAlias: TdlgDiskAlias
     Enabled = False
     Left = 448
     Top = 144
+  end
+  object dlgFile: TOpenDialog
+    DefaultExt = '.dsk'
+    Filter = 'Disks|*.dsk|All files|*.*'
+    Options = [ofFileMustExist, ofEnableSizing, ofForceShowHidden, ofViewDetail]
+    Left = 274
+    Top = 142
   end
 end
