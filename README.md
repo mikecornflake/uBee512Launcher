@@ -24,15 +24,15 @@
 ### Whats new (Trunk)
 + Framework for Validators added (See section on Validation Rules below).  
   + Disk Alias Validator added (finished)
-  + Installation Validator added (Not sure what else to check, but this got me thinking about adding Installation Aids)
+  + Installation Validator added (charrom.bin/rom1.bin checks.  Settings & Alias file checks.  Not sure what else to check, but this got me thinking about adding Installation Aids)
   + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.)
   + Microbee Model Validator added (Only checks default boot disks for Disk Models.  No checks for boot ROMs for IC models)
 + Integrate "disks.alias" updates into Disk Explorer (Assign disk to existing Alias, Clear existing Alias).  
-+ Also added new Disk Alias dialog (Add/Delete Alias, Edit Alias name.  Assign disk/clear assignment for Alias.  Display validator checks)
++ Added "Disk Alias" dialog (Add/Delete Alias, Edit Alias name.  Assign disk/clear assignment for Alias.  Display validator checks)
 + Add Display options (position relative to launcher, monitor, opengl/sdl)
 + UI has been reworked several times.
   + Disk Explorer is now it's own form (not needed for ROM Bees, so why waste space)
-  + System Definitions now highlights which Definitions with known issues (as determined by the validators).  In addition to highlighting failed rows as red, needed to add red/green icons to workaround LCL shortcomings on macOS and Linux
+  + System Definitions now highlights which Definitions with known issues (as determined by the validators).  In addition to highlighting failed rows as red, needed to add red/green icons to workaround LCL shortcomings on macOS and Linux.  Disk Alias dialog modelled after Definitions dialog.
   + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
   + Closing in on decent selection of icons.
   + Now displaying validator results using HTML
@@ -73,8 +73,10 @@
 # TODO
 
 ## Short term (planned for 0.5beta)
-+ Add TMainFormValidator
++ Add TMainFormValidator (ie, you've selected a Disk model, but no disks; you have different format disks in each drive...)
++ Add Installation Aids (copy \*.sample files to appropriate locations.  HTML summary of Repository Locations/ettiquette.  Display Validator results)
 + Add "Issues" pane to summarise ALL issues
++ Add GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
 
 ## Medium term (not until 0.6beta or higher)
 + Add awareness of **RunCPM** folder structure
@@ -101,8 +103,7 @@
 + Investigate automating a running instance of **UBEE512** (allow dynamic changing of disks)
 
 # Development Notes
-+ Developed under windows using Lazarus Trunk (3.99) / fpc 3.2.2 / 64bit
-+ Tested under Ubuntu & macOS using Lazarus Trunk (3.99) / fpc 3.2.2 / 64bit
++ Developed under Windows 11, Ubuntu & macOS using Lazarus Trunk (3.99) / fpc 3.2.2 / 64bit
 + Due to changes in TurboPowerHTML rendering only use Lazarus Trunk for compiling releases.
 + Uses a OO framework I developed while freelancing under "Inspector Mike".  
   + There's some code tidy-up pending, this framework was developed during Lazarus & fpc early days (2009 to 2014).
@@ -118,8 +119,9 @@
 
 ### Build Notes
 + This project requires the IM_units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
-  + Clone the entire project
+  + Clone InspectorMike-common
   + Install LazSerial (either use Lazarus Online Package Manager, or clone https://github.com/JurassicPork/TLazSerial)
+    + not needed for uBee512Launcher, but is needed for IM_units.lpk)
   + In Lazarus: "Project" "Open"
     + Select "uBee512Launcher.lpr"
   + Then "Package" "Open Package File (.lpk)"
