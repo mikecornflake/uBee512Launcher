@@ -98,7 +98,7 @@
 + Continue to add support for working with DSK files prior to running in a CP/M system
   + Create blank DSK
   + DSK To/From folder (inc To/From **RunCPM** folder)
-+ Add direct support for the zip file structure utilised by **@ChickenMan** on both MSPP forum and MicrobeeTechnology forum
++ Add direct support for the zip file structure pioneered by **@ChickenMan** for both **MSPP** repository and **Microbee Technology** repository
   + Display embedded ReadMe in the Preview Pane
   + Implement a "Mount ZIP" that extracts the DSK, then actually mounts that DSK in the CP/M system
 + Add support for Microbee Peripherals (Beetalker etc)
@@ -143,7 +143,9 @@
 # Acknowledgements
 + **Microbee Technologies** (http://www.microbeetechnology.com.au/) is the copyright holder for the Microbee systems.
   + I strongly recommend their [keyboard replacement kits](http://www.microbeetechnology.com.au/keyboardreplacementkits.htm) which resolves long standing issues with the aging originals (neither a paid endorsement, nor anything to do with emulators or their launchers).
-+ User **@uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
++ Many thanks to all users who created tools, disk/ROM images and documentation:
+  + User **@uBee** on the **MSPP** forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line.
+  + User **@Chickenman** on the **Microbee Technology** forum  (https://microbeetechnology.com.au/forum/) also deserves praise. **@Chickenman** is a dedicated and active Archivist, current curator of the **Microbee Technology** repository and past curator of the **MSPP** repository. **@Chickenman** is also active across several other projects, including https://archive.org/details/@chickenman.
 + **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.
 + **UBEE512**, **UBEEDISK** & patched **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
 + Original **CPMTools** (2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/.  This doesn't support most Microbee disk formats.
