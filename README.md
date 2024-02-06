@@ -1,12 +1,15 @@
 # UBEE512 Launcher
 
 ## Why?
-+ ubee512 is an excellent emulator, with a myriad of options available through the setting file (rc) and command line parameters.  But you have to be familiar with these.
-+ ubee512Launcher instead allows inexperienced users (me) to easily view & select the available emulated systems defined in the setting file (and there's a lot of them)
-+ Yeah, it's also for users (again, me) who are more comfortable with UI than command line.
++ ubee512 is an excellent [Microbee](https://www.microbee-mspp.org.au/wiki/tiki-index.php?page=Microbee) emulator, covering all models and a wide range of peripherals
+  + It has a myriad of options available through the settings files and command line parameters (described in its readme)
+  + Due to copyright issues, it can't ship with all the required files (ROMS/disks - covered in its readme)
++ ubee512launcher checks the files in the ubee512 installation against the selected options, and highlights missing files (required files raised as error, optional as warning)
++ ubee512Launcher allows inexperienced users (me) to easily view, configure and select the available emulated systems
++ Yeah, it's also for users (again, me) who are more comfortable with UI than command line
 
 ## Release v0.4beta
-+ Fourth beta release, still lots to do yet
++ Fourth beta release, still lots to do yet (no actual substance to the app yet)
 + Now using Github releases, not Bin subfolder
 + To use:
   + If ubee512 is on your environment path, simply download relevant binary and run.
@@ -20,23 +23,28 @@
     + Click "Launch"
 + "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
 + Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let uBee512 do the work.  User can still override...
-
++ About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
++ Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
+  
 ### Whats new (Trunk)
++ Next release will be a big one:
+  + Framework for core functionality now in, and checks/options for Disk based models mostly complete.
+  + Virtually nothing for ROM based models implemented.  Framework shouldn't need much tweaking to accomodate (famous last words).
+  + Sigh, actual functionality implies bugs.
 + Framework for Validators added (See section on Validation Rules below).  
   + Disk Alias Validator added (finished)
   + Installation Validator added (charrom.bin/rom1.bin checks.  Settings & Alias file checks.  Not sure what else to check, but this got me thinking about adding Installation Aids)
   + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.)
   + Microbee Model Validator added (Only checks default boot disks for Disk Models.  No checks for boot ROMs for IC models)
-+ Integrate "disks.alias" updates into Disk Explorer (Assign disk to existing Alias, Clear existing Alias).  
 + Added "Disk Alias" dialog (Add/Delete Alias, Edit Alias name.  Assign disk/clear assignment for Alias.  Display validator checks)
-+ Add Display options (position relative to launcher, monitor, opengl/sdl)
-+ UI has been reworked several times.
-  + Disk Explorer is now it's own form (not needed for ROM Bees, so why waste space)
-  + System Definitions now highlights which Definitions with known issues (as determined by the validators).  In addition to highlighting failed rows as red, needed to add red/green icons to workaround LCL shortcomings on macOS and Linux.  Disk Alias dialog modelled after Definitions dialog.
-  + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
-  + Closing in on decent selection of icons.
-  + Now displaying validator results using HTML
-+ Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
++ Integrate "disks.alias" updates into Disk Explorer (Assign disk to existing Alias, Clear existing Alias)
++ Add Display options (monitor, opengl/sdl)
++ UI has again been reworked several times.
+  + Changed Disk A/B/C selection in main form:
+    + Can use dialog to select a file/folder from the filesystem,
+    + or choose a valid disk alias from the dropdown.
+  + Issues found by Validators now being displayed in assorted locations across UI.
+  + Now displaying Issues using HTML
 
 ## Notes on implementation
 + Only allows bootable DSKs to be loaded in A: (only checks DSKs for bootability)
@@ -73,7 +81,8 @@
 # TODO
 
 ## Short term (planned for 0.5beta)
-+ Add TMainFormValidator (ie, you've selected a Disk model, but no disks; you have different format disks in each drive...)
++ Implement --account (if rc file not in expected location)
++ Add TMainFormValidator (ie, error if you've selected a Disk model, but no disks; warning if you have different format disks in each drive...)
 + Add Installation Aids (copy \*.sample files to appropriate locations.  HTML summary of Repository Locations/ettiquette.  Display Validator results)
 + Add "Issues" pane to summarise ALL issues
 + Add GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
@@ -114,8 +123,9 @@
 + The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
 
 ## Screenshots
-![Image: Main UI](Images/Development_Screenshot_2.png)
-![Image: System Macros](Images/Development_Screenshot_1.png)
+![Image: Main UI](Images/Development_Screenshot_1.png)
+![Image: Definition Explorer](Images/Development_Screenshot_2.png)
+![Image: Disk Explorer](Images/Development_Screenshot_3.png)
 
 ### Build Notes
 + This project requires the IM_units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
@@ -129,8 +139,10 @@
     + click on "Compile",
     + Then "Use" - "Add to Project" (or "Use" - "Install")
   + You should now be able to compile "uBeeLauncher.lpr"
-  
+
 # Acknowledgements
++ Microbee Technologies (http://www.microbeetechnology.com.au/) is the copyright holder for the Microbee systems.
+  + I strongly recommend their [keyboard replacement kits](http://www.microbeetechnology.com.au/keyboardreplacementkits.htm) which resolves long standing issues with the aging originals (neither a paid endorsement, nor anything to do with emulators or their launchers).
 + User **@uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.
 + **UBEE512**, **UBEEDISK** & patched **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
