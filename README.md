@@ -141,7 +141,7 @@
   + You should now be able to compile "uBeeLauncher.lpr"
 
 # Acknowledgements
-+ Microbee Technologies (http://www.microbeetechnology.com.au/) is the copyright holder for the Microbee systems.
++ **Microbee Technologies** (http://www.microbeetechnology.com.au/) is the copyright holder for the Microbee systems.
   + I strongly recommend their [keyboard replacement kits](http://www.microbeetechnology.com.au/keyboardreplacementkits.htm) which resolves long standing issues with the aging originals (neither a paid endorsement, nor anything to do with emulators or their launchers).
 + User **@uBee** on the MSPP forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line. 
 + **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.
