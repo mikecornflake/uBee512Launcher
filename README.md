@@ -158,7 +158,7 @@
 + **UBEE512** has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
 + **RunCPM** can be obtained from: https://github.com/MockbaTheBorg/RunCPM
 + Prebuilt **Lazarus/fpc** can be obtained from: https://sourceforge.net/projects/lazarus/files/
-+ But really - you know you want to compile **Lazarus** trunk: https://github.com/User4martin/lazarus
++ But really - you know you want to compile **Lazarus** trunk: https://gitlab.com/freepascal.org/lazarus/lazarus
 + And finally - a massive shout out to everyone on the Lazarus forums and mailing lists.  Very helpful and knowledgable, the lot of them: https://forum.lazarus.freepascal.org/index.php
 
 # Licenses
