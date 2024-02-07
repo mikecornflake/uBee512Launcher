@@ -1,28 +1,28 @@
 # UBEE512 Launcher
 
 ## Why?
-+ ubee512 is an excellent [Microbee](https://www.microbee-mspp.org.au/wiki/tiki-index.php?page=Microbee) emulator, covering all models and a wide range of peripherals
-  + It has a myriad of options available through the settings files and command line parameters (described in its readme)
++ **ubee512** is an excellent [Microbee](https://www.microbee-mspp.org.au/wiki/tiki-index.php?page=Microbee) emulator, covering all models and a wide range of peripherals
+  + It has a myriad of options available through the settings files and command line parameters (described in its [readme](https://github.com/snakebyte69/uBee512/blob/main/doc/README))
   + Due to copyright issues, it can't ship with all the required files (ROMS/disks - covered in its readme)
-+ ubee512launcher checks the files in the ubee512 installation against the selected options, and highlights missing files (required files raised as error, optional as warning)
-+ ubee512Launcher allows inexperienced users (me) to easily view, configure and select the available emulated systems
-+ Yeah, it's also for users (again, me) who are more comfortable with UI than command line
++ **ubee512launcher** checks the files in the **uBee512** installation against the selected options, and highlights missing files (required files raised as error, optional as warning)
++ **ubee512Launcher** allows inexperienced users (me) to easily view, configure and select the available emulated systems
++ And yes, it's also for users (again, me) who are more comfortable with UI than command line
 
 ## Release v0.4beta
 + Fourth beta release, still lots to do yet (no actual substance to the app yet)
-+ Now using Github releases, not Bin subfolder
-+ To use:
-  + If ubee512 is on your environment path, simply download relevant binary and run.
-  + if ubee512 isn't on your environment path, either
-    + run ubee512Launcher, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
-    + or drop the binary in the same folder as the ubee512 binary, and run from there
++ Now using Github [releases](https://github.com/mikecornflake/uBee512Launcher/releases/tag/0.4), not a Bin subfolder in the Code repository
++ To use **ubee512launcher**:
+  + If **ubee512** is on your environment path, simply download relevant **ubee512launcher** binary, unzip and run.
+  + if **ubee512** isn't on your environment path, either
+    + run **ubee512Launcher**, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
+    + or drop the binary in the same folder as the **ubee512** binary, and run from there
   + Then:
     + Use the "Type", "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
 	  + Alternatively, use the Definition Explorer (Bee icon) to select preferred model 
     + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
-+ "System Macros" renamed to "System Definitions" to be more consistent with uBee512 README.
-+ Re-worked Disk Format selection - I hadn't realised uBee512 was so good at detecting Disk Format, so by default I now let uBee512 do the work.  User can still override...
++ "System Macros" renamed to "System Definitions" to be more consistent with **uBee512** README.
++ Re-worked Disk Format selection - I hadn't realised **uBee512** was so good at detecting Disk Format, so by default I now let **uBee512** do the work.  User can still override...
 + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
 + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
   
