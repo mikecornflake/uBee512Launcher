@@ -4,7 +4,7 @@
 + **ubee512** is an excellent [Microbee](https://www.microbee-mspp.org.au/wiki/tiki-index.php?page=Microbee) emulator, covering all models and a wide range of peripherals
   + It has a myriad of options available through the settings files and command line parameters (described in its [readme](https://github.com/snakebyte69/uBee512/blob/main/doc/README))
   + Due to copyright issues, it can't ship with all the required files (ROMS/disks - covered in its readme)
-+ **ubee512launcher** checks the files in the **uBee512** installation against the selected options, and highlights missing files (required files raised as error, optional as warning)
++ **ubee512launcher** checks the files in the **uBee512** installation against the selected options in **ubee512launcher**, and highlights missing files (required files raised as error, optional as warning)
 + **ubee512Launcher** allows inexperienced users (me) to easily view, configure and select the available emulated systems
 + And yes, it's also for users (again, me) who are more comfortable with UI than command line
 
