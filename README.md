@@ -161,10 +161,15 @@
 + But really - you know you want to compile **Lazarus** trunk: https://github.com/User4martin/lazarus
 + And finally - a massive shout out to everyone on the Lazarus forums and mailing lists.  Very helpful and knowledgable, the lot of them: https://forum.lazarus.freepascal.org/index.php
 
-# License
-This is intended to be free code available to everyone for use everywhere.  Frankly, this is a simple UI wrapping the more complicated emulators and CPMTools developed and released by others.  However, I'm aware there are issues with releasing code under that sort of vagueness, so I've got to have a quick look around for an appropriate open source license.  Haven't done that yet...
+# Licenses
++ ubee512launcher binaries and source code are released under [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
++ ubee512launcher uses:
+  + Libraries and code supplied by the freepascal project (FCL, RTL) & the Lazarus project (LCL) under a [modified Library GPL with linking exceptions](https://wiki.freepascal.org/FPC_modified_LGPL)
+  + IM_units package which is also released under the same fpc [modified Library GPL with linking exceptions](https://wiki.freepascal.org/FPC_modified_LGPL)
+  + IM_units package contains third party packages released under seperate licenses.  Most third party packages are not used by ubee512launcher, the exception is:
+    + TurbopowerIPro (used for the HTML rendering) - this is released under MPL 1.1 (Mozilla Public License Version 1.1)
 
 Mike Thompson
 mike.cornflake@gmail.com
-Project start 2 Jan 2024
-Updated 3 Feb 2024
++ Project start 2 Jan 2024
++ Updated 7 Feb 2024
