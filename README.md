@@ -12,8 +12,8 @@
 + Fourth beta release, still lots to do yet (no actual substance to the app yet)
 + Now using Github [releases](https://github.com/mikecornflake/uBee512Launcher/releases/tag/0.4), not a Bin subfolder in the Code repository
 + To use **ubee512launcher**:
-  + If **ubee512** is on your environment path, simply download relevant **ubee512launcher** binary, unzip and run.
-  + if **ubee512** isn't on your environment path, either
+  + If **ubee512** is on your environment path, simply download relevant **ubee512launcher** binary, unzip and run
+  + if **ubee512** isn't on your environment path, either:
     + run **ubee512Launcher**, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
     + or drop the binary in the same folder as the **ubee512** binary, and run from there
   + Then:
@@ -21,29 +21,30 @@
 	  + Alternatively, use the Definition Explorer (Bee icon) to select preferred model 
     + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
     + Click "Launch"
-+ "System Macros" renamed to "System Definitions" to be more consistent with **uBee512** README.
++ "System Macros" renamed to "System Definitions" (or more simply "Definitions" in places) to be more consistent with **uBee512** README
 + Re-worked Disk Format selection - I hadn't realised **uBee512** was so good at detecting Disk Format, so by default I now let **uBee512** do the work.  User can still override...
 + About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
 + Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
   
 ### Whats new (Trunk)
 + Next release will be a big one:
-  + Framework for core functionality now in, and checks/options for Disk based models mostly complete.
-  + Virtually nothing for ROM based models implemented.  Framework shouldn't need much tweaking to accomodate (famous last words).
-  + Sigh, actual functionality implies bugs.
-+ Framework for Validators added (See section on Validation Rules below).  
+  + Framework for core functionality now in, and checks/options for Disk based models mostly complete
+  + Virtually nothing for ROM based models implemented (and won't until 0.6beta release)
+    + Framework shouldn't need much tweaking to accomodate (famous last words)
+  + Sigh, actual functionality implies bugs.  Keep your eyes open, and please report...
++ Framework for Validators added (See section on Validation Rules below)
   + Disk Alias Validator added (finished)
   + Installation Validator added (charrom.bin/rom1.bin checks.  Settings & Alias file checks.  Not sure what else to check, but this got me thinking about adding Installation Aids)
-  + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs.)
+  + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs)
   + Microbee Model Validator added (Only checks default boot disks for Disk Models.  No checks for boot ROMs for IC models)
 + Added "Disk Alias" dialog (Add/Delete Alias, Edit Alias name.  Assign disk/clear assignment for Alias.  Display validator checks)
 + Integrate "disks.alias" updates into Disk Explorer (Assign disk to existing Alias, Clear existing Alias)
 + Add Display options (monitor, opengl/sdl)
 + UI has again been reworked several times.
   + Changed Disk A/B/C selection in main form:
-    + Can use dialog to select a file/folder from the filesystem,
-    + or choose a valid disk alias from the dropdown.
-  + Issues found by Validators now being displayed in assorted locations across UI.
+    + Can use dialog to select a file/folder from the filesystem
+    + or choose a valid disk alias from the dropdown
+  + Issues found by Validators now being displayed in assorted locations across UI
   + Now displaying Issues using HTML
 
 ## Notes on implementation
@@ -53,10 +54,10 @@
 + Parses ubee512rc to build up System Definitions, uses these in Main Form & Definitions Explorer
 + I know there looks like a lot of Definitions in ubee512rc sample.  Err, I'm currently filtering out about half - the ones I haven't researched
 + Signficant testing under macOS/Cocoa.  Bugger - Cocoa framework not fully implemented in LCL, so some workarounds for known issues with TComboBox and TListView
-+ Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here.
-+ Most dev work & testing done on Windows 11. 
++ Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here
++ Most dev work & testing done on Windows 11
 
-## Validation Rules (under development)
+## Current Validation Rules (under development)
 + Results of Validation checks currently visible in Definitions Explorer & Main Form (still to add "Issues" dialog)
 + uBee512rc Definition checks:
   + For disks assigned to A, B or C:
@@ -70,9 +71,10 @@
   + Does the alias have a lookup filename? (warning flag if not)
   + Does the lookup filename exist? (error flag if not)
 + Model checks
-  + For each model: Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
-  + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
-  + Is Boot Disk readonly? (Error flag is so)
+  + For each Disk model:
+    + Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
+    + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
+    + Is Boot Disk readonly? (Error flag is so)
  + Installation checks
    + Does charrom.bin & rom1.bin exist?  (Error flag if not)
    + Does "ubee512rc" exist? (Error flag if not)
@@ -113,14 +115,14 @@
 
 # Development Notes
 + Developed under Windows 11, Ubuntu & macOS using Lazarus Trunk (3.99) / fpc 3.2.2 / 64bit
-+ Due to changes in TurboPowerHTML rendering only use Lazarus Trunk for compiling releases.
-+ Uses a OO framework I developed while freelancing under "Inspector Mike".  
-  + There's some code tidy-up pending, this framework was developed during Lazarus & fpc early days (2009 to 2014).
-  + Both projects have since moved on, leaving me with some now redundant routines.
++ Due to changes in TurboPowerHTML rendering only use Lazarus Trunk for compiling releases
++ Uses a OO framework I developed while freelancing as "Inspector Mike" 
+  + There's some code tidy-up pending, this framework was developed during Lazarus & fpc early days (2009 to 2014)
+  + Both projects have since moved on, leaving me with some now redundant routines
 
 ## Distribution
 + **UBEE512**, **UBEEDISK**, patched **CPMTools**, original **CPMTools** & **RunCPM** are NOT distributed with this application.  You'll have to download these separetely (see Acknowledgements)
-+ The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually.
++ The app will look for these on your environment path.  If they're not on the path, you'll need to open "File" - "Settings" and set the appropriate paths manually
 
 ## Screenshots
 ![Image: Main UI](Images/Development_Screenshot_1.png)
@@ -141,15 +143,15 @@
   + You should now be able to compile "uBeeLauncher.lpr"
 
 # Acknowledgements
-+ **Microbee Technologies** (http://www.microbeetechnology.com.au/) is the copyright holder for the Microbee systems.
-  + I strongly recommend their [keyboard replacement kits](http://www.microbeetechnology.com.au/keyboardreplacementkits.htm) which resolves long standing issues with the aging originals (neither a paid endorsement, nor anything to do with emulators or their launchers).
++ **Microbee Technologies** (http://www.microbeetechnology.com.au/) is the copyright holder for the Microbee systems
+  + I strongly recommend their [keyboard replacement kits](http://www.microbeetechnology.com.au/keyboardreplacementkits.htm) which resolves long standing issues with the aging originals (neither a paid endorsement, nor anything to do with emulators or their launchers)
 + Many thanks to all users who created tools, disk/ROM images and documentation:
-  + User **@uBee** on the **MSPP** forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line.
-  + User **@Chickenman** on the **Microbee Technology** forum  (https://microbeetechnology.com.au/forum/) also deserves praise. **@Chickenman** is a dedicated and active Archivist, current curator of the **Microbee Technology** repository and past curator of the **MSPP** repository. **@Chickenman** is also active across several other projects, including https://archive.org/details/@chickenman.
-+ **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**.
+  + User **@uBee** on the **MSPP** forum (https://www.microbee-mspp.org.au/forum/) is to be congratulated.  **@uBee** has developed a very flexible Microbee emulator that is able to emulate all Microbee flavours and is configurable via the rc file and the command line
+  + User **@Chickenman** on the **Microbee Technology** forum  (https://microbeetechnology.com.au/forum/) also deserves praise. **@Chickenman** is a dedicated and active Archivist, current curator of the **Microbee Technology** repository and past curator of the **MSPP** repository. **@Chickenman** is also active across several other projects, including https://archive.org/details/@chickenman
++ **UBEE512**, **UBEEDISK** & patch for **CPMTools** developed by user **@uBee**
 + **UBEE512**, **UBEEDISK** & patched **CPMtools** (2.1) can be obtained from the MSPP repository: https://www.microbee-mspp.org.au/repository/
-+ Original **CPMTools** (2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/.  This doesn't support most Microbee disk formats.
-+ Where the above tools access DSK files, they do so using **libdsk** either directly (**CPMTools**) or optionally (**UBEE512**) : https://www.seasip.info/Unix/LibDsk/.  
++ Original **CPMTools** (2.23) can be obtained from: http://www.moria.de/~michael/cpmtools/.  This doesn't support most Microbee disk formats
++ Where the above tools access DSK files, they do so using **libdsk** either directly (**CPMTools**) or optionally (**UBEE512**) : https://www.seasip.info/Unix/LibDsk/
 + **UBEE512** has been forked (there was limited support for MacOS), and ongoing development & friendly support is happening in this discord: https://discord.gg/2rBya9Hh
 + **RunCPM** can be obtained from: https://github.com/MockbaTheBorg/RunCPM
 + Prebuilt **Lazarus/fpc** can be obtained from: https://sourceforge.net/projects/lazarus/files/
