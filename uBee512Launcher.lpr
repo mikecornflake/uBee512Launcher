@@ -10,8 +10,7 @@ Uses
   Forms,
   FormMain,
   DialogDebug,
-  uBee512Support,
-  uBee512Validators { you can add units after this };
+  uBee512Support { you can add units after this };
 
   {$R *.res}
 

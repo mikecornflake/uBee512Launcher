@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 498
+  Left = 2208
   Height = 523
-  Top = 260
+  Top = 197
   Width = 932
   Caption = 'uBee512Launcher'
   ClientHeight = 523

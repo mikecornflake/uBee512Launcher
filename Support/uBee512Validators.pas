@@ -162,7 +162,9 @@ Begin
       bHasBoot := FileExists(sBaseFolder + sModelBootDisk);
       sAliasFilename := uBee512.DiskAliases.FilenameByAlias(sModelBootDisk);
       bAliasExists := (sAliasFilename <> ALIAS_NOT_FOUND);
-      bAliasFilenameExists := FileExists(sBaseFolder + sAliasFilename);
+      If Not IsFileAbsolute(sAliasFilename) Then
+        sAliasFilename := sBaseFolder + sAliasFilename;
+      bAliasFilenameExists := FileExists(sAliasFilename);
       bGenericBootExists := FileExists(sBaseFolder + 'boot.dsk');
 
       If bHasBoot Then
@@ -174,6 +176,7 @@ Begin
       Else
         sBoot := '';
 
+      bHasBoot := FileExists(sBaseFolder + sModelBootDisk);
       bReadOnly := FileExists(sBoot) And (FileIsReadOnly(sBoot));
 
       // Is there an obvious boot disk?
@@ -197,19 +200,27 @@ Begin
       End
       Else If bAliasExists Then
       Begin
-        SetLevel(elWarning);
-        AddOC('Boot disk alias "%s" is not configured', [sModelBootDisk], elWarning);
+        If bAliasFilenameExists Then
+        Begin
+          SetLevel(elInfo);
+          AddOC('Boot disk alias "%s" resolves to "%s"', [sModelBootDisk, sAliasFilename], elInfo);
+        End
+        Else
+        Begin
+          SetLevel(elWarning);
+          AddOC('Boot disk alias "%s" is not configured', [sModelBootDisk], elWarning);
 
-        AddRM('  Use of Alias is optional: ', []);
-        StartRMList;
-        AddRM('    You can directly populate "Disk A"', []);
-        EndRMList;
-        AddRM('  Or, to configure the Alias:', []);
-        StartRMList;
-        AddRM('    either place the Disk in "%s" ', [sBaseFolder]);
-        AddRM('    and add just the filename to "disks.alias", ', []);
-        AddRM('    Or, add the absolute path to the Disk to "disks.alias"', []);
-        EndRMList;
+          AddRM('  Use of Alias is optional: ', []);
+          StartRMList;
+          AddRM('    You can instead directly populate "Disk A"', []);
+          EndRMList;
+          AddRM('  Alternatively, to configure the Alias:', []);
+          StartRMList;
+          AddRM('    either place the Disk in "%s" and add just the filename to "disks.alias",',
+            [sBaseFolder]);
+          AddRM('    Or, add the absolute path to the Disk to "disks.alias"', []);
+          EndRMList;
+        End;
       End
       Else
       Begin
@@ -379,29 +390,35 @@ Var
                   [AFilename, sFolder]);
                 EndRMList;
               End
-              Else If Not uBee512.ValidFile(ASubfolder, sAlias) Then
+              Else
               Begin
-                SetLevel(elError);
-                AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
-                  [AObject, AFilename, sAlias], elError);
-                If IsFileAbsolute(sAlias) Then
+                If Not IsFileAbsolute(sAlias) Then
+                  sAlias := IncludeSlash(sFolder) + sAlias;
+
+                If Not FileExists(sAlias) Then
                 Begin
-                  AddOC('%s "%s" not found', [AObject, AFilename], elError);
-                  AddRM('Ensure file "%s" exists', [AFilename]);
+                  SetLevel(elError);
+                  AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
+                    [AObject, AFilename, sAlias], elError);
+                  If IsFileAbsolute(sAlias) Then
+                  Begin
+                    AddOC('%s "%s" not found', [AObject, AFilename], elError);
+                    AddRM('Ensure file "%s" exists', [AFilename]);
+                  End
+                  Else
+                  Begin
+                    AddOC('%s "%s" not found in "%s"',
+                      [AObject, sAlias, sFolder], elError);
+                    AddRM('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
+                  End;
                 End
                 Else
                 Begin
-                  AddOC('%s "%s" not found in "%s"',
-                    [AObject, sAlias, sFolder], elError);
-                  AddRM('Ensure file "%s" exists in "%s"', [AFilename, sFolder]);
+                  SetLevel(elInfo);
+                  AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
+                    [AObject, AFilename, sAlias], elInfo);
                 End;
-              End
-              Else
-              Begin
-                SetLevel(elInfo);
-                AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
-                  [AObject, AFilename, sAlias], elInfo);
-              End;
+              end;
             End;
           Else // Case ASubfolder Of
           Begin
