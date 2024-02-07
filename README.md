@@ -165,9 +165,9 @@
 + ubee512launcher binaries and source code are released under [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
 + ubee512launcher uses:
   + Libraries and code supplied by the freepascal project (FCL, RTL) & the Lazarus project (LCL) under a [modified Library GPL with linking exceptions](https://wiki.freepascal.org/FPC_modified_LGPL)
-  + IM_units package which is also released under the same fpc [modified Library GPL with linking exceptions](https://wiki.freepascal.org/FPC_modified_LGPL)
+  + IM_units package which is released under [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
   + IM_units package contains third party packages released under seperate licenses.  Most third party packages are not used by ubee512launcher, the exception is:
-    + TurbopowerIPro (used for the HTML rendering) - this is released under MPL 1.1 ([Mozilla Public License Version 1.1](https://www.mozilla.org/en-US/MPL/1.1/))
+    + TurbopowerIPro (distributed with Lazarus and used for HTML rendering) - this is released under MPL 1.1 ([Mozilla Public License Version 1.1](https://www.mozilla.org/en-US/MPL/1.1/))
 
 Mike Thompson
 mike.cornflake@gmail.com
