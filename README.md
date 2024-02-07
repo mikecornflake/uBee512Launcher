@@ -57,8 +57,20 @@
 + Minor testing under Ubuntu/GTK2.  Same lack of full feature for TListView as Cocoa, so workaround there also worked here
 + Most dev work & testing done on Windows 11
 
-## Current Validation Rules (under development)
-+ Results of Validation checks currently visible in Definitions Explorer & Main Form (still to add "Issues" dialog)
+## Implemented Validation Rules
++ Results of Validation checks visible several locations around the UI (still to add "Issues" dialog)
++ **ubee512** Installation checks
+  + Does charrom.bin & rom1.bin exist?  (Error flag if not)
+  + Does "ubee512rc" exist? (Error flag if not)
+  + Does "disks.alias" and "roms.alias" exist? (Warning flag if not)
++ Microbee Model checks
+  + For each Disk Model:
+    + Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
+    + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
+    + Is Boot Disk readonly? (Error flag is so)
++ "disk.alias" checks:
+  + Does the alias have a lookup filename? (warning flag if not)
+  + Does the lookup filename exist? (error flag if not)
 + uBee512rc Definition checks:
   + For disks assigned to A, B or C:
     + If absolute filename, does disk exist?  (Error flag if not)
@@ -66,20 +78,11 @@
 	  + does disk exist in ubee512 working directory "disks" subfolder? (no flag if it does)
 	  + If not: Does entry exist in "disks.alias"? (info flag if it does)
 	    + Is "disks.alias" entry valid? (checks both absolute and relative file paths). (Flag escalated to Error if not)
-  + For --sram-file, --ide-a0, --tapei, --tapeo entries: Does file exist? (checks absolute and correct subfolder) (Error Flag if not) 	
-+ "disk.alias" checks:
-  + Does the alias have a lookup filename? (warning flag if not)
-  + Does the lookup filename exist? (error flag if not)
-+ Model checks
-  + For each Disk model:
-    + Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
-    + Does a boot disk alias exist? (Warning flag if alias exists, but not defined)
-    + Is Boot Disk readonly? (Error flag is so)
- + Installation checks
-   + Does charrom.bin & rom1.bin exist?  (Error flag if not)
-   + Does "ubee512rc" exist? (Error flag if not)
-   + Does "disks.alias" and "roms.alias" exist? (Warning flag if not)
-  
+  + For --sram-file, --ide-a0, --tapei, --tapeo entries: Does file exist? (checks absolute filenames or looks in correct subfolder if relative) (Error Flag if not) 	
++ You may notice from the above that some checks are duplicated:
+  + This is by design to assist end user diagnosis
+  + Sigh. Likely to be the most common source of bugs as a consequence
+
 # TODO
 
 ## Short term (planned for 0.5beta)
