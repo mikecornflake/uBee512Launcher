@@ -418,7 +418,7 @@ Var
                   AddOC('%s "%s" found in "disks.alias", and resolves to "%s"',
                     [AObject, AFilename, sAlias], elInfo);
                 End;
-              end;
+              End;
             End;
           Else // Case ASubfolder Of
           Begin

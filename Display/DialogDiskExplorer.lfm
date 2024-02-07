@@ -1,7 +1,7 @@
 object dlgDiskExplorer: TdlgDiskExplorer
-  Left = 2278
+  Left = 774
   Height = 488
-  Top = 293
+  Top = 357
   Width = 725
   BorderIcons = [biMaximize]
   Caption = 'Disk Explorer'
@@ -47,6 +47,7 @@ object dlgDiskExplorer: TdlgDiskExplorer
     0000
   }
   Position = poMainFormCenter
+  SessionProperties = 'pnldskFiles.Height;tvFolders.Width;Left;Top;Width;Height'
   LCLVersion = '3.99.0.0'
   OnActivate = FormActivate
   OnCreate = FormCreate
@@ -68,6 +69,8 @@ object dlgDiskExplorer: TdlgDiskExplorer
     Height = 456
     Top = 0
     Width = 5
+    AutoSnap = False
+    MinSize = 75
   end
   object pnlCPMToolsMain: TPanel
     Left = 218
@@ -190,6 +193,8 @@ object dlgDiskExplorer: TdlgDiskExplorer
       Top = 175
       Width = 507
       Align = alTop
+      AutoSnap = False
+      MinSize = 75
       ResizeAnchor = akTop
     end
     object pcPreview: TPageControl
@@ -562,5 +567,10 @@ object dlgDiskExplorer: TdlgDiskExplorer
     object mnuDiskAliasClear: TMenuItem
       Caption = 'Clear'
     end
+  end
+  object iniPropStorage: TIniPropStorage
+    StoredValues = <>
+    Left = 96
+    Top = 184
   end
 end

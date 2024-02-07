@@ -1,12 +1,12 @@
 Unit FormMain;
 
 {$mode objfpc}{$H+}
-
+{$WARN 5024 off : Parameter "$1" not used}
 Interface
 
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus, IpHtml,
+  StdCtrls, ShellCtrls, ExtCtrls, Buttons, Menus, IniPropStorage, IpHtml,
   DialogSettings, Logs;
 
 Type
@@ -32,6 +32,7 @@ Type
     cboDiskA: TComboBox;
     cboDiskB: TComboBox;
     cboDiskC: TComboBox;
+    iniPropStorage: TIniPropStorage;
     lblDiskAlias: TLabel;
     lblROMAlias: TLabel;
     memCommandLine: TMemo;
@@ -165,6 +166,10 @@ Begin
   FActivated := False;
   FLoadingDSK := False;
   FSettings := TSettings.Create;
+  FSettings.Filename := IncludeSlash(FSettings.Folder) + 'settings.ini';
+
+  iniPropStorage.IniFileName := FSettings.Filename;
+  iniPropStorage.IniSection := Self.Name;
 
   FLog := TLog.Create(IncludeSlash(FSettings.Folder) + 'debug.log');
   Debug(LineEnding + '-----------------------');
@@ -403,14 +408,13 @@ Var
   iLeft, iWidth, iTop, iHeight: Integer;
   oIniFile: TIniFile;
   sModel, sTitle: String;
-  sIniFile, sType: String;
+  sType: String;
   mtType: TMbeeType;
 Begin
-  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
-  Debug('Loading ' + sInifile);
+  Debug('Loading ' + FSettings.Filename);
   FLog.IncIndent;
 
-  oIniFile := TIniFile.Create(sIniFile);
+  oIniFile := TIniFile.Create(FSettings.Filename);
   Try
     // Default, load Window Settings
     iLeft := oInifile.ReadInteger(Name, 'Left', Application.MainForm.Left);
@@ -462,12 +466,10 @@ End;
 Procedure TfrmMain.SaveSettings;
 Var
   oInifile: TIniFile;
-  sInifile: String;
 Begin
-  sIniFile := IncludeSlash(FSettings.Folder) + 'settings.ini';
-  Debug('Saving ' + sInifile);
+  Debug('Saving ' + FSettings.Filename);
 
-  oInifile := TIniFile.Create(sInifile);
+  oIniFile := TIniFile.Create(FSettings.Filename);
 
   // Do all the SaveSettings work in memory
   oInifile.CacheUpdates := True;

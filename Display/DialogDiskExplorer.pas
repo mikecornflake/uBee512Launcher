@@ -6,7 +6,7 @@ Interface
 
 Uses
   Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs, ShellCtrls,
-  ExtCtrls, ComCtrls, StdCtrls, Menus, DialogSettings;
+  ExtCtrls, ComCtrls, StdCtrls, Menus, IniPropStorage, DialogSettings;
 
   // TODO FormDiskExplorer: Add right click to MainListView
 
@@ -18,6 +18,7 @@ Type
     btnCancel: TButton;
     btnOK: TButton;
     ilMain: TImageList;
+    iniPropStorage: TIniPropStorage;
     lvFilesInDisk: TListView;
     lvFiles: TListView;
     memOutput: TMemo;
@@ -105,6 +106,9 @@ Begin
   FActivated := False;
   FLoadingDSK := False;
   FSettings := TSettings.Create;
+
+  iniPropStorage.IniFileName := frmMain.iniPropStorage.IniFileName;
+  iniPropStorage.IniSection := Self.Name;
 End;
 
 Procedure TdlgDiskExplorer.FormActivate(Sender: TObject);

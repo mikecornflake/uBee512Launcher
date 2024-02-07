@@ -9,6 +9,7 @@ object frmMain: TfrmMain
   Constraints.MinHeight = 255
   Constraints.MinWidth = 700
   Menu = MainMenu1
+  SessionProperties = 'pnlLeft.Width;htmlSummary.Height'
   ShowHint = True
   LCLVersion = '3.99.0.0'
   OnActivate = FormActivate
@@ -29,9 +30,9 @@ object frmMain: TfrmMain
       Height = 460
       Top = 0
       Width = 522
-      ActivePage = tsVideo
+      ActivePage = tsDrive
       Align = alClient
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       object tsDrive: TTabSheet
         Caption = 'Drives'
@@ -780,6 +781,8 @@ object frmMain: TfrmMain
           Top = 199
           Width = 406
           Align = alBottom
+          AutoSnap = False
+          MinSize = 75
           ResizeAnchor = akBottom
         end
         object htmlSummary: TIpHtmlPanel
@@ -829,6 +832,8 @@ object frmMain: TfrmMain
       Height = 460
       Top = 0
       Width = 5
+      AutoSnap = False
+      MinSize = 75
     end
   end
   object ToolBar2: TToolBar
@@ -1236,5 +1241,10 @@ object frmMain: TfrmMain
       17FC8DAFEB961AFA0701734B6BF4F7F7A3BB6F109D374F89B6C7EA0913FB7532
       F89E991E3BC5D63EFD09D68FD7FF2F8174B5FB
     }
+  end
+  object iniPropStorage: TIniPropStorage
+    StoredValues = <>
+    Left = 408
+    Top = 120
   end
 end

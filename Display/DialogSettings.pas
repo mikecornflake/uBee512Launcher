@@ -14,6 +14,8 @@ Type
 
   TSettings = Class(TPersistent)
   Public
+    Filename: String;
+
     UBEE512_exe: String;
     UBEE512_rc: String;
     RUNCPM_exe: String;
@@ -142,11 +144,14 @@ Procedure TSettings.Assign(Source: TPersistent);
 Begin
   If Assigned(Source) And (Source Is TSettings) Then
   Begin
+    Filename := TSettings(Source).Filename;
+
     UBEE512_exe := TSettings(Source).UBEE512_exe;
     UBEE512_rc := TSettings(Source).UBEE512_rc;
+    WorkingFolder := TSettings(Source).WorkingFolder;
+
     RUNCPM_exe := TSettings(Source).RUNCPM_exe;
     CPMTOOLS_bin := TSettings(Source).CPMTOOLS_bin;
-    WorkingFolder := TSettings(Source).WorkingFolder;
 
     A := TSettings(Source).A;
     B := TSettings(Source).B;
@@ -155,6 +160,10 @@ Begin
     A_Format := TSettings(Source).A_Format;
     B_Format := TSettings(Source).B_Format;
     C_Format := TSettings(Source).C_Format;
+
+    ColourOpt := TSettings(Source).ColourOpt;
+    MonitorOpt := TSettings(Source).MonitorOpt;
+    VideoTypeOpt := TSettings(Source).VideoTypeOpt;
   End;
 End;
 
