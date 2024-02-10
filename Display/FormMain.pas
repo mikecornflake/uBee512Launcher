@@ -332,6 +332,20 @@ Begin
     AddStringsToArray(arrSummary, uBee512.Validator.Summary(True));
     elMaxErrorLevel := uBee512.Validator.ErrorLevel;
 
+    If Assigned(FSettings.Validator) Then
+    Begin
+      FSettings.Validator.Process;
+
+      If Length(arrSummary) > 0 Then
+        AddStringToArray(arrSummary, '');
+
+      AddStringsToArray(arrSummary, FSettings.Validator.Summary(True));
+
+      elTemp := FSettings.Validator.ErrorLevel;
+      If elTemp > elMaxErrorLevel Then
+        elMaxErrorLevel := elTemp;
+    End;
+
     If Assigned(oDefinition) Then
     Begin
       oDefinition.Validator.Process;

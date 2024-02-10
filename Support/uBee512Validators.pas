@@ -5,7 +5,7 @@ Unit uBee512Validators;
 Interface
 
 Uses
-  Classes, SysUtils, Validators, Graphics;
+  Classes, SysUtils, Validators, Graphics, Controls;
 
 Type
   { TDefinitionValidator }
@@ -48,9 +48,20 @@ Type
     Procedure Process; Override;
   End;
 
+  { TSettingsValidator }
+
+  TSettingsValidator = Class(TValidator)
+  Protected
+    Function GetTarget: String; Override;
+  Public
+    Constructor Create(AOwner: TObject); Override;
+    Procedure Process; Override;
+  End;
+
 Implementation
 
-Uses uBee512Support, FileSupport, StrUtils;
+Uses uBee512Support, FileSupport, StrUtils, FormMain, DialogSettings,
+  CPMSupport;
 
   { TInstallationValidator }
 
@@ -115,6 +126,165 @@ Begin
       'Copy & rename "configs\roms.alias.sample", and place in uBee512 folder');
     Check('', 'disks.alias', 'ROM lookup file', elWarning,
       'Copy & rename "configs\disks.alias.sample", and place in uBee512 folder');
+  End;
+End;
+
+{ TSettingsValidator }
+
+Function TSettingsValidator.GetTarget: String;
+Begin
+  If Assigned(FOwner) And (FOwner Is TfrmMain) Then
+    Result := TfrmMain(FOwner).Caption
+  Else
+    Result := Inherited GetTarget;
+End;
+
+Constructor TSettingsValidator.Create(AOwner: TObject);
+Begin
+  Inherited Create(AOwner);
+
+  FDisplayName := 'uBee512Launcher';
+  FDescription := 'This performs simple checks for currently selected options.';
+End;
+
+Procedure TSettingsValidator.Process;
+Var
+  oModel: TModel;
+  oDefinition: TDefinition;
+  sFormatA, sDiskB, sFormatB: String;
+  sDiskA, sDiskC, sFormatC: TCaption;
+Begin
+  Inherited Process;
+  FErrorLevel := elNone;
+  FOutcome := '';
+  FRecommendation := '';
+
+  If Assigned(FOwner) And (FOwner Is TSettings) Then
+  Begin
+    // Breaking a rule between UI and Logic here.
+    // Really - UI should immediately update FSettings
+    // And this code should validate those...
+    // TODO Refactor so TSettingsValidator is actually validating TSettings...
+    oModel := ubee512.Models[frmMain.cboModel.Text];
+    oDefinition := ubee512.Definitions.DefinitionByTitle(frmMain.cboTitle.Text);
+
+    If Not Assigned(oModel) Then
+    Begin
+      SetLevel(elError);
+      AddOC('No Microbee Model is selected', [], elError);
+      AddRM('This should not be possible.  Please report a bug, including a screenshot', []);
+      Exit;
+    End;
+
+    Case oModel.MbeeType Of
+      mtFDD:
+      Begin
+        // We must have an A:
+        sDiskA := '';
+        If Assigned(oDefinition) Then
+          sDiskA := uBee512.DiskAliases.Resolve(oDefinition.A);
+        If (sDiskA = '') Then
+          sDiskA := uBee512.DiskAliases.Resolve(frmMain.cboDiskA.Text);
+        If (sDiskA = '') Then
+          sDiskA := oModel.DefaultBootDisk;
+
+        sFormatA := '';
+        If sDiskA = '' Then
+        Begin
+          SetLevel(elError);
+          AddOC('No Disk A selected', [], elError);
+          AddRM('Select a valid Disk A using the main form, or ensure one of the following boot disks exist: boot.dsk, %s.dsk', [oModel.Model]);
+        End
+        Else
+        Begin
+          SetLevel(elInfo);
+          AddOC('Disk A="%s"', [sDiskA], elInfo);
+          sFormatA := ubee512.DiskFormat(sDiskA, frmMain.cboFormatA.Text);
+
+          If sFormatA = FORMAT_UNKNOWN Then
+          Begin
+            SetLevel(elWarning);
+            AddOC('Unable to infer Disk A format', [], elError);
+            AddRM('Unknown Disk A format might not be an issue.  ubee512 gets format by analysing file structure, ubee512launcher only checks filename.', []);
+          End;
+        End;
+
+        sDiskB := '';
+        If Assigned(oDefinition) Then
+          sDiskB := uBee512.DiskAliases.Resolve(oDefinition.B);
+        If (sDiskB = '') Then
+          sDiskB := uBee512.DiskAliases.Resolve(frmMain.cboDiskB.Text);
+
+        If sDiskB <> '' Then
+        Begin
+          SetLevel(elInfo);
+          AddOC('Disk B="%s"', [sDiskB], elInfo);
+          sFormatB := ubee512.DiskFormat(sDiskA, frmMain.cboFormatB.Text);
+
+          If sFormatB = FORMAT_UNKNOWN Then
+          Begin
+            SetLevel(elWarning);
+            AddOC('Unable to infer Disk B format', [], elError);
+            AddRM('Unknown Disk B format might not be an issue.  ubee512 gets format by analysing file structure, ubee512launcher only checks filename.', []);
+          End
+          Else If (sFormatA <> FORMAT_UNKNOWN) And (sFormatA <> sFormatB) Then
+          Begin
+            SetLevel(elWarning);
+            AddOC('Disk A format (%s) does not match Disk B format (%s)',
+              [sFormatA, sFormatB], elWarning);
+            StartRMList;
+            AddRM('Conflicting formats might be an issue; only some disks (or maybe models?) support different formats.', []);
+            AddRM('Alternatively: You may be able to use SETDRIVE', []);
+            EndRMList;
+          End;
+        End;
+
+        sDiskC := '';
+        If Assigned(oDefinition) Then
+          sDiskC := uBee512.DiskAliases.Resolve(oDefinition.C);
+        If (sDiskC = '') Then
+          sDiskC := uBee512.DiskAliases.Resolve(frmMain.cboDiskC.Text);
+
+        If sDiskC <> '' Then
+        Begin
+          SetLevel(elInfo);
+          AddOC('Disk C="%s"', [sDiskC], elInfo);
+          sFormatC := ubee512.DiskFormat(sDiskA, frmMain.cboFormatC.Text);
+
+          If sFormatC = FORMAT_UNKNOWN Then
+          Begin
+            SetLevel(elWarning);
+            AddOC('Unable to infer Disk C format', [], elError);
+            AddRM('Unknown Disk C format might not be an issue.  ubee512 gets format by analysing file structure, ubee512launcher only checks filename.', []);
+          End
+          Else If (sFormatA <> FORMAT_UNKNOWN) And (sFormatA <> sFormatC) Then
+          Begin
+            SetLevel(elWarning);
+            AddOC('Disk A format (%s) does not match Disk C format (%s)',
+              [sFormatA, sFormatC], elWarning);
+            AddRM('Conflicting formats might be an issue; only some disks (or maybe models?) support different formats.', []);
+            AddRM('Alternatively: You may be able to use SETDRIVE', []);
+          End;
+        End;
+
+        If (sDiskA = '') And (sDiskB = '') And (sDiskC = '') Then
+        Begin
+          SetLevel(elError);
+          AddOC('Disk Model selected, but no disks have been chosen', [], elError);
+          AddRM('Either select Disk A using the main form, or ensure one of the following boot disks exist: boot.dsk, %s.dsk', [oModel.Model]);
+        End;
+      End;
+      mtROM:
+      Begin
+        ;  // TODO Add valid Settings checks for ROM based machines
+        ;
+      End;
+      Else
+      Begin
+        ;  // TODO Add valid Settings checks for Custom machines
+        ;
+      End;
+    End;
   End;
 End;
 

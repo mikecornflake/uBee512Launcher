@@ -63,6 +63,23 @@
   + Does charrom.bin & rom1.bin exist?  (Error flag if not)
   + Does "ubee512rc" exist? (Error flag if not)
   + Does "disks.alias" and "roms.alias" exist? (Warning flag if not)
++ Settings checks
+  + Is a valid microbee Model selected? (Error flag if not)
+  + For Disk Models:
+    + Following disk checks are done in the following order: 
+	  + Disk defined in Definition? 
+	  + Disk defined in UI? 
+	  + Default boot disk for Microbee Model (ie p64.dsk)?  
+	  + Default boot disk (boot.dsk)?
+    + Is there a valid Disk A? (Error flag if not, Info flag if there is)
+	  + Can we deduce format for disk A? (Warning flag if not)
+    + Is there a valid Disk B? (Info flag if so, nothing if there isn't)
+	  + Can we deduce format for disk B? (Warning flag if not)
+	  + Does Format A match Format B (Warning flag if not)
+    + Is there a valid Disk C? (Info flag if so)
+	  + Can we deduce format for disk C? (Warning flag if not)
+	  + Does Format A match Format C (Warning flag if not)
+	+ Raise an addition error if no disks selected at all...
 + Microbee Model checks
   + For each Disk Model:
     + Does a boot disk exist? (model.dsk, or boot.dsk) (Warning flag if not)
@@ -87,7 +104,6 @@
 
 ## Short term (planned for 0.5beta)
 + Implement --account (if rc file not in expected location)
-+ Add TMainFormValidator (ie, error if you've selected a Disk model, but no disks; warning if you have different format disks in each drive...)
 + Add Installation Aids (copy \*.sample files to appropriate locations.  HTML summary of Repository Locations/ettiquette.  Display Validator results)
 + Add "Issues" pane to summarise ALL issues
 + Add GPL licenses to uBee512Launcher, LGPL to IM_units.lpk

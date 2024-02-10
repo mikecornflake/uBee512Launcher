@@ -13,10 +13,13 @@ Function IsCPMBootableFolder(Const AFolder: String): Boolean;
 
 Function DSKFormat(AInput: String): String;
 
+Const
+  FORMAT_UNKNOWN = 'FORMAT_UNKNOWN';
+
 Implementation
 
 Uses
-  StringSupport;
+  StringSupport, cpmtoolsSupport, FileUtil, Math;
 
 Function IsCPMBootable(Const AInput: String): Boolean;
 Begin
@@ -66,19 +69,41 @@ End;
 
 Function DSKFormat(AInput: String): String;
 Var
-  iFinalUnderscore, iFinalDot: Integer;
+  iFinalUnderscore, iFinalDot, iEnd: Integer;
+  sExt, sFilename: String;
 Begin
   If DirectoryExists(AInput) Then
     Result := 'rcpmfs'
   Else
   Begin
-    iFinalUnderscore := AInput.LastIndexOf('_') + 1;
-    iFinalDot := AInput.LastIndexOf('.') + 1;
+    // For now, this is a simple filename parser.
+    // In depth file analysis is a whole other project
 
-    If (iFinalUnderscore <> -1) And (iFinalDot > iFinalUnderscore) Then
-      Result := Lowercase(Copy(AInput, iFinalUnderscore + 1, iFinalDot - iFinalUnderscore - 1))
+    sExt := Lowercase(ExtractFileExt(AInput));
+    If (sExt = '.dsk') Then
+    Begin
+      sFilename := ExtractFileName(AInput);
+      sFilename := Copy(sFilename, 1, Length(sFilename) - Length(sExt));
+      sFilename := Lowercase(sFilename);
+
+      iFinalUnderscore := sFilename.LastIndexOf('_') + 1;
+      iFinalDot := sFilename.LastIndexOf('.') + 1;
+
+      If (iFinalUnderscore = 0) And (iFinalDot = 0) Then
+        Result := FORMAT_UNKNOWN // diskname.dsk
+      Else
+      Begin
+        // diskname_ss80.dsk
+        // diskname.ss80.dsk
+        iEnd := Max(iFinalUnderscore, iFinalDot);
+
+        Result := Copy(sFilename, iEnd + 1, Length(sFilename));
+      End;
+    End
+    Else If (sEXT <> '') Then
+      Result := sExt // diskname.ss80
     Else
-      Result := '';
+      Result := FORMAT_UNKNOWN; //diskname.other
   End;
 End;
 

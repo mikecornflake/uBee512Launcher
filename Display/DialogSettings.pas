@@ -1,18 +1,20 @@
 Unit DialogSettings;
 
 {$mode ObjFPC}{$H+}
-
+{$WARN 5024 off : Parameter "$1" not used}
 Interface
 
 Uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
-  EditBtn, StdCtrls, inifiles;
+  EditBtn, StdCtrls, inifiles, uBee512Validators;
 
 Type
 
   { TSettings }
 
   TSettings = Class(TPersistent)
+  Private
+    FValidator: TSettingsValidator;
   Public
     Filename: String;
 
@@ -27,6 +29,9 @@ Type
 
     ColourOpt, MonitorOpt, VideoTypeOpt: Integer;
 
+    Constructor Create;
+    Destructor Destroy; Override;
+
     Procedure ValidatePaths;
     Procedure InitialisePaths;
 
@@ -36,6 +41,8 @@ Type
     Procedure SaveSettings(AInifile: TInifile);
 
     Function Folder: String;
+
+    Property Validator: TSettingsValidator read FValidator;
   End;
 
   { TdlgSettings }
@@ -241,6 +248,18 @@ Begin
   Debug('TSettings.InitialisePaths uBee512exe=' + uBee512.exe);
   Debug('TSettings.InitialisePaths uBee512rc=' + uBee512.rc);
   Debug('TSettings.InitialisePaths cpmtools=' + cpmtoolsPath);
+End;
+
+Constructor TSettings.Create;
+Begin
+  FValidator := TSettingsValidator.Create(Self);
+End;
+
+Destructor TSettings.Destroy;
+Begin
+  FreeAndNil(FValidator);
+
+  Inherited Destroy;
 End;
 
 Procedure TSettings.ValidatePaths;

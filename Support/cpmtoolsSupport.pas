@@ -11,6 +11,7 @@ Function cpmtoolsAvailable: Boolean;
 Function cpmtoolsPath: String;
 Procedure SetcpmtoolsPath(AValue: String);
 Procedure Initializecpmtools;
+
 Function cpmtoolsIsDisk(AExt: String): Boolean;
 
 Function cpmtoolsLS(AFilename: String; Var ARawOutput: String): String;

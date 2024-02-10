@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="298"/>
+      <BuildNr Value="304"/>
       <Attributes pvaPreRelease="True"/>
     </VersionInfo>
     <BuildModes>
@@ -64,7 +64,7 @@
           </Linking>
           <Other>
             <CompilerMessages>
-              <IgnoredMessages idx6058="True" idx5071="True"/>
+              <IgnoredMessages idx6058="True" idx5071="True" idx5024="True"/>
             </CompilerMessages>
             <CustomOptions Value="-dDEBUG"/>
             <OtherDefines Count="1">

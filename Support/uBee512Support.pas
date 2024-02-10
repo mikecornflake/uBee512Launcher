@@ -63,6 +63,9 @@ Type
     Constructor Create;
     Destructor Destroy; Override;
 
+    // TODO Boot ROM equivalent
+    Function DefaultBootDisk: String;
+
     Property Validator: TModelValidator read FValidator;
   End;
 
@@ -110,6 +113,7 @@ Type
 
     Function FilenameByAlias(AAlias: String): String;
     Function SetAlias(AAlias: String; AFilename: String): Boolean;
+    Function Resolve(AFile: String): String;
 
     Function ValidAliases: TStringArray;
 
@@ -156,6 +160,7 @@ Type
     // Helper Routines
     Function IsDisk(AExt: String): Boolean;
     Function ValidFile(ASubfolder: String; AFilename: String): Boolean;
+    Function DiskFormat(AFilename: String; ADefaultFormat: String): String;
 
     // If a file is within the Working Dir, then make the file relative
     Function ShrinkFile(ASubfolder: String; AFilename: String): String;
@@ -176,7 +181,8 @@ Function uBee512: TuBee512;
 Implementation
 
 Uses
-  Forms, FileUtil, FileSupport, OSSupport, StringSupport, StrUtils, Logs;
+  Forms, FileUtil, StrUtils,
+  FileSupport, OSSupport, StringSupport, CPMSupport, cpmtoolsSupport, Logs;
 
 Var
   FuBee512: TuBee512;
@@ -203,6 +209,51 @@ Begin
   FreeAndNil(FValidator);
 
   Inherited Destroy;
+End;
+
+Function TModel.DefaultBootDisk: String;
+Var
+  sBaseFolder, sModelBootDisk, sBoot, sModelBoot: String;
+  bHasBoot: Boolean;
+
+  Function CheckFileAndAlias(AFile: String): String;
+  Var
+    sAlias: String;
+  Begin
+    Result := '';
+
+    If FileExists(sBaseFolder + AFile) Then
+      Result := sBaseFolder + AFile
+    Else
+    Begin
+      sAlias := uBee512.DiskAliases.FilenameByAlias(AFile);
+      If (sAlias <> ALIAS_NOT_FOUND) Then
+      Begin
+        If Not IsFileAbsolute(sAlias) Then
+          sAlias := sBaseFolder + sAlias;
+
+        If FileExists(sAlias) Then
+          Result := sAlias;
+      End;
+    End;
+  End;
+
+Begin
+  // Only return a fully qualified filename if it can be found
+  Result := '';
+
+  If MbeeType <> mtROM Then
+  Begin
+    // model.dsk (or it's alias)
+    // boot.dsk (or it's alias)
+    sBaseFolder := IncludeSlash(uBee512.WorkingDir) + IncludeSlash(SUBFOLDER_DISKS);
+
+    Result := CheckFileAndAlias(Model + '.dsk');
+
+    If Result = '' Then
+      Result := CheckFileAndAlias('boot.dsk');
+  End;
+
 End;
 
 { TDiskAlias }
@@ -356,6 +407,40 @@ Begin
   Begin
     oItem.Filename := AFilename;
     Result := True;
+  End;
+End;
+
+Function TDiskAliases.Resolve(AFile: String): String;
+Var
+  sBaseFolder, sAlias: String;
+Begin
+  Result := '';
+
+  If Trim(AFile) = '' Then
+    Exit;
+
+  If DirectoryExists(AFile) Then
+    Result := AFile
+  Else If FileExists(AFile) Then
+    Result := AFile
+  Else
+  Begin
+    sBaseFolder := IncludeSlash(ubee512.WorkingDir) + includeSlash(SUBFOLDER_DISKS);
+
+    If FileExists(sBaseFolder + AFile) Then
+      Result := sBaseFolder + AFile
+    Else
+    Begin
+      sAlias := uBee512.DiskAliases.FilenameByAlias(AFile);
+      If (sAlias <> ALIAS_NOT_FOUND) Then
+      Begin
+        If Not IsFileAbsolute(sAlias) Then
+          sAlias := sBaseFolder + sAlias;
+
+        If FileExists(sAlias) Then
+          Result := sAlias;
+      End;
+    End;
   End;
 End;
 
@@ -918,6 +1003,37 @@ Begin
     sFile := IncludeSlash(WorkingDir) + IncludeSlash(ASubfolder) + AFilename;
 
   Result := FileExists(sFile);
+End;
+
+Function TuBee512.DiskFormat(AFilename: String; ADefaultFormat: String): String;
+Var
+  sAlias, sTemp: String;
+Begin
+  Result := '';
+
+  If Trim(ADefaultFormat) <> '' Then
+  Begin
+    Result := ADefaultFormat;
+    Exit;
+  End;
+
+  If DirectoryExists(AFilename) Then
+    Result := FORMAT_UNKNOWN
+  Else
+  Begin
+    sTemp := CPMSupport.DSKFormat(AFilename);
+
+    If sTemp <> FORMAT_UNKNOWN Then
+      Result := sTemp
+    Else
+    Begin
+      sAlias := uBee512.DiskAliases.FilenameByAlias(AFilename);
+      If sAlias = ALIAS_NOT_FOUND Then
+        Result := FORMAT_UNKNOWN
+      Else
+        Result := CPMSupport.DSKFormat(AFilename);
+    End;
+  End;
 End;
 
 Function TuBee512.ShrinkFile(ASubfolder: String; AFilename: String): String;

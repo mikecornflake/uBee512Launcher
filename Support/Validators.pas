@@ -111,9 +111,12 @@ Begin
     AddStringToArray(Result, '<blockquote>' + FDescription + '</blockquote>');
   End;
 
+  //If Trim(FOutcome) <> '' Then
+  //  AddStringToArray(Result, '<p><b>' + ERROR_LEVEL[FErrorLevel] + '</b>: ' +
+  //    FOutcome + '</p>');
+
   If Trim(FOutcome) <> '' Then
-    AddStringToArray(Result, '<p><b>' + ERROR_LEVEL[FErrorLevel] + '</b>: ' +
-      FOutcome + '</p>');
+    AddStringToArray(Result, FOutcome);
 
   If Trim(FRecommendation) <> '' Then
     AddStringToArray(Result, LineEnding + '<p>Recommendation(s):<p>' +
@@ -136,10 +139,10 @@ Procedure TValidator.AddOC(AFormatStr: String; arrParams: Array Of Const;
 Var
   sP: String;
 Begin
-  sP := '<span style="color:' + ERROR_LEVEL_HTML[AError] + ';">';
-
-  FOutcome += sP + Format(AFormatStr, arrParams) + '</span>';
-  FOutcome += LineEnding;
+  FOutcome += '<p><b>' + ERROR_LEVEL[AError] + '</b>: ';
+  FOutcome += '<span style="color:' + ERROR_LEVEL_HTML[AError] + ';">';
+  FOutcome += Format(AFormatStr, arrParams);
+  FOutcome += '</span></p>' + LineEnding;
 End;
 
 Procedure TValidator.AddRM(AFormatStr: String; arrParams: Array Of Const);
