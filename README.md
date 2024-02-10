@@ -28,6 +28,7 @@
   
 ### Whats new (Trunk)
 + Next release will be a big one:
+  + Add GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
   + Framework for core functionality now in, and checks/options for Disk based models mostly complete
   + Virtually nothing for ROM based models implemented (and won't until 0.6beta release)
     + Framework shouldn't need much tweaking to accomodate (famous last words)
@@ -37,6 +38,7 @@
   + Installation Validator added (charrom.bin/rom1.bin checks.  Settings & Alias file checks.  Not sure what else to check, but this got me thinking about adding Installation Aids)
   + Definition Validator refined (Decent checks on SRAM, Disks, Tapes.  NOTHING on ROMs, PAKs, HDDs or IDEs)
   + Microbee Model Validator added (Only checks default boot disks for Disk Models.  No checks for boot ROMs for IC models)
+  + Settings Validator checks the values currently selected in the UI and the default values from Definitions/Models, and makes sure we'll get a valid result
 + Added "Disk Alias" dialog (Add/Delete Alias, Edit Alias name.  Assign disk/clear assignment for Alias.  Display validator checks)
 + Integrate "disks.alias" updates into Disk Explorer (Assign disk to existing Alias, Clear existing Alias)
 + Add Display options (monitor, opengl/sdl)
@@ -102,13 +104,10 @@
 
 # TODO
 
-## Short term (planned for 0.5beta)
+## Medium term (not until 0.6beta or higher)
 + Implement --account (if rc file not in expected location)
 + Add Installation Aids (copy \*.sample files to appropriate locations.  HTML summary of Repository Locations/ettiquette.  Display Validator results)
 + Add "Issues" pane to summarise ALL issues
-+ Add GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
-
-## Medium term (not until 0.6beta or higher)
 + Add awareness of **RunCPM** folder structure
 + Add awareness of roms.alias + native md5 (before doing the below)
 + Add boot ROM checks to TModelValidator
