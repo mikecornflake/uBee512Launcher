@@ -8,27 +8,9 @@
 + **ubee512Launcher** allows inexperienced users (me) to easily view, configure and select the available emulated systems
 + And yes, it's also for users (again, me) who are more comfortable with UI than command line
 
-## Release v0.4beta
-+ Fourth beta release, still lots to do yet (no actual substance to the app yet)
-+ Now using Github [releases](https://github.com/mikecornflake/uBee512Launcher/releases/tag/0.4), not a Bin subfolder in the Code repository
-+ To use **ubee512launcher**:
-  + If **ubee512** is on your environment path, simply download relevant **ubee512launcher** binary, unzip and run
-  + if **ubee512** isn't on your environment path, either:
-    + run **ubee512Launcher**, open "File" - "Settings", and configure the loctions for "ubee512 executable" and "ubee512 rc (setting file)"
-    + or drop the binary in the same folder as the **ubee512** binary, and run from there
-  + Then:
-    + Use the "Type", "Model" and "Title" dropdowns, select the emulated Microbee you wish to run
-	  + Alternatively, use the Definition Explorer (Bee icon) to select preferred model 
-    + Use the Disk Explorer to find some dsk files.  Select a bootable DSK, and click "Add DSK to A"
-    + Click "Launch"
-+ "System Macros" renamed to "System Definitions" (or more simply "Definitions" in places) to be more consistent with **uBee512** README
-+ Re-worked Disk Format selection - I hadn't realised **uBee512** was so good at detecting Disk Format, so by default I now let **uBee512** do the work.  User can still override...
-+ About box added - dynamically loads uBee512 License and Readme, so requires the folder being set up in Settings to work
-+ Settings and Debug now saved in local user config directory (%LOCALAPPDATA%\uBee512Launcher or ~/.config/uBee512Launcher) - resolves issues on macOS
-  
-### Whats new (Trunk)
-+ Next release will be a big one:
-  + Add GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
+## Release v0.5beta
++ Big release:
+  + Added GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
   + Framework for core functionality now in, and checks/options for Disk based models mostly complete
   + Virtually nothing for ROM based models implemented (and won't until 0.6beta release)
     + Framework shouldn't need much tweaking to accomodate (famous last words)
@@ -48,6 +30,13 @@
     + or choose a valid disk alias from the dropdown
   + Issues found by Validators now being displayed in assorted locations across UI
   + Now displaying Issues using HTML
+  
+### Whats new (Trunk)
+
+### Known Issues
++ uBee512Launcher Validator gets confused if UI has Disk A populated AND selected definition also has Disk A defined through \-a
+  + (reproducable with \[ciab\] definition)
+  + \[ciab\] has a \-a disk set (ciab.ss80).  This is best resolved with disks.alias.
 
 ## Notes on implementation
 + Only allows bootable DSKs to be loaded in A: (only checks DSKs for bootability)
@@ -187,4 +176,4 @@
 Mike Thompson
 mike.cornflake@gmail.com
 + Project start 2 Jan 2024
-+ Updated 7 Feb 2024
++ Updated 10 Feb 2024
