@@ -19,7 +19,7 @@ Begin
   SetHeapTraceOutput('HeapTrace.log');
   {$ENDIF}
   RequireDerivedFormResource := True;
-  Application.Scaled := True;
+  Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TdlgDebug, dlgDebug);

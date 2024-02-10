@@ -136,8 +136,6 @@ End;
 
 Procedure TValidator.AddOC(AFormatStr: String; arrParams: Array Of Const;
   AError: TErrorLevel = elNone);
-Var
-  sP: String;
 Begin
   FOutcome += '<p><b>' + ERROR_LEVEL[AError] + '</b>: ';
   FOutcome += '<span style="color:' + ERROR_LEVEL_HTML[AError] + ';">';

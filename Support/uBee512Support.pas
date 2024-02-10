@@ -118,7 +118,7 @@ Type
     Function ValidAliases: TStringArray;
 
     Function Delete(AAlias: TDiskAlias): Boolean;
-    Function Add(AAlias: String): TDiskAlias;
+    Function Add(AAlias: String): TDiskAlias; Overload;
 
     Property Filename: String read FFilename;
     Property Validators: TValidators read FValidators;
@@ -213,8 +213,7 @@ End;
 
 Function TModel.DefaultBootDisk: String;
 Var
-  sBaseFolder, sModelBootDisk, sBoot, sModelBoot: String;
-  bHasBoot: Boolean;
+  sBaseFolder : String;
 
   Function CheckFileAndAlias(AFile: String): String;
   Var
