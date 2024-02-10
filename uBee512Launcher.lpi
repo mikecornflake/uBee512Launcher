@@ -127,9 +127,6 @@
         <PackageName Value="TurboPowerIPro"/>
       </Item>
       <Item>
-        <PackageName Value="IM_application"/>
-      </Item>
-      <Item>
         <PackageName Value="IM_units"/>
       </Item>
       <Item>
