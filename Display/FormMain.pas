@@ -701,12 +701,16 @@ Begin
 
   Try
     If oForm.ShowModal = mrOk Then
-      uBee512.DiskAliases.Save  // commit
+    Begin
+      uBee512.DiskAliases.Save;  // commit
+
+      RefreshDiskAliasSummary;
+      RefreshRC;
+    End
     Else
       uBee512.DiskAliases.Load; // undo
-
-    RefreshDiskAliasSummary;
   Finally
+    oForm.Free;
   End;
 End;
 
@@ -715,13 +719,13 @@ Var
   oForm: TdlgDiskExplorer;
 Begin
   oForm := TdlgDiskExplorer.Create(Self);
-
-  FSettings.A := cboDiskA.Text;
-  FSettings.B := cboDiskB.Text;
-  FSettings.C := cboDiskC.Text;
-
-  oForm.Settings := FSettings;
   Try
+    FSettings.A := cboDiskA.Text;
+    FSettings.B := cboDiskB.Text;
+    FSettings.C := cboDiskC.Text;
+
+    oForm.Settings := FSettings;
+
     If oForm.ShowModal = mrOk Then
     Begin
       FSettings.Assign(oForm.Settings);
@@ -736,11 +740,12 @@ Begin
       End;
 
       uBee512.DiskAliases.Save;
+
+      RefreshDiskAliasSummary;
+      RefreshRC;
     End
     Else // Undo any changes made
       uBee512.DiskAliases.Load;
-
-    RefreshDiskAliasSummary;
   Finally
     oForm.Free;
   End;
@@ -758,6 +763,8 @@ Begin
       SetDefinitionCombo(cboModel, oForm.Model);
       SetDefinitionCombo(cboTitle, oForm.Title);
     End;
+
+    RefreshRC;
   Finally
     oForm.Free;
   End;
