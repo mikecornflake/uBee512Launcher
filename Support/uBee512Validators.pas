@@ -204,7 +204,7 @@ Begin
           If sFormatA = FORMAT_UNKNOWN Then
           Begin
             SetLevel(elWarning);
-            AddOC('Unable to infer Disk A format', [], elError);
+            AddOC('Unable to infer Disk A format', [], elWarning);
             AddRM('Unknown Disk A format might not be an issue.  ubee512 gets format by analysing file structure, ubee512launcher only checks filename.', []);
           End;
         End;
@@ -224,7 +224,7 @@ Begin
           If sFormatB = FORMAT_UNKNOWN Then
           Begin
             SetLevel(elWarning);
-            AddOC('Unable to infer Disk B format', [], elError);
+            AddOC('Unable to infer Disk B format', [], elWarning);
             AddRM('Unknown Disk B format might not be an issue.  ubee512 gets format by analysing file structure, ubee512launcher only checks filename.', []);
           End
           Else If (sFormatA <> FORMAT_UNKNOWN) And (sFormatA <> sFormatB) Then
@@ -254,7 +254,7 @@ Begin
           If sFormatC = FORMAT_UNKNOWN Then
           Begin
             SetLevel(elWarning);
-            AddOC('Unable to infer Disk C format', [], elError);
+            AddOC('Unable to infer Disk C format', [], elWarning);
             AddRM('Unknown Disk C format might not be an issue.  ubee512 gets format by analysing file structure, ubee512launcher only checks filename.', []);
           End
           Else If (sFormatA <> FORMAT_UNKNOWN) And (sFormatA <> sFormatC) Then
