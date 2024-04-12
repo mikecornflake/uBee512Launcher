@@ -1,0 +1,20 @@
+We finally have Ver 5.00 MWB Basic ROMs that were released in the original Kit Microbee.
+
+ROMs kindly supplied by MSPP member: rhysweatherley
+
+ROM names changed to the standard MSPP release names. The 16 KB ROM
+are the four 4 KB ROMs concatenated.
+
+To use under the uBee512 emulator:
+
+ubee512 kit --basica basic_5.00_a.rom --basicb basic_5.00_b.rom --basicc basic_5.00_c.rom --basicd basic_5.00_d.rom
+
+Or the supplied 16 KB concatenated ROM may also be used:
+
+ubee512 kit --basic basic_5.00.rom
+
+The ZIP file can be found in the "Tech" repository here:
+
+/repositories/technology/Microbee/Software/ROMs/Basic/basic_5.10.zip
+
+uBee@MSPP
