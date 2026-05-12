@@ -953,7 +953,7 @@ Begin
     memCommandLine.Lines.Text := '>' + Trim(sDebug);
     memCommandLine.Refresh;
 
-    sResult := Trim(RunEx(sCommand, slParams));
+    sResult := Trim(RunAndCapture(sCommand, slParams));
 
     If sResult <> '' Then
       Debug('ubee512 returned:' + LineEnding + sResult);

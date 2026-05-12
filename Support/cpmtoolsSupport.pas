@@ -117,7 +117,7 @@ Begin
     sDebug := Format('"%scpmls%s" -l -f %s -T dsk "%s"', [IncludeSlash(FPath),
       GetExeExt, sDSK, AFilename]);
     Debug(sDebug);
-    sTemp := RunEx(sCommand, ['-l', '-f', sDSK, '-T', 'dsk', AFilename], True, nil);
+    sTemp := RunAndCapture(sCommand, ['-l', '-f', sDSK, '-T', 'dsk', AFilename], True, nil);
     Debug(LineEnding + sTemp);
 
     ARawOutput := '>' + sDebug + sLineBreak + sTemp;
