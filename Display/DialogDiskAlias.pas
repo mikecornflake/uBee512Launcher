@@ -62,7 +62,7 @@ Implementation
 
 Uses
   Validators,
-  OSSupport, FileSupport, ControlsSupport, StringSupport;
+  OSSupport, FileSupport, FrameHTMLs, StringSupport;
 
   { TdlgDiskAlias }
 

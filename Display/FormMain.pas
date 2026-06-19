@@ -141,7 +141,7 @@ Implementation
 
 Uses
   IniFiles, LazFileUtils, Clipbrd,
-  Validators, cpmtoolsSupport, StringSupport, FileSupport, ControlsSupport,
+  Validators, cpmtoolsSupport, StringSupport, FileSupport, FrameHTMLs,
   OSSupport, uBee512Support, VersionSupport,
   DialogDefinitionExplorer, DialogDiskExplorer, DialogDebug, DialogAbout,
   DialogDiskAlias;

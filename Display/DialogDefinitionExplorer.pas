@@ -51,7 +51,7 @@ Type
 Implementation
 
 Uses
-  uBee512Support, OSSupport, ControlsSupport, StringSupport, Logs, Validators;
+  uBee512Support, OSSupport, FrameHTMLs, StringSupport, Logs, Validators;
 
   {$R *.lfm}
 
