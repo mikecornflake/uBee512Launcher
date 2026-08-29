@@ -96,7 +96,7 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="IM_units"/>
+        <PackageName Value="IM.units"/>
       </Item>
       <Item>
         <PackageName Value="TurboPowerIPro"/>

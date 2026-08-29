@@ -10,7 +10,7 @@
 
 ## Release v0.5beta
 + Big release:
-  + Added GPL licenses to uBee512Launcher, LGPL to IM_units.lpk
+  + Added GPL licenses to uBee512Launcher, LGPL to IM.units.lpk
   + Framework for core functionality now in, and checks/options for Disk based models mostly complete
   + Virtually nothing for ROM based models implemented (and won't until 0.6beta release)
     + Framework shouldn't need much tweaking to accomodate (famous last words)
@@ -137,14 +137,14 @@
 ![Image: Disk Explorer](Images/Development_Screenshot_3.png)
 
 ### Build Notes
-+ This project requires the IM_units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
++ This project requires the IM.units.lpk (Lazarus Package) from https://github.com/mikecornflake/InspectorMike-common
   + Clone InspectorMike-common
   + Install LazSerial (either use Lazarus Online Package Manager, or clone https://github.com/JurassicPork/TLazSerial)
-    + not needed for uBee512Launcher, but is needed for IM_units.lpk)
+    + not needed for uBee512Launcher, but is needed for IM.units.lpk)
   + In Lazarus: "Project" "Open"
     + Select "uBee512Launcher.lpr"
   + Then "Package" "Open Package File (.lpk)"
-    + Select "InspectorMike-common\Packages\IM_units.lpk"
+    + Select "InspectorMike-common\Packages\IM.units.lpk"
     + click on "Compile",
     + Then "Use" - "Add to Project" (or "Use" - "Install")
   + You should now be able to compile "uBeeLauncher.lpr"
@@ -169,8 +169,8 @@
 + ubee512launcher binaries and source code are released under [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
 + ubee512launcher uses:
   + Libraries and code supplied by the freepascal project (FCL, RTL) & the Lazarus project (LCL) under a [modified Library GPL with linking exceptions](https://wiki.freepascal.org/FPC_modified_LGPL)
-  + IM_units package which is released under [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
-  + IM_units package contains third party packages released under seperate licenses.  Most third party packages are not used by ubee512launcher, the exception is:
+  + IM.units package which is released under [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
+  + IM.units package contains third party packages released under seperate licenses.  Most third party packages are not used by ubee512launcher, the exception is:
     + TurbopowerIPro (distributed with Lazarus and used for HTML rendering) - this is released under MPL 1.1 ([Mozilla Public License Version 1.1](https://www.mozilla.org/en-US/MPL/1.1/))
 
 Mike Thompson
